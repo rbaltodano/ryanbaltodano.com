@@ -19,7 +19,7 @@
   --paragraph-dim: rgba(74, 50, 28, 0.5);
   --brown: #4A321C;
   --ink: #120F0C;
-  --logo: #3B1504;
+  --logo: #2B2520;
   --light-green: #86803E;
   --accent-gold: #A28F1E;
   --dark-green-text: #B7AE78;
@@ -102,8 +102,8 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -1.8px;
   color: var(--logo);
 }
-.logo img { width: 36px; height: 36px; }
-.logo--footer img { width: 52px; height: 52px; }
+.logo img { width: auto; height: 40px; }
+.logo--footer img { width: auto; height: 56px; }
 .nav__links {
   display: flex;
   gap: 24px;
