@@ -30,6 +30,8 @@
   var isMid = mode === 'midpoint';
   // data-mode="add": the tree is already there, and one more Insight joins it.
   var isAdd = mode === 'add';
+  var scrollStudy = root.hasAttribute('data-scroll-study');
+  var studyProgress = null;
   // Inside the Features journey a card plays when its scene is shown, not when it scrolls into view.
   var journeyScene = root.closest('[data-scene]');
 
@@ -329,6 +331,31 @@
     steps.forEach(function (s) { s.classList.toggle('is-active', Number(s.dataset.step) === n); });
     root.classList.toggle('is-study', n >= 3);
   }
+
+  // The homepage keeps one canvas and drives its camera and spatial layout from scroll.
+  root.addEventListener('journey:study-progress', function (event) {
+    if (!scrollStudy) return;
+    studyProgress = clamp(event.detail.progress, 0, 1);
+    if (studyProgress > 0) {
+      if (state.step < 2) setStep(2);
+      // Fast scrolling can reach Study before the entrance finishes.
+      clearTimers();
+      panTo(0, 0);
+      node.vis.to(1, 0, performance.now());
+      insights.forEach(function (ins) {
+        ins.vis.to(1, 0, performance.now());
+        if (ins.lineStart === null) ins.lineStart = performance.now();
+      });
+    }
+    if (state.step >= 2) state.step = studyProgress > 0.95 ? 3 : 2;
+    root.classList.toggle('is-study', studyProgress > 0.95);
+    root.dataset.studyProgress = studyProgress.toFixed(3);
+    if (studyProgress < 0.95) {
+      state.spinVel = 0;
+      state.dragging = false;
+      root.classList.remove('is-dragging');
+    }
+  });
 
   function readStep() {
     var vh = window.innerHeight;
@@ -770,7 +797,7 @@
     // Study progress: an eased 0.8 s swing, like the app's camera move.
     var dur = reduceMotion ? 1 : 800;
     var t = clamp((now - state.pStart) / dur, 0, 1);
-    state.p = lerp(state.pFrom, state.pTo, easeInOut(t));
+    state.p = studyProgress === null ? lerp(state.pFrom, state.pTo, easeInOut(t)) : studyProgress;
     var p = state.p;
 
     // Match the app's Study ring coast: cap frame time, decay at 3.2/s, stop at 0.05 rad/s.
@@ -818,7 +845,7 @@
       if (ins.lineStart !== null) {
         var g = clamp((now - ins.lineStart) / (CONNECTOR_GROW * 1000), 0, 1);
         g = 1 - Math.pow(1 - g, 5);
-        var ca = 0.22 * dim * rest;
+        var ca = (scrollStudy ? 0.5 : 0.22) * dim * rest;
         if (g > 0.001) {
           ctx.strokeStyle = 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')';
           ctx.lineCap = 'round';

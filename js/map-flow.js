@@ -1,8 +1,8 @@
 // "A Map of Your Own Thinking" on the home page. The photo panel pins while the page scrolls,
-// and the scroll drives a horizontal track through four frames, right to left: an answer
+// and the scroll drives a horizontal track through three frames, right to left: an answer
 // streams in, one of its terms arrives as a saved Insight card (the app's dark docked card),
 // the Insight Tree adds that Insight with the app's entrance (insight-tree.js, mode "add"),
-// and the tree swings into Study (mode "study"). Each frame rests a moment before the next.
+// and the same tree swings into Study in place. Each scene rests a moment before the next.
 // On tablets and phones the frames rise bottom to top instead of sliding sideways.
 (function () {
   var flow = document.querySelector('[data-flow]');
@@ -14,8 +14,9 @@
   var text = flow.querySelector('[data-flow-text]');
   var insight = flow.querySelector('[data-flow-insight]');
   var tree = flow.querySelector('[data-scene="tree"] [data-insight-tree]');
-  var study = flow.querySelector('[data-scene="study"] [data-insight-tree]');
-  var last = frames.length - 1;
+  // Four narrative phases share three panels: the last phase morphs the existing tree.
+  var phaseCount = 4;
+  var last = phaseCount - 1;
   var vertical = window.matchMedia('(max-width: 1024px)');
 
   // Scroll needed per frame of travel, as a share of the viewport height.
@@ -23,11 +24,11 @@
   // Scroll progress (0–1) → track position (0 = first frame, last = final frame). Each frame
   // gets an equal share of the scroll; it rests through the middle 30% of its share.
   var STOPS = [];
-  frames.forEach(function (frame, i) {
-    var share = 1 / frames.length, start = i * share;
+  for (var i = 0; i < phaseCount; i++) {
+    var share = 1 / phaseCount, start = i * share;
     STOPS.push([i === 0 ? 0 : start + share * 0.35, i]);
     STOPS.push([i === last ? 1 : start + share * 0.65, i]);
-  });
+  }
   function position(p) {
     for (var i = 1; i < STOPS.length; i++) {
       if (p <= STOPS[i][0]) {
@@ -80,7 +81,8 @@
     var top = parseFloat(getComputedStyle(sticky).top) || 0;
     var travel = flow.offsetHeight - sticky.offsetHeight;
     var p = Math.min(Math.max((top - flow.getBoundingClientRect().top) / travel, 0), 1);
-    var x = position(p);
+    var phase = position(p);
+    var x = Math.min(phase, frames.length - 1);
     // Right to left on wide screens; bottom to top on tablets and phones (the CSS stacks the track).
     var shift = (-x * 100 / frames.length).toFixed(3) + '%';
     track.style.transform = vertical.matches ? 'translate3d(0,' + shift + ',0)' : 'translate3d(' + shift + ',0,0)';
@@ -88,8 +90,10 @@
     var r = sticky.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.6 && r.bottom > 0) playAnswer();
     if (Math.abs(x - 1) < 0.3) playInsight();
-    if (Math.abs(x - 2) < 0.3) playCard('tree', tree);
-    if (Math.abs(x - 3) < 0.3) playCard('study', study);
+    if (x > 1.7) playCard('tree', tree);
+    tree.dispatchEvent(new CustomEvent('journey:study-progress', {
+      detail: { progress: reduceMotion ? (phase >= 2.5 ? 1 : 0) : Math.max(0, phase - 2) }
+    }));
   }
   function request() { if (!pending) { pending = true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', request, { passive: true });

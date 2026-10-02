@@ -27,10 +27,10 @@ site/
   js/site.js          Mobile menu, smooth scrolling, headline reveal
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights
   js/features-journey.js  Features: drives the pinned window's scenes from the step being read
-  js/map-flow.js       Home: the pinned photo panel that scrolls horizontally from answer to Insight to tree to Study
+  js/map-flow.js       Home: the pinned photo panel that scrolls horizontally from answer to Insight to tree, which turns into Study in place
   js/privacy-demo.js  Privacy: a question answered in airplane mode, with what did and didn't happen
   js/page-demos.js    Local-only internal-page interactions
-  js/insight-tree.js  Home page Insight Tree animation (port of the app's canvas and Study mode)
+  js/insight-tree.js  Home page Insight Tree animation (port of the app's canvas and Study mode; one scroll-driven tree/3D view)
   js/grounding-demo.js  Home Library card: Library cards scrolling in a loop that follows page scroll
   assets/home/        Images exported from Figma
   assets/app/         Real app screenshots and the Study demo video (from Aquinas-iOS/Documentation)

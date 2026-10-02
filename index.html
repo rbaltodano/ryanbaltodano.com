@@ -128,12 +128,12 @@
   </section>
 
   <!-- A Map of Your Own Thinking (js/map-flow.js): a photo panel that pins while you scroll, and
-       the flow moves through it right to left. An answer streams in, one of its terms becomes a
+       the flow moves through it right to left, keeping the same tree for Study. An answer streams in, one of its terms becomes a
        saved Insight, the Insight joins the tree, and the tree turns into Study. -->
   <section class="section section--flow" id="map">
     <div class="flow" data-flow>
       <div class="flow__sticky">
-        <img class="flow__bg" src="assets/scenery/vineyard-path.jpg" alt="">
+        <img class="flow__bg" src="assets/scenery/thinking-sky.jpg" alt="">
         <div class="flow__head">
           <h2 class="display display--tight">A Map of Your <em>Own Thinking</em></h2>
           <p class="para para--16">An answer highlights the terms worth keeping. Save one and it becomes an Insight, your Insight Tree grows to hold it, and Study lets you walk around it in 3D.</p>
@@ -160,13 +160,7 @@
             </div>
           </div>
           <div class="flow__frame" data-scene="tree">
-            <div class="tree-card" data-insight-tree data-mode="add" aria-label="An Insight Tree around the Node Concept Greek Philosophy, with the Insight Eudaimonia being added">
-              <canvas class="tree-card__canvas"></canvas>
-              <div class="tree-card__layer"></div>
-            </div>
-          </div>
-          <div class="flow__frame" data-scene="study">
-            <div class="tree-card" data-insight-tree data-mode="study" aria-label="Study mode: the Node Concept Greek Philosophy and its Insights in 3D. Drag to rotate.">
+            <div class="tree-card" data-insight-tree data-mode="add" data-scroll-study aria-label="An Insight Tree around the Node Concept Greek Philosophy, with the Insight Eudaimonia being added, turning into 3D Study as you scroll. Drag to rotate in Study">
               <canvas class="tree-card__canvas"></canvas>
               <div class="tree-card__layer"></div>
               <div class="tree-card__hint">Drag to rotate</div>

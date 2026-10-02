@@ -1492,7 +1492,7 @@ a { color: inherit; text-decoration: none; }
 .journey .jw.is-in { opacity: 1; filter: none; }
 
 /* Home "A Map of Your Own Thinking" (js/map-flow.js): a photo panel, inset like the footer,
-   that pins while the page scrolls; four frames slide through it right to left. */
+   that pins while the page scrolls; three transparent panels slide through it; the tree becomes Study in place. */
 .section--flow { padding: 0; }
 .flow { position: relative; margin: 0 12px; }
 .flow__sticky {
@@ -1507,14 +1507,13 @@ a { color: inherit; text-decoration: none; }
   isolation: isolate;
 }
 .flow__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
-/* A soft shade behind the heading so it reads on any photo. */
-.flow__sticky::before { content: ""; position: absolute; inset: 0 0 auto; height: 45%; z-index: -1; background: linear-gradient(rgba(18, 15, 12, 0.55), transparent); }
+/* The supplied sky carries the whole scene, without module surfaces. */
 .flow__head { padding: 64px var(--gutter) 0; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
-.flow__head .display { font-size: clamp(34px, 3.6vw, 52px); line-height: 1.25; color: var(--cream); }
-.flow__head .display em { color: var(--dark-green-text); }
-.flow__head .para { max-width: 560px; color: rgba(255, 250, 240, 0.82); }
+.flow__head .display { font-size: clamp(34px, 3.6vw, 52px); line-height: 1.25; color: var(--brown); }
+.flow__head .display em { color: #394022; }
+.flow__head .para { max-width: 560px; color: var(--brown); }
 .flow__viewport { position: relative; flex: 1; min-height: 0; overflow: hidden; }
-.flow__track { width: 400%; height: 100%; display: flex; will-change: transform; }
+.flow__track { width: 300%; height: 100%; display: flex; will-change: transform; }
 .flow__frame { flex: 1 1 0; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 24px var(--gutter) 48px; }
 
 /* Frame 1: the answer, in the app's light theme. */
@@ -1526,15 +1525,15 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 14px;
   border-radius: 28px;
-  background: var(--app-canvas);
-  box-shadow: 0 24px 60px -24px rgba(18, 15, 12, 0.5);
+  background: transparent;
+  box-shadow: none;
   text-align: center;
 }
 .flow-answer__q { font-weight: 500; font-size: 15px; color: var(--brown); }
 .flow-answer__rule { width: 72px; border: 0; border-top: 1px solid rgba(34, 15, 1, 0.14); }
-.flow-answer__show { font-weight: 700; font-size: 13px; color: var(--paragraph-dim); }
-.flow-answer__text { font-size: 15px; line-height: 1.9; text-align: left; color: var(--paragraph); }
-.flow-answer__text .hl { font-weight: 700; color: var(--light-green); padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) left bottom / 0 1.5px no-repeat; transition: background-size 0.6s cubic-bezier(0.55, 0, 0.17, 1); }
+.flow-answer__show { font-weight: 700; font-size: 13px; color: var(--brown); }
+.flow-answer__text { font-size: 15px; line-height: 1.9; text-align: left; color: var(--brown); }
+.flow-answer__text .hl { font-weight: 700; color: #394022; padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) left bottom / 0 1.5px no-repeat; transition: background-size 0.6s cubic-bezier(0.55, 0, 0.17, 1); }
 .flow-answer__text.is-marked .hl { background-size: 100% 1.5px; }
 .flow .fw { display: inline-block; opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.5s ease-out, filter 0.5s ease-out, translate 0.5s ease-out; }
 .flow .fw.is-in { opacity: 1; filter: none; translate: none; }
@@ -1547,9 +1546,9 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column;
   gap: 12px;
   border-radius: 36px;
-  background: var(--app-canvas-secondary-dark);
-  border: 1px solid rgba(255, 250, 240, 0.08);
-  box-shadow: 0 0 24px rgba(34, 15, 0, 0.15), 0 24px 60px -24px rgba(0, 0, 0, 0.6);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
   opacity: 0;
   filter: blur(3px);
   transform: translateY(14px) scale(0.95);
@@ -1557,14 +1556,18 @@ a { color: inherit; text-decoration: none; }
 }
 .flow-insight.is-in { opacity: 1; filter: none; transform: none; }
 .flow-insight__head { display: flex; align-items: center; gap: 8px; }
-.flow-insight__title { flex: 1; font-weight: 700; font-size: 18px; color: var(--cream); }
-.flow-insight__actions { width: 64px; height: 16px; filter: invert(1) brightness(1.4) opacity(0.5); }
-.flow-insight__context { font-weight: 700; font-size: 12px; color: rgba(255, 250, 240, 0.45); }
-.flow-insight__body { font-size: 14px; line-height: 28.8px; color: rgba(255, 250, 240, 0.75); opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.8s ease-out 0.3s, filter 0.8s ease-out 0.3s, translate 0.8s ease-out 0.3s; }
+.flow-insight__title { flex: 1; font-weight: 700; font-size: 18px; color: var(--brown); }
+.flow-insight__actions { width: 64px; height: 16px; opacity: 0.65; }
+.flow-insight__context { font-weight: 700; font-size: 12px; color: var(--brown); }
+.flow-insight__body { font-size: 14px; line-height: 28.8px; color: var(--brown); opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.8s ease-out 0.3s, filter 0.8s ease-out 0.3s, translate 0.8s ease-out 0.3s; }
 .flow-insight.is-in .flow-insight__body { opacity: 1; filter: none; translate: none; }
 
-/* Frames 3 and 4: the Insight Tree adding the Insight, then Study; light theme. */
-.flow .tree-card { width: min(760px, 100%); height: min(460px, 100%); box-shadow: 0 24px 60px -24px rgba(18, 15, 12, 0.5); }
+/* One transparent tree persists as its camera and layout turn into Study. */
+.flow .tree-card { width: min(760px, 100%); height: min(460px, 100%); background: transparent; border: 0; box-shadow: none; }
+
+.flow .it-node, .flow .it-chip, .flow .tree-card__hint { background: transparent; border: 0; box-shadow: none; color: var(--brown); }
+.flow .it-node img, .flow .it-chip img, .flow-insight__head > img:first-child { filter: brightness(0.45); }
+.flow .tree-card__hint { font-size: 14px; }
 
 /* ---------- Responsive ---------- */
 
@@ -1635,7 +1638,7 @@ a { color: inherit; text-decoration: none; }
   .hero { padding-top: 180px; }
   .hero__inner, .why, .split-head, .library, .private { flex-direction: column; align-items: stretch; }
   .lib-card { flex: none; }
-  .flow__track { width: 100%; height: 400%; flex-direction: column; }
+  .flow__track { width: 100%; height: 300%; flex-direction: column; }
   .hero__inner { align-items: center; }
   .hero__copy, .why__copy { width: 100%; min-width: 0; }
   .scene { margin: 0 auto; }
