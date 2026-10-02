@@ -15,6 +15,7 @@
   var insight = flow.querySelector('[data-flow-insight]');
   var definitionTimer;
   var scrollAnimation;
+  var animationStart = 0;
   var animating = false, snapTimer, wheelTimer, wheelGesture = false, touching = false, pointerHeld = false;
   var terms = flow.querySelectorAll('[data-flow-term]');
   var menuCurve = getComputedStyle(flow).getPropertyValue('--ease-menu').match(/[\d.]+/g).map(Number);
@@ -50,6 +51,7 @@
     var fromPhase = position(Math.min(Math.max((from - origin) / travel, 0), 1));
     var start = performance.now();
     animating = true;
+    animationStart = start;
     function frame(now) {
       var progress = Math.min((now - start) / 500, 1);
       // Animate the visible panel with the menu curve, then invert the scroll mapping.
@@ -75,10 +77,15 @@
   // so it cannot leave the track halfway between panels or skip several modules.
   window.addEventListener('wheel', function (event) {
     if (event.ctrlKey || event.metaKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY) return;
+    // An automatic scroll lasts half a second; if one is somehow still "running", let go of it.
+    if (animating && performance.now() - animationStart > 1500) stopAnimation();
     var geometry = scrollGeometry();
     if (geometry.progress < -0.002 || geometry.progress > 1.002) { stopAnimation(); return; }
     var phase = position(Math.min(Math.max(geometry.progress, 0), 1));
     var direction = event.deltaY > 0 ? 1 : -1;
+    // Over the tree, the wheel is plain page scrolling: it scrubs the Study turn and carries on
+    // down the page, instead of being held to one module per flick.
+    if (phase >= 1.5 && event.target.closest && event.target.closest('.tree-card')) { stopAnimation(); return; }
     if (!animating && !wheelGesture && ((phase === 0 && direction < 0) || (phase === last && direction > 0))) return;
     event.preventDefault();
     clearTimeout(wheelTimer);
@@ -178,6 +185,17 @@
     setTimeout(function () { text.classList.add('is-marked'); }, reduceMotion ? 0 : 400 + words.length * 40);
   }
   function playInsight() { if (!played.insight) { played.insight = true; insight.classList.add('is-in'); } }
+  // Choosing a term swaps in its own card, which animates in again like the first one.
+  function showInsight(definition) {
+    insight.classList.add('is-reset');
+    insight.classList.remove('is-in');
+    insight.querySelector('.flow-insight__title').textContent = definition[0];
+    insight.querySelector('.flow-insight__body').textContent = definition[1];
+    void insight.offsetWidth;
+    insight.classList.remove('is-reset');
+    played.insight = true;
+    insight.classList.add('is-in');
+  }
   function playCard(name, card) { if (!played[name]) { played[name] = true; card.dispatchEvent(new Event('journey:play')); } }
 
   // A tap generates the chosen definition before advancing to the Insight panel. Without
@@ -195,10 +213,8 @@
       definitionTimer = setTimeout(function () {
         term.classList.remove('is-generating');
         text.setAttribute('aria-busy', 'false');
-        insight.querySelector('.flow-insight__title').textContent = definition[0];
-        insight.querySelector('.flow-insight__body').textContent = definition[1];
         tree.dispatchEvent(new CustomEvent('journey:insight', { detail: { key: term.dataset.flowTerm } }));
-        playInsight();
+        showInsight(definition);
         // The midpoint of phase two rests exactly on the Insight panel in both layouts.
         scrollToPhase(1);
       }, reduceMotion ? 0 : 2000);

@@ -1574,10 +1574,12 @@ a { color: inherit; text-decoration: none; }
 .flow .fw { display: inline-block; opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.5s ease-out, filter 0.5s ease-out, translate 0.5s ease-out; }
 .flow .fw.is-in { opacity: 1; filter: none; translate: none; }
 
-/* Frame 2: the saved Insight, as the app's docked card in dark mode. */
+/* Frame 2: the saved Insight, as the app's docked card in dark mode. The card keeps the width it
+   has in the app (a 393 pt screen less the 10 pt margins) and sits centered in its frame. */
+.flow__frame[data-scene="insight"] { align-items: center; padding-block: 0; }
 .flow-insight {
-  width: min(var(--flow-column-width), 100%);
-  padding: 32px var(--flow-content-pad) 20px;
+  width: min(373px, 100%);
+  padding: 32px 32px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1591,6 +1593,8 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 0.5s ease-out, filter 0.5s ease-out, transform 0.6s cubic-bezier(0.55, 0, 0.17, 1);
 }
 .flow-insight.is-in { opacity: 1; filter: none; transform: none; }
+/* Choosing another term swaps the card: it resets without a transition, then animates in again. */
+.flow-insight.is-reset, .flow-insight.is-reset .flow-insight__body { transition: none; }
 .flow-insight__head { display: flex; align-items: center; gap: 8px; }
 .flow-insight__title { flex: 1; font-weight: 700; font-size: 18px; color: var(--cream); }
 .flow-insight__actions { width: 64px; height: 16px; }
@@ -1959,7 +1963,6 @@ a { color: inherit; text-decoration: none; }
   .flow__head { padding: 0; }
   .flow__frame { padding: 24px 0 0; }
   .flow-answer { padding: 0; }
-  .flow-insight { padding: 24px; }
   .flow-answer__text { font-size: 16px; line-height: 1.8; }
   .footer { padding-top: 40px; }
 }
