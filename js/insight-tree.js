@@ -604,10 +604,13 @@
   function drawTreeGrid(cam, f, time, alpha, ripples) {
     if (alpha <= 0.01) return;
     var spacing = 16;
-    var span = (Math.max(W, H) / 2) / cam.zoom + spacing * 2;
+    // 40% past the card's half-diagonal, and centered on where the camera is looking, so the
+    // grid's edge never shows while the camera pans to each new Insight.
+    var span = 1.4 * (Math.hypot(W, H) / 2) / cam.zoom + spacing * 2;
     var n = Math.ceil(span / spacing);
-    for (var i = -n; i <= n; i++) {
-      for (var j = -n; j <= n; j++) {
+    var ci = Math.round(cam.target[0] / spacing), cj = Math.round(cam.target[1] / spacing);
+    for (var i = ci - n; i <= ci + n; i++) {
+      for (var j = cj - n; j <= cj + n; j++) {
         var wx = i * spacing, wy = j * spacing;
         var pr = project(cam, [wx, wy, 0]);
         if (!pr || pr.x < -2 || pr.y < -2 || pr.x > W + 2 || pr.y > H + 2) continue;
