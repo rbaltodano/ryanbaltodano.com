@@ -1,6 +1,7 @@
 // Library card on the home page. The app's Library cards scroll in a seamless loop over a
 // painting, and the loop follows the page: scrolling down carries the cards up, scrolling up
-// reverses them, and a quick scroll briefly speeds them along. Hovering holds them still.
+// reverses them on desktop, and a quick scroll briefly speeds them along. On mobile the cards
+// always travel up. Hovering holds them still.
 // Works, subjects, and passage counts come from the app's bundled corpus. Without JS or with
 // reduced motion the cards simply rest.
 (function () {
@@ -18,6 +19,7 @@
 
   var SPEED = 30;          // px per second at rest
   var BOOST = 0.35;        // share of the page's scroll distance added to the cards
+  var mobile = window.matchMedia('(max-width: 768px)');
   var offset = 0, direction = 1, extra = 0, held = false, visible = false;
   var lastScroll = window.scrollY, last = 0, frame = 0;
 
@@ -30,7 +32,7 @@
     var dy = window.scrollY - lastScroll;
     lastScroll = window.scrollY;
     if (!dy) return;
-    direction = dy > 0 ? 1 : -1;
+    direction = mobile.matches || dy > 0 ? 1 : -1;
     if (visible) extra += Math.abs(dy) * BOOST;
   }, { passive: true });
   root.addEventListener('pointerenter', function () { held = true; });
@@ -42,7 +44,7 @@
     // The scroll boost drains away over about half a second.
     var spend = extra * Math.min(1, dt * 6);
     extra -= spend;
-    if (!held) offset += direction * (SPEED * dt + spend);
+    if (!held) offset += (mobile.matches ? 1 : direction) * (SPEED * dt + spend);
     var p = period();
     offset = ((offset % p) + p) % p;
     track.style.transform = 'translateY(' + (-offset).toFixed(2) + 'px)';

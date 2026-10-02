@@ -294,16 +294,23 @@
         </header>
         <div class="guide-demo">
           <h3 class="guide-label">Try It</h3>
-          <p class="guide-text">Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-xmark"/></svg>Remove</span> on a waiting task to take it out of line.</p>
-          <div class="guide-demo__stage">
-  <div class="window window--canvas window--guide-tasks" data-window="tasks">
-    <div class="w-tasks">
-      <p class="w-tasks__head">Model Tasks</p>
-      <div data-task-list></div>
-    </div>
-    <div class="w-dock"><span class="w-thinking" data-task-status>Thinking</span></div>
-  </div>
-</div>
+          <div class="guide-tasks" data-guide-tasks>
+            <p class="guide-text">Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-stop-circle-fill"/></svg>Stop</span> on the running task to cancel it, tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-xmark"/></svg>Remove</span> on a waiting task to take it out of line, or press and drag a waiting task to change its place.</p>
+            <div class="mt-card" aria-live="polite">
+              <div class="mt-card__head"><p class="mt-card__title">Model Tasks</p><span class="mt-card__count" data-mt-count hidden></span></div>
+              <div class="mt-card__rows" data-mt-rows></div>
+            </div>
+            <div class="guide-tasks__add">
+              <h4 class="guide-label">Add Practice Tasks</h4>
+              <p class="guide-text">Tap these to add a few tasks to the card above. Add several so some are waiting in line.</p>
+            </div>
+            <div class="practice-list">
+      <button type="button" class="practice" data-practice="question"><svg class="ic practice__plus" aria-hidden="true"><use href="#i-plus"/></svg><span>Ask a Question</span><svg class="ic practice__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10.5l7 2.6L21 3zM21 3l-7.9 18-3-7.9L21 3z" fill="currentColor" stroke="none"/></svg></button>
+      <button type="button" class="practice" data-practice="define"><svg class="ic practice__plus" aria-hidden="true"><use href="#i-plus"/></svg><span>Define a Word</span><svg class="ic practice__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h14a2 2 0 0 1 2 2v9.5a2 2 0 0 1-2 2h-6.5L7 21v-4H5a2 2 0 0 1-2-2V5.5a2 2 0 0 1 2-2z" fill="currentColor" stroke="none"/><path d="M7.5 8.5h9M7.5 12h6" stroke="var(--canvas-secondary)"/></svg></button>
+      <button type="button" class="practice" data-practice="midpoint"><svg class="ic practice__plus" aria-hidden="true"><use href="#i-plus"/></svg><span>Create a Midpoint</span><svg class="ic practice__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-graph-2d"/></svg></button>
+      <button type="button" class="practice" data-practice="tree"><svg class="ic practice__plus" aria-hidden="true"><use href="#i-plus"/></svg><span>Update the Insight Tree</span><svg class="ic practice__icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-point-3-connected-trianglepath-dotted"/></svg></button>
+            </div>
+          </div>
         </div>
         <div class="guide-paras">
           <div><h3 class="guide-label">What it does</h3><p class="guide-text">Model Tasks lists what Angrove has finished, what it’s working on now, and what’s waiting.</p></div>
@@ -386,5 +393,6 @@
 <script src="js/app-windows.js"></script>
 <script src="js/insight-tree.js"></script>
 <script src="js/guide.js"></script>
+<script src="js/guide-tasks.js"></script>
 </body>
 </html>

@@ -27,6 +27,7 @@ site/
   js/site.js          Mobile menu, smooth scrolling, headline reveal
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights
   js/guide.js         Guide: the topic list marks the topic being read
+  js/guide-tasks.js   Guide: the Model Tasks practice queue
   js/map-flow.js       Home: the pinned photo panel that scrolls horizontally from answer to Insight to tree, which turns into Study in place
   js/privacy-demo.js  Privacy: a question answered in airplane mode, with what did and didn't happen
   js/page-demos.js    Local-only internal-page interactions
