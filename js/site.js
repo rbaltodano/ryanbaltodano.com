@@ -9,7 +9,7 @@
     toggle.addEventListener('click', function () {
       var open = nav.classList.toggle('is-open');
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.textContent = open ? 'Close' : 'Menu';
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     });
   }
 
