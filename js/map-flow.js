@@ -13,29 +13,42 @@
   var frames = Array.prototype.slice.call(track.children);
   var text = flow.querySelector('[data-flow-text]');
   var insight = flow.querySelector('[data-flow-insight]');
-  var generating = flow.querySelector('[data-flow-generating]');
   var definitionTimer;
   var scrollAnimation;
   var terms = flow.querySelectorAll('[data-flow-term]');
+  var menuCurve = getComputedStyle(flow).getPropertyValue('--ease-menu').match(/[\d.]+/g).map(Number);
 
   // Solve the x coordinate of cubic-bezier(0.55, 0, 0.17, 1) to get its y progress.
   function scrollEase(progress) {
     var low = 0, high = 1, t;
     for (var i = 0; i < 20; i++) {
       t = (low + high) / 2;
-      var x = 3 * (1 - t) * (1 - t) * t * 0.55 + 3 * (1 - t) * t * t * 0.17 + t * t * t;
+      var x = 3 * (1 - t) * (1 - t) * t * menuCurve[0] + 3 * (1 - t) * t * t * menuCurve[2] + t * t * t;
       if (x < progress) low = t; else high = t;
     }
-    return 3 * (1 - t) * t * t + t * t * t;
+    return 3 * (1 - t) * (1 - t) * t * menuCurve[1] + 3 * (1 - t) * t * t * menuCurve[3] + t * t * t;
   }
   function scrollToInsight(destination) {
     cancelAnimationFrame(scrollAnimation);
     var from = window.scrollY;
     if (reduceMotion) { window.scrollTo({ top: destination, behavior: 'instant' }); return; }
+    var top = parseFloat(getComputedStyle(sticky).top) || 0;
+    var origin = from + flow.getBoundingClientRect().top - top;
+    var travel = flow.offsetHeight - sticky.offsetHeight;
+    var fromPhase = position(Math.min(Math.max((from - origin) / travel, 0), 1));
     var start = performance.now();
     function frame(now) {
-      var progress = Math.min((now - start) / 1000, 1);
-      window.scrollTo({ top: progress === 1 ? destination : from + (destination - from) * scrollEase(progress), behavior: 'instant' });
+      var progress = Math.min((now - start) / 2000, 1);
+      // Animate the visible panel with the menu curve, then invert the scroll mapping.
+      // This avoids applying the manual-scroll pauses and easing a second time.
+      var phase = fromPhase + (1 - fromPhase) * scrollEase(progress);
+      var low = 0, high = 1;
+      for (var i = 0; i < 24; i++) {
+        var p = (low + high) / 2;
+        if (position(p) < phase) low = p; else high = p;
+      }
+      window.scrollTo({ top: progress === 1 ? destination : origin + travel * (low + high) / 2, behavior: 'instant' });
+      update();
       if (progress < 1) scrollAnimation = requestAnimationFrame(frame);
     }
     scrollAnimation = requestAnimationFrame(frame);
@@ -112,14 +125,12 @@
       clearTimeout(definitionTimer);
       cancelAnimationFrame(scrollAnimation);
       var definition = definitions[term.dataset.flowTerm];
-      generating.hidden = false;
       // Restart the gradient when another term is chosen during generation.
       terms.forEach(function (item) { item.classList.remove('is-generating'); });
       void term.offsetWidth;
       term.classList.add('is-generating');
       text.setAttribute('aria-busy', 'true');
       definitionTimer = setTimeout(function () {
-        generating.hidden = true;
         term.classList.remove('is-generating');
         text.setAttribute('aria-busy', 'false');
         insight.querySelector('.flow-insight__title').textContent = definition[0];
