@@ -20,7 +20,6 @@
     <nav class="nav__links" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="features.html">Features</a>
-      <a href="model.html">Model Details</a>
       <a href="privacy.html" aria-current="page">Privacy</a>
       <a href="about.html">About</a>
     </nav>
@@ -67,24 +66,89 @@
     </div>
   </section>
 
-  <section class="section">
+  <!-- Each claim links to the public source that makes it true. -->
+  <section class="section" id="source">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Check it yourself</p>
+        <h2 class="display display--tight">Don't Take Our <em>Word for It</em></h2>
+        <p class="para para--16">The app's source code is public. Each of these points to the file that makes the claim true.</p>
+      </div>
+      <div class="proofs">
+        <a class="proof" href="https://github.com/rbaltodano/Aquinas-iOS/blob/main/Angrove-iOS/Services/LiteRTModelInstaller.swift">
+          <p class="proof__claim">The only network code fetches the model itself</p>
+          <p>It downloads the model file and checks its SHA-256 fingerprint before using it. Nothing you write is part of that request.</p>
+          <span class="proof__file">Services/LiteRTModelInstaller.swift <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="proof" href="https://github.com/rbaltodano/Aquinas-iOS/blob/main/Angrove-iOS/Services/LiteRTAngroveRuntime.swift">
+          <p class="proof__claim">Answers come from the runtime on your phone</p>
+          <p>The model loads from the phone's own storage and runs on its GPU through Google's LiteRT-LM runtime.</p>
+          <span class="proof__file">Services/LiteRTAngroveRuntime.swift <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="proof" href="https://github.com/rbaltodano/Aquinas-iOS/tree/main/Vendor">
+          <p class="proof__claim">No analytics, ads, or account code</p>
+          <p>The only third-party code in the app is that model runtime. There is no tracking or sign-in library to send anything anywhere.</p>
+          <span class="proof__file">Vendor/ <span aria-hidden="true">↗</span></span>
+        </a>
+      </div>
+      <p class="proofs__more">Or read all of it: <a href="https://github.com/rbaltodano/Aquinas-iOS">the Angrove iOS repository on GitHub</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
     <div class="container">
       <div class="private">
-        <img class="private__bg" src="assets/home/hardware-bg.jpg" alt="">
+        <img class="private__bg" src="assets/scenery/vineyard-path.jpg" alt="">
         <div class="private__copy">
           <p class="eyebrow eyebrow--light">Sovereignty</p>
           <h2 class="display display--tight">No One Standing <em>in Between.</em></h2>
           <p>There's no company between you and your own record of thought. Your library lives with you and stays under your control. A private question should be allowed to remain private.</p>
         </div>
-        <div class="private__demo" aria-hidden="true">
-          <div class="bubble private__q">Is it wrong that I'm not sure what I believe anymore?</div>
-          <div class="private__status"><span class="private__dot"></span>Airplane mode · answering on-device</div>
+        <!-- Live (js/privacy-demo.js): a question asked in airplane mode, answered on the device,
+             with what did and didn't happen marked as it goes. -->
+        <div class="private__demo" aria-hidden="true" data-offline-demo>
+          <div class="private__status"><svg viewBox="0 0 16 16"><path d="M8 1.5c.6 0 1 .5 1 1.1V6l5 2.8v1.6L9 8.8v3l1.5 1.1v1.3L8 13.5l-2.5.7v-1.3L7 11.8v-3l-5 1.6V8.8L7 6V2.6c0-.6.4-1.1 1-1.1z" fill="currentColor"/></svg><span data-od-status>Airplane mode · answering on-device</span><span class="private__dot"></span></div>
+          <div class="bubble private__q" data-od-question>Is it wrong that I'm not sure what I believe anymore?</div>
+          <p class="private__a" data-od-answer>Not in itself. Doubt is often where honest thinking begins; Aquinas opened every question by stating the strongest objections first. It may help to name what, exactly, you're no longer sure of.</p>
+          <ul class="private__chips">
+            <li data-od-chip>0 network requests</li>
+            <li data-od-chip>Answered on this iPhone</li>
+            <li data-od-chip>Stored only on this device</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section section--flush-top">
+  <!-- Formerly the Model Details page. -->
+  <section class="section section--flush-top" id="model">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">The model</p>
+        <h2 class="display display--tight">What Runs on <em>Your Phone</em></h2>
+        <p class="para para--16">Everything Angrove does happens on the iPhone in your hand. This is what that involves today.</p>
+      </div>
+      <dl class="spec">
+        <dt>Language model</dt>
+        <dd>Gemma 4 E4B, instruction-tuned, from the LiteRT Community package. It is not fine-tuned in the current build.</dd>
+        <dt>Where it runs</dt>
+        <dd>On your iPhone's GPU, using Google's LiteRT-LM runtime. No server is involved in answering.</dd>
+        <dt>Size</dt>
+        <dd>The model package is about 3.7 GB.</dd>
+        <dt>Memory of a conversation</dt>
+        <dd>About 4,000 tokens of working context. <code>/compact</code> summarizes older turns when a conversation runs long.</dd>
+        <dt>Search and the Insight Tree</dt>
+        <dd>A small on-device embedding model (MiniLM) that measures how close two ideas are in meaning.</dd>
+        <dt>Tested on</dt>
+        <dd>iPhone 17, with 8 GB of memory.</dd>
+        <dt>Network</dt>
+        <dd>None. The app makes no network requests to answer a question or build your Insight Tree.</dd>
+      </dl>
+      <p class="note" style="margin-top: 24px;"><strong>Still changing.</strong> The launch model and final device requirements will be set after testing on iPhone, so these details may change before release. <a href="waitlist.html">Launch status</a></p>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="prose">
       <h2>A Few Honest Details</h2>
       <p><strong>Backups.</strong> Angrove stores its data in the app's own storage on your phone, like any other app. If you use iCloud Backup, iOS may include that data in your device backup, the same way it does for your other apps.</p>
@@ -97,7 +161,7 @@
   <section class="section">
     <div class="container">
       <div class="cta">
-        <img class="cta__bg" src="assets/home/workspace-library.jpg" alt="">
+        <img class="cta__bg" src="assets/scenery/vineyard-rows.jpg" alt="">
         <div class="cta__copy">
           <p class="eyebrow eyebrow--light">Coming to iPhone</p>
           <h2>Bring the Question You've Been <em>Carrying.</em></h2>
@@ -123,7 +187,6 @@
     <nav class="nav__links" aria-label="Footer">
       <a href="index.html">Home</a>
       <a href="features.html">Features</a>
-      <a href="model.html">Model Details</a>
       <a href="privacy.html">Privacy</a>
       <a href="about.html">About</a>
       <a href="blog/index.html">Blog</a>
@@ -134,5 +197,6 @@
 </footer>
 
 <script src="js/site.js"></script>
+<script src="js/privacy-demo.js"></script>
 </body>
 </html>

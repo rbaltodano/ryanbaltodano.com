@@ -17,15 +17,16 @@ site/
   features.html       How to use the app: Ask, Branch, Keep, Map (Insight Tree), Return, commands, habits
   how-it-works.html   Redirect to features.html
   insight-tree.html   Redirect to features.html#map
-  model.html          On-device model, model tasks, Library search and its 37 works, the standard, limits
-  privacy.html        What stays on the phone, interactive local-path illustration
+  model.html          Redirect to privacy.html#model (the model details now live on Privacy)
+  privacy.html        What stays on the phone, claims linked to the public source, live offline demo, model details (#model)
   about.html          Founder note, the four principles, public repositories
-  waitlist.html       Launch status (email signup is not open yet)
+  waitlist.html       Launch status: development milestones (email signup is not open yet)
   blog/index.html     Empty state until the first posts
   css/site.css        All tokens and components
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights
+  js/privacy-demo.js  Privacy: a question answered in airplane mode, with what did and didn't happen
   js/page-demos.js    Local-only internal-page interactions
   js/insight-tree.js  Home page Insight Tree animation (port of the app's canvas and Study mode)
   js/grounding-demo.js  Home Library card: sources spring in, then morph into scrolling Library cards
@@ -41,8 +42,8 @@ come from the bundled `passages.json` corpus; the explanatory connections are ed
 
 - Add a real email signup service before restoring any waitlist form or promise to email visitors.
 - Write the first blog posts.
-- Keep `model.html` in step with the app's model. The current main build uses a fine-tuned
-  Gemma 4 E2B package; a Gemma 4 E4B package is being evaluated but has not been promoted.
+- Keep the model details on `privacy.html#model` in step with the app's model. As of 2026-10-02 the
+  main build uses the Gemma 4 E4B LiteRT Community package (not fine-tuned) on LiteRT-LM.
 
 ## Source docs
 

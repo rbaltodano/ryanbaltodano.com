@@ -985,6 +985,73 @@ a { color: inherit; text-decoration: none; }
   animation: pulse 2s ease-in-out infinite;
 }
 @keyframes pulse { 50% { opacity: 0.35; } }
+.private__status svg { width: 14px; height: 14px; color: var(--dark-green-text); }
+/* The answer and what did and didn't happen, written on the dark panel. */
+.private__a {
+  max-width: 380px;
+  padding: 20px 24px;
+  border-radius: 24px;
+  background: rgba(18, 15, 12, 0.72);
+  border: 1px solid rgba(255, 250, 240, 0.12);
+  backdrop-filter: blur(12px);
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(255, 250, 240, 0.86);
+}
+.private__chips { list-style: none; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; max-width: 420px; }
+.private__chips li {
+  padding: 8px 14px;
+  border-radius: 48px;
+  background: rgba(183, 174, 120, 0.16);
+  border: 1px solid rgba(183, 174, 120, 0.35);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--dark-green-text);
+}
+/* Script-driven states (js/privacy-demo.js). */
+.is-live .od-word { display: inline-block; opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.5s ease-out, filter 0.5s ease-out, translate 0.5s ease-out; }
+.is-live .od-word.is-in { opacity: 1; filter: none; translate: none; }
+.is-live .private__q, .is-live .private__a { transition: opacity 0.4s ease, filter 0.4s ease, translate 0.4s ease; }
+.is-live .private__chips li { transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1); }
+.is-live .od-out { opacity: 0; filter: blur(3px); translate: 0 10px; }
+.is-live .private__chips li.od-out { filter: none; translate: none; transform: translateY(12px) scale(0.88); }
+
+/* Privacy: claims linked to the public source. */
+.proofs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.proof {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 28px;
+  background: var(--canvas-secondary);
+  border: 1px solid transparent;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--paragraph);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.proof:hover { border-color: rgba(134, 128, 62, 0.35); transform: translateY(-2px); }
+.proof__claim { font-family: var(--serif); font-size: 20px; line-height: 1.35; color: var(--heading); }
+.proof__file { margin-top: auto; padding-top: 8px; font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; color: var(--light-green); }
+.proofs__more { margin-top: 24px; font-size: 15px; color: var(--paragraph); }
+.proofs__more a { color: var(--light-green); font-weight: 700; border-bottom: 1px solid rgba(134, 128, 62, 0.4); }
+
+/* Launch Status: the milestone list. */
+.milestones { list-style: none; max-width: 880px; border-radius: 28px; background: var(--canvas-secondary); padding: 8px 32px; }
+.milestone { padding: 22px 0; display: flex; align-items: flex-start; gap: 18px; border-bottom: 1px solid var(--border); }
+.milestone:last-child { border-bottom: 0; }
+.milestone > div { flex: 1; min-width: 0; }
+.milestone__title { font-weight: 700; font-size: 16px; line-height: 1.4; color: var(--heading); }
+.milestone__body { margin-top: 2px; font-size: 15px; line-height: 1.6; color: var(--paragraph); }
+.milestone__mark { position: relative; flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; border: 2px solid rgba(74, 50, 28, 0.25); }
+.milestone--done .milestone__mark { background: var(--light-green); border-color: var(--light-green); }
+.milestone--done .milestone__mark::after { content: ""; position: absolute; left: 6px; top: 2.5px; width: 5px; height: 10px; border: solid var(--cream); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.milestone--active .milestone__mark { border-color: var(--light-green); background: conic-gradient(var(--light-green) 0 50%, transparent 0); }
+.milestone--todo .milestone__title { color: var(--paragraph); }
+.milestone__state { flex-shrink: 0; margin-top: 2px; padding: 4px 12px; border-radius: 48px; font-weight: 700; font-size: 12px; line-height: 1.5; color: var(--paragraph-dim); background: var(--canvas); }
+.milestone--done .milestone__state { color: var(--light-green); }
+.milestone--active .milestone__state { color: var(--cream); background: var(--light-green); }
 
 /* ---------- Who it's for ---------- */
 
@@ -1302,6 +1369,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--paragraph);
 }
 .note strong { color: var(--heading); }
+.note a { color: var(--light-green); font-weight: 700; border-bottom: 1px solid rgba(134, 128, 62, 0.4); }
 
 /* Two-column checklist (Privacy) */
 .ledger { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -1408,7 +1476,7 @@ a { color: inherit; text-decoration: none; }
   .nav.is-open { background: var(--canvas); box-shadow: 0 12px 24px -12px rgba(34, 15, 1, 0.2); }
   .nav__inner > .btn-pill { margin-left: auto; }
   .row, .row--flip { flex-direction: column; align-items: stretch; }
-  .steps, .cards--3, .ledger { grid-template-columns: 1fr; }
+  .steps, .cards--3, .ledger, .proofs { grid-template-columns: 1fr; }
   .page-hero { padding-top: 160px; }
   .hero { padding-top: 180px; }
   .hero__inner, .why, .split-head, .library, .private { flex-direction: column; align-items: stretch; }
@@ -1445,6 +1513,9 @@ a { color: inherit; text-decoration: none; }
   .nav .btn-pill { padding: 14px 20px; }
   .logo { font-size: 28px; }
   .tree-card { height: 340px; }
+  .milestones { padding: 4px 20px; }
+  .milestone { flex-wrap: wrap; gap: 12px; }
+  .milestone__state { margin-left: 34px; }
   .tree-step + .tree-step { margin-top: 40px; }
   :root { --section-y: 72px; }
   .why .scene { display: none; }
