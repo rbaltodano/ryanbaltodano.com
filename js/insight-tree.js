@@ -30,6 +30,15 @@
   var isMid = mode === 'midpoint';
   // data-mode="add": the tree is already there, and one more Insight joins it.
   var isAdd = mode === 'add';
+  // The Guide's Midpoint example (data-mid-guide): the app's UserGuideMidpointExample, with its
+  // Virtue tree, Select / Midpoint / Reset buttons, and an Example Result under the canvas.
+  var guide = isMid && !!root.closest('[data-mid-guide]');
+  var GUIDE_DEFS = {
+    Justice: 'The constant will to give each person what is owed.',
+    Mercy: 'Compassion for another\u2019s distress that moves us to relieve it, giving more than is owed.',
+    Prudence: 'Practical wisdom that judges what the good requires here and now.',
+    Courage: 'Firmness of mind in facing danger or hardship for the sake of the good.'
+  };
   var scrollStudy = root.hasAttribute('data-scroll-study');
   var studyProgress = null;
   // Inside the Features journey a card plays when its scene is shown, not when it scrolls into view.
@@ -168,14 +177,16 @@
   }
 
   var node = {
-    el: el('it-node', scrollStudy ? 'assets/home/icon-node-dark.svg' : 'assets/home/icon-node.svg', isMid ? 'Moral Theology' : 'Greek Philosophy'),
+    el: el('it-node', scrollStudy ? 'assets/home/icon-node-dark.svg' : 'assets/home/icon-node.svg', guide ? 'Virtue' : isMid ? 'Moral Theology' : 'Greek Philosophy'),
     vis: new Spring(0)
   };
 
   // Evenly spaced from π/8 (baseChipAngle), with the odd one out level and its neighbours at
   // the top and bottom of the ±45° band. Like the app, each Insight appears in its final place.
   // The Midpoint tree stays flat, so the selection line meets its chips exactly.
-  var insights = (isMid ? [
+  var insights = (guide ? ['Justice', 'Mercy', 'Prudence', 'Courage'].map(function (title, i) {
+    return { title: title, angle: Math.PI / 8 + i * Math.PI / 2, elev: 0 };
+  }) : isMid ? [
     { title: 'Natural Law', angle: Math.PI / 8 + 2 * Math.PI / 3, elev: 0 },
     { title: 'Conscience', angle: Math.PI / 8, elev: 0 },
     { title: 'Prudence', angle: Math.PI / 8 + 4 * Math.PI / 3, elev: 0 }
@@ -433,6 +444,8 @@
     var pctA = q('a'), pctB = q('b'), controls = q('controls'), hint = q('hint');
     var result = q('result'), resetBtn = q('reset'), percentCard = q('percent'), status = q('status');
     var A = insights[0], B = insights[1];   // weights are [1 - t, t] along A → B, as in the app
+    var picked = [];                        // Guide: the Insights chosen with Select, in order
+    var selecting = false;
     var ICON = 'assets/home/icon-insight.svg';
 
     // MidpointHandle: an 18 pt circle with a bubble icon bobbing above it once a second.
@@ -440,7 +453,7 @@
     handle.type = 'button';
     handle.className = 'it-handle';
     handle.setAttribute('role', 'slider');
-    handle.setAttribute('aria-label', 'Midpoint weight toward Conscience');
+    handle.setAttribute('aria-label', 'Midpoint weight toward ' + B.title);
     handle.setAttribute('aria-valuemin', '0');
     handle.setAttribute('aria-valuemax', '100');
     handle.innerHTML = '<img src="' + ICON + '" alt=""><i></i>';
@@ -462,6 +475,7 @@
       var pct = Math.round(t * 100);
       pctA.textContent = (100 - pct) + '%';
       pctB.textContent = pct + '%';
+      if (guide) showExample();
       handle.setAttribute('aria-valuenow', pct);
     }
     mid.world = function () {
@@ -469,6 +483,7 @@
       return [lerp(a[0], b[0], t), lerp(a[1], b[1], t), 0];
     };
     function sync() {
+      if (guide) return syncGuide();
       var active = mid.phase === 'active';
       // The app's dock: the percent card and Center / Place while choosing, a Thinking status
       // while the placed Insight generates, then the Insight's own card.
@@ -486,6 +501,13 @@
     }
 
     function enter() {
+      if (guide) {
+        A = mid.A = picked[0]; B = mid.B = picked[1];
+        q('name-a').textContent = A.title; q('name-b').textContent = B.title;
+        handle.setAttribute('aria-label', 'Midpoint weight toward ' + B.title);
+        dock(null);
+        setT(0.5, false);
+      }
       mid.phase = 'active';
       select(true);
       setFade(1);
@@ -577,8 +599,99 @@
     q('place').addEventListener('click', place);
     resetBtn.addEventListener('click', reset);
 
+    // ---------- Guide example ----------
+
+    var docked = q('docked');
+    function dock(ins) {
+      var same = ins && docked.dataset.title === ins.title && !docked.hidden;
+      docked.hidden = !ins || same;
+      docked.dataset.title = ins && !same ? ins.title : '';
+      if (ins && !same) {
+        q('docked-title').textContent = ins.title;
+        q('docked-body').textContent = GUIDE_DEFS[ins.title];
+        // Replay the entrance for each new card.
+        docked.style.animation = 'none'; void docked.offsetWidth; docked.style.animation = '';
+      }
+    }
+    function showExample() {
+      if (mid.phase !== 'active') return;
+      var names = [A.title, B.title], r;
+      if (names.indexOf('Justice') >= 0 && names.indexOf('Mercy') >= 0) {
+        var justice = A.title === 'Justice' ? 1 - mid.t.target : mid.t.target;
+        r = justice >= 0.6 ? ['Restorative Justice', 'Giving what is owed in a way that aims to heal the wrong and restore the offender, not only to punish.']
+          : justice <= 0.4 ? ['Forgiveness', 'Freely releasing a debt one could justly claim, while still naming the wrong as a wrong.']
+          : ['Equity', 'Applying a just rule with mercy when its strict letter would defeat its purpose in a particular case.'];
+      } else {
+        r = ['A new concept', 'In the app, Angrove proposes a concept that sits between ' + names.join(', ') + ', leaning toward the ideas you weight most.'];
+      }
+      var title = q('example-title');
+      if (title.textContent !== r[0]) {
+        title.textContent = r[0];
+        q('example-body').textContent = r[1];
+        var card = q('example');
+        card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
+      }
+    }
+    function label(button, text) { button.querySelector('span').textContent = text; }
+    function syncGuide() {
+      var active = mid.phase === 'active';
+      percentCard.hidden = !active;
+      q('example').hidden = !active;
+      handle.disabled = !active;
+      var sel = q('select'), toggle = q('toggle');
+      label(sel, selecting ? 'Done' : 'Select');
+      sel.disabled = active;
+      label(toggle, active ? 'Back' : 'Midpoint');
+      toggle.disabled = !active && picked.length < 2;
+      insights.forEach(function (ins) { ins.el.classList.toggle('is-selected', picked.indexOf(ins) >= 0); });
+    }
+    function exit() {
+      mid.phase = 'idle';
+      setFade(0);
+      mid.shown.to(0, 0, performance.now());
+      panTo(0, 0);
+      q('example-title').textContent = '';
+      sync();
+    }
+    if (guide) {
+      q('select').addEventListener('click', function () {
+        if (mid.phase === 'active') return;
+        selecting = !selecting;
+        dock(null);
+        sync();
+      });
+      q('toggle').addEventListener('click', function () {
+        if (mid.phase === 'active') exit();
+        else if (picked.length >= 2) { selecting = false; enter(); }
+      });
+      q('clear').addEventListener('click', function () {
+        selecting = false; picked = [];
+        dock(null);
+        exit();
+      });
+      // Tapping an Insight selects it while selecting, and otherwise opens its docked card.
+      root.addEventListener('click', function (e) {
+        if (mid.phase === 'active' || state.step < 2) return;
+        if (e.target.closest && e.target.closest('button, .mid-cards')) return;
+        var hit = insights.filter(function (ins) {
+          var r = ins.el.getBoundingClientRect();
+          return e.clientX >= r.left - 6 && e.clientX <= r.right + 6 && e.clientY >= r.top - 6 && e.clientY <= r.bottom + 6;
+        })[0];
+        if (!hit) { dock(null); return; }
+        if (selecting) {
+          var at = picked.indexOf(hit);
+          if (at >= 0) picked.splice(at, 1);
+          else { picked.push(hit); if (picked.length > 2) picked.shift(); }   // this example balances two
+          sync();
+        } else {
+          dock(hit);
+        }
+      });
+    }
+
     // After the tree has grown: select one Insight, then the other, then enter Midpoint mode.
     mid.begin = function () {
+      if (guide) return;
       var t = reduceMotion ? 0 : state.growMs + 500;
       later(t, function () { A.el.classList.add('is-selected'); });
       later(t + (reduceMotion ? 0 : 450), function () { B.el.classList.add('is-selected'); });
@@ -604,7 +717,7 @@
   function frame() {
     var ui = clamp(W / 700, 0.7, 1);
     // Midpoint: the docked cards cover the foot of the canvas, so the tree uses the rest.
-    var treeH = isMid ? H - (W < 420 ? 226 : 200) : H;
+    var treeH = isMid && !guide ? H - (W < 420 ? 226 : 200) : H;
     var treeZoom = clamp(Math.min(W / 2 - 70 * ui, treeH / 2 - 50 * ui) / BOND, 0.35, 1.1);
     // StudyFraming scaled to this card: the 300 pt slot, node 40% down, ring 80% down.
     var slot = Math.min(W, H) * 0.6;

@@ -21,6 +21,7 @@
   <symbol id="i-brain-head-profile" viewBox="0 0 24 24"><path d="M9 21v-3.2c-2.3-1.4-3.8-3.8-3.8-6.6A7.3 7.3 0 0 1 12.5 4c3.8 0 6.6 2.7 6.9 6.2l1.8 3.6-1.9.8V17a2 2 0 0 1-2 2h-1.8v2"/><path d="M10.5 9.2a2 2 0 0 1 3.8-.4 1.9 1.9 0 0 1 .4 3.6M12 12.5v2"/></symbol>
   <symbol id="i-circle-dashed" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" stroke-dasharray="2.6 2.4"/></symbol>
   <symbol id="i-graph-2d" viewBox="0 0 24 24"><path d="M4 3.5v16.5h16.5"/><path d="M7 16c2.5 0 3.3-9 6-9s3 5 6.5 5"/></symbol>
+  <symbol id="i-arrow-counterclockwise" viewBox="0 0 24 24"><path d="M4.6 13.5A7.5 7.5 0 1 0 6.8 6.6"/><path d="M4.5 3.5v4.4h4.4"/></symbol>
   <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></symbol>
   <symbol id="i-graph-3d" viewBox="0 0 24 24"><path d="M12 13.5V3.5M12 13.5l8.5 5M12 13.5l-8.5 5"/><path d="M9.5 6l2.5-2.5L14.5 6M18 20.5l2.5-2-1-3M3.5 15.5l-1 3 2.5 2" /></symbol>
   <symbol id="i-xmark" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
@@ -188,31 +189,33 @@
         </header>
         <div class="guide-demo">
           <h3 class="guide-label">Try It</h3>
-          <p class="guide-text">Two Insights are selected here. Drag on the tree, or use the percentages, to shift the balance, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-arrow-down"/></svg>Place</span>.</p>
-          <div class="guide-demo__stage guide-demo__stage--dock" data-midpoint-panel>
-<div class="tree-card tree-card--mid window" data-insight-tree data-mode="midpoint" aria-label="Midpoint mode in the Insight Tree: a handle on the line between the Insights Natural Law and Conscience. Drag it to set the balance.">
+          <p class="guide-text">Tap an Insight to read it. Tap Select, choose two or more Insights, then tap Midpoint. Drag on the tree, or use the percentages, to shift the balance.</p>
+          <div class="guide-demo__stage guide-mid" data-midpoint-panel data-mid-guide>
+<div class="tree-card tree-card--guide" data-insight-tree data-mode="midpoint" aria-label="An Insight Tree for the Node Concept Virtue, with the Insights Justice, Mercy, Prudence, and Courage. Tap Select, choose two Insights, then tap Midpoint.">
   <canvas class="tree-card__canvas"></canvas>
   <div class="tree-card__layer"></div>
   <div class="mid-cards">
-    <div class="mid-card" data-mid-percent hidden aria-live="polite">
-      <p class="mid-card__heading">Select Midpoint</p>
-    <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Natural Law</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="a:-1" aria-label="Less Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-a>50%</b><button type="button" data-mid-step="a:1" aria-label="More Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
-    <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Conscience</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="b:-1" aria-label="Less Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-b>50%</b><button type="button" data-mid-step="b:1" aria-label="More Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
-    </div>
-    <div class="mid-card mid-card--insight" data-mid-result hidden>
-      <p class="mid-card__title"><img src="assets/home/icon-insight.svg" alt=""><span>Synderesis</span><img class="mid-card__actions" src="assets/home/response-controls.svg" alt=""></p>
-      <p class="mid-card__body">The innate grasp of the first principles of practical reason, which conscience then applies to particular acts.</p>
+    <div class="mid-card mid-card--insight" data-mid-docked hidden>
+      <p class="mid-card__title"><img src="assets/home/icon-insight.svg" alt=""><span data-mid-docked-title></span><img class="mid-card__actions" src="assets/home/response-controls.svg" alt=""></p>
+      <p class="mid-card__body" data-mid-docked-body></p>
     </div>
   </div>
 </div>
-<div class="mid-dock">
-  <span class="mid-dock__actions" data-mid-controls hidden>
-    <button type="button" data-mid-center><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.5v7M12.5 3.5v7M4 7h6M7 5v4"/></svg>Center</button>
-    <button type="button" data-mid-place><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg>Place</button>
-  </span>
-  <span class="mid-dock__status" data-mid-status>Idle</span>
+<div class="mid-card mid-card--guide" data-mid-percent hidden aria-live="polite">
+  <p class="mid-card__heading">Select Midpoint</p>
+  <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name" data-mid-name-a></span><i></i><span class="mid-stepper"><button type="button" data-mid-step="a:-1" aria-label="Less"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-a>50%</b><button type="button" data-mid-step="a:1" aria-label="More"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
+  <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name" data-mid-name-b></span><i></i><span class="mid-stepper"><button type="button" data-mid-step="b:-1" aria-label="Less"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-b>50%</b><button type="button" data-mid-step="b:1" aria-label="More"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
 </div>
-<p class="window-hint"><span data-mid-hint>Two Insights are selected, then Midpoint begins.</span> <button type="button" data-mid-reset hidden>Try again</button></p>
+<div class="guide-controls">
+  <button type="button" class="guide-control" data-mid-select><svg class="ic" aria-hidden="true"><use href="#i-circle-dashed"/></svg><span>Select</span></button>
+  <button type="button" class="guide-control" data-mid-toggle disabled><svg class="ic" aria-hidden="true"><use href="#i-graph-2d"/></svg><span>Midpoint</span></button>
+  <button type="button" class="guide-control" data-mid-clear><svg class="ic" aria-hidden="true"><use href="#i-arrow-counterclockwise"/></svg><span>Reset</span></button>
+</div>
+<div class="guide-result" data-mid-example hidden aria-live="polite">
+  <p class="guide-result__eyebrow">EXAMPLE RESULT</p>
+  <p class="guide-label" data-mid-example-title></p>
+  <p class="guide-text" data-mid-example-body></p>
+</div>
 </div>
         </div>
         <div class="guide-paras">
