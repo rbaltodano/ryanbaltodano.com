@@ -1713,15 +1713,18 @@ a { color: inherit; text-decoration: none; }
    ModelTasksCard (355 pt wide, 32 padding, 36 corners, hairline), then Add Practice Tasks and
    four 48 pt capsules in light green, 12 apart. */
 .guide-tasks { display: flex; flex-direction: column; gap: 24px; }
-/* The card sits on a painting, framed so the corners nest: 36 (the card) + 48 (the padding). */
+/* The card sits on a painting. The frame's height is fixed so the card can grow downward
+   without moving anything below it. On phones the corners nest: 36 (the card) + 24 (padding). */
 .mt-frame {
   --mt-pad: 48px;
   position: relative;
+  height: 450px;
   padding: var(--mt-pad);
   display: flex;
+  align-items: flex-start;
   justify-content: center;
   overflow: hidden;
-  border-radius: calc(36px + var(--mt-pad));
+  border-radius: 48px;
   isolation: isolate;
 }
 .mt-frame__bg { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; }
@@ -1966,7 +1969,7 @@ a { color: inherit; text-decoration: none; }
   .guide-topic { gap: 40px; }
   .window--guide { height: 520px; }
   .tree-card--guide { height: 520px; }
-  .mt-frame { --mt-pad: 24px; }
+  .mt-frame { --mt-pad: 24px; border-radius: calc(36px + var(--mt-pad)); }
   .guide-controls { gap: 8px; }
   .guide-control { font-size: 15px; }
   .scene { zoom: 0.7; }
