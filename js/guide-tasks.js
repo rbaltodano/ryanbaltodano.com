@@ -8,6 +8,7 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rowsEl = root.querySelector('[data-mt-rows]');
   var countEl = root.querySelector('[data-mt-count]');
+  var card = root.querySelector('.mt-card');
   var NS = 'http://www.w3.org/2000/svg';
   var WORDS = ['prudence', 'grace', 'virtue', 'charity', 'habit'];
   var EXIT = 400, STAGGER = 150, CLEAR_AFTER = 700;
@@ -153,7 +154,7 @@
       var index = Array.prototype.indexOf.call(rowsEl.children, row);
       row.classList.add('is-leaving');
       row.style.transitionDelay = reduceMotion ? '0s' : (Math.max(0, index) * STAGGER) / 1000 + 's';
-      setTimeout(function () { row.remove(); }, reduceMotion ? 0 : EXIT + index * STAGGER);
+      setTimeout(function () { row.remove(); fitCard(); }, reduceMotion ? 0 : EXIT + index * STAGGER);
     });
 
     tasks.forEach(function (t, i) {
@@ -178,6 +179,7 @@
 
     countEl.hidden = !tasks.length;
     countEl.textContent = completed.length + ' of ' + tasks.length;
+    fitCard();
 
     if (reduceMotion) return;
     ordered.forEach(function (row) {
@@ -193,6 +195,18 @@
       });
     });
   }
+
+  // The card animates between its old and new heights as rows come and go.
+  function fitCard() {
+    var from = card.getBoundingClientRect().height;
+    card.style.height = 'auto';
+    var to = card.getBoundingClientRect().height;
+    card.style.height = from + 'px';
+    void card.offsetHeight;
+    card.style.height = to + 'px';
+  }
+  window.addEventListener('resize', fitCard);
+  if (document.fonts) document.fonts.ready.then(fitCard);
 
   // ---------- Drag to reorder (waiting tasks only) ----------
 
