@@ -201,6 +201,7 @@
   ]).map(function (d, i) {
     return {
       title: d.title,
+      bond: BOND,
       order: i,
       finalAngle: d.angle,
       finalElev: d.elev,
@@ -214,6 +215,19 @@
     return norm([Math.cos(angle), Math.sin(angle), Math.tan(elev)]);
   }
   var studyDirs = sphereSpread(insights.map(function (i) { return treeDirection(i.finalAngle, i.finalElev); }));
+
+  // The home journey adds whichever term was chosen in the answer. Natural philosophy
+  // sits farther from Greek Philosophy, with its longer connector retained in Study.
+  if (isAdd && scrollStudy) {
+    root.addEventListener('journey:insight', function (event) {
+      var natural = event.detail.key === 'natural-philosophy';
+      var newest = insights[insights.length - 1];
+      newest.title = natural ? 'Natural philosophy' : 'Eudaimonia';
+      newest.bond = BOND * (natural ? 1.45 : 1);
+      newest.el.querySelector('span').textContent = newest.title;
+      root.setAttribute('aria-label', 'An Insight Tree around the Node Concept Greek Philosophy, with the Insight ' + newest.title + ' being added, turning into 3D Study as you scroll. Drag to rotate in Study');
+    });
+  }
 
   // ---------- Step state ----------
 
@@ -246,7 +260,7 @@
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
   function treePoint(ins) {
-    return [Math.cos(ins.finalAngle) * BOND, Math.sin(ins.finalAngle) * BOND, 0];
+    return [Math.cos(ins.finalAngle) * ins.bond, Math.sin(ins.finalAngle) * ins.bond, 0];
   }
   function panTo(x, y) { var now = performance.now(); state.panX.to(x, 0, now); state.panY.to(y, 0, now); }
   function ripple(world, strength, radiusScale) {
@@ -716,9 +730,11 @@
 
   function frame() {
     var ui = clamp(W / 700, 0.7, 1);
+    var longestBond = Math.max.apply(null, insights.map(function (ins) { return ins.bond; }));
+    var chipMargin = longestBond > BOND ? 100 : 70;
     // Midpoint: the docked cards cover the foot of the canvas, so the tree uses the rest.
     var treeH = isMid && !guide ? H - (W < 420 ? 226 : 200) : H;
-    var treeZoom = clamp(Math.min(W / 2 - 70 * ui, treeH / 2 - 50 * ui) / BOND, 0.35, 1.1);
+    var treeZoom = clamp(Math.min(W / 2 - chipMargin * ui, treeH / 2 - 50 * ui) / longestBond, longestBond > BOND ? 0.25 : 0.35, 1.1);
     // StudyFraming scaled to this card: the 300 pt slot, node 40% down, ring 80% down.
     var slot = Math.min(W, H) * 0.6;
     var nodeY = H * 0.4;
@@ -726,8 +742,8 @@
     var studyZoom = 110 / BOND * slot / 300;
     var floorDepth = drop / studyZoom;
     var studyDistance = floorDepth / Math.tan(RING_VIEW_ANGLE);
-    var chipRadius = Math.min(W / 2 - 70 * ui, H * 0.34);
-    var fitZoom = chipRadius / BOND;
+    var chipRadius = Math.min(W / 2 - chipMargin * ui, H * 0.34);
+    var fitZoom = chipRadius / longestBond;
     return {
       ui: ui, treeZoom: treeZoom, treeY: treeH / 2, nodeY: nodeY, studyZoom: studyZoom, fitZoom: fitZoom,
       floorDepth: floorDepth, studyDistance: studyDistance
@@ -748,12 +764,12 @@
   }
 
   function insightWorld(ins, p) {
-    var h = BOND;
+    var h = ins.bond;
     var a = ins.finalAngle, e = ins.finalElev;
     var tree = [Math.cos(a) * h, Math.sin(a) * h, h * Math.tan(e)];
     if (p <= 0) return tree;
     var dir = slerp(norm(tree), studyDirs[ins.order], p);
-    var r = lerp(len(tree), BOND, p);
+    var r = lerp(len(tree), ins.bond, p);
     return [dir[0] * r, dir[1] * r, dir[2] * r];
   }
 

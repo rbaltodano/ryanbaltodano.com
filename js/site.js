@@ -22,12 +22,14 @@
     var target = window.scrollY, current = window.scrollY, gliding = false;
     var limit = function () { return document.documentElement.scrollHeight - window.innerHeight; };
     function glide() {
+      if (!gliding) return;
       current += (target - current) * EASE;
       if (Math.abs(target - current) < 0.4) { current = target; gliding = false; }
       window.scrollTo({ top: current, behavior: 'instant' });
       if (gliding) requestAnimationFrame(glide);
     }
     window.addEventListener('wheel', function (e) {
+      if (e.defaultPrevented) { gliding = false; return; }
       if (e.ctrlKey || e.metaKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;   // zoom, sideways
       e.preventDefault();
       if (!gliding) { target = current = window.scrollY; }

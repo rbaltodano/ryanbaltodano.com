@@ -15,6 +15,7 @@
   var insight = flow.querySelector('[data-flow-insight]');
   var definitionTimer;
   var scrollAnimation;
+  var animating = false, snapTimer, wheelTimer, wheelGesture = false, touching = false, pointerHeld = false;
   var terms = flow.querySelectorAll('[data-flow-term]');
   var menuCurve = getComputedStyle(flow).getPropertyValue('--ease-menu').match(/[\d.]+/g).map(Number);
 
@@ -28,20 +29,32 @@
     }
     return 3 * (1 - t) * (1 - t) * t * menuCurve[1] + 3 * (1 - t) * t * t * menuCurve[3] + t * t * t;
   }
-  function scrollToInsight(destination) {
-    cancelAnimationFrame(scrollAnimation);
-    var from = window.scrollY;
-    if (reduceMotion) { window.scrollTo({ top: destination, behavior: 'instant' }); return; }
+  function scrollGeometry() {
     var top = parseFloat(getComputedStyle(sticky).top) || 0;
-    var origin = from + flow.getBoundingClientRect().top - top;
+    var origin = window.scrollY + flow.getBoundingClientRect().top - top;
     var travel = flow.offsetHeight - sticky.offsetHeight;
+    return { origin: origin, travel: travel, progress: (window.scrollY - origin) / travel };
+  }
+  function stopAnimation() {
+    cancelAnimationFrame(scrollAnimation);
+    clearTimeout(snapTimer);
+    animating = false;
+  }
+  function scrollToPhase(targetPhase) {
+    stopAnimation();
+    var from = window.scrollY;
+    var geometry = scrollGeometry(), origin = geometry.origin, travel = geometry.travel;
+    var rest = targetPhase === 0 ? 0 : targetPhase === last ? 1 : (targetPhase + 0.5) / phaseCount;
+    var destination = origin + travel * rest;
+    if (reduceMotion) { window.scrollTo({ top: destination, behavior: 'instant' }); update(); return; }
     var fromPhase = position(Math.min(Math.max((from - origin) / travel, 0), 1));
     var start = performance.now();
+    animating = true;
     function frame(now) {
-      var progress = Math.min((now - start) / 2000, 1);
+      var progress = Math.min((now - start) / 500, 1);
       // Animate the visible panel with the menu curve, then invert the scroll mapping.
       // This avoids applying the manual-scroll pauses and easing a second time.
-      var phase = fromPhase + (1 - fromPhase) * scrollEase(progress);
+      var phase = fromPhase + (targetPhase - fromPhase) * scrollEase(progress);
       var low = 0, high = 1;
       for (var i = 0; i < 24; i++) {
         var p = (low + high) / 2;
@@ -50,12 +63,61 @@
       window.scrollTo({ top: progress === 1 ? destination : origin + travel * (low + high) / 2, behavior: 'instant' });
       update();
       if (progress < 1) scrollAnimation = requestAnimationFrame(frame);
+      else animating = false;
     }
     scrollAnimation = requestAnimationFrame(frame);
   }
   // Let direct user input take over from the automatic scroll.
-  ['wheel', 'pointerdown', 'keydown', 'touchstart'].forEach(function (event) {
-    window.addEventListener(event, function () { cancelAnimationFrame(scrollAnimation); }, { passive: true });
+  ['pointerdown', 'touchstart'].forEach(function (event) {
+    window.addEventListener(event, stopAnimation, { passive: true });
+  });
+  // One wheel/trackpad gesture advances one whole module. Consume its trailing momentum
+  // so it cannot leave the track halfway between panels or skip several modules.
+  window.addEventListener('wheel', function (event) {
+    if (event.ctrlKey || event.metaKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY) return;
+    var geometry = scrollGeometry();
+    if (geometry.progress < -0.002 || geometry.progress > 1.002) { stopAnimation(); return; }
+    var phase = position(Math.min(Math.max(geometry.progress, 0), 1));
+    var direction = event.deltaY > 0 ? 1 : -1;
+    if (!animating && !wheelGesture && ((phase === 0 && direction < 0) || (phase === last && direction > 0))) return;
+    event.preventDefault();
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(function () { wheelGesture = false; }, 180);
+    if (animating || wheelGesture) { wheelGesture = true; return; }
+    wheelGesture = true;
+    scrollToPhase(Math.min(Math.max(Math.round(phase) + direction, 0), last));
+  }, { passive: false, capture: true });
+
+  window.addEventListener('keydown', function (event) {
+    if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || event.target.closest('button, a, input, textarea, select, [contenteditable]')) return;
+    var direction = /^(ArrowDown|PageDown| )$/.test(event.key) ? (event.shiftKey ? -1 : 1) : /^(ArrowUp|PageUp)$/.test(event.key) ? -1 : 0;
+    if (!direction) { stopAnimation(); return; }
+    var geometry = scrollGeometry();
+    if (geometry.progress < -0.002 || geometry.progress > 1.002) return;
+    var phase = position(Math.min(Math.max(geometry.progress, 0), 1));
+    if (!animating && ((phase === 0 && direction < 0) || (phase === last && direction > 0))) return;
+    event.preventDefault();
+    if (!animating) scrollToPhase(Math.min(Math.max(Math.round(phase) + direction, 0), last));
+  });
+
+  function settle() {
+    clearTimeout(snapTimer);
+    if (animating || touching || pointerHeld) return;
+    snapTimer = setTimeout(function () {
+      var geometry = scrollGeometry();
+      if (animating || touching || pointerHeld || geometry.progress <= 0 || geometry.progress >= 1) return;
+      var phase = position(geometry.progress), nearest = Math.round(phase);
+      if (Math.abs(phase - nearest) > 0.002) scrollToPhase(nearest);
+    }, 180);
+  }
+  window.addEventListener('scroll', settle, { passive: true });
+  window.addEventListener('pointerdown', function () { pointerHeld = true; }, { passive: true });
+  ['pointerup', 'pointercancel'].forEach(function (event) {
+    window.addEventListener(event, function () { pointerHeld = false; settle(); }, { passive: true });
+  });
+  window.addEventListener('touchstart', function () { touching = true; }, { passive: true });
+  ['touchend', 'touchcancel'].forEach(function (event) {
+    window.addEventListener(event, function () { touching = false; settle(); }, { passive: true });
   });
   var definitions = {
     eudaimonia: ['Eudaimonia', 'Flourishing: the complete, well-lived human life that Aristotle held every action ultimately aims at. Not a feeling of happiness, but a life lived well over its whole length.'],
@@ -123,7 +185,7 @@
   terms.forEach(function (term) {
     term.addEventListener('click', function () {
       clearTimeout(definitionTimer);
-      cancelAnimationFrame(scrollAnimation);
+      stopAnimation();
       var definition = definitions[term.dataset.flowTerm];
       // Restart the gradient when another term is chosen during generation.
       terms.forEach(function (item) { item.classList.remove('is-generating'); });
@@ -135,11 +197,10 @@
         text.setAttribute('aria-busy', 'false');
         insight.querySelector('.flow-insight__title').textContent = definition[0];
         insight.querySelector('.flow-insight__body').textContent = definition[1];
+        tree.dispatchEvent(new CustomEvent('journey:insight', { detail: { key: term.dataset.flowTerm } }));
         playInsight();
-        var top = parseFloat(getComputedStyle(sticky).top) || 0;
-        var travel = flow.offsetHeight - sticky.offsetHeight;
         // The midpoint of phase two rests exactly on the Insight panel in both layouts.
-        scrollToInsight(window.scrollY + flow.getBoundingClientRect().top - top + travel * 1.5 / phaseCount);
+        scrollToPhase(1);
       }, reduceMotion ? 0 : 2000);
     });
   });

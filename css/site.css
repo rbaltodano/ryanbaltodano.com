@@ -34,6 +34,7 @@
 
   --content: 1296px;
   --gutter: 84px;
+  --inset-panel-radius: 84px;
   --section-y: 144px;
 }
 
@@ -1116,7 +1117,7 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column;
   gap: 32px;
   overflow: hidden;
-  border-radius: 84px;
+  border-radius: var(--inset-panel-radius);
   background: var(--app-canvas-secondary-dark);
   container-type: inline-size;
 }
@@ -1518,7 +1519,7 @@ a { color: inherit; text-decoration: none; }
 /* Home "A Map of Your Own Thinking" (js/map-flow.js): a photo panel, inset like the footer,
    that pins while the page scrolls; three transparent panels slide through it; the tree becomes Study in place. */
 .section--flow { padding: 0; }
-.flow { position: relative; margin: 0 12px; }
+.flow { --flow-column-width: 600px; --flow-content-pad: 40px; --flow-frame-pad: var(--gutter); position: relative; margin: 0 12px; }
 .flow__sticky {
   position: sticky;
   top: 12px;
@@ -1526,25 +1527,25 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: var(--inset-panel-radius);
   background: var(--canvas-dark-secondary);
   isolation: isolate;
 }
 .flow__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
 /* A shared tint keeps the dark-mode palette readable without adding module surfaces. */
 .flow__sticky::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(18, 15, 12, 0.48); pointer-events: none; }
-.flow__head { padding: 64px var(--gutter) 0; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
-.flow__head .display { font-size: clamp(34px, 3.6vw, 52px); line-height: 1.25; color: var(--cream); }
+.flow__head { width: min(var(--flow-column-width), calc(100% - 2 * var(--flow-frame-pad))); margin-inline: auto; padding: 64px var(--flow-content-pad) 0; display: flex; flex-direction: column; align-items: stretch; gap: 12px; text-align: left; }
+.flow__head .display { width: 100%; text-align: left; font-size: clamp(34px, 3.6vw, 52px); line-height: 1.25; color: var(--cream); }
 .flow__head .display em { color: var(--dark-green-text); }
-.flow__head .para { max-width: 560px; color: var(--cream); }
+.flow__head .para { width: 100%; max-width: none; text-align: left; color: var(--cream); }
 .flow__viewport { position: relative; flex: 1; min-height: 0; overflow: hidden; }
 .flow__track { width: 300%; height: 100%; display: flex; will-change: transform; }
-.flow__frame { flex: 1 1 0; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 24px var(--gutter) 48px; }
+.flow__frame { flex: 1 1 0; min-width: 0; display: flex; align-items: flex-start; justify-content: center; padding: 24px var(--flow-frame-pad) 48px; }
 
 /* Frame 1: the answer, in the app's light theme. */
 .flow-answer {
-  width: min(600px, 100%);
-  padding: 36px 40px 40px;
+  width: min(var(--flow-column-width), 100%);
+  padding: 24px var(--flow-content-pad) 40px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -1561,8 +1562,12 @@ a { color: inherit; text-decoration: none; }
 .flow-answer__show { display: flex; align-items: center; gap: 6px; font-family: var(--serif); font-weight: 400; font-size: 16px; line-height: 1.6; color: var(--cream); }
 .flow-answer__show span { font-family: var(--sans); font-size: 14px; font-weight: 700; }
 .flow-answer__text { font-family: var(--serif); font-size: 16px; line-height: 1.8; text-align: left; color: var(--cream); }
-.flow-answer__text .hl { font-weight: 700; color: var(--cream); padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) left bottom / 0 1.5px no-repeat; transition: background-size 0.6s cubic-bezier(0.55, 0, 0.17, 1); }
-.flow-answer__text.is-marked .hl { background-size: 100% 1.5px; }
+.flow-answer__text .hl { position: relative; font-weight: 700; color: var(--cream); padding-bottom: 2px; background: none; }
+/* Keep the thin underline independent of the text shimmer, so it always draws in
+   horizontally rather than interpolating down from the gradient's full height. */
+.flow-answer__text .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--cream); transform: scaleX(0); transform-origin: left; transition: transform 0.6s var(--ease-menu); pointer-events: none; }
+.flow-answer__text.is-marked .hl::after { transform: scaleX(1); }
+.flow-answer__text.is-marked .hl.is-generating::after { transform: scaleX(0); transition: none; }
 .flow-answer__text button.hl { border: 0; border-radius: 0; font-family: inherit; font-size: inherit; line-height: inherit; padding: 0 0 2px; cursor: pointer; }
 .flow-answer__text button.hl:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
 .flow-answer__text button.hl.is-generating { color: transparent; background: rgba(255, 250, 240, 0.3) linear-gradient(90deg, transparent, var(--cream) 50%, transparent) no-repeat; background-size: 80% 100%; -webkit-background-clip: text; background-clip: text; animation: shimmer 2s linear infinite; transition: none; }
@@ -1571,8 +1576,8 @@ a { color: inherit; text-decoration: none; }
 
 /* Frame 2: the saved Insight, as the app's docked card in dark mode. */
 .flow-insight {
-  width: min(460px, 100%);
-  padding: 32px 32px 20px;
+  width: min(var(--flow-column-width), 100%);
+  padding: 32px var(--flow-content-pad) 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1589,7 +1594,6 @@ a { color: inherit; text-decoration: none; }
 .flow-insight__head { display: flex; align-items: center; gap: 8px; }
 .flow-insight__title { flex: 1; font-weight: 700; font-size: 18px; color: var(--cream); }
 .flow-insight__actions { width: 64px; height: 16px; }
-.flow-insight__context { font-weight: 700; font-size: 12px; color: var(--cream); }
 .flow-insight__body { font-size: 14px; line-height: 28.8px; color: var(--cream); opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.8s ease-out 0.3s, filter 0.8s ease-out 0.3s, translate 0.8s ease-out 0.3s; }
 .flow-insight.is-in .flow-insight__body { opacity: 1; filter: none; translate: none; }
 
@@ -1940,27 +1944,29 @@ a { color: inherit; text-decoration: none; }
 /* Gutter by breakpoint (names in DESIGN.md). XL >1280 and L >992: 84px; M >768: 48px; S and below: 24px. */
 @media (max-width: 992px) {
   .mt-frame { height: 450px; }
-  :root { --gutter: 48px; }
+  :root { --gutter: 48px; --inset-panel-radius: 48px; }
   .section--panel { padding: 48px; border-radius: 48px; }
-  .footer { padding-top: 56px; border-radius: 48px; }
+  .footer { padding-top: 56px; }
 }
 
 @media (max-width: 768px) {
   .guide-steps { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .guide-step { padding: 24px; }
-  :root { --gutter: 24px; }
+  :root { --gutter: 24px; --inset-panel-radius: 32px; }
+  .flow { --flow-content-pad: 0px; --flow-frame-pad: 0px; margin-inline: 0; }
+  .flow__sticky { top: 0; height: 100vh; padding: 48px 24px; border-radius: 0; }
   .section--panel { padding: 24px 12px; border-radius: 32px; }
-  .flow__head { padding-top: 40px; }
-  .flow__frame { padding: 16px 16px 24px; }
-  .flow-answer { padding: 12px; }
+  .flow__head { padding: 0; }
+  .flow__frame { padding: 24px 0 0; }
+  .flow-answer { padding: 0; }
+  .flow-insight { padding: 24px; }
   .flow-answer__text { font-size: 16px; line-height: 1.8; }
-  .footer { padding-top: 40px; border-radius: 32px; }
+  .footer { padding-top: 40px; }
 }
 
 /* Keep the full serif answer visible on shorter phone screens. */
 @media (max-width: 768px) and (max-height: 740px) {
-  .flow__head { padding-top: 24px; }
-  .flow-answer { padding: 8px; gap: 12px; }
+  .flow-answer { gap: 12px; }
   .flow-answer__q { margin-bottom: 12px; }
   .flow-answer__text { font-size: 14px; line-height: 1.7; }
 }
@@ -2051,6 +2057,7 @@ a { color: inherit; text-decoration: none; }
   .it-chip--placed.is-revealed .it-chip__loading { display: none; }
   .shimmer { animation: none; color: rgba(74, 50, 28, 0.5); background: none; }
   .flow-answer__text button.hl.is-generating { animation: none; color: var(--cream); background: none; }
+  .flow-answer__text .hl::after { transition: none; }
   .tree-card.is-streaming .hl { animation: none; background-size: 100% 2px; }
 }
 
