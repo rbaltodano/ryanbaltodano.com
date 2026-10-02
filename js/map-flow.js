@@ -13,6 +13,12 @@
   var frames = Array.prototype.slice.call(track.children);
   var text = flow.querySelector('[data-flow-text]');
   var insight = flow.querySelector('[data-flow-insight]');
+  var generating = flow.querySelector('[data-flow-generating]');
+  var definitionTimer;
+  var definitions = {
+    eudaimonia: ['Eudaimonia', 'Flourishing: the complete, well-lived human life that Aristotle held every action ultimately aims at. Not a feeling of happiness, but a life lived well over its whole length.'],
+    'natural-philosophy': ['Natural philosophy', 'The study of nature and how things change, understood through their causes and ends. Aristotle’s ethics builds on this account of human nature to ask what it means for a person to live well.']
+  };
   var tree = flow.querySelector('[data-scene="tree"] [data-insight-tree]');
   // Four narrative phases share three panels: the last phase morphs the existing tree.
   var phaseCount = 4;
@@ -69,6 +75,35 @@
   }
   function playInsight() { if (!played.insight) { played.insight = true; insight.classList.add('is-in'); } }
   function playCard(name, card) { if (!played[name]) { played[name] = true; card.dispatchEvent(new Event('journey:play')); } }
+
+  // A tap generates the chosen definition before advancing to the Insight panel. Without
+  // a tap, the original Eudaimonia card remains the scroll-driven default.
+  flow.querySelectorAll('[data-flow-term]').forEach(function (term) {
+    term.addEventListener('click', function () {
+      clearTimeout(definitionTimer);
+      var definition = definitions[term.dataset.flowTerm];
+      generating.hidden = false;
+      // Restart the gradient when another term is chosen during generation.
+      generating.style.animation = 'none';
+      void generating.offsetWidth;
+      generating.style.animation = '';
+      text.setAttribute('aria-busy', 'true');
+      definitionTimer = setTimeout(function () {
+        generating.hidden = true;
+        text.setAttribute('aria-busy', 'false');
+        insight.querySelector('.flow-insight__title').textContent = definition[0];
+        insight.querySelector('.flow-insight__body').textContent = definition[1];
+        playInsight();
+        var top = parseFloat(getComputedStyle(sticky).top) || 0;
+        var travel = flow.offsetHeight - sticky.offsetHeight;
+        // The midpoint of phase two rests exactly on the Insight panel in both layouts.
+        window.scrollTo({
+          top: window.scrollY + flow.getBoundingClientRect().top - top + travel * 1.5 / phaseCount,
+          behavior: reduceMotion ? 'instant' : 'smooth'
+        });
+      }, reduceMotion ? 0 : 2000);
+    });
+  });
 
   // ---------- Scroll → track ----------
   function layout() {

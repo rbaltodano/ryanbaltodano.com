@@ -1563,6 +1563,10 @@ a { color: inherit; text-decoration: none; }
 .flow-answer__text { font-family: var(--serif); font-size: 16px; line-height: 1.8; text-align: left; color: var(--cream); }
 .flow-answer__text .hl { font-weight: 700; color: var(--cream); padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) left bottom / 0 1.5px no-repeat; transition: background-size 0.6s cubic-bezier(0.55, 0, 0.17, 1); }
 .flow-answer__text.is-marked .hl { background-size: 100% 1.5px; }
+.flow-answer__text button.hl { border: 0; border-radius: 0; font-family: inherit; font-size: inherit; line-height: inherit; padding: 0 0 2px; cursor: pointer; }
+.flow-answer__text button.hl:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+.flow-answer__generating { align-self: flex-start; font-size: 14px; background-color: rgba(255, 244, 227, 0.3); background-image: linear-gradient(90deg, transparent, var(--cream) 50%, transparent); }
+.flow-answer__generating[hidden] { display: none; }
 .flow .fw { display: inline-block; opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.5s ease-out, filter 0.5s ease-out, translate 0.5s ease-out; }
 .flow .fw.is-in { opacity: 1; filter: none; translate: none; }
 
@@ -1713,12 +1717,12 @@ a { color: inherit; text-decoration: none; }
    ModelTasksCard (355 pt wide, 32 padding, 36 corners, hairline), then Add Practice Tasks and
    four 48 pt capsules in light green, 12 apart. */
 .guide-tasks { display: flex; flex-direction: column; gap: 24px; }
-/* The card sits on a painting. The frame's height is fixed so the card can grow downward
+/* The card sits on a painting. The frame's height is fixed (700px on desktop and laptop, 450px below) so the card can grow downward
    without moving anything below it. On phones the corners nest: 36 (the card) + 24 (padding). */
 .mt-frame {
   --mt-pad: 48px;
   position: relative;
-  height: 450px;
+  height: 700px;
   padding: var(--mt-pad);
   display: flex;
   align-items: flex-start;
@@ -1935,6 +1939,7 @@ a { color: inherit; text-decoration: none; }
 
 /* Gutter by breakpoint (names in DESIGN.md). XL >1280 and L >992: 84px; M >768: 48px; S and below: 24px. */
 @media (max-width: 992px) {
+  .mt-frame { height: 450px; }
   :root { --gutter: 48px; }
   .section--panel { padding: 48px; border-radius: 48px; }
   .footer { padding-top: 56px; border-radius: 48px; }
@@ -2045,6 +2050,7 @@ a { color: inherit; text-decoration: none; }
   .mid-dock__status.is-thinking { animation: none; color: rgba(74, 50, 28, 0.5); background: none; }
   .it-chip--placed.is-revealed .it-chip__loading { display: none; }
   .shimmer { animation: none; color: rgba(74, 50, 28, 0.5); background: none; }
+  .flow-answer__generating { color: var(--cream); }
   .tree-card.is-streaming .hl { animation: none; background-size: 100% 2px; }
 }
 
@@ -2057,4 +2063,3 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 1280px) { .steps--5 { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 1024px) { .steps.steps--5 { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .steps--5 .step { padding: 18px 20px; } .steps--5 .step .para { display: none; } }
-
