@@ -42,38 +42,9 @@
         <a href="waitlist.html" class="btn-pill">Launch Status</a>
       </div>
 
-      <!-- Live hero (js/hero-phone.js): the question card changes, the phone streams the answer,
-           and its two terms float out as saved Insights. Without JS it rests on the first answer. -->
-      <div class="scene" data-hero-scene>
-        <div class="scene__phone">
-          <div class="phone-screen">
-            <div class="phone-app" data-hero-app>
-              <p class="phone-app__question" data-hero-question>What does it mean for knowledge to become wisdom?</p>
-              <hr class="phone-app__rule">
-              <div class="phone-app__response" data-hero-response>
-                <p class="phone-app__show">Show Thinking <span aria-hidden="true">›</span></p>
-                <p class="phone-app__title" data-hero-title>Knowledge and Wisdom</p>
-                <p class="phone-app__answer" data-hero-answer>Aristotle separates knowing that a thing is so from grasping why. In <b>Thomism</b>, wisdom orders what we know toward its highest causes. Knowledge becomes wisdom when it governs how you live, the life the ancients called <b>eudaimonia</b>.</p>
-              </div>
-            </div>
-            <div class="status-bar">
-              <span>9:41</span>
-              <img src="assets/home/status-levels.svg" alt="" width="50" height="22">
-            </div>
-          </div>
-          <img class="phone-frame" src="assets/home/iphone-frame.png" alt="">
-        </div>
-        <div class="qotd scene__qotd">
-          <p class="qotd__label">QUESTION OF THE DAY:</p>
-          <p class="qotd__q" data-hero-card>“What does it mean for knowledge to become wisdom?”</p>
-        </div>
-        <span class="tag scene__tag-a" data-hero-tag><img src="assets/home/icon-insight.svg" alt="" width="12" height="12"><span>Thomism</span></span>
-        <span class="tag scene__tag-b" data-hero-tag><img src="assets/home/icon-insight.svg" alt="" width="12" height="12"><span>Eudaimonia</span></span>
-        <div class="thinking scene__thinking">
-          <img src="assets/home/icon-plus.svg" alt="" width="12" height="12">
-          <span data-hero-status>Idle</span>
-          <img class="spin" data-hero-spinner src="assets/home/icon-spinner.svg" alt="" width="14" height="14">
-        </div>
+      <div class="hero-phone">
+        <img class="hero-phone__screen" src="assets/app/home-dark.jpg" alt="The Angrove home screen: a greeting, a month of activity with conversation and Insight counts, and the Question of the Day." width="754" height="1640">
+        <img class="phone-frame" src="assets/home/iphone-frame.png" alt="">
       </div>
     </div>
   </section>
@@ -417,7 +388,6 @@
 </footer>
 
 <script src="js/site.js"></script>
-<script src="js/hero-phone.js"></script>
 <script src="js/insight-tree.js"></script>
 <script src="js/map-flow.js"></script>
 <script src="js/grounding-demo.js"></script>

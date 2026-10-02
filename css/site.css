@@ -333,7 +333,8 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Hero ---------- */
 
-.hero { padding-top: 288px; }
+/* Centered copy with the phone, showing the app's home screen, beneath it. */
+.hero { padding-top: 216px; }
 .hero__inner {
   max-width: var(--content);
   margin: 0 auto;
@@ -342,15 +343,34 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   gap: 158px;
 }
-.hero__copy {
-  width: 650px;
-  flex-shrink: 0;
+.hero .hero__copy {
+  width: 100%;
+  max-width: 760px;
+  flex: none;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
+  text-align: center;
 }
-.hero__copy .para { max-width: 515px; }
+.hero__copy .para { max-width: 560px; }
+/* The screen sits inside the frame at the same insets as the other phone scenes. */
+.hero-phone {
+  --w: 340px;
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 1350 / 2760;
+}
+.hero-phone__screen {
+  position: absolute;
+  left: 4.63%;
+  top: 1.74%;
+  width: 91.02%;
+  height: 96.65%;
+  object-fit: cover;
+  border-radius: calc(var(--w) * 0.128);
+  background: var(--canvas-dark);
+}
 
 /* ---------- Why I Made This ---------- */
 
@@ -1933,6 +1953,7 @@ a { color: inherit; text-decoration: none; }
   .logo:hover .logo__leaf, .logo:focus-visible .logo__leaf { animation: none; }
   .nav, .nav__burger i, .nav__inner > .nav__links, .nav__links a, .nav .btn-pill { transition: none !important; }
   .journey__scene, .journey .jw { transition: none; }
+  .hero-phone { --w: 280px; }
   .flow .fw, .flow-insight, .flow-insight__body { transition: none; }
   .journey .jw { opacity: 1; filter: none; }
   .spin, .private__dot, .tasks .active .state, .glide-in, .it-handle img, .it-chip__loading, .it-chip.is-selected::after, .mid-card, .mid-card__body { animation: none; }
