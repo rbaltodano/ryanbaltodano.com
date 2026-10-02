@@ -61,17 +61,16 @@
     drift();
   }
 
-  // ---------- Footer logo entrance ----------
-  // The footer logo rises and resolves from a blur the first time the footer scrolls into view.
-  var footerLogo = document.querySelector('.logo--footer');
-  if (footerLogo && !reduceMotion && 'IntersectionObserver' in window) {
-    footerLogo.classList.add('logo-enter');
-    var logoSeen = new IntersectionObserver(function (entries) {
+  // ---------- Large footer wordmark entrance ----------
+  // Reveal the large wordmark once it enters view; the small brand logo stays visible.
+  if (wordmark && !reduceMotion && 'IntersectionObserver' in window) {
+    wordmark.classList.add('logo-enter');
+    var wordmarkSeen = new IntersectionObserver(function (entries) {
       if (!entries[0].isIntersecting) return;
-      footerLogo.classList.add('is-in');
-      logoSeen.disconnect();
-    }, { threshold: 0.6 });
-    logoSeen.observe(footerLogo);
+      wordmark.classList.add('is-in');
+      wordmarkSeen.disconnect();
+    }, { threshold: 0.25 });
+    wordmarkSeen.observe(wordmark);
   }
 
   // ---------- Headline reveal ----------

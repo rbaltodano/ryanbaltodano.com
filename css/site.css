@@ -1106,20 +1106,21 @@ a { color: inherit; text-decoration: none; }
 /* Keep the original wordmark and replace its static leaf with the masthead sprite strip. */
 .logo--footer img { width: 185px; height: 56px; clip-path: inset(0 0 0 54px); }
 .logo--footer .logo__leaf { position: absolute; left: 0; top: 0; width: 53px; height: 56px; }
-/* Footer logo entrance (js/site.js): the first time the footer comes into view, the logo rises,
-   grows to size, and resolves from a blur. Without the script it is simply there. */
-.logo-enter .logo__art {
+/* Large footer wordmark entrance: separate translate/scale properties preserve its scroll parallax. */
+.footer__wordmark.logo-enter {
   opacity: 0;
   filter: blur(8px);
-  transform: translateY(28px) scale(0.9);
-  transform-origin: left center;
+  translate: 0 28px;
+  scale: 0.9;
+  transform-origin: center bottom;
 }
 /* The transition lives on the revealed state so hiding the logo on load is instant. */
-.logo-enter.is-in .logo__art {
+.footer__wordmark.logo-enter.is-in {
   opacity: 1;
   filter: none;
-  transform: none;
-  transition: opacity 0.9s ease, filter 0.9s ease, transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  translate: none;
+  scale: 1;
+  transition: opacity 0.9s ease, filter 0.9s ease, translate 1.1s cubic-bezier(0.2, 0.8, 0.2, 1), scale 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .footer__tagline { font-size: 14px; color: rgba(var(--footer-ink), 0.7); }
 .footer .nav__links { color: rgb(var(--footer-ink)); }
