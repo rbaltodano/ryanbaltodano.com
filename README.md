@@ -14,9 +14,9 @@ Then visit `http://localhost:8000`.
 ```
 site/
   index.html          Home (built from Figma "source-of-truth" / Home, node 169:7019)
-  features.html       A scrolling journey from a question to the Insight Tree beside a pinned app window, then Model Tasks and commands
-  how-it-works.html   Redirect to features.html
-  insight-tree.html   Redirect to features.html#map
+  guide.html          The app's User Guide (Settings → User Guide) word for word: First Five Minutes, eleven topics, Try It app windows
+  faq.html            Common questions: release, cost, privacy, the model and its sources
+  features.html       Redirect to guide.html (also how-it-works.html, insight-tree.html)
   model.html          Redirect to privacy.html#model (the model details now live on Privacy)
   privacy.html        What stays on the phone, claims linked to the public source, live offline demo, model details (#model)
   about.html          Founder note, the four principles, public repositories
@@ -26,7 +26,7 @@ site/
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights
-  js/features-journey.js  Features: drives the pinned window's scenes from the step being read
+  js/guide.js         Guide: the topic list marks the topic being read
   js/map-flow.js       Home: the pinned photo panel that scrolls horizontally from answer to Insight to tree, which turns into Study in place
   js/privacy-demo.js  Privacy: a question answered in airplane mode, with what did and didn't happen
   js/page-demos.js    Local-only internal-page interactions

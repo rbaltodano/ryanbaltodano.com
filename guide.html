@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Guide — Angrove</title>
+<meta name="description" content="The Angrove User Guide: how to ask a question, save Insights, read the Insight Tree, find a Midpoint, study a concept in 3D, and keep your data private.">
+<link rel="icon" type="image/png" href="assets/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/app-windows.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 3.5h11v17L12 16.5l-5.5 4z"/></symbol>
+  <symbol id="i-point-3-connected-trianglepath-dotted" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18.5" r="2.2"/><circle cx="19" cy="18.5" r="2.2"/><path d="M10.9 7 6.1 16.5M13.1 7l4.8 9.5M7.4 18.5h9.2" stroke-dasharray="1.6 2.4"/></symbol>
+  <symbol id="i-doc-on-doc" viewBox="0 0 24 24"><rect x="8.5" y="7.5" width="11" height="13.5" rx="2"/><path d="M15.5 7.5V5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v10.5a2 2 0 0 0 2 2h2"/></symbol>
+  <symbol id="i-arrow-trianglehead-2-clockwise" viewBox="0 0 24 24"><path d="M19.5 12A7.5 7.5 0 0 1 6 16.5M4.5 12A7.5 7.5 0 0 1 18 7.5"/><path d="M18.6 3.5 18 7.5l-4-.6M5.4 20.5l.6-4 4 .6"/></symbol>
+  <symbol id="i-arrow-turn-down-right" viewBox="0 0 24 24"><path d="M5 4v7a4 4 0 0 0 4 4h10.5"/><path d="M15.5 11l4 4-4 4"/></symbol>
+  <symbol id="i-brain-head-profile" viewBox="0 0 24 24"><path d="M9 21v-3.2c-2.3-1.4-3.8-3.8-3.8-6.6A7.3 7.3 0 0 1 12.5 4c3.8 0 6.6 2.7 6.9 6.2l1.8 3.6-1.9.8V17a2 2 0 0 1-2 2h-1.8v2"/><path d="M10.5 9.2a2 2 0 0 1 3.8-.4 1.9 1.9 0 0 1 .4 3.6M12 12.5v2"/></symbol>
+  <symbol id="i-circle-dashed" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" stroke-dasharray="2.6 2.4"/></symbol>
+  <symbol id="i-graph-2d" viewBox="0 0 24 24"><path d="M4 3.5v16.5h16.5"/><path d="M7 16c2.5 0 3.3-9 6-9s3 5 6.5 5"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></symbol>
+  <symbol id="i-graph-3d" viewBox="0 0 24 24"><path d="M12 13.5V3.5M12 13.5l8.5 5M12 13.5l-8.5 5"/><path d="M9.5 6l2.5-2.5L14.5 6M18 20.5l2.5-2-1-3M3.5 15.5l-1 3 2.5 2" /></symbol>
+  <symbol id="i-xmark" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-text-word-spacing" viewBox="0 0 24 24"><path d="M3 6h7M14 6h7M3 12h4M11 12h10M3 18h11M18 18h3"/></symbol>
+  <symbol id="i-square-stack" viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="12" rx="2.5"/><path d="M6 6h12M8.5 3h7"/></symbol>
+  <symbol id="i-books-vertical" viewBox="0 0 24 24"><rect x="3" y="4" width="4.5" height="16" rx="1"/><rect x="9.5" y="4" width="4.5" height="16" rx="1"/><path d="m15.8 5.4 3.6-1 3.9 14.9-3.6 1z"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h4.5v-5.5h4V20h4.5V9.5"/></symbol>
+  <symbol id="i-gearshape" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.8 1.8M16.7 16.7l1.8 1.8M5.5 18.5l1.8-1.8M16.7 7.3l1.8-1.8"/><circle cx="12" cy="12" r="6.6"/></symbol>
+  <symbol id="i-stop-circle-fill" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor"/><rect x="8.6" y="8.6" width="6.8" height="6.8" rx="1.2" fill="var(--canvas)" stroke="none"/></symbol>
+  <symbol id="i-bubble-left-and-bubble-right" viewBox="0 0 24 24"><path d="M3 5.5a2 2 0 0 1 2-2h8.5a2 2 0 0 1 2 2V11a2 2 0 0 1-2 2H8l-3.5 3v-3H5a2 2 0 0 1-2-2z"/><path d="M18 8h1a2 2 0 0 1 2 2v5.5a2 2 0 0 1-2 2h-.5v3L15 17.5h-4a2 2 0 0 1-2-2V15"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6.5a2 2 0 0 1 2-2h4.2l2 2.2H19a2 2 0 0 1 2 2V17.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-sun-max" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></symbol>
+  <symbol id="i-waveform" viewBox="0 0 24 24"><path d="M3 10.5v3M6.5 7.5v9M10 4v16M13.5 8v8M17 5.5v13M20.5 10v4"/></symbol>
+  <symbol id="i-slider-horizontal-3" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2.2" fill="var(--canvas)"/><circle cx="16" cy="12" r="2.2" fill="var(--canvas)"/><circle cx="10" cy="18" r="2.2" fill="var(--canvas)"/></symbol>
+  <symbol id="i-lock-shield" viewBox="0 0 24 24"><path d="M12 2.8 4.5 5.6v5.6c0 4.8 3.2 8.5 7.5 10 4.3-1.5 7.5-5.2 7.5-10V5.6z"/><rect x="9" y="11" width="6" height="5" rx="1"/><path d="M10.2 11V9.5a1.8 1.8 0 0 1 3.6 0V11"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="logo">
+      <span class="logo__leaf" aria-hidden="true"></span>
+      <span>Angrove</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="guide.html" aria-current="page">Guide</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <a href="waitlist.html" class="btn-pill">Launch Status</a>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Open menu"><span class="nav__burger" aria-hidden="true"><i></i><i></i></span></button>
+  </div>
+</header>
+
+<main>
+  <!-- The app's own User Guide (Settings → User Guide), word for word. Copy comes from
+       UserGuideSettingsView.swift; the Try It examples are the site's app windows. -->
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      <p class="eyebrow">User Guide</p>
+      <h1 class="display display--tight">Asking Deeper Questions, <em>Step by Step.</em></h1>
+      <p class="lede">A little guidance for asking deeper questions, saving ideas, and making connections.</p>
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Start Here</p>
+        <h2 class="display display--tight">Your First Five <em>Minutes</em></h2>
+      </div>
+      <div class="guide-steps">
+        <div class="guide-step">
+          <span class="guide-step__num">1</span>
+          <h3>Ask a question</h3>
+          <p>Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>New Conversation</span> and type something you want to understand, like “What makes an action virtuous?” Then ask a follow-up as the idea develops.</p>
+        </div>
+        <div class="guide-step">
+          <span class="guide-step__num">2</span>
+          <h3>Save an idea</h3>
+          <p>Some words in an answer are underlined. Tap one to see what it means in your conversation, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-bookmark"/></svg>Save</span> to keep it as an Insight.</p>
+        </div>
+        <div class="guide-step">
+          <span class="guide-step__num">3</span>
+          <h3>See the connections</h3>
+          <p>Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-point-3-connected-trianglepath-dotted"/></svg>Insight Tree</span> at the top of the conversation, or swipe left, to see your saved ideas mapped out together.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="container guide">
+      <aside class="guide__toc">
+        <p class="guide-label">Using Angrove</p>
+        <ul class="guide-list">
+          <li><a href="#conversation"><svg class="ic" aria-hidden="true"><use href="#i-bubble-left-and-bubble-right"/></svg><span>Starting a Conversation</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#definitions"><svg class="ic" aria-hidden="true"><use href="#i-bookmark"/></svg><span>Definitions &amp; Saved Insights</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#tree"><svg class="ic" aria-hidden="true"><use href="#i-point-3-connected-trianglepath-dotted"/></svg><span>Understanding the Insight Tree</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#midpoint"><svg class="ic" aria-hidden="true"><use href="#i-graph-2d"/></svg><span>Finding a Midpoint</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#study"><svg class="ic" aria-hidden="true"><use href="#i-graph-3d"/></svg><span>Studying a Concept in 3D</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#organization"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg><span>Organizing Your Work</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#library"><svg class="ic" aria-hidden="true"><use href="#i-books-vertical"/></svg><span>Using the Library</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#home"><svg class="ic" aria-hidden="true"><use href="#i-sun-max"/></svg><span>Home &amp; Question of the Day</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#model-tasks"><svg class="ic" aria-hidden="true"><use href="#i-waveform"/></svg><span>Model Tasks</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#personalization"><svg class="ic" aria-hidden="true"><use href="#i-slider-horizontal-3"/></svg><span>Personalizing Angrove</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a href="#privacy"><svg class="ic" aria-hidden="true"><use href="#i-lock-shield"/></svg><span>Privacy &amp; Your Data</span><svg class="ic ic--chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></a></li>
+        </ul>
+      </aside>
+      <div class="guide__topics">
+      <article class="guide-topic" id="conversation">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-bubble-left-and-bubble-right"/></svg></span>
+          <h2>Starting a Conversation</h2>
+          <p class="guide-topic__intro">A conversation is where you ask Angrove a question and talk it through. Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>New Conversation</span> on Home or at the bottom of the menu to begin. Think of it as a patient study partner: you can ask anything, push back, and keep going.</p>
+        </header>
+        
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Angrove answers your question in plain prose, and you can keep the discussion going with follow-ups for as long as you like.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Type your question and send it. Beneath each answer, <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-doc-on-doc"/></svg>Copy</span> copies the text and <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-arrow-trianglehead-2-clockwise"/></svg>Regenerate</span> asks for a fresh answer. Follow up by asking for a clarification, an example, or an objection. Type /rename to name this conversation, or /rename followed by a name to set it immediately. In a very long conversation, type /compact to summarize older parts so Angrove can keep going (you still see everything), or /clear to start the conversation over.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Ask “How does habit shape character?”, then ask for an everyday example. Answers can make mistakes, so check important claims against their sources.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="definitions">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-bookmark"/></svg></span>
+          <h2>Definitions &amp; Saved Insights</h2>
+          <p class="guide-topic__intro">When Angrove uses a word that matters, it underlines it. Tap it and you get a short explanation of what that word means in your conversation, not a dictionary entry. If it’s worth keeping, save it. A saved definition is called an Insight, and your Insights become the building blocks of everything else in the app: the Insight Tree, Midpoints, and your Insight Library.</p>
+        </header>
+        <div class="guide-demo">
+          <h3 class="guide-label">Try It</h3>
+          <p class="guide-text">Tap an underlined word to open its definition, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-bookmark"/></svg>Save</span> to add it to your Insights.</p>
+          <div class="guide-demo__stage">
+  <div class="window window--guide" data-window="conversation">
+    <div class="w-read">
+      <p class="w-read__eyebrow">Add to study topic</p>
+      <h3 class="w-read__title">Virtue and Habit</h3>
+      <p class="w-read__question">What does Aquinas mean by virtue?</p>
+      <hr class="w-read__rule">
+      <p class="w-read__answer">For Aquinas, virtue is a <button type="button" class="w-term" data-term="habit">habit</button> that disposes us to act well, formed by repeated good choices until acting well comes readily. Among the moral virtues, <button type="button" class="w-term" data-term="prudence">prudence</button> directs the others, because it judges what the good requires here and now.</p>
+    </div>
+    <div class="w-card is-closed" data-card>
+      <div class="w-card__head">
+        <span class="w-card__title"><img src="assets/home/icon-insight.svg" alt=""><span data-card-title></span></span>
+        <button type="button" class="w-save" data-card-save aria-pressed="false" aria-label="Save as Insight"><img src="assets/home/response-controls.svg" alt=""></button>
+      </div>
+      <p class="w-card__context">In: Virtue and Habit</p>
+      <p class="w-card__body" data-card-body></p>
+    </div>
+    <div class="w-dock" data-dock>
+      <span class="w-dock__group" data-dock-idle><img src="assets/home/icon-plus.svg" alt="">Idle<img class="w-spin" src="assets/home/icon-spinner.svg" alt=""></span>
+      <span class="w-thinking" data-dock-busy hidden>Thinking</span>
+      <span class="w-dock__group" data-dock-card hidden><span>Idle</span><span class="w-dock__action"><img src="assets/home/icon-select.svg" alt="">Select</span><span class="w-dock__action"><img src="assets/home/icon-quote.svg" alt="" style="width:17px;height:12px">Quote</span></span>
+    </div>
+  </div>
+  <p class="window-hint" data-hint>Tap “habit” or “prudence” in the answer.</p>
+</div>
+        </div>
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">An Insight is a definition you chose to keep. It explains a term in the context of the discussion where you found it, so it still makes sense when you come back to it later.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Tap an underlined term in an answer. When its definition opens, tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-bookmark"/></svg>Save</span> to keep it, or <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-arrow-turn-down-right"/></svg>Quote</span> to ask about it in your next question. Saved Insights appear in <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-brain-head-profile"/></svg>Insights</span> in the menu and in the conversation’s tree. Saving the same word from a different discussion adds its new meaning to the same card.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Save “grace” while discussing theology, then return to it later without searching through the whole conversation.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="tree">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-point-3-connected-trianglepath-dotted"/></svg></span>
+          <h2>Understanding the Insight Tree</h2>
+          <p class="guide-topic__intro">Every conversation has an Insight Tree: a map of the ideas you’ve explored. Open it with <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-point-3-connected-trianglepath-dotted"/></svg>Insight Tree</span> at the top of a conversation, or by swiping left. It shows how your saved Insights relate to one another, so you can see the shape of a subject instead of scrolling back through a long discussion.</p>
+        </header>
+        
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">The tree gathers your Insights around broader subjects called Node Concepts. Angrove adds a Node Concept when an answer opens up a new subject; Insights are only ever added by you.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Drag to move around, pinch to zoom, and tap anything to read its card. Lines show which ideas are connected, and shorter lines mean the ideas are closer in meaning. <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-brain-head-profile"/></svg>Insights</span> in the menu has a larger tree that brings together everything you’ve saved; accept its update prompt to add your latest bookmarks.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Use the map to spot how several definitions belong to one larger question. Distance shows how related two ideas are, not whether they’re true or important.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="midpoint">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-graph-2d"/></svg></span>
+          <h2>Finding a Midpoint</h2>
+          <p class="guide-topic__intro">Midpoint helps you find the idea that sits between two or more ideas you already have. It’s in the Insight Tree: select a few Insights and Angrove proposes a concept that connects them. It’s a good way to discover how two ideas relate when you can’t quite put it into words.</p>
+        </header>
+        <div class="guide-demo">
+          <h3 class="guide-label">Try It</h3>
+          <p class="guide-text">Two Insights are selected here. Drag on the tree, or use the percentages, to shift the balance, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-arrow-down"/></svg>Place</span>.</p>
+          <div class="guide-demo__stage guide-demo__stage--dock" data-midpoint-panel>
+<div class="tree-card tree-card--mid window" data-insight-tree data-mode="midpoint" aria-label="Midpoint mode in the Insight Tree: a handle on the line between the Insights Natural Law and Conscience. Drag it to set the balance.">
+  <canvas class="tree-card__canvas"></canvas>
+  <div class="tree-card__layer"></div>
+  <div class="mid-cards">
+    <div class="mid-card" data-mid-percent hidden aria-live="polite">
+      <p class="mid-card__heading">Select Midpoint</p>
+    <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Natural Law</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="a:-1" aria-label="Less Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-a>50%</b><button type="button" data-mid-step="a:1" aria-label="More Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
+    <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Conscience</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="b:-1" aria-label="Less Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-b>50%</b><button type="button" data-mid-step="b:1" aria-label="More Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
+    </div>
+    <div class="mid-card mid-card--insight" data-mid-result hidden>
+      <p class="mid-card__title"><img src="assets/home/icon-insight.svg" alt=""><span>Synderesis</span><img class="mid-card__actions" src="assets/home/response-controls.svg" alt=""></p>
+      <p class="mid-card__body">The innate grasp of the first principles of practical reason, which conscience then applies to particular acts.</p>
+    </div>
+  </div>
+</div>
+<div class="mid-dock">
+  <span class="mid-dock__actions" data-mid-controls hidden>
+    <button type="button" data-mid-center><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.5v7M12.5 3.5v7M4 7h6M7 5v4"/></svg>Center</button>
+    <button type="button" data-mid-place><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg>Place</button>
+  </span>
+  <span class="mid-dock__status" data-mid-status>Idle</span>
+</div>
+<p class="window-hint"><span data-mid-hint>Two Insights are selected, then Midpoint begins.</span> <button type="button" data-mid-reset hidden>Try again</button></p>
+</div>
+        </div>
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Midpoint finds a concept between the ideas you select, leaning toward the ones you give more weight.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">In the tree, tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-circle-dashed"/></svg>Select</span>, choose two to eight Insights or Node Concepts, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-graph-2d"/></svg>Midpoint</span>. Change the percentages to lean toward the ideas that matter most, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-arrow-down"/></svg>Place</span> to add the result to your tree.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Try a Midpoint between “justice” and “mercy” to see how they meet. The result depends on the ideas you choose and how you balance them.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="study">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-graph-3d"/></svg></span>
+          <h2>Studying a Concept in 3D</h2>
+          <p class="guide-topic__intro">Study lifts one subject out of the Insight Tree so you can look at it on its own. In the tree, tap a Node Concept or an Insight, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-graph-3d"/></svg>Study</span>. Its Insights spread out around it in 3D, which makes it easy to read them one at a time without the rest of the tree in the way.</p>
+        </header>
+        <div class="guide-demo">
+          <h3 class="guide-label">Try It</h3>
+          <p class="guide-text">Drag to spin the concept and its Insights.</p>
+          <div class="guide-demo__stage">
+<div class="tree-card window" data-insight-tree data-mode="study" aria-label="Study mode: the Node Concept Greek Philosophy and its Insights in 3D. Drag to rotate.">
+    <canvas class="tree-card__canvas"></canvas>
+    <div class="tree-card__layer"></div>
+    <div class="tree-card__hint">Drag to rotate</div>
+  </div>
+</div>
+        </div>
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Study shows one Node Concept and its Insights in 3D, and returns you to the same spot in the tree when you’re done.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Drag the ring under the concept to spin it, drag anywhere else to move, and pinch to zoom. Tap an Insight to bring it forward and read its card, or tap the concept to go back to it. Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-xmark"/></svg>Exit</span> to return to the tree.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Use Study when a subject has gathered several Insights and you want to read them together.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="organization">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg></span>
+          <h2>Organizing Your Work</h2>
+          <p class="guide-topic__intro">As your conversations add up, two places help you keep them in order. <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-text-word-spacing"/></svg>Conversations</span> in the menu lists everything you’ve discussed, and <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-square-stack"/></svg>Study Topics</span> lets you group conversations about the same subject, like chapters of a notebook.</p>
+        </header>
+        
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Conversations helps you find and tidy past discussions. Study Topics collects related conversations, and their saved Insights, in one place.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-text-word-spacing"/></svg>Conversations</span> to search, rename, pin, move to a Study Topic, or delete a conversation. Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-square-stack"/></svg>Study Topics</span> to create a topic, give it a short description, and add conversations to it.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Create a Study Topic called “Ethics” and collect conversations about virtue, conscience, and responsibility. Pin a discussion you want to come back to soon.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="library">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-books-vertical"/></svg></span>
+          <h2>Using the Library</h2>
+          <p class="guide-topic__intro">The Library holds the original texts Angrove draws on when it answers, like Scripture and the writings of the Church Fathers. Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-books-vertical"/></svg>Library</span> from the menu to read them yourself. It’s separate from your Insights, which are the definitions you saved.</p>
+        </header>
+        
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">The Library lets you read the sources behind Angrove’s answers in their own words.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-books-vertical"/></svg>Library</span> from the menu. Browse the works or search by title or subject, then open a work to read it. The Passage of the Day is an easy place to start.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Read a source passage alongside a discussion to check the author’s own wording and context.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="home">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-sun-max"/></svg></span>
+          <h2>Home &amp; Question of the Day</h2>
+          <p class="guide-topic__intro">Home is the first page you see. Open it anytime with <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg>Home</span> in the menu. It gathers ideas worth coming back to from your recent conversations, including a daily question to think about, so you can pick up where you left off.</p>
+        </header>
+        
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">The Question of the Day invites you to reflect on something unresolved from your recent conversations. Other cards appear when there’s something worth revisiting.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Answer the Question of the Day to start a conversation about it; a new one appears later. Today in History offers a historical prompt, Loose Thread points to a subject in your tree that hasn’t connected to anything yet, Terms You Glossed Over shows a definition you looked up but never saved, and Quote From You shows something you wrote that stood out. Set a daily reminder in <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-gearshape"/></svg>Settings</span> → Notifications.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Tap Loose Thread to jump straight to that subject in its tree, or save a glossed-over term from its card. It’s normal for Home to show only a few cards when you’re just starting out.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="model-tasks">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-waveform"/></svg></span>
+          <h2>Model Tasks</h2>
+          <p class="guide-topic__intro">Angrove runs entirely on your phone, so it works on one thing at a time: answering a question, defining a word, updating your tree. Anything else you ask for waits in line. Model Tasks shows that line, so you can see what Angrove is doing and change what happens next. Open it by tapping the status button at the bottom of a conversation, which reads Idle or Thinking.</p>
+        </header>
+        <div class="guide-demo">
+          <h3 class="guide-label">Try It</h3>
+          <p class="guide-text">Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-xmark"/></svg>Remove</span> on a waiting task to take it out of line.</p>
+          <div class="guide-demo__stage">
+  <div class="window window--canvas window--guide-tasks" data-window="tasks">
+    <div class="w-tasks">
+      <p class="w-tasks__head">Model Tasks</p>
+      <div data-task-list></div>
+    </div>
+    <div class="w-dock"><span class="w-thinking" data-task-status>Thinking</span></div>
+  </div>
+</div>
+        </div>
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Model Tasks lists what Angrove has finished, what it’s working on now, and what’s waiting.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Tap the status button to open Model Tasks. Tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-stop-circle-fill"/></svg>Stop</span> on the running task to cancel it, tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-xmark"/></svg>Remove</span> on a waiting task to take it out of line, or press and drag a waiting task to move it up or down. Finished tasks clear on their own shortly after everything is done.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">If you asked for several definitions and now want an answer first, drag your question to the front of the line. Stopping or removing a task never deletes anything you’ve already saved.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="personalization">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-slider-horizontal-3"/></svg></span>
+          <h2>Personalizing Angrove</h2>
+          <p class="guide-topic__intro">You can make Angrove more comfortable to read and tell it what to call you. Everything is in <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-gearshape"/></svg>Settings</span>, at the bottom of the menu.</p>
+        </header>
+        
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Settings controls how the app looks and how conversations read.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Appearance switches between light and dark. Text &amp; Display changes fonts, text size, and alignment. Model Behavior sets your name. App Experience sets your start screen and haptics, and Notifications sets reminders.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Choose larger text for long reading sessions, or a serif font for responses.</p></div>
+        </div>
+      </article>
+      <article class="guide-topic" id="privacy">
+        <header class="guide-topic__head">
+          <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-lock-shield"/></svg></span>
+          <h2>Privacy &amp; Your Data</h2>
+          <p class="guide-topic__intro">Everything you do in Angrove stays on your phone. Your conversations, saved Insights, and the model that answers you are never sent to a server. <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-gearshape"/></svg>Settings</span> → Privacy &amp; Data is where you lock the app and back up or clear your data.</p>
+        </header>
+        
+        <div class="guide-paras">
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Your conversations and Insights are stored only on this device, and the model runs on it too.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Turn on App Lock to require Face ID, and choose how soon it locks. Export Conversations saves your conversations to a file, and Import Conversations reads one back. Clear Insight Tree removes saved Insights and tree data but keeps your conversations.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Export before importing: importing replaces your current conversations. An export holds conversations only, not Insights or settings, and it contains your discussion text, so keep it somewhere safe.</p></div>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta">
+        <img class="cta__bg" src="assets/scenery/vineyard-rows.jpg" alt="">
+        <div class="cta__copy">
+          <p class="eyebrow eyebrow--light">Coming to iPhone</p>
+          <h2>Bring the Question You've Been <em>Carrying.</em></h2>
+          <p>Angrove is free, private, and in active development. Check launch status for updates as development continues.</p>
+          <a href="waitlist.html" class="btn-block">Launch Status</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__row">
+    <div class="footer__brand">
+      <a href="index.html" class="logo logo--footer">
+        <span class="logo__art">
+          <span class="logo__leaf" aria-hidden="true"></span>
+          <img src="assets/brand/angrove-logo-light.png" alt="Angrove" width="185" height="56">
+        </span>
+      </a>
+      <p class="footer__tagline">A private place for serious questions.</p>
+    </div>
+    <nav class="nav__links" aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="guide.html">Guide</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="faq.html">FAQ</a>
+      <a href="blog/index.html">Blog</a>
+    </nav>
+  </div>
+  <p class="footer__disclaimer">Angrove is a tool for private study and reflection. It is not a substitute for professional counseling, spiritual direction, or clergy.</p>
+  <p class="footer__legal">© 2026 Semper Doctrina. All rights reserved.</p>
+  <p class="footer__wordmark" aria-hidden="true">Angrove</p>
+</footer>
+
+<script src="js/site.js"></script>
+<script src="js/app-windows.js"></script>
+<script src="js/insight-tree.js"></script>
+<script src="js/guide.js"></script>
+</body>
+</html>

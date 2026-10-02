@@ -64,6 +64,8 @@
         justice: ['Justice', 'The virtue of steadily giving each person what they are due. It orders a person toward others rather than toward themselves.'],
         aquinas: ['Thomas Aquinas', 'A thirteenth-century Dominican friar and theologian whose Summa Theologica joins Aristotle’s philosophy to Christian doctrine.'],
         virtue: ['Virtue', 'A settled disposition to act well, formed by practice, that makes both the action and the person who does it good.'],
+        habit: ['Habit', 'A settled disposition, formed by repeated acts, that inclines a person to act in a certain way readily and with ease.'],
+        prudence: ['Prudence', 'Practical wisdom: the virtue of judging rightly what should be done in a particular situation, which guides the exercise of the other moral virtues.'],
         distributive: ['Distributive justice', 'The part of justice that governs how a community shares its common goods among its members, in proportion to what each is due.']
       };
       var card = win.querySelector('[data-card]');

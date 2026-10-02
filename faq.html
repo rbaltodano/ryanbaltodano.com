@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Angrove</title>
+<meta name="description" content="Answers to common questions about Angrove: release, cost, privacy, the on-device model, and its sources.">
+<link rel="icon" type="image/png" href="assets/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="logo">
+      <span class="logo__leaf" aria-hidden="true"></span>
+      <span>Angrove</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="guide.html">Guide</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="faq.html" aria-current="page">FAQ</a>
+    </nav>
+    <a href="waitlist.html" class="btn-pill">Launch Status</a>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Open menu"><span class="nav__burger" aria-hidden="true"><i></i><i></i></span></button>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      <p class="eyebrow">FAQ</p>
+      <h1 class="display display--tight">Questions, <em>Answered.</em></h1>
+      <p class="lede">What people ask most about Angrove. For how to use it, see the <a class="link-inline" href="guide.html">User Guide</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section--flush-top">
+    <div class="container faq">
+      <div class="faq__head">
+        <p class="eyebrow">The App</p>
+        <h2 class="display display--tight">About <em>Angrove</em></h2>
+      </div>
+      <div class="faq__list">
+          <details class="faq-item">
+            <summary>What is Angrove?</summary>
+            <div class="faq-item__a"><p>A private study companion for iPhone. You ask serious questions about philosophy, theology, and history, and Angrove answers with the primary sources in its Library. Terms you save become Insights, and your Insights grow into a map of your thinking called the Insight Tree.</p><p>The <a href="guide.html">User Guide</a> walks through every part of it.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>When can I get it?</summary>
+            <div class="faq-item__a"><p>Not yet. Angrove is in active development and isn’t publicly released, and email signup isn’t open. An open TestFlight beta comes before the App Store release. <a href="waitlist.html">Launch Status</a> shows where things stand.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How much does it cost?</summary>
+            <div class="faq-item__a"><p>Nothing. Angrove is free, with no subscription and no paywalled features, and that’s meant to stay true.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Do I need an account?</summary>
+            <div class="faq-item__a"><p>No. There’s nothing to sign up for or log in to.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Which iPhones will it run on?</summary>
+            <div class="faq-item__a"><p>It’s built and tested on iPhone 17, with 8 GB of memory. Final device requirements will be set once the launch model is chosen, and shared before launch.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Who makes it?</summary>
+            <div class="faq-item__a"><p>Ryan, one person building it in the open. You can read why on the <a href="about.html">About</a> page.</p></div>
+          </details>
+      </div>
+    </div>
+  </section>
+  <section class="section section--flush-top">
+    <div class="container faq">
+      <div class="faq__head">
+        <p class="eyebrow">Privacy</p>
+        <h2 class="display display--tight">Your <em>Data</em></h2>
+      </div>
+      <div class="faq__list">
+          <details class="faq-item">
+            <summary>Does anything I type leave my phone?</summary>
+            <div class="faq-item__a"><p>No. The model that answers you runs on your iPhone, and your conversations, Insights, and Insight Tree are stored only on it. The app makes no network requests to answer a question or build your tree. Its only network code downloads the model itself.</p><p>The source is public, so you can <a href="privacy.html#source">check it yourself</a>.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Does it work offline?</summary>
+            <div class="faq-item__a"><p>Yes. Once the model is on your phone, Angrove answers in airplane mode.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Are my conversations backed up?</summary>
+            <div class="faq-item__a"><p>Angrove keeps its data in the app’s own storage, like any other app. If you use iCloud Backup, iOS may include that data in your device backup. You can also export your conversations to a file in Settings → Privacy &amp; Data. An export holds conversations only, not Insights or settings.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Can I lock the app?</summary>
+            <div class="faq-item__a"><p>Yes. Turn on App Lock in Settings → Privacy &amp; Data to require Face ID, and choose how soon it locks.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How do I delete my data?</summary>
+            <div class="faq-item__a"><p>Deleting a conversation removes it from the app. Clear Insight Tree removes saved Insights and tree data but keeps your conversations. Deleting the app removes everything Angrove stored on your phone.</p></div>
+          </details>
+      </div>
+    </div>
+  </section>
+  <section class="section section--flush-top">
+    <div class="container faq">
+      <div class="faq__head">
+        <p class="eyebrow">Answers</p>
+        <h2 class="display display--tight">The Model and <em>Its Sources</em></h2>
+      </div>
+      <div class="faq__list">
+          <details class="faq-item">
+            <summary>What model does Angrove use?</summary>
+            <div class="faq-item__a"><p>Gemma 4 E4B, instruction-tuned, from the LiteRT Community package. It runs on your iPhone’s GPU through Google’s LiteRT-LM runtime and is about 3.7 GB. It isn’t fine-tuned in the current build, and the launch model is still being tested. <a href="privacy.html#model">More detail</a>.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Where do answers come from?</summary>
+            <div class="faq-item__a"><p>The Library holds 37 primary works and 51,836 passages, from Scripture and the Church Fathers to Aristotle, the councils, the confessions, and classical history. Answers cite the passages they draw on, and every source opens in full so you can read it in its own words.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Can it be wrong?</summary>
+            <div class="faq-item__a"><p>Yes. Answers can make mistakes, so check important claims against their sources. That’s why the sources are one tap away.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Is it a replacement for a pastor or counselor?</summary>
+            <div class="faq-item__a"><p>No. Angrove is a tool for private study and reflection. It is not a substitute for professional counseling, spiritual direction, or clergy.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What happens in a very long conversation?</summary>
+            <div class="faq-item__a"><p>The model holds about 4,000 tokens of a conversation at a time. Type <code>/compact</code> to summarize older parts so Angrove can keep going. You still see everything on screen.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Why does it do one thing at a time?</summary>
+            <div class="faq-item__a"><p>Because it runs entirely on your phone. Anything else you ask for waits in line, and Model Tasks shows that line so you can stop, remove, or reorder what’s next. See <a href="guide.html#model-tasks">Model Tasks</a> in the guide.</p></div>
+          </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta">
+        <img class="cta__bg" src="assets/scenery/vineyard-rows.jpg" alt="">
+        <div class="cta__copy">
+          <p class="eyebrow eyebrow--light">Coming to iPhone</p>
+          <h2>Bring the Question You've Been <em>Carrying.</em></h2>
+          <p>Angrove is free, private, and in active development. Check launch status for updates as development continues.</p>
+          <a href="waitlist.html" class="btn-block">Launch Status</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__row">
+    <div class="footer__brand">
+      <a href="index.html" class="logo logo--footer">
+        <span class="logo__art">
+          <span class="logo__leaf" aria-hidden="true"></span>
+          <img src="assets/brand/angrove-logo-light.png" alt="Angrove" width="185" height="56">
+        </span>
+      </a>
+      <p class="footer__tagline">A private place for serious questions.</p>
+    </div>
+    <nav class="nav__links" aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="guide.html">Guide</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="faq.html">FAQ</a>
+      <a href="blog/index.html">Blog</a>
+    </nav>
+  </div>
+  <p class="footer__disclaimer">Angrove is a tool for private study and reflection. It is not a substitute for professional counseling, spiritual direction, or clergy.</p>
+  <p class="footer__legal">© 2026 Semper Doctrina. All rights reserved.</p>
+  <p class="footer__wordmark" aria-hidden="true">Angrove</p>
+</footer>
+
+<script src="js/site.js"></script>
+</body>
+</html>
