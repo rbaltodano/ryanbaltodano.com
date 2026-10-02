@@ -42,7 +42,7 @@
   var stage = root.parentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var BROWN = '74, 50, 28';
+  var BROWN = scrollStudy ? '255, 250, 240' : '74, 50, 28';
   var BOND = 190;                        // InsightTreeCanvasView.bondLength default
   var FOCAL = 3990;                      // InsightTreeCamera.focalLength
   var MAX_ELEVATION = Math.PI / 4;       // InsightClusterSpatialLayout guardrail
@@ -168,7 +168,7 @@
   }
 
   var node = {
-    el: el('it-node', 'assets/home/icon-node.svg', isMid ? 'Moral Theology' : 'Greek Philosophy'),
+    el: el('it-node', scrollStudy ? 'assets/home/icon-node-dark.svg' : 'assets/home/icon-node.svg', isMid ? 'Moral Theology' : 'Greek Philosophy'),
     vis: new Spring(0)
   };
 
@@ -193,7 +193,7 @@
       order: i,
       finalAngle: d.angle,
       finalElev: d.elev,
-      el: el('it-chip', 'assets/home/icon-insight.svg', d.title),
+      el: el('it-chip', scrollStudy ? 'assets/home/icon-insight-dark.svg' : 'assets/home/icon-insight.svg', d.title),
       vis: new Spring(0),
       lineStart: null
     };
