@@ -87,7 +87,10 @@
     // checkmark.circle.fill
     completed: '<circle cx="7" cy="7" r="6.5" fill="currentColor"/><path d="M4.3 7.2 6.2 9l3.5-4" fill="none" stroke="var(--canvas-secondary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
     // ContextUsageIcon spinning: a faint 3 pt ring and a quarter arc, one turn per 1.1 s.
-    current: '<circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-opacity="0.2" stroke-width="3"/><circle class="mt-spin" cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" pathLength="100" stroke-dasharray="25 100"/>',
+    // The arc spins inside its own HTML wrapper (Safari won't animate a transform on a shape
+    // inside an SVG).
+    current: '<circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-opacity="0.2" stroke-width="3"/>',
+    arc: '<circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" pathLength="100" stroke-dasharray="25 100" transform="rotate(-90 7 7)"/>',
     // circle.dotted
     upcoming: '<circle cx="7" cy="7" r="5.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" pathLength="24" stroke-dasharray="0 2"/>',
     // stop.circle.fill, hierarchical
@@ -126,6 +129,12 @@
     var status = row.querySelector('.mt-row__status');
     status.innerHTML = '';
     status.appendChild(svg(ICON[phase], 'mt-icon mt-icon--' + phase));
+    if (phase === 'current') {
+      var spin = document.createElement('span');
+      spin.className = 'mt-spin';
+      spin.appendChild(svg(ICON.arc, 'mt-icon'));
+      status.appendChild(spin);
+    }
     var action = row.querySelector('.mt-row__action');
     action.innerHTML = '';
     action.hidden = phase === 'completed';

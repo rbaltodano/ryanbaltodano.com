@@ -1768,7 +1768,7 @@ a { color: inherit; text-decoration: none; }
 .mt-row.is-entering { opacity: 0; transition: none; }
 .mt-row.is-leaving { opacity: 0; transform: translateX(24px); pointer-events: none; }
 .mt-row.is-dragging { opacity: 0.35; scale: 0.97; transform-origin: left center; cursor: grabbing; }
-.mt-row__status { width: 14px; height: 14px; flex: none; display: grid; place-items: center; }
+.mt-row__status { position: relative; width: 14px; height: 14px; flex: none; display: grid; place-items: center; }
 .mt-row__title { flex: 1; min-width: 0; margin-right: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mt-row__action { width: 14px; height: 14px; flex: none; display: grid; place-items: center; padding: 0; border: 0; background: none; color: var(--paragraph); cursor: pointer; }
 .mt-row__action[hidden] { display: none; }
@@ -1776,8 +1776,9 @@ a { color: inherit; text-decoration: none; }
 .mt-icon--completed { color: var(--heading); }
 .mt-icon--small { width: 12px; height: 12px; }
 .mt-icon--x { width: 11px; height: 11px; opacity: 0.5; }
-.mt-spin { transform-origin: 7px 7px; transform: rotate(-90deg); animation: mt-spin 1.1s linear infinite; }
-@keyframes mt-spin { to { transform: rotate(270deg); } }
+/* ContextUsageIcon spinning: one turn per 1.1 s. It keeps turning with Reduce Motion, as in the app. */
+.mt-spin { position: absolute; inset: 0; display: grid; place-items: center; animation: mt-spin 1.1s linear infinite; }
+@keyframes mt-spin { to { transform: rotate(360deg); } }
 .mt-row--empty { gap: 4px; }
 .practice-list { display: flex; flex-direction: column; gap: 12px; }
 .practice {
@@ -1974,7 +1975,7 @@ a { color: inherit; text-decoration: none; }
   .guide-topic { gap: 40px; }
   .window--guide { height: 520px; }
   .tree-card--guide { height: 520px; }
-  .mt-frame { --mt-pad: 24px; border-radius: calc(36px + var(--mt-pad)); }
+  .mt-frame { --mt-pad: 24px; border-radius: calc(36px + var(--mt-pad)); align-items: center; }
   .guide-controls { gap: 8px; }
   .guide-control { font-size: 15px; }
   .scene { zoom: 0.7; }
@@ -2046,7 +2047,7 @@ a { color: inherit; text-decoration: none; }
   .journey__scene, .journey .jw { transition: none; }
   .flow .fw, .flow-insight, .flow-insight__body { transition: none; }
   .journey .jw { opacity: 1; filter: none; }
-  .mt-spin, .spin, .private__dot, .tasks .active .state, .glide-in, .it-handle img, .it-chip__loading, .it-chip.is-selected::after, .mid-card, .mid-card__body { animation: none; }
+  .spin, .private__dot, .tasks .active .state, .glide-in, .it-handle img, .it-chip__loading, .it-chip.is-selected::after, .mid-card, .mid-card__body { animation: none; }
   .mid-dock__status.is-thinking { animation: none; color: rgba(74, 50, 28, 0.5); background: none; }
   .it-chip--placed.is-revealed .it-chip__loading { display: none; }
   .shimmer { animation: none; color: rgba(74, 50, 28, 0.5); background: none; }
