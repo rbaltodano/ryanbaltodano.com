@@ -15,6 +15,35 @@
   var insight = flow.querySelector('[data-flow-insight]');
   var generating = flow.querySelector('[data-flow-generating]');
   var definitionTimer;
+  var scrollAnimation;
+  var terms = flow.querySelectorAll('[data-flow-term]');
+
+  // Solve the x coordinate of cubic-bezier(0.55, 0, 0.17, 1) to get its y progress.
+  function scrollEase(progress) {
+    var low = 0, high = 1, t;
+    for (var i = 0; i < 20; i++) {
+      t = (low + high) / 2;
+      var x = 3 * (1 - t) * (1 - t) * t * 0.55 + 3 * (1 - t) * t * t * 0.17 + t * t * t;
+      if (x < progress) low = t; else high = t;
+    }
+    return 3 * (1 - t) * t * t + t * t * t;
+  }
+  function scrollToInsight(destination) {
+    cancelAnimationFrame(scrollAnimation);
+    var from = window.scrollY;
+    if (reduceMotion) { window.scrollTo({ top: destination, behavior: 'instant' }); return; }
+    var start = performance.now();
+    function frame(now) {
+      var progress = Math.min((now - start) / 1000, 1);
+      window.scrollTo({ top: progress === 1 ? destination : from + (destination - from) * scrollEase(progress), behavior: 'instant' });
+      if (progress < 1) scrollAnimation = requestAnimationFrame(frame);
+    }
+    scrollAnimation = requestAnimationFrame(frame);
+  }
+  // Let direct user input take over from the automatic scroll.
+  ['wheel', 'pointerdown', 'keydown', 'touchstart'].forEach(function (event) {
+    window.addEventListener(event, function () { cancelAnimationFrame(scrollAnimation); }, { passive: true });
+  });
   var definitions = {
     eudaimonia: ['Eudaimonia', 'Flourishing: the complete, well-lived human life that Aristotle held every action ultimately aims at. Not a feeling of happiness, but a life lived well over its whole length.'],
     'natural-philosophy': ['Natural philosophy', 'The study of nature and how things change, understood through their causes and ends. Aristotle’s ethics builds on this account of human nature to ask what it means for a person to live well.']
@@ -78,18 +107,20 @@
 
   // A tap generates the chosen definition before advancing to the Insight panel. Without
   // a tap, the original Eudaimonia card remains the scroll-driven default.
-  flow.querySelectorAll('[data-flow-term]').forEach(function (term) {
+  terms.forEach(function (term) {
     term.addEventListener('click', function () {
       clearTimeout(definitionTimer);
+      cancelAnimationFrame(scrollAnimation);
       var definition = definitions[term.dataset.flowTerm];
       generating.hidden = false;
       // Restart the gradient when another term is chosen during generation.
-      generating.style.animation = 'none';
-      void generating.offsetWidth;
-      generating.style.animation = '';
+      terms.forEach(function (item) { item.classList.remove('is-generating'); });
+      void term.offsetWidth;
+      term.classList.add('is-generating');
       text.setAttribute('aria-busy', 'true');
       definitionTimer = setTimeout(function () {
         generating.hidden = true;
+        term.classList.remove('is-generating');
         text.setAttribute('aria-busy', 'false');
         insight.querySelector('.flow-insight__title').textContent = definition[0];
         insight.querySelector('.flow-insight__body').textContent = definition[1];
@@ -97,10 +128,7 @@
         var top = parseFloat(getComputedStyle(sticky).top) || 0;
         var travel = flow.offsetHeight - sticky.offsetHeight;
         // The midpoint of phase two rests exactly on the Insight panel in both layouts.
-        window.scrollTo({
-          top: window.scrollY + flow.getBoundingClientRect().top - top + travel * 1.5 / phaseCount,
-          behavior: reduceMotion ? 'instant' : 'smooth'
-        });
+        scrollToInsight(window.scrollY + flow.getBoundingClientRect().top - top + travel * 1.5 / phaseCount);
       }, reduceMotion ? 0 : 2000);
     });
   });

@@ -1565,7 +1565,8 @@ a { color: inherit; text-decoration: none; }
 .flow-answer__text.is-marked .hl { background-size: 100% 1.5px; }
 .flow-answer__text button.hl { border: 0; border-radius: 0; font-family: inherit; font-size: inherit; line-height: inherit; padding: 0 0 2px; cursor: pointer; }
 .flow-answer__text button.hl:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
-.flow-answer__generating { align-self: flex-start; font-size: 14px; background-color: rgba(255, 244, 227, 0.3); background-image: linear-gradient(90deg, transparent, var(--cream) 50%, transparent); }
+.flow-answer__text button.hl.is-generating { color: transparent; background: rgba(255, 250, 240, 0.3) linear-gradient(90deg, transparent, var(--cream) 50%, transparent) no-repeat; background-size: 80% 100%; -webkit-background-clip: text; background-clip: text; animation: shimmer 2s linear infinite; transition: none; }
+.flow-answer__generating { align-self: flex-start; font-size: 14px; color: var(--cream); }
 .flow-answer__generating[hidden] { display: none; }
 .flow .fw { display: inline-block; opacity: 0; filter: blur(3px); translate: 0 8px; transition: opacity 0.5s ease-out, filter 0.5s ease-out, translate 0.5s ease-out; }
 .flow .fw.is-in { opacity: 1; filter: none; translate: none; }
@@ -1717,15 +1718,15 @@ a { color: inherit; text-decoration: none; }
    ModelTasksCard (355 pt wide, 32 padding, 36 corners, hairline), then Add Practice Tasks and
    four 48 pt capsules in light green, 12 apart. */
 .guide-tasks { display: flex; flex-direction: column; gap: 24px; }
-/* The card sits on a painting. The frame's height is fixed (700px on desktop and laptop, 450px below) so the card can grow downward
-   without moving anything below it. On phones the corners nest: 36 (the card) + 24 (padding). */
+/* The card sits on a painting. The frame's height is fixed (550px on desktop and laptop, 450px below) and the card is centered
+   in it, so it can grow without moving anything below it. On phones the corners nest: 36 (the card) + 24 (padding). */
 .mt-frame {
   --mt-pad: 48px;
   position: relative;
-  height: 700px;
+  height: 550px;
   padding: var(--mt-pad);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   overflow: hidden;
   border-radius: 48px;
@@ -1975,7 +1976,7 @@ a { color: inherit; text-decoration: none; }
   .guide-topic { gap: 40px; }
   .window--guide { height: 520px; }
   .tree-card--guide { height: 520px; }
-  .mt-frame { --mt-pad: 24px; border-radius: calc(36px + var(--mt-pad)); align-items: center; }
+  .mt-frame { --mt-pad: 24px; border-radius: calc(36px + var(--mt-pad)); }
   .guide-controls { gap: 8px; }
   .guide-control { font-size: 15px; }
   .scene { zoom: 0.7; }
@@ -2052,6 +2053,7 @@ a { color: inherit; text-decoration: none; }
   .it-chip--placed.is-revealed .it-chip__loading { display: none; }
   .shimmer { animation: none; color: rgba(74, 50, 28, 0.5); background: none; }
   .flow-answer__generating { color: var(--cream); }
+  .flow-answer__text button.hl.is-generating { animation: none; color: var(--cream); background: none; }
   .tree-card.is-streaming .hl { animation: none; background-size: 100% 2px; }
 }
 
