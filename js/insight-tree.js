@@ -847,7 +847,17 @@
         g = 1 - Math.pow(1 - g, 5);
         var ca = (scrollStudy ? 0.5 : 0.22) * dim * rest;
         if (g > 0.001) {
-          ctx.strokeStyle = 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')';
+          if (scrollStudy) {
+            // Fade over the full connector so its entrance and 3D rotation keep the same falloff.
+            var connector = ctx.createLinearGradient(nodeProj.x, nodeProj.y, pr.x, pr.y);
+            connector.addColorStop(0, 'rgba(' + BROWN + ',' + (ca * 0.08).toFixed(3) + ')');
+            connector.addColorStop(0.18, 'rgba(' + BROWN + ',' + (ca * 0.35).toFixed(3) + ')');
+            connector.addColorStop(0.5, 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')');
+            connector.addColorStop(1, 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')');
+            ctx.strokeStyle = connector;
+          } else {
+            ctx.strokeStyle = 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')';
+          }
           ctx.lineCap = 'round';
           ctx.beginPath();
           ctx.moveTo(nodeProj.x, nodeProj.y);
