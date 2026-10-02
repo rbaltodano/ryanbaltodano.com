@@ -3,6 +3,7 @@
 // streams in, one of its terms arrives as a saved Insight card (the app's dark docked card),
 // the Insight Tree adds that Insight with the app's entrance (insight-tree.js, mode "add"),
 // and the tree swings into Study (mode "study"). Each frame rests a moment before the next.
+// On tablets and phones the frames rise bottom to top instead of sliding sideways.
 (function () {
   var flow = document.querySelector('[data-flow]');
   if (!flow) return;
@@ -15,6 +16,7 @@
   var tree = flow.querySelector('[data-scene="tree"] [data-insight-tree]');
   var study = flow.querySelector('[data-scene="study"] [data-insight-tree]');
   var last = frames.length - 1;
+  var vertical = window.matchMedia('(max-width: 1024px)');
 
   // Scroll needed per frame of travel, as a share of the viewport height.
   var PER_FRAME = 0.9;
@@ -79,7 +81,9 @@
     var travel = flow.offsetHeight - sticky.offsetHeight;
     var p = Math.min(Math.max((top - flow.getBoundingClientRect().top) / travel, 0), 1);
     var x = position(p);
-    track.style.transform = 'translate3d(' + (-x * 100 / frames.length).toFixed(3) + '%,0,0)';
+    // Right to left on wide screens; bottom to top on tablets and phones (the CSS stacks the track).
+    var shift = (-x * 100 / frames.length).toFixed(3) + '%';
+    track.style.transform = vertical.matches ? 'translate3d(0,' + shift + ',0)' : 'translate3d(' + shift + ',0,0)';
     frames.forEach(function (frame, i) { frame.classList.toggle('is-active', Math.abs(x - i) < 0.85); });
     var r = sticky.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.6 && r.bottom > 0) playAnswer();

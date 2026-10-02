@@ -61,6 +61,19 @@
     drift();
   }
 
+  // ---------- Footer logo entrance ----------
+  // The footer logo rises and resolves from a blur the first time the footer scrolls into view.
+  var footerLogo = document.querySelector('.logo--footer');
+  if (footerLogo && !reduceMotion && 'IntersectionObserver' in window) {
+    footerLogo.classList.add('logo-enter');
+    var logoSeen = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      footerLogo.classList.add('is-in');
+      logoSeen.disconnect();
+    }, { threshold: 0.6 });
+    logoSeen.observe(footerLogo);
+  }
+
   // ---------- Headline reveal ----------
   // Each word of a headline resolves from a blur, in order, the first time it comes into view.
   if (!reduceMotion && 'IntersectionObserver' in window) {
