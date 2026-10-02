@@ -127,66 +127,42 @@
     </div>
   </section>
 
-  <!-- A Map of Your Own Thinking (818:516) -->
-  <section class="section">
-    <div class="container">
-      <div class="center-head">
-        <h2 class="display display--tight">A Map of Your <em>Own Thinking</em></h2>
-        <p class="para">As you explore a question, Angrove can add broader subjects to that conversation's Insight Tree. Definitions become saved Insights only when you choose to keep them. Together, they form a map of the ideas you've pursued.</p>
-      </div>
-
-      <!-- Scrollytelling Insight Tree: the card stays pinned while the three steps scroll past.
-           Stacked layouts hide the pinned card and show each step's own card, which plays on scroll into view.
-           Rendering is a port of the app's Insight Tree canvas + Study mode (js/insight-tree.js). -->
-      <div class="tree-story">
-        <div class="tree-story__steps">
-          <div class="tree-step" data-step="1">
-            <div class="tree-card tree-step__card" data-insight-tree data-mode="stream" aria-label="Animated answer with highlighted terms">
-              <div class="tree-card__stream" aria-hidden="true">
-                <div class="stream">
-                  <div class="stream__header">Show Thinking <img src="assets/home/icon-chevron.svg" alt="" width="5" height="3"></div>
-                  <p class="stream__text" data-stream>Aristotle's whole picture of reality is teleological — everything has a telos (end/purpose) built into its nature, and things are understood by grasping what they're for. This isn't unique to ethics; it's how he explains nature generally (an acorn's telos is to become an oak, an eye's telos is to see). <b class="hl hl--a">Eudaimonia</b> is just this same framework applied to human life as a whole: if everything has a proper end, what's the proper end of a human being, considered as a whole life? Ethics, for <span class="dim">Aristotle,</span> is really a branch of his <b class="hl hl--b">natural philosophy</b> — the study of human nature's proper functioning, not a separate domain of "moral rules."</p>
-                  <img src="assets/home/response-controls-small.svg" alt="" width="42" height="16">
-                </div>
-                <div class="stream__vignette"></div>
-              </div>
-              <canvas class="tree-card__canvas"></canvas>
-              <div class="tree-card__layer"></div>
-            </div>
-            <h3 class="heading-md heading-md--tight">Terms, Defined and Saved</h3>
-            <p>Answers can highlight terms worth a closer look. Tap one for a definition in the context of your conversation. If you save it as an Insight, it joins that conversation's tree and your Insight Library.</p>
-          </div>
-          <div class="tree-step" data-step="2">
-            <div class="tree-card tree-step__card" data-insight-tree data-mode="grow" aria-label="An Insight Tree growing around a Node Concept">
-              <canvas class="tree-card__canvas"></canvas>
-              <div class="tree-card__layer"></div>
-            </div>
-            <h3 class="heading-md heading-md--tight">Nodes Take Shape As You Talk</h3>
-            <p>After the first answer, Angrove can create a Node Concept for the subject of your question. As your ideas develop, new subjects may be added, and related concepts cluster together.</p>
-          </div>
-          <div class="tree-step" data-step="3">
-            <div class="tree-card tree-step__card" data-insight-tree data-mode="study" aria-label="Study mode: Insights in 3D. Drag to rotate.">
-              <canvas class="tree-card__canvas"></canvas>
-              <div class="tree-card__layer"></div>
-              <div class="tree-card__hint">Drag to rotate</div>
-            </div>
-            <h3 class="heading-md heading-md--tight">Study Them All in One Place</h3>
-            <p>Your Insight Library brings together the definitions you've saved across conversations. When you choose to update its global tree, related Insights cluster around broader subjects so you can explore their connections in one place.</p>
-          </div>
+  <!-- A Map of Your Own Thinking (js/map-flow.js): a photo panel that pins while you scroll, and
+       the flow moves through it right to left. An answer streams in, one of its terms becomes a
+       saved Insight, and the Insight joins the tree. -->
+  <section class="section section--flow" id="map">
+    <div class="flow" data-flow>
+      <div class="flow__sticky">
+        <img class="flow__bg" src="assets/scenery/vineyard-path.jpg" alt="">
+        <div class="flow__head">
+          <h2 class="display display--tight">A Map of Your <em>Own Thinking</em></h2>
+          <p class="para para--16">An answer highlights the terms worth keeping. Save one and it becomes an Insight, and your Insight Tree grows to hold it.</p>
         </div>
-        <div class="tree-story__stage">
-          <div class="tree-card" data-insight-tree aria-label="Animated Insight Tree preview">
-            <div class="tree-card__stream" aria-hidden="true">
-              <div class="stream">
-                <div class="stream__header">Show Thinking <img src="assets/home/icon-chevron.svg" alt="" width="5" height="3"></div>
-                <p class="stream__text" data-stream>Aristotle's whole picture of reality is teleological — everything has a telos (end/purpose) built into its nature, and things are understood by grasping what they're for. This isn't unique to ethics; it's how he explains nature generally (an acorn's telos is to become an oak, an eye's telos is to see). <b class="hl hl--a">Eudaimonia</b> is just this same framework applied to human life as a whole: if everything has a proper end, what's the proper end of a human being, considered as a whole life? Ethics, for <span class="dim">Aristotle,</span> is really a branch of his <b class="hl hl--b">natural philosophy</b> — the study of human nature's proper functioning, not a separate domain of "moral rules."</p>
-                <img src="assets/home/response-controls-small.svg" alt="" width="42" height="16">
-              </div>
-              <div class="stream__vignette"></div>
+        <div class="flow__track" data-flow-track>
+          <div class="flow__frame" data-scene="answer">
+            <div class="flow-answer">
+              <p class="flow-answer__q">What did Aristotle mean by eudaimonia?</p>
+              <hr class="flow-answer__rule">
+              <p class="flow-answer__show">Show Thinking <span aria-hidden="true">›</span></p>
+              <p class="flow-answer__text" data-flow-text>Aristotle’s whole picture of reality is teleological: everything has a telos, an end built into its nature, and things are understood by grasping what they are for. An acorn’s telos is to become an oak; an eye’s is to see. <b class="hl">Eudaimonia</b> is the same idea applied to a human life as a whole. If everything has a proper end, what is the proper end of a person? Ethics, for Aristotle, is a branch of his <b class="hl">natural philosophy</b>.</p>
             </div>
-            <canvas class="tree-card__canvas"></canvas>
-            <div class="tree-card__layer"></div>
-            <div class="tree-card__hint">Drag to rotate</div>
+          </div>
+          <div class="flow__frame" data-scene="insight">
+            <div class="flow-insight" data-flow-insight>
+              <div class="flow-insight__head">
+                <img src="assets/home/icon-insight-dark.svg" alt="" width="12" height="12">
+                <p class="flow-insight__title">Eudaimonia</p>
+                <img class="flow-insight__actions" src="assets/home/response-controls.svg" alt="">
+              </div>
+              <p class="flow-insight__context">In: Aristotle on the Good Life</p>
+              <p class="flow-insight__body">Flourishing: the complete, well-lived human life that Aristotle held every action ultimately aims at. Not a feeling of happiness, but a life lived well over its whole length.</p>
+            </div>
+          </div>
+          <div class="flow__frame" data-scene="tree">
+            <div class="tree-card" data-insight-tree data-mode="add" aria-label="An Insight Tree around the Node Concept Greek Philosophy, with the Insight Eudaimonia being added">
+              <canvas class="tree-card__canvas"></canvas>
+              <div class="tree-card__layer"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -436,6 +412,7 @@
 <script src="js/site.js"></script>
 <script src="js/hero-phone.js"></script>
 <script src="js/insight-tree.js"></script>
+<script src="js/map-flow.js"></script>
 <script src="js/grounding-demo.js"></script>
 </body>
 </html>

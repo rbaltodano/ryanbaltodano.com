@@ -28,6 +28,8 @@
   function initTree(root) {
   var mode = root.dataset.mode || '';
   var isMid = mode === 'midpoint';
+  // data-mode="add": the tree is already there, and one more Insight joins it.
+  var isAdd = mode === 'add';
   // Inside the Features journey a card plays when its scene is shown, not when it scrolls into view.
   var journeyScene = root.closest('[data-scene]');
 
@@ -175,6 +177,10 @@
     { title: 'Natural Law', angle: Math.PI / 8 + 2 * Math.PI / 3, elev: 0 },
     { title: 'Conscience', angle: Math.PI / 8, elev: 0 },
     { title: 'Prudence', angle: Math.PI / 8 + 4 * Math.PI / 3, elev: 0 }
+  ] : isAdd ? [
+    { title: 'Cynicism', angle: Math.PI / 8 + 2 * Math.PI / 3, elev: MAX_ELEVATION },
+    { title: 'Epicureanism', angle: Math.PI / 8 + 4 * Math.PI / 3, elev: -MAX_ELEVATION },
+    { title: 'Eudaimonia', angle: Math.PI / 8, elev: 0 }
   ] : [
     { title: 'Eudaimonia', angle: Math.PI / 8, elev: 0 },
     { title: 'Cynicism', angle: Math.PI / 8 + 2 * Math.PI / 3, elev: MAX_ELEVATION },
@@ -249,6 +255,16 @@
       return 0;
     }
     var t = nodeDelayMs + ENTRANCE_START;
+    if (isAdd) {
+      // The Node Concept and its earlier Insights are already in place; only the last one is new.
+      node.vis.v = node.vis.target = 1; node.vis.pending = null;
+      insights.slice(0, -1).forEach(function (ins) { ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity; });
+      var newest = insights[insights.length - 1], at = treePoint(newest);
+      later(t, function () { panTo(at[0], at[1]); });
+      later(t + FOCUS_SETTLE, function () { reveal(newest); ripple(at); });
+      later(t + FOCUS_SETTLE + NEXT_INSIGHT + 600, function () { panTo(0, 0); });
+      return t + FOCUS_SETTLE * 2 + NEXT_INSIGHT + 600;
+    }
     if (mode === 'study' || isMid) {
       later(t, function () {
         insights.forEach(reveal);
