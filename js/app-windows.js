@@ -75,28 +75,40 @@
       var dock = dockController(win);
       var saved = {}, current = null, timer = null;
 
+      // As on the home page: the tapped term shimmers while its definition is generated, then
+      // the docked card animates in at the foot of the window. Choosing another term replays it.
       function open(key) {
         clearTimeout(timer);
         current = key;
-        win.querySelectorAll('[data-term]').forEach(function (t) { t.classList.toggle('is-active', t.dataset.term === key); });
-        title.textContent = DEFS[key][0];
-        body.textContent = '';
-        body.classList.add('is-loading');
+        var term = null;
+        win.querySelectorAll('[data-term]').forEach(function (t) {
+          t.classList.toggle('is-active', t.dataset.term === key);
+          t.classList.remove('is-generating');
+          if (t.dataset.term === key) term = t;
+        });
+        // Put the card away without a transition, so the next one animates in from scratch.
+        card.classList.add('is-reset', 'is-closed');
+        void card.offsetWidth;
+        card.classList.remove('is-reset');
+        void term.offsetWidth;
+        term.classList.add('is-generating');
         save.setAttribute('aria-pressed', String(!!saved[key]));
-        card.classList.remove('is-closed');
         dock('busy');
+        setHint(win, 'Defining \u201C' + DEFS[key][0] + '\u201D\u2026');
         timer = setTimeout(function () {
-          body.classList.remove('is-loading');
+          term.classList.remove('is-generating');
+          title.textContent = DEFS[key][0];
           body.textContent = DEFS[key][1];
+          card.classList.remove('is-closed');
           dock('card');
-        }, wait(900));
-        setHint(win, 'Tap the bookmark to save it as an Insight.');
+          setHint(win, 'Tap the bookmark to save it as an Insight.');
+        }, wait(2000));
       }
       function close() {
         clearTimeout(timer);
         current = null;
         card.classList.add('is-closed');
-        win.querySelectorAll('[data-term]').forEach(function (t) { t.classList.remove('is-active'); });
+        win.querySelectorAll('[data-term]').forEach(function (t) { t.classList.remove('is-active', 'is-generating'); });
         dock('idle');
       }
       win.querySelectorAll('[data-term]').forEach(function (t) {
