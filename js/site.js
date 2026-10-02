@@ -1,4 +1,5 @@
-// Site-wide behavior: the mobile nav menu, smooth scrolling, and headline reveals.
+// Site-wide behavior: the mobile nav menu, smooth scrolling, the footer wordmark's parallax,
+// and headline reveals.
 (function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -38,6 +39,26 @@
     ['pointerdown', 'keydown', 'touchstart', 'hashchange'].forEach(function (type) {
       window.addEventListener(type, function () { gliding = false; }, { passive: true });
     });
+  }
+
+  // ---------- Footer wordmark parallax ----------
+  // The oversized wordmark travels 5% slower than the footer it sits in, settling into its
+  // resting place when the page reaches the bottom.
+  var wordmark = document.querySelector('.footer__wordmark');
+  if (wordmark && !reduceMotion) {
+    var footer = wordmark.closest('.footer');
+    var LAG = 0.05, pending = false;
+    function drift() {
+      pending = false;
+      // How far the footer still has to travel before the page reaches its end.
+      var remaining = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      if (footer.getBoundingClientRect().top > window.innerHeight) return;
+      wordmark.style.transform = 'translate3d(0,' + (-LAG * remaining).toFixed(2) + 'px,0)';
+    }
+    function queue() { if (!pending) { pending = true; requestAnimationFrame(drift); } }
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    drift();
   }
 
   // ---------- Headline reveal ----------

@@ -29,7 +29,7 @@ site/
   js/privacy-demo.js  Privacy: a question answered in airplane mode, with what did and didn't happen
   js/page-demos.js    Local-only internal-page interactions
   js/insight-tree.js  Home page Insight Tree animation (port of the app's canvas and Study mode)
-  js/grounding-demo.js  Home Library card: sources spring in, then morph into scrolling Library cards
+  js/grounding-demo.js  Home Library card: Library cards scrolling in a loop that follows page scroll
   assets/home/        Images exported from Figma
   assets/app/         Real app screenshots and the Study demo video (from Aquinas-iOS/Documentation)
 ```

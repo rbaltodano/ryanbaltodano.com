@@ -103,7 +103,6 @@ a { color: inherit; text-decoration: none; }
   color: var(--logo);
 }
 .logo img { width: auto; height: 40px; }
-.logo--footer img { width: auto; height: 56px; }
 .nav__links {
   display: flex;
   gap: 24px;
@@ -765,9 +764,8 @@ a { color: inherit; text-decoration: none; }
 }
 .facts strong { color: var(--heading); font-weight: 700; }
 
-/* Sources demo (js/grounding-demo.js). The markup rests as a stack of Library cards
-   (LibrarySearchResultCard, light theme). The script starts it as plain source titles
-   (.is-rows), then removes that class so every property below transitions into the card. */
+/* Library card (js/grounding-demo.js): the app's Library cards (LibrarySearchResultCard,
+   light theme) scrolling in a loop over a painting. */
 .lib-card {
   --lib-bg: var(--canvas);
   position: relative;
@@ -775,33 +773,18 @@ a { color: inherit; text-decoration: none; }
   min-width: 0;
   height: 500px;
   overflow: hidden;
-  background: var(--lib-bg);
+  background: var(--lib-bg) url(../assets/scenery/vineyard-rows.jpg) center / cover;
   border: 1px solid var(--border);
   border-radius: 28px;
 }
 .lib-card [hidden] { display: none !important; }
-.lib-card.is-static * { transition: none !important; }
 .sources { position: absolute; inset: 0; padding: 40px 28px 0; overflow: hidden; }
-/* Soft edges for the scrolling stack; only once the cards are moving. */
-.sources::before, .sources::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0;
-  z-index: 1;
-  height: 72px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
+/* Soft edges for the scrolling stack: masked, so the painting behind stays visible. */
+.lib-card .sources {
+  -webkit-mask-image: linear-gradient(transparent, #000 56px, #000 calc(100% - 72px), transparent);
+  mask-image: linear-gradient(transparent, #000 56px, #000 calc(100% - 72px), transparent);
 }
-.sources::before { top: 0; background: linear-gradient(var(--lib-bg), transparent); }
-.sources::after { bottom: 0; background: linear-gradient(transparent, var(--lib-bg)); }
-.lib-card.is-scrolling .sources::before, .lib-card.is-scrolling .sources::after { opacity: 1; }
-.sources__track { list-style: none; display: flex; flex-direction: column; gap: 12px; transition: gap 0.7s cubic-bezier(0.2, 0.9, 0.3, 1); }
-.is-rows .sources__track { gap: 8px; }
-/* Two copies of the stack, one gap apart: half the track plus half a gap is one full period. */
-.is-scrolling .sources__track { animation: sources-scroll 48s linear infinite; }
-.sources:hover .sources__track { animation-play-state: paused; }
-@keyframes sources-scroll { to { transform: translateY(calc(-50% - 6px)); } }
+.sources__track { list-style: none; display: flex; flex-direction: column; gap: 12px; will-change: transform; }
 
 .work {
   padding: 20px;
@@ -810,13 +793,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--canvas-secondary);
   border: 1px solid var(--border);
   border-radius: 20px;
-  transition: padding 0.7s cubic-bezier(0.2, 0.9, 0.3, 1), background-color 0.7s ease, border-color 0.7s ease;
 }
-.is-rows .work { padding-top: 0; padding-bottom: 0; background-color: transparent; border-color: transparent; }
-.is-pre .work { opacity: 0; }
-.work__fold { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 0.7s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.5s ease 0.15s; }
-.work__fold > * { min-height: 0; overflow: hidden; }
-.is-rows .work__fold { grid-template-rows: 0fr; opacity: 0; transition-delay: 0s; }
 .work__head {
   padding-bottom: 12px;
   display: flex;
@@ -835,37 +812,8 @@ a { color: inherit; text-decoration: none; }
 .work__icon { width: 16px; height: 16px; stroke-width: 1.5; }
 .work__chev { width: 12px; height: 12px; stroke-width: 1.6; color: var(--paragraph-dim); }
 .work__count { padding-top: 12px; font-size: 14px; line-height: 1.5; color: var(--paragraph); }
-/* The title is the shared element: a dim sans source title, centered, that crossfades into the
-   card's serif title while it slides to the left edge. */
-.work__title { align-self: flex-start; display: grid; transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1); }
-.is-rows .work__title { transform: translateX(var(--cx, 0px)); }
-.work__title span {
-  grid-area: 1 / 1;
-  justify-self: start;
-  white-space: nowrap;
-  line-height: 26px;
-  transform-origin: left center;
-  transition: opacity 0.45s ease, transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
-}
-.work__sans { font-size: 16px; color: var(--paragraph-dim); opacity: 0; transform: scale(1.2); }
+.work__title { white-space: nowrap; line-height: 26px; }
 .work__serif { font-family: var(--serif); font-size: 20px; color: var(--heading); }
-.is-rows .work__sans { opacity: 1; transform: none; }
-.is-rows .work__serif { opacity: 0; transform: scale(0.82); }
-
-.ground__writing {
-  position: absolute;
-  left: 0; right: 0; bottom: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1.6;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.ground__writing.is-leaving { opacity: 0; transform: translateY(8px) scale(0.96); }
-.ground__quill { width: 16px; height: 16px; flex-shrink: 0; transform-origin: 0 100%; color: var(--brown); }
 
 /* ThinkingShimmer: a bright band (half-width 40% of the text) sweeps left to right for 1 s,
    then rests off the right edge for 1 s. */
@@ -1123,19 +1071,46 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Footer ---------- */
 
+/* Footer: an inset panel in the app's dark brown, with the light logo, ending in an oversized
+   wordmark that spans the content width and fades out toward the bottom. */
 .footer {
-  max-width: calc(var(--content) + 2 * var(--gutter));
-  margin: 0 auto;
-  padding: 0 var(--gutter) 48px;
+  --footer-ink: 255, 250, 240;
+  margin: 0 12px 12px;
+  /* Side padding keeps the footer's content aligned with the page content above it. */
+  padding: 84px max(calc(var(--gutter) - 12px), calc((100% - var(--content)) / 2 - 12px)) 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
+  overflow: hidden;
+  border-radius: 84px;
+  background: #220F01;
+  container-type: inline-size;
 }
-.footer__divider { width: 100%; height: 2px; opacity: 0.5; }
 .footer__row { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.footer__brand { display: flex; flex-direction: column; gap: 4px; }
-.footer__tagline { font-size: 14px; color: var(--paragraph); }
-.footer__legal { font-weight: 500; font-size: 14px; color: rgba(34, 15, 1, 0.5); }
+.footer__brand { display: flex; flex-direction: column; gap: 12px; }
+.logo--footer img { width: auto; height: 56px; }
+.footer__tagline { font-size: 14px; color: rgba(var(--footer-ink), 0.7); }
+.footer .nav__links { color: rgb(var(--footer-ink)); }
+.footer .nav__links a:hover { color: var(--dark-green-text); }
+.footer__legal { font-weight: 500; font-size: 14px; color: rgba(var(--footer-ink), 0.5); }
+/* Libre Baskerville italic "Angrove" is about 3.55 em wide at -0.05em tracking, plus the italic
+   overhang; the side padding gives the gradient room to cover the overhanging glyphs. */
+.footer__wordmark {
+  margin: 8px -0.12em -0.2em;
+  padding: 0 0.12em;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: calc(100cqi / 3.72);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(180deg, rgba(var(--footer-ink), 0.75) 0%, rgba(var(--footer-ink), 0.25) 45%, rgba(var(--footer-ink), 0) 78%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  user-select: none;
+}
 
 /* ---------- Nav: active link + mobile menu ---------- */
 
@@ -1438,7 +1413,7 @@ a { color: inherit; text-decoration: none; }
 }
 .empty h2 { font-family: var(--serif); font-weight: 400; font-size: 26px; color: var(--heading); }
 
-.footer__disclaimer { max-width: 640px; font-size: 13px; line-height: 1.6; color: var(--paragraph-dim); }
+.footer__disclaimer { max-width: 640px; font-size: 13px; line-height: 1.6; color: rgba(var(--footer-ink), 0.55); }
 
 /* ---------- Responsive ---------- */
 
@@ -1501,11 +1476,13 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 992px) {
   :root { --gutter: 48px; }
   .section--panel { padding: 48px; border-radius: 48px; }
+  .footer { padding-top: 56px; border-radius: 48px; }
 }
 
 @media (max-width: 768px) {
   :root { --gutter: 24px; }
   .section--panel { padding: 24px 12px; border-radius: 32px; }
+  .footer { padding-top: 40px; border-radius: 32px; }
 }
 
 @media (max-width: 560px) {
@@ -1541,9 +1518,7 @@ a { color: inherit; text-decoration: none; }
   .audience { padding: 28px; }
   .lib-card { height: 460px; }
   .sources { padding: 32px 12px 0; }
-  .work__sans { font-size: 15px; }
   .work__serif { font-size: 18px; }
-  .ground__writing { bottom: 28px; font-size: 15px; }
   .private { padding: 40px 24px; min-height: 0; border-radius: 24px; }
   .private--facts { padding: 0; }
   .private--facts .private__copy { padding: 40px 24px 32px; }

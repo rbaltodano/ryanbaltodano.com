@@ -207,65 +207,64 @@
           <li><strong>Read the whole work.</strong> Every source can be opened and read in full, not just quoted.</li>
         </ul>
       </div>
-      <!-- Sources demo (js/grounding-demo.js): ten retrieved sources spring in as titles, then morph
-           into the app's Library cards and scroll in a loop. Without JS or with reduced motion the
-           cards rest as written here. Subjects and passage counts come from the app's corpus. -->
+      <!-- Library card (js/grounding-demo.js): the app's Library cards scroll in a loop over a
+           painting, following the page: scroll down and they move up, scroll up and they reverse.
+           Subjects and passage counts come from the app's corpus. -->
       <div class="lib-card" data-grounding-demo>
         <div class="sources">
           <ul class="sources__track" data-g-track>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 12.5v-9A1.5 1.5 0 0 1 5 2h7.5v9H5a1.5 1.5 0 0 0 0 3h7.5M6.5 5h3.5M6.5 7.5h3.5"/></svg><span>Thomistic Theology</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">Summa Theologica</span><span class="work__serif">Summa Theologica</span></p>
+              <p class="work__title"><span class="work__serif">Summa Theologica</span></p>
               <div class="work__fold"><div><p class="work__count">17,783 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 12.5v-9A1.5 1.5 0 0 1 5 2h7.5v9H5a1.5 1.5 0 0 0 0 3h7.5"/></svg><span>Sacred Scripture</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">World English Bible</span><span class="work__serif">World English Bible</span></p>
+              <p class="work__title"><span class="work__serif">World English Bible</span></p>
               <div class="work__fold"><div><p class="work__count">5,973 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6 8 2.5 13.5 6zM4 6.5v5M8 6.5v5M12 6.5v5M2.5 13.5h11"/></svg><span>Early &amp; Medieval Christianity</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">City of God</span><span class="work__serif">City of God</span></p>
+              <p class="work__title"><span class="work__serif">City of God</span></p>
               <div class="work__fold"><div><p class="work__count">2,801 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 9.6a4 4 0 1 1 5 0c-.5.5-.8 1-.8 1.7H6.3c0-.7-.3-1.2-.8-1.7zM6.5 13.8h3"/></svg><span>Philosophy</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">Nicomachean Ethics</span><span class="work__serif">Nicomachean Ethics</span></p>
+              <p class="work__title"><span class="work__serif">Nicomachean Ethics</span></p>
               <div class="work__fold"><div><p class="work__count">443 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h8M4 13.5h8M5 2.5c0 3 3 3.5 3 5.5s-3 2.5-3 5.5M11 2.5c0 3-3 3.5-3 5.5s3 2.5 3 5.5"/></svg><span>History</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">History of Rome</span><span class="work__serif">History of Rome</span></p>
+              <p class="work__title"><span class="work__serif">History of Rome</span></p>
               <div class="work__fold"><div><p class="work__count">5,937 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5" r="1.8"/><path d="M4.8 13c0-2 1.4-3.4 3.2-3.4s3.2 1.4 3.2 3.4M1 12.5c0-1.4.9-2.4 2.2-2.4M15 12.5c0-1.4-.9-2.4-2.2-2.4"/><circle cx="3.2" cy="6.6" r="1.3"/><circle cx="12.8" cy="6.6" r="1.3"/></svg><span>Councils &amp; Creeds</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">The Ecumenical Creeds</span><span class="work__serif">The Ecumenical Creeds</span></p>
+              <p class="work__title"><span class="work__serif">The Ecumenical Creeds</span></p>
               <div class="work__fold"><div><p class="work__count">63 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6 8 2.5 13.5 6zM4 6.5v5M8 6.5v5M12 6.5v5M2.5 13.5h11"/></svg><span>Early &amp; Medieval Christianity</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">Confessions</span><span class="work__serif">Confessions</span></p>
+              <p class="work__title"><span class="work__serif">Confessions</span></p>
               <div class="work__fold"><div><p class="work__count">655 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 6.5h.01M5 9.5h.01M7.5 6.5H11M7.5 9.5H11"/></svg><span>Catechisms &amp; Confessions</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">Heidelberg Catechism</span><span class="work__serif">Heidelberg Catechism</span></p>
+              <p class="work__title"><span class="work__serif">Heidelberg Catechism</span></p>
               <div class="work__fold"><div><p class="work__count">88 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 11V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13h7a1.5 1.5 0 0 0 1.5-1.5V11H6v.5A1.5 1.5 0 0 1 4.5 13M6 6h4M6 8.5h4"/></svg><span>Political &amp; Economic Thought</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">The Prince</span><span class="work__serif">The Prince</span></p>
+              <p class="work__title"><span class="work__serif">The Prince</span></p>
               <div class="work__fold"><div><p class="work__count">213 passages</p></div></div>
             </li>
             <li class="work">
               <div class="work__fold"><div><p class="work__head"><svg class="work__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h8M4 13.5h8M5 2.5c0 3 3 3.5 3 5.5s-3 2.5-3 5.5M11 2.5c0 3-3 3.5-3 5.5s3 2.5 3 5.5"/></svg><span>History</span><svg class="work__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M3.5 1.5 7 5 3.5 8.5"/></svg></p></div></div>
-              <p class="work__title"><span class="work__sans" aria-hidden="true">Parallel Lives</span><span class="work__serif">Parallel Lives</span></p>
+              <p class="work__title"><span class="work__serif">Parallel Lives</span></p>
               <div class="work__fold"><div><p class="work__count">2,103 passages</p></div></div>
             </li>
           </ul>
         </div>
-        <p class="ground__writing" data-g-writing hidden aria-hidden="true"><svg class="ground__quill" data-g-quill viewBox="0 0 23 22"><path fill="currentColor" d="M17.9793 0.696249C18.7706 0.463407 20.4895 -0.278776 21.5373 0.111328C22.585 0.501432 22.5115 2.62147 22.5115 2.62147C22.438 4.74153 22.2145 5.9678 21.8244 7.01557C21.4343 8.06334 20.1464 9.61478 19.5112 9.99266C18.3429 10.6135 16.6902 10.8725 16.564 10.9056L15.6781 11.1511C15.555 11.1844 15.47 11.2909 15.4656 11.4189C15.4601 11.5782 15.5837 11.7107 15.743 11.7162L16.7486 11.7511C17.9014 11.842 18.1294 11.6996 17.3655 12.4123C17.3655 12.4123 16.9369 12.8747 16.3481 13.2913C15.7593 13.7078 14.0593 13.9776 13.9803 13.9999L13.5785 14.0801C13.4554 14.1134 13.3704 14.2199 13.3659 14.3479C13.3604 14.5072 14.7371 14.3984 14.8963 14.4039C15.3086 14.4182 13.3192 15.8875 12.9647 16.1003C11.6523 16.8865 11.0286 16.5557 9.47645 16.5019L7.0833 16.1357L1.96496 20.9109C1.16065 21.6613 0.122224 21.8675 0.0202112 21.7582C-0.0818014 21.6488 0.19591 20.6272 1.00022 19.8768L11.3415 10.2257C11.6259 9.96041 11.8235 9.70581 11.5582 9.42144C11.2929 9.13708 10.9845 9.27291 10.7001 9.53822L5.93784 13.9813C5.75365 14.1531 5.22145 13.5844 5.23022 13.3314C5.30376 11.2108 6.4238 9.428 7.97488 7.98089L11.3292 4.84838C13.6657 2.66848 16.9993 0.984643 17.9793 0.696249Z"/></svg><span class="shimmer">Writing Response...</span></p>
       </div>
     </div>
     <div class="container">
@@ -414,12 +413,10 @@
 </main>
 
 <footer class="footer">
-  <img class="footer__divider" src="assets/home/divider.svg" alt="">
   <div class="footer__row">
     <div class="footer__brand">
       <a href="index.html" class="logo logo--footer">
-        <img src="assets/brand/angrove-leaf.png" alt="" width="53" height="56">
-        <span>Angrove</span>
+        <img src="assets/brand/angrove-logo-light.png" alt="Angrove" width="185" height="56">
       </a>
       <p class="footer__tagline">A private place for serious questions.</p>
     </div>
@@ -433,6 +430,7 @@
   </div>
   <p class="footer__disclaimer">Angrove is a tool for private study and reflection. It is not a substitute for professional counseling, spiritual direction, or clergy.</p>
   <p class="footer__legal">© 2026 Semper Doctrina. All rights reserved.</p>
+  <p class="footer__wordmark" aria-hidden="true">Angrove</p>
 </footer>
 
 <script src="js/site.js"></script>
