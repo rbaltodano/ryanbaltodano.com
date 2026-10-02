@@ -1,8 +1,8 @@
 // "A Map of Your Own Thinking" on the home page. The photo panel pins while the page scrolls,
-// and the scroll drives a horizontal track through three frames, right to left: an answer
+// and the scroll drives a horizontal track through four frames, right to left: an answer
 // streams in, one of its terms arrives as a saved Insight card (the app's dark docked card),
-// then the Insight Tree adds that Insight with the app's entrance (insight-tree.js, mode "add").
-// Each frame rests a moment before the next slides in.
+// the Insight Tree adds that Insight with the app's entrance (insight-tree.js, mode "add"),
+// and the tree swings into Study (mode "study"). Each frame rests a moment before the next.
 (function () {
   var flow = document.querySelector('[data-flow]');
   if (!flow) return;
@@ -12,12 +12,20 @@
   var frames = Array.prototype.slice.call(track.children);
   var text = flow.querySelector('[data-flow-text]');
   var insight = flow.querySelector('[data-flow-insight]');
-  var tree = flow.querySelector('[data-insight-tree]');
+  var tree = flow.querySelector('[data-scene="tree"] [data-insight-tree]');
+  var study = flow.querySelector('[data-scene="study"] [data-insight-tree]');
+  var last = frames.length - 1;
 
   // Scroll needed per frame of travel, as a share of the viewport height.
   var PER_FRAME = 0.9;
-  // Scroll progress (0–1) → track position (0 = first frame, 2 = last), with rests between.
-  var STOPS = [[0, 0], [0.16, 0], [0.42, 1], [0.58, 1], [0.84, 2], [1, 2]];
+  // Scroll progress (0–1) → track position (0 = first frame, last = final frame). Each frame
+  // gets an equal share of the scroll; it rests through the middle 30% of its share.
+  var STOPS = [];
+  frames.forEach(function (frame, i) {
+    var share = 1 / frames.length, start = i * share;
+    STOPS.push([i === 0 ? 0 : start + share * 0.35, i]);
+    STOPS.push([i === last ? 1 : start + share * 0.65, i]);
+  });
   function position(p) {
     for (var i = 1; i < STOPS.length; i++) {
       if (p <= STOPS[i][0]) {
@@ -27,7 +35,7 @@
         return a[1] + (b[1] - a[1]) * t;
       }
     }
-    return 2;
+    return last;
   }
 
   // ---------- The answer streams in, then its terms underline ----------
@@ -57,11 +65,11 @@
     setTimeout(function () { text.classList.add('is-marked'); }, reduceMotion ? 0 : 400 + words.length * 40);
   }
   function playInsight() { if (!played.insight) { played.insight = true; insight.classList.add('is-in'); } }
-  function playTree() { if (!played.tree) { played.tree = true; tree.dispatchEvent(new Event('journey:play')); } }
+  function playCard(name, card) { if (!played[name]) { played[name] = true; card.dispatchEvent(new Event('journey:play')); } }
 
   // ---------- Scroll → track ----------
   function layout() {
-    flow.style.height = (sticky.offsetHeight + 2 * PER_FRAME * window.innerHeight) + 'px';
+    flow.style.height = (sticky.offsetHeight + last * PER_FRAME * window.innerHeight) + 'px';
     update();
   }
   var pending = false;
@@ -76,7 +84,8 @@
     var r = sticky.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.6 && r.bottom > 0) playAnswer();
     if (Math.abs(x - 1) < 0.3) playInsight();
-    if (Math.abs(x - 2) < 0.3) playTree();
+    if (Math.abs(x - 2) < 0.3) playCard('tree', tree);
+    if (Math.abs(x - 3) < 0.3) playCard('study', study);
   }
   function request() { if (!pending) { pending = true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', request, { passive: true });
