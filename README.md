@@ -14,7 +14,7 @@ Then visit `http://localhost:8000`.
 ```
 site/
   index.html          Home (built from Figma "source-of-truth" / Home, node 169:7019)
-  features.html       How to use the app: Ask, Branch, Keep, Map (Insight Tree), Return, commands, habits
+  features.html       A scrolling journey from a question to the Insight Tree beside a pinned app window, then Model Tasks and commands
   how-it-works.html   Redirect to features.html
   insight-tree.html   Redirect to features.html#map
   model.html          Redirect to privacy.html#model (the model details now live on Privacy)
@@ -26,6 +26,7 @@ site/
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights
+  js/features-journey.js  Features: drives the pinned window's scenes from the step being read
   js/privacy-demo.js  Privacy: a question answered in airplane mode, with what did and didn't happen
   js/page-demos.js    Local-only internal-page interactions
   js/insight-tree.js  Home page Insight Tree animation (port of the app's canvas and Study mode)

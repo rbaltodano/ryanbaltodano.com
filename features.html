@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Features — Angrove</title>
-<meta name="description" content="How to use Angrove: ask, branch, save the terms that matter, map your ideas in the Insight Tree, and come back to what is unfinished.">
+<meta name="description" content="Follow one question in Angrove from the moment you ask it to the Insight Tree it grows: sources, definitions, Insights, branches, Midpoint, and Study.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="css/site.css">
@@ -35,315 +35,215 @@
     <div class="page-hero__inner">
       <p class="eyebrow">Features</p>
       <h1 class="display display--tight">Inquiry That Keeps Its <em>Shape.</em></h1>
-      <p class="lede">One answer exposes a hidden premise; one definition opens a different question; an old idea returns in a new light. Here is how to use Angrove so a conversation becomes a body of thought instead of another scrolling transcript.</p>
+      <p class="lede">Follow one question from the moment you ask it to the map of everything it led to.</p>
     </div>
   </section>
 
+  <!-- The journey (js/features-journey.js): the steps scroll past a pinned app window that
+       changes to match the step being read. Each scene is one of the app demos. -->
   <section class="section section--flush-top">
-    <nav class="container steps steps--5" aria-label="Features">
-      <a class="step" href="#ask">
-        <p class="eyebrow">01</p>
-        <h3>Ask</h3>
-        <p class="para">Start with the question as you actually hold it. There is nothing to configure.</p>
-      </a>
-      <a class="step" href="#branch">
-        <p class="eyebrow">02</p>
-        <h3>Branch</h3>
-        <p class="para">Follow an objection or tangent without losing the original line.</p>
-      </a>
-      <a class="step" href="#keep">
-        <p class="eyebrow">03</p>
-        <h3>Keep</h3>
-        <p class="para">Save the terms worth returning to as Insights.</p>
-      </a>
-      <a class="step" href="#map">
-        <p class="eyebrow">04</p>
-        <h3>Map</h3>
-        <p class="para">See how your ideas connect in the Insight Tree, and grow it.</p>
-      </a>
-      <a class="step" href="#return">
-        <p class="eyebrow">05</p>
-        <h3>Return</h3>
-        <p class="para">Come back to what's unfinished through Home.</p>
-      </a>
-    </nav>
-  </section>
-
-  <section class="section">
-    <div class="container rows">
-
-      <div class="row" id="ask">
-        <div class="row__copy">
+    <div class="container journey" data-journey>
+      <div class="journey__steps">
+        <div class="journey__step row__copy" id="ask" data-step="ask" data-show="conversation" data-state="ask">
           <p class="eyebrow">01 · Ask</p>
-          <h2>Answers That Read Like a <em>Page</em>, Not a Chat Log</h2>
-          <p>Routine questions get a direct answer. Harder ones get deeper reasoning, with a short note on how Angrove approached the question. You see the approach, never raw scratch work.</p>
-          <p>Terms worth a closer look are underlined in the answer, so you can open any of them without leaving your place.</p>
+          <h2>Start With the Question <em>You Actually Have</em></h2>
+          <p>There is nothing to set up. Ask it the way you would ask someone who has read everything. Routine questions get a direct answer; harder ones get deeper reasoning, with a short note on the approach and never raw scratch work.</p>
         </div>
-        <div class="row__visual row__visual--stack">
-          <div class="window" data-window="conversation">
-            <div class="w-read">
-              <p class="w-read__eyebrow">Add to study topic</p>
-              <h3 class="w-read__title">Aquinas on Justice</h3>
-              <p class="w-read__question">What does Aquinas say about the virtue of justice?</p>
-              <hr class="w-read__rule">
-              <p class="w-read__thinking">Show Thinking <span>›</span></p>
-              <p class="w-read__answer">Here's the thing about <button type="button" class="w-term" data-term="justice">justice</button> in the view of <button type="button" class="w-term" data-term="aquinas">Aquinas</button>: it's a <button type="button" class="w-term" data-term="virtue">virtue</button>, but a more specific one than being “good” in general. Justice is about our relationship with others, giving each what they are due. That is where <button type="button" class="w-term" data-term="distributive">distributive justice</button> comes in: how a community shares its common goods among its members.</p>
-            </div>
-            <div class="w-card is-closed" data-card>
-              <div class="w-card__head">
-                <span class="w-card__title"><img src="assets/home/icon-insight.svg" alt=""><span data-card-title></span></span>
-                <button type="button" class="w-save" data-card-save aria-pressed="false" aria-label="Save as Insight"><img src="assets/home/response-controls.svg" alt=""></button>
-              </div>
-              <p class="w-card__context">In: Aquinas on Justice</p>
-              <p class="w-card__body" data-card-body></p>
-            </div>
-            <div class="w-dock" data-dock>
-              <span class="w-dock__group" data-dock-idle><img src="assets/home/icon-plus.svg" alt="">Idle<img class="w-spin" src="assets/home/icon-spinner.svg" alt=""></span>
-              <span class="w-thinking" data-dock-busy hidden>Thinking</span>
-              <span class="w-dock__group" data-dock-card hidden><span>Idle</span><span class="w-dock__action"><img src="assets/home/icon-select.svg" alt="">Select</span><span class="w-dock__action"><img src="assets/home/icon-quote.svg" alt="" style="width:17px;height:12px">Quote</span></span>
-            </div>
-          </div>
-          <p class="window-hint" data-hint>Tap an underlined term.</p>
+        <div class="journey__step row__copy" id="source" data-step="source" data-show="conversation" data-state="source">
+          <p class="eyebrow">02 · Check the Source</p>
+          <h2>See <em>Where It Came From</em></h2>
+          <p>When an answer quotes the Library, the source sits right after the sentence. Tap it and the passage opens, so you can read the words in their place.</p>
+          <p>It can still be wrong, so check anything that matters.</p>
         </div>
-      </div>
-
-      <div class="row row--flip" id="branch">
-        <div class="row__copy">
-          <p class="eyebrow">02 · Branch</p>
-          <h2>Follow a Line of Thought <em>Without Losing Your Place</em></h2>
-          <p>A conversation can hold branches side by side. Start one from a quoted concept or a copy of an answer, and pursue the objection, the tangent, or the harder version of the question. The original line stays exactly where you left it.</p>
+        <div class="journey__step row__copy" id="define" data-step="define" data-show="conversation" data-state="define">
+          <p class="eyebrow">03 · Define</p>
+          <h2>Any Term, Defined <em>in Context</em></h2>
+          <p>Terms worth a closer look are underlined. Tap one, or long-press any word, for a definition written for this conversation rather than a dictionary entry. Save it and it becomes an Insight.</p>
         </div>
-        <div class="row__visual row__visual--stack">
-          <div class="window" data-window="branches">
-            <div class="w-branches" data-track>
-              <div class="w-branch">
-                <p class="w-branch__bar"><i class="is-on"></i><i></i></p>
-                <h3 class="w-read__title">Aquinas on Justice</h3>
-                <p class="w-read__question">What does Aquinas say about the virtue of justice?</p>
-                <p class="w-read__answer" style="margin-top:18px">Justice is about our relationship with others: <strong>giving each what they are due</strong>. Aquinas calls it the chief of the moral virtues, because it orders us toward the common good.</p>
-                <button type="button" class="w-quote" data-branch-open><img src="assets/home/icon-insight.svg" alt="">Branch from “giving each their due”</button>
-              </div>
-              <div class="w-branch">
-                <button type="button" class="w-back" data-branch-back>‹ Main line</button>
-                <p class="w-branch__bar"><i></i><i class="is-on"></i></p>
-                <p class="w-quote" style="margin-top:0"><img src="assets/home/icon-insight.svg" alt="">“giving each their due”</p>
-                <p class="w-read__question" style="margin-top:22px">Is mercy ever unjust, then?</p>
-                <p class="w-read__answer" style="margin-top:18px">Not for Aquinas. Mercy doesn't take away what is owed; it gives more than is owed. So mercy goes beyond justice without working against it.</p>
-              </div>
-            </div>
-            <div class="w-dock"><span class="w-dock__group"><img src="assets/home/icon-plus.svg" alt="">Idle<img class="w-spin" src="assets/home/icon-spinner.svg" alt=""></span></div>
-          </div>
-          <p class="window-hint" data-hint>Open a branch, then go back to the main line.</p>
+        <div class="journey__step row__copy" id="keep" data-step="keep" data-show="library">
+          <p class="eyebrow">04 · Keep</p>
+          <h2>Insights Gather <em>in One Library</em></h2>
+          <p>Every Insight you save lands in your Insight Library. Save the same term from a different conversation and its new meaning joins the same card, so you can see how a word has worked across your thinking.</p>
         </div>
-      </div>
-
-      <div class="row" id="keep">
-        <div class="row__copy">
-          <p class="eyebrow">03 · Keep</p>
-          <h2>Keep the Terms <em>That Matter</em></h2>
-          <p>Tap an underlined term for a definition written for the context of your conversation, not a dictionary entry. Quote it, branch from it, or save it as an <strong>Insight</strong>.</p>
-          <p>Saved Insights gather in your Insight Library and join the conversation's <a href="#map">Insight Tree</a>. Save the same term from a different conversation and its new meaning is added to the same card.</p>
+        <div class="journey__step row__copy" id="branch" data-step="branch" data-show="branches">
+          <p class="eyebrow">05 · Branch</p>
+          <h2>Follow a Tangent <em>Without Losing Your Place</em></h2>
+          <p>Start a branch from a quoted idea and pursue the objection, the tangent, or the harder version of the question. The original line stays exactly where you left it.</p>
         </div>
-        <div class="row__visual row__visual--stack">
-          <div class="window" data-window="library-insights">
-            <div class="w-lib">
-              <h3 class="w-lib__title">Your <em>Insights</em></h3>
-              <p class="w-lib__sub">Saved from every conversation.</p>
-              <div class="w-list">
-                <button type="button" class="w-list__item" data-insight="distributive"><img src="assets/home/icon-insight.svg" alt="">Distributive justice<small>2 contexts</small></button>
-                <button type="button" class="w-list__item" data-insight="virtue"><img src="assets/home/icon-insight.svg" alt="">Virtue<small>1 context</small></button>
-                <button type="button" class="w-list__item" data-insight="telos"><img src="assets/home/icon-insight.svg" alt="">Telos<small>1 context</small></button>
-              </div>
-            </div>
-            <div class="w-card is-closed" data-card>
-              <div class="w-card__head">
-                <span class="w-card__title"><img src="assets/home/icon-insight.svg" alt=""><span data-card-title></span></span>
-                <img src="assets/home/response-controls.svg" alt="" style="width:64px;height:16px">
-              </div>
-              <div class="w-contexts" data-card-body></div>
-            </div>
-            
-          </div>
-          <p class="window-hint" data-hint>Open an Insight to see every context it was saved from.</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="section" id="map">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">04 · Map</p>
-        <h2 class="display display--tight">The Insight Tree: A Map of What You've <em>Pursued</em></h2>
-        <p class="para para--16">Not a map of everything, only of the questions you asked and the ideas you chose to keep. It grows as you study, it's built entirely on your iPhone, and over time it shows how your thinking changed.</p>
-      </div>
-    </div>
-    <div class="container rows">
-
-      <div class="row">
-        <div class="row__copy">
-          <p class="eyebrow">Node Concepts</p>
+        <div class="journey__step row__copy" id="map" data-step="map" data-show="grow">
+          <p class="eyebrow">06 · Map</p>
           <h2>Subjects Take Shape <em>on Their Own</em></h2>
-          <p>After each answer, Angrove quietly reviews the turn in the background and may add one <strong>Node Concept</strong>: the broader subject the conversation has reached. Whether it becomes a new node or joins an existing one is decided by how closely its meaning matches the subjects already in your tree.</p>
-          <p>It never saves Insights for you. Those are always your choice.</p>
+          <p>After each answer, Angrove may add a Node Concept: the broader subject the conversation has reached. Your Insights settle around the subjects they belong to, and the Insight Tree grows into a map of what you have pursued.</p>
         </div>
-        <div class="row__visual">
-          <div class="tree-card window" data-insight-tree data-mode="grow" aria-label="An Insight Tree growing around the Node Concept Greek Philosophy">
-            <canvas class="tree-card__canvas"></canvas>
-            <div class="tree-card__layer"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row row--flip">
-        <div class="row__copy">
-          <p class="eyebrow">Insights</p>
-          <h2>Insights Are <em>the Terms You Keep</em></h2>
-          <p>An <strong>Insight</strong> is a definition you saved from a conversation. It settles near the Node Concepts it relates to, in that conversation's tree and in your global tree, which gathers every Insight you've saved.</p>
-          <p>Changes to the global tree wait for you: when new bookmarks are ready to be placed, you choose when to update it.</p>
-        </div>
-        <div class="row__visual row__visual--stack">
-          <div class="window window--canvas" data-window="global">
-            <svg class="w-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              <line x1="50" y1="36" x2="22" y2="20" vector-effect="non-scaling-stroke"></line>
-              <line x1="50" y1="36" x2="80" y2="22" vector-effect="non-scaling-stroke"></line>
-              <line class="is-hidden" data-new-line x1="50" y1="36" x2="24" y2="58" vector-effect="non-scaling-stroke"></line>
-              <line class="is-hidden" data-new-line x1="50" y1="36" x2="76" y2="56" vector-effect="non-scaling-stroke"></line>
-            </svg>
-            <div class="w-node" style="left:50%;top:36%"><img src="assets/home/icon-node.svg" alt="">Justice</div>
-            <span class="w-chip" style="left:22%;top:20%"><img src="assets/home/icon-insight.svg" alt="">Common good</span>
-            <span class="w-chip" style="left:80%;top:22%"><img src="assets/home/icon-insight.svg" alt="">Natural law</span>
-            <span class="w-chip is-hidden" data-new style="left:50%;top:92%"><img src="assets/home/icon-insight.svg" alt="">Distributive justice</span>
-            <span class="w-chip is-hidden" data-new style="left:50%;top:92%"><img src="assets/home/icon-insight.svg" alt="">Virtue</span>
-            <div class="w-card" data-global-prompt>
-              <p class="w-card__heading">2 new Insights</p>
-              <p class="w-card__body" style="min-height:0">Saved since your global tree was last arranged. Update it to place them.</p>
-            </div>
-            <div class="w-dock w-dock--split"><button type="button" class="w-button" data-global-later>Later</button><button type="button" class="w-button w-button--primary" data-global-update>Update Tree</button></div>
-          </div>
-          <p class="window-hint" data-hint>Your global tree only changes when you say so.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="row__copy">
-          <p class="eyebrow">Midpoint</p>
+        <div class="journey__step row__copy" id="midpoint" data-step="midpoint" data-show="midpoint">
+          <p class="eyebrow">07 · Midpoint</p>
           <h2>Find the Idea <em>Between</em> Ideas</h2>
-          <p>Select two to eight Insights or Node Concepts and drag a handle toward the ones that should weigh most. Angrove proposes five candidate concepts, and your phone picks the one whose meaning sits closest to the weighted center of your selection.</p>
-          <p>It's a calculation in the space of meanings, not a request to blend some words together.</p>
+          <p>Select two Insights and drag the handle toward the one that should weigh more. Angrove proposes candidates, and your phone picks the one whose meaning sits closest to that point.</p>
+          <p>Try it: drag the handle, then Place.</p>
         </div>
-        <!-- A window into the Insight Tree in Midpoint mode. The app's docked cards (Select Midpoint,
-             then the placed Insight) sit inside the canvas; the dock's controls sit just under it. -->
-        <div class="row__visual row__visual--stack row__visual--dock" data-midpoint-panel>
-          <div class="tree-card tree-card--mid window" data-insight-tree data-mode="midpoint" aria-label="Midpoint mode in the Insight Tree: a handle on the line between the Insights Natural Law and Conscience. Drag it to set the balance.">
-            <canvas class="tree-card__canvas"></canvas>
-            <div class="tree-card__layer"></div>
-            <div class="mid-cards">
-              <div class="mid-card" data-mid-percent hidden aria-live="polite">
-                <p class="mid-card__heading">Select Midpoint</p>
-              <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Natural Law</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="a:-1" aria-label="Less Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-a>50%</b><button type="button" data-mid-step="a:1" aria-label="More Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
-              <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Conscience</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="b:-1" aria-label="Less Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-b>50%</b><button type="button" data-mid-step="b:1" aria-label="More Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
-              </div>
-              <div class="mid-card mid-card--insight" data-mid-result hidden>
-                <p class="mid-card__title"><img src="assets/home/icon-insight.svg" alt=""><span>Synderesis</span><img class="mid-card__actions" src="assets/home/response-controls.svg" alt=""></p>
-                <p class="mid-card__body">The innate grasp of the first principles of practical reason, which conscience then applies to particular acts.</p>
-              </div>
-            </div>
-          </div>
-          <div class="mid-dock">
-            <span class="mid-dock__actions" data-mid-controls hidden>
-              <button type="button" data-mid-center><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.5v7M12.5 3.5v7M4 7h6M7 5v4"/></svg>Center</button>
-              <button type="button" data-mid-place><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg>Place</button>
-            </span>
-            <span class="mid-dock__status" data-mid-status>Idle</span>
-          </div>
-          <p class="window-hint"><span data-mid-hint>Two Insights are selected, then Midpoint begins.</span> <button type="button" data-mid-reset hidden>Try again</button></p>
-        </div>
-      </div>
-
-      <div class="row row--flip">
-        <div class="row__copy">
-          <p class="eyebrow">Make Node</p>
+        <div class="journey__step row__copy" id="make-node" data-step="make-node" data-show="make-node">
+          <p class="eyebrow">08 · Make Node</p>
           <h2>Grow an Insight <em>Into a Subject</em></h2>
-          <p>When a single Insight deserves room of its own, promote it to a Node Concept. Angrove generates three distinct ideas beneath it and spaces them apart so they don't crowd what's already there.</p>
+          <p>When one Insight deserves room of its own, promote it to a Node Concept. Angrove generates three distinct ideas beneath it and spaces them so they do not crowd what is already there.</p>
         </div>
-        <div class="row__visual row__visual--stack">
-          <div class="window window--canvas" data-window="make-node">
-            <svg class="w-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              <line x1="24" y1="22" x2="50" y2="40" vector-effect="non-scaling-stroke"></line>
-              <line class="is-hidden" data-child-line x1="50" y1="40" x2="24" y2="66" vector-effect="non-scaling-stroke"></line>
-              <line class="is-hidden" data-child-line x1="50" y1="40" x2="76" y2="62" vector-effect="non-scaling-stroke"></line>
-              <line class="is-hidden" data-child-line x1="50" y1="40" x2="74" y2="22" vector-effect="non-scaling-stroke"></line>
-            </svg>
-            <div class="w-node" style="left:24%;top:22%;transform:scale(0.85)"><img src="assets/home/icon-node.svg" alt="">Greek Philosophy</div>
-            <span class="w-chip is-selected" data-telos style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt="">Telos</span>
-            <div class="w-node is-hidden-node" data-telos-node style="left:50%;top:40%;opacity:0"><img src="assets/home/icon-node.svg" alt="">Telos</div>
-            <span class="w-chip is-hidden" data-child data-x="24" data-y="66" style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt=""><span>Final cause</span></span>
-            <span class="w-chip is-hidden" data-child data-x="76" data-y="62" style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt=""><span>Natural function</span></span>
-            <span class="w-chip is-hidden" data-child data-x="74" data-y="22" style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt=""><span>Human flourishing</span></span>
-            <div class="w-dock w-dock--split"><button type="button" class="w-button"><img src="assets/home/icon-quote.svg" alt="" style="width:17px;height:12px">Quote</button><button type="button" class="w-button w-button--primary" data-make>Make Node</button></div>
-          </div>
-          <p class="window-hint" data-hint>Promote the selected Insight. <button type="button" data-reset hidden>Try again</button></p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="row__copy">
-          <p class="eyebrow">Study</p>
+        <div class="journey__step row__copy" id="study" data-step="study" data-show="study">
+          <p class="eyebrow">09 · Study</p>
           <h2>Study a Subject in <em>Three Dimensions</em></h2>
-          <p>Choose Study on any Node Concept and the camera swings down to eye level. Its Insights spread out around it in 3D, and the rest of the tree fades away.</p>
-          <p>Drag the ring to turn it like a turntable, tap an Insight to bring it forward, and exit to land back exactly where you were in the tree.</p>
+          <p>Choose Study on a Node Concept and the camera swings down to eye level, with its Insights spread out around it. Drag to turn it like a turntable.</p>
         </div>
-        <div class="row__visual row__visual--stack">
-          <div class="tree-card window" data-insight-tree data-mode="study" aria-label="Study mode: the Node Concept Greek Philosophy and its Insights in 3D. Drag to rotate.">
-            <canvas class="tree-card__canvas"></canvas>
-            <div class="tree-card__layer"></div>
-            <div class="tree-card__hint">Drag to rotate</div>
-          </div>
-          <p class="window-hint" data-hint>Drag to turn it like the app’s turntable.</p>
+        <div class="journey__step row__copy" id="return" data-step="return" data-show="home">
+          <p class="eyebrow">10 · Return</p>
+          <h2>Come Back to <em>What’s Unfinished</em></h2>
+          <p>Home opens with a Question of the Day drawn from an idea you left unresolved, beside a few quiet cards: a date in history, a Node Concept that has not connected yet, a term you looked up and never saved, a line you wrote yourself.</p>
         </div>
       </div>
-
+      <div class="journey__stage">
+          <div class="journey__scene" data-scene="conversation">
+  <div class="window" data-window="conversation">
+    <div class="w-read">
+      <p class="w-read__eyebrow">Add to study topic</p>
+      <h3 class="w-read__title">Aquinas on Justice</h3>
+      <p class="w-read__question">What does Aquinas say about the virtue of justice?</p>
+      <hr class="w-read__rule">
+      <p class="w-read__thinking">Show Thinking <span>›</span></p>
+      <p class="w-read__answer"><button type="button" class="w-term" data-term="aquinas">Aquinas</button> defines <button type="button" class="w-term" data-term="justice">justice</button> as “a habit whereby a man renders to each one his due by a constant and perpetual will.” <button type="button" class="w-cite" data-cite>Summa Theologica II-II, q. 58</button> It is a <button type="button" class="w-term" data-term="virtue">virtue</button>, but a more specific one than being “good” in general: it orders us toward others. That is where <button type="button" class="w-term" data-term="distributive">distributive justice</button> comes in, governing how a community shares its common goods.</p>
+    </div>
+    <div class="w-card is-closed" data-card>
+      <div class="w-card__head">
+        <span class="w-card__title"><img src="assets/home/icon-insight.svg" alt=""><span data-card-title></span></span>
+        <button type="button" class="w-save" data-card-save aria-pressed="false" aria-label="Save as Insight"><img src="assets/home/response-controls.svg" alt=""></button>
+      </div>
+      <p class="w-card__context">In: Aquinas on Justice</p>
+      <p class="w-card__body" data-card-body></p>
+    </div>
+    <div class="w-card w-card--reader is-closed" data-reader>
+      <p class="w-card__context" style="text-transform:uppercase;letter-spacing:.04em;color:var(--light-green)">Moral theology · Summa Theologica</p>
+      <blockquote>“Justice is a habit whereby a man renders to each one his due by a constant and perpetual will.”</blockquote>
+      <p class="w-card__ref">II-II, Question 58, Article 1</p>
+    </div>
+    <div class="w-dock" data-dock>
+      <span class="w-dock__group" data-dock-idle><img src="assets/home/icon-plus.svg" alt="">Idle<img class="w-spin" src="assets/home/icon-spinner.svg" alt=""></span>
+      <span class="w-thinking" data-dock-busy hidden>Thinking</span>
+      <span class="w-dock__group" data-dock-card hidden><span>Idle</span><span class="w-dock__action"><img src="assets/home/icon-select.svg" alt="">Select</span><span class="w-dock__action"><img src="assets/home/icon-quote.svg" alt="" style="width:17px;height:12px">Quote</span></span>
+    </div>
+  </div>
+          </div>
+          <div class="journey__scene" data-scene="library">
+  <div class="window" data-window="library-insights">
+    <div class="w-lib">
+      <h3 class="w-lib__title">Your <em>Insights</em></h3>
+      <p class="w-lib__sub">Saved from every conversation.</p>
+      <div class="w-list">
+        <button type="button" class="w-list__item" data-insight="distributive"><img src="assets/home/icon-insight.svg" alt="">Distributive justice<small>2 contexts</small></button>
+        <button type="button" class="w-list__item" data-insight="virtue"><img src="assets/home/icon-insight.svg" alt="">Virtue<small>1 context</small></button>
+        <button type="button" class="w-list__item" data-insight="telos"><img src="assets/home/icon-insight.svg" alt="">Telos<small>1 context</small></button>
+      </div>
+    </div>
+    <div class="w-card is-closed" data-card>
+      <div class="w-card__head">
+        <span class="w-card__title"><img src="assets/home/icon-insight.svg" alt=""><span data-card-title></span></span>
+        <img src="assets/home/response-controls.svg" alt="" style="width:64px;height:16px">
+      </div>
+      <div class="w-contexts" data-card-body></div>
+    </div>
+  
+  </div>
+          </div>
+          <div class="journey__scene" data-scene="branches">
+  <div class="window" data-window="branches">
+    <div class="w-branches" data-track>
+      <div class="w-branch">
+        <p class="w-branch__bar"><i class="is-on"></i><i></i></p>
+        <h3 class="w-read__title">Aquinas on Justice</h3>
+        <p class="w-read__question">What does Aquinas say about the virtue of justice?</p>
+        <p class="w-read__answer" style="margin-top:18px">Justice is about our relationship with others: <strong>giving each what they are due</strong>. Aquinas calls it the chief of the moral virtues, because it orders us toward the common good.</p>
+        <button type="button" class="w-quote" data-branch-open><img src="assets/home/icon-insight.svg" alt="">Branch from “giving each their due”</button>
+      </div>
+      <div class="w-branch">
+        <button type="button" class="w-back" data-branch-back>‹ Main line</button>
+        <p class="w-branch__bar"><i></i><i class="is-on"></i></p>
+        <p class="w-quote" style="margin-top:0"><img src="assets/home/icon-insight.svg" alt="">“giving each their due”</p>
+        <p class="w-read__question" style="margin-top:22px">Is mercy ever unjust, then?</p>
+        <p class="w-read__answer" style="margin-top:18px">Not for Aquinas. Mercy doesn't take away what is owed; it gives more than is owed. So mercy goes beyond justice without working against it.</p>
+      </div>
+    </div>
+    <div class="w-dock"><span class="w-dock__group"><img src="assets/home/icon-plus.svg" alt="">Idle<img class="w-spin" src="assets/home/icon-spinner.svg" alt=""></span></div>
+  </div>
+          </div>
+          <div class="journey__scene" data-scene="grow">
+  <div class="tree-card window" data-insight-tree data-mode="grow" aria-label="An Insight Tree growing around the Node Concept Greek Philosophy">
+    <canvas class="tree-card__canvas"></canvas>
+    <div class="tree-card__layer"></div>
+  </div>
+          </div>
+          <div class="journey__scene journey__scene--dock" data-scene="midpoint" data-midpoint-panel>
+<div class="tree-card tree-card--mid window" data-insight-tree data-mode="midpoint" aria-label="Midpoint mode in the Insight Tree: a handle on the line between the Insights Natural Law and Conscience. Drag it to set the balance.">
+  <canvas class="tree-card__canvas"></canvas>
+  <div class="tree-card__layer"></div>
+  <div class="mid-cards">
+    <div class="mid-card" data-mid-percent hidden aria-live="polite">
+      <p class="mid-card__heading">Select Midpoint</p>
+    <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Natural Law</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="a:-1" aria-label="Less Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-a>50%</b><button type="button" data-mid-step="a:1" aria-label="More Natural Law"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
+    <p class="mid-row"><img src="assets/home/icon-insight.svg" alt=""><span class="mid-row__name">Conscience</span><i></i><span class="mid-stepper"><button type="button" data-mid-step="b:-1" aria-label="Less Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M8.75 3 4.75 7l4 4"/></svg></button><b data-mid-b>50%</b><button type="button" data-mid-step="b:1" aria-label="More Conscience"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5.25 3l4 4-4 4"/></svg></button></span></p>
+    </div>
+    <div class="mid-card mid-card--insight" data-mid-result hidden>
+      <p class="mid-card__title"><img src="assets/home/icon-insight.svg" alt=""><span>Synderesis</span><img class="mid-card__actions" src="assets/home/response-controls.svg" alt=""></p>
+      <p class="mid-card__body">The innate grasp of the first principles of practical reason, which conscience then applies to particular acts.</p>
+    </div>
+  </div>
+</div>
+<div class="mid-dock">
+  <span class="mid-dock__actions" data-mid-controls hidden>
+    <button type="button" data-mid-center><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 3.5v7M12.5 3.5v7M4 7h6M7 5v4"/></svg>Center</button>
+    <button type="button" data-mid-place><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2v10M3 8l4 4 4-4"/></svg>Place</button>
+  </span>
+  <span class="mid-dock__status" data-mid-status>Idle</span>
+</div>
+<p class="window-hint"><span data-mid-hint>Two Insights are selected, then Midpoint begins.</span> <button type="button" data-mid-reset hidden>Try again</button></p>
+          </div>
+          <div class="journey__scene" data-scene="make-node">
+  <div class="window window--canvas" data-window="make-node">
+    <svg class="w-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="24" y1="22" x2="50" y2="40" vector-effect="non-scaling-stroke"></line>
+      <line class="is-hidden" data-child-line x1="50" y1="40" x2="24" y2="66" vector-effect="non-scaling-stroke"></line>
+      <line class="is-hidden" data-child-line x1="50" y1="40" x2="76" y2="62" vector-effect="non-scaling-stroke"></line>
+      <line class="is-hidden" data-child-line x1="50" y1="40" x2="74" y2="22" vector-effect="non-scaling-stroke"></line>
+    </svg>
+    <div class="w-node" style="left:24%;top:22%;transform:scale(0.85)"><img src="assets/home/icon-node.svg" alt="">Greek Philosophy</div>
+    <span class="w-chip is-selected" data-telos style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt="">Telos</span>
+    <div class="w-node is-hidden-node" data-telos-node style="left:50%;top:40%;opacity:0"><img src="assets/home/icon-node.svg" alt="">Telos</div>
+    <span class="w-chip is-hidden" data-child data-x="24" data-y="66" style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt=""><span>Final cause</span></span>
+    <span class="w-chip is-hidden" data-child data-x="76" data-y="62" style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt=""><span>Natural function</span></span>
+    <span class="w-chip is-hidden" data-child data-x="74" data-y="22" style="left:50%;top:40%"><img src="assets/home/icon-insight.svg" alt=""><span>Human flourishing</span></span>
+    <div class="w-dock w-dock--split"><button type="button" class="w-button"><img src="assets/home/icon-quote.svg" alt="" style="width:17px;height:12px">Quote</button><button type="button" class="w-button w-button--primary" data-make>Make Node</button></div>
+  </div>
+          </div>
+          <div class="journey__scene" data-scene="study">
+  <div class="tree-card window" data-insight-tree data-mode="study" aria-label="Study mode: the Node Concept Greek Philosophy and its Insights in 3D. Drag to rotate.">
+    <canvas class="tree-card__canvas"></canvas>
+    <div class="tree-card__layer"></div>
+    <div class="tree-card__hint">Drag to rotate</div>
+  </div>
+          </div>
+          <div class="journey__scene" data-scene="home">
+  <div class="window" data-window="home">
+    <div class="w-home">
+      <div class="w-home__card" data-home-card>
+        <p class="w-home__eyebrow" data-home-eyebrow></p>
+        <h3 class="w-home__title" data-home-title></h3>
+        <p class="w-home__body" data-home-body></p>
+        <span class="w-home__action" data-home-action></span>
+      </div>
+    </div>
+    <div class="w-pager" data-home-pager></div>
+    <div class="w-dock"><span class="w-dock__group"><img src="assets/home/icon-plus.svg" alt="">New Conversation</span></div>
+  </div>
+          </div>
+      </div>
     </div>
   </section>
 
-  <section class="section" id="return">
-    <div class="container rows">
-
-      <div class="row row--flip">
-        <div class="row__copy">
-          <p class="eyebrow">05 · Return</p>
-          <h2>Come Back to <em>What's Unfinished</em></h2>
-          <p>Home opens with one Question of the Day, drawn from an idea you left unresolved in a recent conversation. It asks for reflection, not recall. Alongside it, a few quiet cards appear only when there's something worth showing:</p>
-          <div class="cards">
-            <div class="card"><h3>Today in History</h3><p>An event from today's date, from a small catalog written by hand, not generated.</p></div>
-            <div class="card"><h3>Loose Thread</h3><p>A Node Concept that hasn't connected to anything else yet.</p></div>
-            <div class="card"><h3>Terms You Glossed Over</h3><p>A definition you looked up days ago and never saved.</p></div>
-            <div class="card"><h3>Your Quote</h3><p>Something you wrote that was an original thought of your own.</p></div>
-          </div>
-        </div>
-        <div class="row__visual row__visual--stack">
-          <div class="window" data-window="home">
-            <div class="w-home">
-              <div class="w-home__card" data-home-card>
-                <p class="w-home__eyebrow" data-home-eyebrow></p>
-                <h3 class="w-home__title" data-home-title></h3>
-                <p class="w-home__body" data-home-body></p>
-                <span class="w-home__action" data-home-action></span>
-              </div>
-            </div>
-            <div class="w-pager" data-home-pager></div>
-            <div class="w-dock"><span class="w-dock__group"><img src="assets/home/icon-plus.svg" alt="">New Conversation</span></div>
-          </div>
-          <p class="window-hint" data-hint>Home changes as your study does.</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="section">
+  <section class="section" id="under-the-hood">
     <div class="container rows">
       <div class="row">
         <div class="row__copy">
@@ -377,22 +277,6 @@
         <div class="card"><code>/clear</code><h3>Start the Thread Over</h3><p>Clears the conversation in place and keeps its name and study topic.</p></div>
         <div class="card"><code>/rename</code><h3>Name It Yourself</h3><p>Give the conversation a title, before or after your first question.</p></div>
       </div>
-    </div>
-  </section>
-
-  <section class="section section--flush-top">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Getting the most from it</p>
-        <h2 class="display display--tight">A Few Habits That <em>Help</em></h2>
-      </div>
-      <div class="cards cards--4">
-        <div class="card"><h3>Ask It As You Hold It</h3><p>Bring the real question, doubts and all. Angrove represents your view at its strongest before it questions it.</p></div>
-        <div class="card"><h3>Push Back</h3><p>If an answer doesn't hold, say why. It is built to revise its conclusions when your reasoning warrants it.</p></div>
-        <div class="card"><h3>Branch, Don't Overwrite</h3><p>Take the objection or tangent into a branch, so the main line stays clear to come back to.</p></div>
-        <div class="card"><h3>Save Only What You'll Return To</h3><p>Insights shape your tree. Keep the terms that matter and let the rest go.</p></div>
-      </div>
-      <p class="note" style="margin-top: 32px;"><strong>It can still be wrong.</strong> Angrove can make mistakes, including about sources. Treat it as a serious study companion, not an authority beyond question. <a href="privacy.html#model">How the model works</a></p>
     </div>
   </section>
 
@@ -436,5 +320,6 @@
 <script src="js/site.js"></script>
 <script src="js/app-windows.js"></script>
 <script src="js/insight-tree.js"></script>
+<script src="js/features-journey.js"></script>
 </body>
 </html>

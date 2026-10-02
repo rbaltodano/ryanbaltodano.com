@@ -28,6 +28,8 @@
   function initTree(root) {
   var mode = root.dataset.mode || '';
   var isMid = mode === 'midpoint';
+  // Inside the Features journey a card plays when its scene is shown, not when it scrolls into view.
+  var journeyScene = root.closest('[data-scene]');
 
   var canvas = root.querySelector('canvas');
   var layer = root.querySelector('.tree-card__layer');
@@ -728,6 +730,11 @@
 
   function tick(now) {
     if (!running) return;
+    if (journeyScene && !journeyScene.classList.contains('is-active')) {
+      last = now;
+      requestAnimationFrame(tick);
+      return;
+    }
     var dt = Math.min((now - last) / 1000, 1 / 20);
     last = now;
     var time = now / 1000;
@@ -924,9 +931,9 @@
     // Replay each time the window comes back into view.
     // Study mode lets the tree grow first, then swings the camera down into 3D.
     var studyTimer = null;
-    new IntersectionObserver(function (entries) {
+    var onView = function (visible) {
       clearTimeout(studyTimer);
-      if (entries[0].isIntersecting) {
+      if (visible) {
         if (mode === 'stream') { setStep(1); return; }
         if (state.step >= 2) return;
         setStep(2);
@@ -935,7 +942,12 @@
       } else if (!state.userSpun && !mid) {
         setStep(0);
       }
-    }, { threshold: 0.35 }).observe(root);
+    };
+    if (journeyScene) {
+      root.addEventListener('journey:play', function () { onView(true); });
+    } else {
+      new IntersectionObserver(function (entries) { onView(entries[0].isIntersecting); }, { threshold: 0.35 }).observe(root);
+    }
   }
 
   new IntersectionObserver(function (entries) {

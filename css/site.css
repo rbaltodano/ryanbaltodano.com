@@ -1444,6 +1444,38 @@ a { color: inherit; text-decoration: none; }
 
 .footer__disclaimer { max-width: 640px; font-size: 13px; line-height: 1.6; color: rgba(var(--footer-ink), 0.55); }
 
+/* Features journey (js/features-journey.js): the steps scroll past a pinned app window that
+   changes to match the step being read. */
+.journey { --stage-h: min(660px, calc(100vh - 64px)); display: flex; align-items: flex-start; gap: 84px; }
+.journey__steps { flex: 1; min-width: 0; }
+.journey__step {
+  min-height: 82vh;
+  max-width: 520px;
+  justify-content: center;
+  opacity: 0.25;
+  transition: opacity 0.5s ease;
+}
+.journey__step.is-active { opacity: 1; }
+.journey__step:first-child { min-height: calc(var(--stage-h) + 40px); }
+.journey__stage { flex: 1; min-width: 0; position: sticky; top: calc((100vh - var(--stage-h)) / 2); height: var(--stage-h); }
+.journey__scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px) scale(0.97);
+  transition: opacity 0.6s var(--ease-menu), transform 0.7s var(--ease-menu), visibility 0s 0.7s;
+}
+.journey__scene.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.journey__scene .window, .journey__scene .tree-card--mid.window { flex: 1; min-height: 0; height: auto; }
+.journey__scene--dock .window-hint { margin-top: 6px; }
+/* The answer streams in, word by word, in the conversation scene. */
+.journey .jw { opacity: 0; filter: blur(3px); transition: opacity 0.45s ease-out, filter 0.45s ease-out; }
+.journey .jw.is-in { opacity: 1; filter: none; }
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1280px) {
@@ -1520,6 +1552,11 @@ a { color: inherit; text-decoration: none; }
   /* Stacked: no pinned card; each step shows its own card above its text. */
   .tree-story__stage { display: none; }
   .tree-step, .tree-step.is-active { min-height: 0; opacity: 1; gap: 16px; }
+  /* Stacked journey: the window pins to the top and the steps scroll up beneath it. */
+  .journey { --stage-h: 58vh; flex-direction: column; align-items: stretch; gap: 0; }
+  .journey__stage { flex: none; order: -1; top: 8px; width: 100%; z-index: 5; }
+  .journey__stage::before { content: ""; position: absolute; inset: -8px -24px -20px; z-index: -1; background: var(--canvas); }
+  .journey__step, .journey__step:first-child { min-height: 70vh; max-width: none; justify-content: flex-start; padding-top: 40px; }
   .tree-step + .tree-step { margin-top: 56px; }
   .tree-step__card { display: block; height: 400px; margin-bottom: 8px; }
   .private__demo { align-items: flex-start; }
@@ -1608,6 +1645,8 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .logo:hover .logo__leaf { animation: none; }
   .nav, .nav__burger i, .nav__inner > .nav__links, .nav__links a, .nav .btn-pill { transition: none !important; }
+  .journey__scene, .journey .jw { transition: none; }
+  .journey .jw { opacity: 1; filter: none; }
   .spin, .private__dot, .tasks .active .state, .glide-in, .it-handle img, .it-chip__loading, .it-chip.is-selected::after, .mid-card, .mid-card__body { animation: none; }
   .mid-dock__status.is-thinking { animation: none; color: rgba(74, 50, 28, 0.5); background: none; }
   .it-chip--placed.is-revealed .it-chip__loading { display: none; }
