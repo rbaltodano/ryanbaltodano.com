@@ -347,10 +347,9 @@ a { color: inherit; text-decoration: none; }
 .hero__vine--wind { display: block; aspect-ratio: var(--vine-ratio, 358 / 335); overflow: hidden; transform: translate3d(0, var(--parallax, 0px), 0); will-change: transform; }
 /* Parallax (js/vine-wind.js): as the page scrolls, each vine falls behind it by a share of the
    scroll distance, the left one further back than the right, so they read as different depths. */
-/* The left vine has its own frame shape, and sways at a different pace and phase so the two
-   never move in lockstep. */
+/* Each vine keeps its own frame shape; the matched idle loops run at 12 fps. */
 .hero__vine--left.hero__vine--wind { --vine-ratio: 352 / 362; }
-.hero__vine--left.hero__vine--wind img { --wind-dur: 2.9s; animation-delay: -1.1s; }
+.hero__vine--left.hero__vine--wind img { --wind-dur: 1s; animation-delay: 0s; }
 .hero__vine--right.hero__vine--wind img { --wind-dur: 1s; }
 .hero__vine--wind img { display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 2.4s) steps(12) infinite; will-change: transform; }
 @keyframes vine-wind { to { transform: translateX(-100%); } }
