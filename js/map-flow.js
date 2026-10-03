@@ -111,6 +111,7 @@
     });
   })(text);
   var played = {};
+  var treeShown = false;
   function playAnswer() {
     if (played.answer) return;
     played.answer = true;
@@ -173,7 +174,10 @@
     var r = sticky.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.6 && r.bottom > 0) playAnswer();
     if (Math.abs(x - 1) < 0.3) playInsight();
-    if (x > 1.7) playCard('tree', tree);
+    if (x > 1.7) {
+      playCard('tree', tree);
+      if (!treeShown) { treeShown = true; tree.dispatchEvent(new Event('journey:visible')); }
+    } else treeShown = false;
     tree.dispatchEvent(new CustomEvent('journey:study-progress', {
       detail: { progress: reduceMotion ? (phase >= 2.5 ? 1 : 0) : Math.max(0, phase - 2) }
     }));

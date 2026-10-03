@@ -198,7 +198,8 @@
     { title: 'Eudaimonia', angle: Math.PI / 8, elev: 0 },
     { title: 'Cynicism', angle: Math.PI / 8 + 2 * Math.PI / 3, elev: MAX_ELEVATION },
     { title: 'Epicureanism', angle: Math.PI / 8 + 4 * Math.PI / 3, elev: -MAX_ELEVATION }
-  ]).map(function (d, i) {
+  ]).map(makeInsight);
+  function makeInsight(d, i) {
     return {
       title: d.title,
       bond: BOND,
@@ -209,7 +210,7 @@
       vis: new Spring(0),
       lineStart: null
     };
-  });
+  }
 
   function treeDirection(angle, elev) {
     return norm([Math.cos(angle), Math.sin(angle), Math.tan(elev)]);
@@ -218,14 +219,41 @@
 
   // The home journey adds whichever term was chosen in the answer. Natural philosophy
   // sits farther from Greek Philosophy, with its longer connector retained in Study.
+  // Choosing a different term later adds a further Insight to the same tree.
+  var TERMS = { eudaimonia: ['Eudaimonia', 1], 'natural-philosophy': ['Natural philosophy', 1.45] };
+  var addedKeys = ['eudaimonia'];     // the default Insight, until a term is chosen before the tree is first seen
+  var claimed = false;
+  var unrevealed = [];                // Insights added after the tree played, waiting to be on screen
   if (isAdd && scrollStudy) {
     root.addEventListener('journey:insight', function (event) {
-      var natural = event.detail.key === 'natural-philosophy';
+      var key = event.detail.key, term = TERMS[key];
       var newest = insights[insights.length - 1];
-      newest.title = natural ? 'Natural philosophy' : 'Eudaimonia';
-      newest.bond = BOND * (natural ? 1.45 : 1);
-      newest.el.querySelector('span').textContent = newest.title;
-      root.setAttribute('aria-label', 'An Insight Tree around the Node Concept Greek Philosophy, with the Insight ' + newest.title + ' being added, turning into 3D Study as you scroll. Drag to rotate in Study');
+      if (!claimed && state.step < 2) {
+        claimed = true;
+        addedKeys = [key];
+        newest.title = term[0];
+        newest.bond = BOND * term[1];
+        newest.el.querySelector('span').textContent = term[0];
+      } else {
+        claimed = true;
+        if (addedKeys.indexOf(key) >= 0) return;
+        addedKeys.push(key);
+        var ins = makeInsight({ title: term[0], angle: Math.PI / 8 + Math.PI, elev: 0 }, insights.length);
+        ins.bond = BOND * term[1];
+        insights.push(ins);
+        studyDirs = sphereSpread(insights.map(function (i) { return treeDirection(i.finalAngle, i.finalElev); }));
+        if (state.step >= 2) unrevealed.push(ins);
+      }
+      var titles = addedKeys.map(function (k) { return TERMS[k][0]; }).join(' and ');
+      root.setAttribute('aria-label', 'An Insight Tree around the Node Concept Greek Philosophy, with the Insight ' + titles + ' being added, turning into 3D Study as you scroll. Drag to rotate in Study');
+    });
+    // The tree frame is on screen: Insights added while it was away appear now, in place.
+    root.addEventListener('journey:visible', function () {
+      var list = unrevealed;
+      unrevealed = [];
+      list.forEach(function (ins) {
+        later(reduceMotion ? 0 : 250, function () { reveal(ins); ripple(treePoint(ins)); });
+      });
     });
   }
 
@@ -285,10 +313,12 @@
     if (isAdd) {
       // The Node Concept and its earlier Insights are already in place; only the last one is new.
       node.vis.v = node.vis.target = 1; node.vis.pending = null;
-      insights.slice(0, -1).forEach(function (ins) { ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity; });
-      var newest = insights[insights.length - 1], at = treePoint(newest);
-      // No camera pan: the Insight appears in place with its usual entrance and ripple.
-      later(t, function () { reveal(newest); ripple(at); });
+      insights.slice(0, 2).forEach(function (ins) { ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity; });
+      // No camera pan: the chosen Insights appear in place with their usual entrance and ripple.
+      unrevealed = [];
+      insights.slice(2).forEach(function (ins) {
+        later(t, function () { reveal(ins); ripple(treePoint(ins)); });
+      });
       return t + REVEAL_SETTLE + CONNECTOR_GROW * 1000;
     }
     if (mode === 'study' || isMid) {
