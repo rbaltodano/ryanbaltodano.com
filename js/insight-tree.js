@@ -50,7 +50,7 @@
   // The Guide's Midpoint example opens on that same Greek Philosophy tree, then moves to a second
   // Node Concept (Virtue) that hasn't been seen yet.
   var greek = guideTree || guide;
-  var CL2_X = 700;                       // where the second cluster sits, in world units
+  var CL2_X = 700, CL2_Y = 460;          // where the second cluster sits (up and to the right), in world units
   var studyProgress = null;
   // Inside the Features journey a card plays when its scene is shown, not when it scrolls into view.
   var journeyScene = root.closest('[data-scene]');
@@ -368,7 +368,7 @@
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
   function treePoint(ins) {
-    return [Math.cos(ins.ang.v) * ins.bond + (ins.cl2 ? CL2_X : 0), Math.sin(ins.ang.v) * ins.bond, 0];
+    return [Math.cos(ins.ang.v) * ins.bond + (ins.cl2 ? CL2_X : 0), Math.sin(ins.ang.v) * ins.bond + (ins.cl2 ? CL2_Y : 0), 0];
   }
   function panTo(x, y) { var now = performance.now(); state.panX.to(x, 0, now); state.panY.to(y, 0, now); }
   function ripple(world, strength, radiusScale) {
@@ -859,12 +859,12 @@
       var t = fast ? 0 : 1000;
       later(t, function () { from.el.classList.add('is-selected'); picked = [from]; sync(); });
       t += fast ? 0 : 900;
-      later(t, function () { panTo(CL2_X, 0); });
+      later(t, function () { panTo(CL2_X, CL2_Y); });
       t += fast ? 0 : FOCUS_SETTLE;
       later(t, function () {
         var now = performance.now();
         node2.vis.to(1, 0, now);
-        ripple([CL2_X, 0, 0]);
+        ripple([CL2_X, CL2_Y, 0]);
       });
       virtue.forEach(function (ins, k) {
         later(t + (fast ? 0 : 350 + k * 260), function () { reveal(ins); ripple(treePoint(ins), 0.8); });
@@ -944,7 +944,7 @@
   function insightWorld(ins, p) {
     var h = ins.bond;
     var a = ins.ang.v, e = ins.elv.v;
-    var tree = [Math.cos(a) * h + (ins.cl2 ? CL2_X : 0), Math.sin(a) * h, h * Math.tan(e)];
+    var tree = [Math.cos(a) * h + (ins.cl2 ? CL2_X : 0), Math.sin(a) * h + (ins.cl2 ? CL2_Y : 0), h * Math.tan(e)];
     if (p <= 0) return tree;
     var dir = slerp(norm(tree), studyDirs[ins.order], p);
     var r = lerp(len(tree), ins.bond, p);
@@ -1131,7 +1131,7 @@
       var span = mid.span, uiK = clamp(W / 700, 0.7, 1);
       var fit = 1;
       if (span && mid.base) {
-        fit = Math.min((W / 2 - 80 * uiK) / (Math.max(span.dx, 1) / 2), (H / 2 - 60 * uiK) / (Math.max(span.dy, 1) / 2)) / mid.base;
+        fit = Math.min((W / 2 - 120 * uiK) / (Math.max(span.dx, 1) / 2), (H / 2 - 80 * uiK) / (Math.max(span.dy, 1) / 2)) / mid.base;
       }
       mid.zk.to(clamp(fit, 0.2, 1), 0, now);
       mid.zk.step(dt, now);
@@ -1164,7 +1164,7 @@
 
     var node2Proj = null;
     if (node2) {
-      node2Proj = project(cam, [CL2_X, 0, 0]);
+      node2Proj = project(cam, [CL2_X, CL2_Y, 0]);
       var nv2 = clamp(node2.vis.v, 0, 1);
       styleEl(node2.el, node2Proj.x, node2Proj.y, f.ui * node2Proj.scale, nv2 * rest, (1 - nv2) * 24, (1 - nv2) * 8, 10);
     }
