@@ -1709,10 +1709,10 @@ a { color: inherit; text-decoration: none; }
 .window--guide .w-read__answer { -webkit-mask-image: none; mask-image: none; }
 /* ConversationBranch's heading stack: leaf (24) and title (Libre Baskerville 34) 16 apart, the
    question in quotation marks (trailing, 285 max), then the response. */
-.window--guide .w-read--thread { padding: 30px 24px 0; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: left; }
+.window--guide .w-read--thread { padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: left; }
 .w-read--thread .w-read__leaf { width: 24px; height: 24px; }
 .w-read--thread .w-read__title { margin: 0 !important; font-size: 34px; line-height: 1.3; text-align: center; color: var(--brown); }
-.w-read--thread .w-read__col { width: min(100%, 440px); margin-top: 16px; display: flex; flex-direction: column; gap: 16px; }
+.w-read--thread .w-read__col { width: min(100%, 440px); display: flex; flex-direction: column; gap: 16px; }
 .w-read--thread .w-read__question { position: relative; align-self: flex-end; width: min(285px, 100%); padding: 0 22px; margin: 0 0 16px !important; font-family: var(--serif); font-weight: 400; font-size: 16px; line-height: 1.6; color: var(--brown); }
 .w-read--thread .w-read__quote { position: absolute; font-size: 28px; line-height: 1; }
 .w-read--thread .w-read__question .w-read__quote:first-child { top: 0; left: 0; }
