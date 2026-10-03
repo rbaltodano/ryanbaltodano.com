@@ -1,7 +1,8 @@
 // Live app windows on the internal pages. Each [data-window] is a small working view of an
 // Aquinas feature, modeled on the app's own behavior:
-//   conversation   underlined terms open a docked definition card (DockedInsightCards); the dock
-//                  reads Thinking while it's generated, then shows Select / Quote
+//   conversation   the answer streams in and its terms underline; a tapped term shimmers while its
+//                  definition is generated, then the card rises from the foot of the window and
+//                  the window dims behind it (DockedInsightCards)
 //   branches       a quoted concept opens a new branch beside the main line
 //   library-insights  saved Insights, with every context a term was saved from
 //   home           Question of the Day and the four discovery cards
@@ -72,11 +73,46 @@
       var title = win.querySelector('[data-card-title]');
       var body = win.querySelector('[data-card-body]');
       var save = win.querySelector('[data-card-save]');
+      var scrim = win.querySelector('[data-scrim]');
+      var answer = win.querySelector('.w-read__answer');
       var dock = dockController(win);
       var saved = {}, current = null, timer = null;
 
-      // As on the home page: the tapped term shimmers while its definition is generated, then
-      // the docked card animates in at the foot of the window. Choosing another term replays it.
+      // As on the home page: the answer streams in word by word, then its terms underline.
+      var words = [];
+      (function wrap(el) {
+        Array.prototype.slice.call(el.childNodes).forEach(function (child) {
+          if (child.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var word = document.createElement('span');
+              word.className = 'fw';
+              word.textContent = part;
+              words.push(word);
+              frag.appendChild(word);
+            });
+            child.replaceWith(frag);
+          } else if (child.nodeType === 1) { wrap(child); }
+        });
+      })(answer);
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        answer.classList.add('is-pending');
+        var seen = new IntersectionObserver(function (entries) {
+          if (!entries[0].isIntersecting) return;
+          seen.disconnect();
+          words.forEach(function (w, i) { setTimeout(function () { w.classList.add('is-in'); }, 200 + i * 40); });
+          setTimeout(function () { answer.classList.remove('is-pending'); }, 400 + words.length * 40);
+        }, { threshold: 0.5 });
+        seen.observe(win);
+      } else {
+        words.forEach(function (w) { w.classList.add('is-in'); });
+      }
+
+      // The tapped term shimmers while its definition is generated, then the card rises from the
+      // foot of the window and the window dims behind it, as the app's drawer does. Tapping the
+      // dimmed window (or Escape) puts the card away.
       function open(key) {
         clearTimeout(timer);
         current = key;
@@ -88,6 +124,7 @@
         });
         // Put the card away without a transition, so the next one animates in from scratch.
         card.classList.add('is-reset', 'is-closed');
+        scrim.classList.remove('is-open');
         void card.offsetWidth;
         card.classList.remove('is-reset');
         void term.offsetWidth;
@@ -100,16 +137,19 @@
           title.textContent = DEFS[key][0];
           body.textContent = DEFS[key][1];
           card.classList.remove('is-closed');
+          scrim.classList.add('is-open');
           dock('card');
-          setHint(win, 'Tap the bookmark to save it as an Insight.');
+          setHint(win, saved[key] ? 'Saved. It now lives in your Insight Tree.' : 'Tap the bookmark to save it as an Insight.');
         }, wait(2000));
       }
       function close() {
         clearTimeout(timer);
         current = null;
         card.classList.add('is-closed');
+        scrim.classList.remove('is-open');
         win.querySelectorAll('[data-term]').forEach(function (t) { t.classList.remove('is-active', 'is-generating'); });
         dock('idle');
+        setHint(win, 'Tap \u201Chabit\u201D or \u201Cprudence\u201D in the answer.');
       }
       win.querySelectorAll('[data-term]').forEach(function (t) {
         t.addEventListener('click', function (e) {
@@ -125,6 +165,7 @@
       });
       card.addEventListener('click', function (e) { e.stopPropagation(); });
       win.addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && current) close(); });
     },
 
     branches: function (win) {
