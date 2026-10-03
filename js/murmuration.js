@@ -103,6 +103,7 @@
         f: f,
         seed: rand(0, 1000),
         ring: rand(24, 96),            // the distance it likes to circle the cursor at
+        bend: (Math.random() < 0.5 ? -1 : 1) * rand(0.15, 0.6),   // radians off a straight approach
         sprite: Math.floor(Math.random() * sprites.length),
         alpha: rand(0.35, 0.7)
       });
@@ -167,7 +168,15 @@
         var ux = rx / rd, uy = ry / rd;
         var pull = Math.max(-2.5, Math.min(2.5, (rd - b.ring) / 40));
         var cx2 = -uy - ux * pull, cy2 = ux - uy * pull, cl = Math.hypot(cx2, cy2) || 1;
-        dvx += cx2 / cl * FOLLOW_SPEED * follow; dvy += cy2 / cl * FOLLOW_SPEED * follow;
+        cx2 /= cl; cy2 /= cl;
+        // On the way in, each bird bends its line a little to one side (and the bend drifts),
+        // so they arrive along a fan of curved paths rather than one straight beam. The bend
+        // fades out as it reaches its ring.
+        var approach = Math.max(0, Math.min(1, (rd - b.ring) / 160));
+        var bend = (b.bend + Math.sin(clock * 0.012 + b.seed) * 0.18) * approach;
+        var bc = Math.cos(bend), bs = Math.sin(bend);
+        dvx += (cx2 * bc - cy2 * bs) * FOLLOW_SPEED * follow;
+        dvy += (cx2 * bs + cy2 * bc) * FOLLOW_SPEED * follow;
       }
       acc.x += (dvx - b.vx) * 0.6; acc.y += (dvy - b.vy) * 0.6;
 
