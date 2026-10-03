@@ -1592,7 +1592,7 @@ a { color: inherit; text-decoration: none; }
 /* Home "A Map of Your Own Thinking" (js/map-flow.js): a photo panel, inset like the footer,
    that pins while the page scrolls; three transparent panels slide through it; the tree becomes Study in place. */
 .section--flow { padding: 0; }
-.flow { --flow-column-width: 600px; --flow-content-pad: 40px; --flow-frame-pad: var(--gutter); position: relative; margin: 0 12px; }
+.flow { --flow-column-width: 600px; --flow-content-pad: 40px; --flow-frame-pad: var(--gutter); position: relative; width: calc(100% - 24px); max-width: 1920px; margin: 0 auto; }
 .flow__sticky {
   position: sticky;
   top: 12px;
