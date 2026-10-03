@@ -18,9 +18,9 @@
 
   var COLORS = ['#86803E', '#A28F1E', '#614C40'];
   var FLOCKS = 3;
-  var SPEED = 1.6, FOLLOW_SPEED = 3.1;   // px per 60fps frame
+  var SPEED = 1.6, FOLLOW_SPEED = 4.3;   // px per 60fps frame
   var LOOP_SPEED = 1.3;                   // how fast the flocks travel round the box
-  var FORCE = 0.055;                      // max change in velocity per frame: how sharply they turn
+  var FORCE = 0.08;                       // max change in velocity per frame: how sharply they turn
   var VIEW = 70, SPACE = 22;              // neighbour radius, personal space
   var TURN = 0.14;                        // how quickly the drawn heading catches up
 
@@ -91,7 +91,7 @@
   }
 
   function init() {
-    var n = W < 600 ? 36 : 75;
+    var n = W < 600 ? 60 : 130;
     birds = [];
     for (var i = 0; i < n; i++) {
       var f = i % FLOCKS, p = loop(f / FLOCKS);
@@ -118,9 +118,9 @@
 
   function step(k) {
     clock += k;
-    follow += ((pointer ? 1 : 0) - follow) * (1 - Math.exp(-k * 0.05));
+    follow += ((pointer ? 1 : 0) - follow) * (1 - Math.exp(-k * 0.08));
     if (pointer) {
-      var e = 1 - Math.exp(-k * 0.18);
+      var e = 1 - Math.exp(-k * 0.3);
       aim.x += (pointer.x - aim.x) * e; aim.y += (pointer.y - aim.y) * e;
     }
     var speed = SPEED + (FOLLOW_SPEED - SPEED) * follow;
