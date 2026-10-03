@@ -2153,3 +2153,4 @@ a { color: inherit; text-decoration: none; }
 .window--guide .w-act.is-copied .w-act__check { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 @media (prefers-reduced-motion: reduce) { .window--guide .w-act { transition: none; } }
 .window.window--guide[data-window="conversation"] .w-card__title { color: var(--brown); }
+.window.window--guide[data-window="conversation"] .w-card__body, .window.window--guide[data-window="conversation"] .w-card.is-closed .w-card__body { opacity: 1; filter: none; translate: none; transition: none; }
