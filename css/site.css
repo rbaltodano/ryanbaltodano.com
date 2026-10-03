@@ -340,7 +340,7 @@ a { color: inherit; text-decoration: none; }
    (the phone is centered, so half the viewport out from its middle): the right one level with the
    headline block, the left one a little above the phone's middle. */
 .hero__vine { position: absolute; z-index: -1; translate: 0 -50%; width: min(580px, 29vw); height: auto; pointer-events: none; user-select: none; }
-.hero__vine--left { left: calc(50% - 50vw); top: 247px; }
+.hero__vine--left { left: calc(50% - 50vw - 48px); top: 247px; }
 /* A vine blowing in the wind: a sheet of 12 frames in one row, shown through a window one frame wide.
    The sheet steps along the row, one frame per step, then loops (js/vine-wind.js pauses it
    off screen). With reduced motion it rests on the first frame. */
@@ -351,14 +351,16 @@ a { color: inherit; text-decoration: none; }
 .hero__vine--left.hero__vine--wind { --vine-ratio: 352 / 362; }
 .hero__vine--left.hero__vine--wind img { --wind-dur: 1s; animation-delay: 0s; }
 .hero__vine--right.hero__vine--wind img { --wind-dur: 1s; }
-.hero__vine--wind img { display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 2.4s) steps(12) infinite; will-change: transform; }
+.hero__vine--wind img { position: relative; left: var(--vine-inset, 0px); display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 2.4s) steps(12) infinite; will-change: transform; }
 @keyframes vine-wind { to { transform: translateX(-100%); } }
 /* One paint-on entrance; its final frame matches idle frame one. JS removes it on completion. */
-.hero__vine--wind img.hero__vine-paint { position: absolute; inset: 0 auto auto 0; width: 2400%; animation: vine-paint 4s steps(24) 1 both; }
+.hero__vine--wind img.hero__vine-paint { position: absolute; inset: 0 auto auto var(--vine-inset, 0px); width: 2400%; animation: vine-paint 4s steps(24) 1 both; }
 @keyframes vine-paint { to { transform: translateX(-100%); } }
 
 @media (prefers-reduced-motion: reduce) { .hero__vine--wind img { animation: none; } }
-.hero__vine--right { right: calc(50% - 50vw); top: -233px; }
+/* Shift the artwork inside its clipped window so the cut stem stays beyond the edge
+   without adding horizontal overflow on phones. */
+.hero__vine--right { --vine-inset: clamp(32px, 3vw, 48px); right: calc(50% - 50vw); top: -233px; }
 
 /* Page entrance, after the app's boot reveal: everything above the fold rises 32px while a soft
    mask sweeps down the screen, with a fade 1.2 screens tall, so each height has its own fade.
@@ -2158,7 +2160,7 @@ a { color: inherit; text-decoration: none; }
   /* Wider than the screen, so the left vine is pinned by its right edge and its extra width
      hangs off the left, where overflow doesn't widen the page (iOS Safari ignores overflow-x: clip
      here and would zoom the whole page out to fit it). */
-  .hero__vine--left { left: auto; right: calc(50% - 50vw); }
+  .hero__vine--left { left: auto; right: calc(50% - 50vw + 64px); }
   /* Its top edge sits just above the phone, clear of the Launch Status button. */
   .hero__vine--right { top: 170px; }
   .hero__vine--wind { transform: none; }
