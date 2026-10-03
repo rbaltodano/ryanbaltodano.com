@@ -363,6 +363,7 @@
     });
   }
   function reveal(ins) {
+    ins.shown = true;
     ins.vis.to(1, 0, performance.now());
     later(REVEAL_SETTLE, function () { ins.lineStart = performance.now(); });
   }
@@ -374,6 +375,20 @@
       return 0;
     }
     var t = nodeDelayMs + ENTRANCE_START;
+    if (guideTree) {
+      // The Guide's trees start with the Node Concept, Cynicism, and Epicureanism already in place;
+      // only an Insight saved in the Definitions example enters, and only the first time it's seen.
+      node.vis.v = node.vis.target = 1; node.vis.pending = null;
+      var entering = insights.filter(function (ins) {
+        if (ins.key && !ins.shown) return true;
+        ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity;
+        return false;
+      });
+      entering.forEach(function (ins) {
+        later(t, function () { reveal(ins); ripple(treePoint(ins)); });
+      });
+      return entering.length ? t + REVEAL_SETTLE + CONNECTOR_GROW * 1000 : 0;
+    }
     if (isAdd) {
       // The Node Concept and its earlier Insights are already in place; only the last one is new.
       node.vis.v = node.vis.target = 1; node.vis.pending = null;

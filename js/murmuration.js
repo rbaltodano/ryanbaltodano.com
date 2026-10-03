@@ -1,5 +1,10 @@
-/* Murmuration of question marks in the closing CTA. They stream around the edge of the box;
-   when the cursor enters they gather and follow it. */
+/* Murmuration of question marks in the closing CTA. Flocks stream around the edge of the box;
+   when the cursor enters they gather and circle it. Each mark turns so its dot leads, the way
+   a bird's head does.
+
+   Smoothness comes from steering rather than pushing: every rule produces a desired velocity,
+   the bird turns toward it with a capped force, and its drawn heading eases toward its actual
+   heading. Nothing snaps, so nothing jitters. */
 (function () {
   var box = document.querySelector('.cta');
   if (!box) return;
@@ -11,139 +16,235 @@
   box.insertBefore(canvas, box.firstChild);
   var ctx = canvas.getContext('2d');
 
-  var W = 0, H = 0, dpr = 1, birds = [], leaders = [], pointer = null, raf = 0, visible = true;
-  var COLORS = ['134,128,62', '162,143,30', '97,76,64'];
+  var COLORS = ['#86803E', '#A28F1E', '#614C40'];
+  var FLOCKS = 3;
+  var SPEED = 1.6, FOLLOW_SPEED = 3.1;   // px per 60fps frame
+  var LOOP_SPEED = 1.3;                   // how fast the flocks travel round the box
+  var FORCE = 0.055;                      // max change in velocity per frame: how sharply they turn
+  var VIEW = 70, SPACE = 22;              // neighbour radius, personal space
+  var TURN = 0.14;                        // how quickly the drawn heading catches up
+
+  window.__mm = { birds: function () { return birds; }, step: function (k) { step(k); }, draw: function () { draw(); } };
+  var W = 0, H = 0, dpr = 1, birds = [], sprites = [], raf = 0, visible = true, clock = 0;
+  var pointer = null, aim = { x: 0, y: 0 }, follow = 0;
 
   function rand(a, b) { return a + Math.random() * (b - a); }
 
-  function resize() {
-    var r = box.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = r.width; H = r.height;
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // Each colour/size is drawn once to its own canvas, centred on the glyph's visual middle,
+  // so a frame is just rotated image blits.
+  function makeSprites() {
+    sprites = [];
+    var sizes = [18, 23, 28, 33];
+    for (var c = 0; c < COLORS.length; c++) {
+      for (var s = 0; s < sizes.length; s++) {
+        var px = sizes[s] * dpr, pad = Math.ceil(px * 0.3);
+        var cv = document.createElement('canvas'), g = cv.getContext('2d');
+        g.font = '400 ' + px + 'px "Libre Baskerville", Georgia, serif';
+        var m = g.measureText('?');
+        var w = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
+        var h = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
+        cv.width = Math.ceil(w + pad * 2); cv.height = Math.ceil(h + pad * 2);
+        g.font = '400 ' + px + 'px "Libre Baskerville", Georgia, serif';
+        g.fillStyle = COLORS[c];
+        g.fillText('?', pad + m.actualBoundingBoxLeft, pad + m.actualBoundingBoxAscent);
+        sprites.push(cv);
+      }
+    }
   }
 
-  // A point on a rounded rectangle hugging the inside edge of the box, u in [0, 1).
-  function onPath(u) {
-    var m = Math.min(56, W * 0.1, H * 0.2), w = W - 2 * m, h = H - 2 * m;
-    var rad = Math.min(w, h) / 2, sw = w - 2 * rad, sh = h - 2 * rad;
-    var arc = Math.PI * rad / 2, total = 2 * sw + 2 * sh + 4 * arc;
-    var d = (u % 1) * total, cx, cy, a;
-    if (d < sw) return [m + rad + d, m];
-    d -= sw;
-    if (d < arc) { a = d / rad - Math.PI / 2; return [m + w - rad + Math.cos(a) * rad, m + rad + Math.sin(a) * rad]; }
-    d -= arc;
-    if (d < sh) return [m + w, m + rad + d];
-    d -= sh;
-    if (d < arc) { a = d / rad; return [m + w - rad + Math.cos(a) * rad, m + h - rad + Math.sin(a) * rad]; }
-    d -= arc;
-    if (d < sw) return [m + w - rad - d, m + h];
-    d -= sw;
-    if (d < arc) { a = d / rad + Math.PI / 2; return [m + rad + Math.cos(a) * rad, m + h - rad + Math.sin(a) * rad]; }
-    d -= arc;
-    return [m, m + h - rad - d];
+  function resize() {
+    var r = box.getBoundingClientRect();
+    var nd = Math.min(window.devicePixelRatio || 1, 2);
+    var scaleX = W ? r.width / W : 1, scaleY = H ? r.height / H : 1;
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * nd);
+    canvas.height = Math.round(H * nd);
+    if (nd !== dpr || !sprites.length) { dpr = nd; makeSprites(); }
+    for (var i = 0; i < birds.length; i++) { birds[i].x *= scaleX; birds[i].y *= scaleY; }
+    buildPath();
+  }
+
+  // A smooth loop just inside the box: a superellipse, so it hugs the corners without the
+  // speed changes a rounded rectangle's straight-to-arc joins cause. It's resampled by arc
+  // length so a point moving along it at a steady rate moves at a steady speed.
+  var path = [], pathLen = 1;
+  function buildPath() {
+    var m = Math.min(64, W * 0.1, H * 0.18), rx = W / 2 - m, ry = H / 2 - m, N = 720, pts = [], len = [0];
+    for (var i = 0; i <= N; i++) {
+      var a = i / N * Math.PI * 2, c = Math.cos(a), s = Math.sin(a);
+      pts.push([W / 2 + rx * Math.sign(c) * Math.pow(Math.abs(c), 0.45),
+                H / 2 + ry * Math.sign(s) * Math.pow(Math.abs(s), 0.45)]);
+      if (i) len.push(len[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+    }
+    pathLen = len[N] || 1;
+    path = [];
+    for (var j = 0, seg = 0; j < 360; j++) {
+      var want = j / 360 * pathLen;
+      while (len[seg + 1] < want) seg++;
+      var t = (want - len[seg]) / ((len[seg + 1] - len[seg]) || 1);
+      path.push([pts[seg][0] + (pts[seg + 1][0] - pts[seg][0]) * t, pts[seg][1] + (pts[seg + 1][1] - pts[seg][1]) * t]);
+    }
+  }
+  function loop(u) {
+    u = ((u % 1) + 1) % 1 * path.length;
+    var i = Math.floor(u), t = u - i, a = path[i], b = path[(i + 1) % path.length];
+    return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
   }
 
   function init() {
-    var n = W < 600 ? 34 : 72;
-    leaders = [{ u: 0, v: 0.00026 }, { u: 0.33, v: 0.00026 }, { u: 0.66, v: 0.00026 }];
+    var n = W < 600 ? 36 : 75;
     birds = [];
     for (var i = 0; i < n; i++) {
-      var f = i % 3, p = onPath(leaders[f].u);
+      var f = i % FLOCKS, p = loop(f / FLOCKS);
+      var a = rand(0, Math.PI * 2), sp = rand(0.5, 1.5);
       birds.push({
-        x: p[0] + rand(-60, 60), y: p[1] + rand(-60, 60),
-        vx: rand(-1, 1), vy: rand(-1, 1),
-        f: f, size: rand(18, 34), ph: rand(0, 6.28),
-        col: COLORS[Math.floor(Math.random() * COLORS.length)], a: rand(0.28, 0.6)
+        x: p[0] + rand(-50, 50), y: p[1] + rand(-50, 50),
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+        rot: a - Math.PI / 2,
+        f: f,
+        seed: rand(0, 1000),
+        ring: rand(28, 120),            // the distance it likes to circle the cursor at
+        sprite: Math.floor(Math.random() * sprites.length),
+        alpha: rand(0.35, 0.7)
       });
     }
   }
 
-  var MAX = 2.6, VIEW = 90;
+  function steer(b, dx, dy, speed, weight, acc) {
+    var d = Math.hypot(dx, dy);
+    if (d < 1e-4) return;
+    acc.x += (dx / d * speed - b.vx) * weight;
+    acc.y += (dy / d * speed - b.vy) * weight;
+  }
 
-  function step(t, dt) {
-    var i, j, b, o, dx, dy, d2, k;
-    for (i = 0; i < leaders.length; i++) leaders[i].u += leaders[i].v * dt;
-    for (i = 0; i < birds.length; i++) {
-      b = birds[i];
-      var ax = 0, ay = 0, cx = 0, cy = 0, vx = 0, vy = 0, sx = 0, sy = 0, c = 0;
-      for (j = 0; j < birds.length; j++) {
-        if (i === j) continue;
-        o = birds[j]; dx = o.x - b.x; dy = o.y - b.y; d2 = dx * dx + dy * dy;
+  function step(k) {
+    clock += k;
+    follow += ((pointer ? 1 : 0) - follow) * (1 - Math.exp(-k * 0.05));
+    if (pointer) {
+      var e = 1 - Math.exp(-k * 0.18);
+      aim.x += (pointer.x - aim.x) * e; aim.y += (pointer.y - aim.y) * e;
+    }
+    var speed = SPEED + (FOLLOW_SPEED - SPEED) * follow;
+    var acc = { x: 0, y: 0 };
+
+    for (var i = 0; i < birds.length; i++) {
+      var b = birds[i];
+      acc.x = 0; acc.y = 0;
+
+      // Flocking: keep space, match neighbours' heading, drift toward their middle.
+      var n = 0, ax = 0, ay = 0, sx = 0, sy = 0;
+      for (var j = 0; j < birds.length; j++) {
+        if (j === i) continue;
+        var o = birds[j], dx = o.x - b.x, dy = o.y - b.y, d2 = dx * dx + dy * dy;
         if (d2 > VIEW * VIEW) continue;
-        c++; cx += o.x; cy += o.y; vx += o.vx; vy += o.vy;
-        if (d2 < 26 * 26 && d2 > 0.01) { sx -= dx / d2; sy -= dy / d2; }
+        var d = Math.sqrt(d2) || 0.01;
+        n++; ax += o.vx; ay += o.vy;
+        if (d < SPACE) { var push = 1 - d / SPACE; sx -= dx / d * push; sy -= dy / d * push; }
       }
-      if (c) {
-        ax += (cx / c - b.x) * 0.0006 + (vx / c - b.vx) * 0.05;
-        ay += (cy / c - b.y) * 0.0006 + (vy / c - b.vy) * 0.05;
+      if (n) steer(b, ax, ay, speed, 0.3, acc);
+      acc.x += sx * 0.12; acc.y += sy * 0.12;
+
+      // Where it is headed, as a velocity. At rest: drift along the loop with the flock, eased
+      // toward a slowly wandering spot near the flock's centre so they spread and regroup.
+      var dvx = 0, dvy = 0;
+      if (follow < 0.999) {
+        var u = clock * LOOP_SPEED / pathLen + b.f / FLOCKS;
+        var p = loop(u), p0 = loop(u - 0.002), p1 = loop(u + 0.002);
+        var tl = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) || 1;
+        // Each bird keeps a loose slot in a stream that is long along the loop and thin across it.
+        var tx = (p1[0] - p0[0]) / tl, ty = (p1[1] - p0[1]) / tl;
+        var along = Math.sin(clock * 0.0021 + b.seed) * 120, across = Math.cos(clock * 0.0033 + b.seed * 1.3) * 42;
+        var ox = p[0] + tx * along - ty * across - b.x;
+        var oy = p[1] + ty * along + tx * across - b.y;
+        var rvx = tx * LOOP_SPEED + ox * 0.02;
+        var rvy = ty * LOOP_SPEED + oy * 0.02;
+        var rl = Math.hypot(rvx, rvy), rcap = SPEED * 1.6;
+        if (rl > rcap) { rvx *= rcap / rl; rvy *= rcap / rl; }
+        dvx += rvx * (1 - follow); dvy += rvy * (1 - follow);
       }
-      ax += sx * 28; ay += sy * 28;
-
-      var tx, ty, pull;
-      if (pointer) {
-        // Orbit loosely around the cursor so the flock swirls rather than collapses.
-        var a = t * 0.0006 + b.ph;
-        var r = 34 + (b.ph * 9) % 46;
-        tx = pointer.x + Math.cos(a) * r; ty = pointer.y + Math.sin(a) * r * 0.8; pull = 0.0042;
-      } else {
-        var p = onPath(leaders[b.f].u);
-        tx = p[0] + Math.sin(t * 0.0007 + b.ph) * 95; ty = p[1] + Math.cos(t * 0.0009 + b.ph * 1.7) * 95; pull = 0.0016;
+      if (follow > 0.001) {
+        // Circle the cursor (tangent) while easing in or out to this bird's ring.
+        var rx = b.x - aim.x, ry = b.y - aim.y, rd = Math.hypot(rx, ry) || 0.01;
+        var ux = rx / rd, uy = ry / rd;
+        var pull = Math.max(-2.5, Math.min(2.5, (rd - b.ring) / 40));
+        var cx2 = -uy - ux * pull, cy2 = ux - uy * pull, cl = Math.hypot(cx2, cy2) || 1;
+        dvx += cx2 / cl * FOLLOW_SPEED * follow; dvy += cy2 / cl * FOLLOW_SPEED * follow;
       }
-      ax += (tx - b.x) * pull; ay += (ty - b.y) * pull;
+      acc.x += (dvx - b.vx) * 0.6; acc.y += (dvy - b.vy) * 0.6;
 
-      // Keep them inside the box.
-      if (b.x < 10) ax += 0.08; else if (b.x > W - 10) ax -= 0.08;
-      if (b.y < 10) ay += 0.08; else if (b.y > H - 10) ay -= 0.08;
+      // Soft walls.
+      var edge = 24;
+      if (b.x < edge) acc.x += (edge - b.x) * 0.004;
+      else if (b.x > W - edge) acc.x -= (b.x - (W - edge)) * 0.004;
+      if (b.y < edge) acc.y += (edge - b.y) * 0.004;
+      else if (b.y > H - edge) acc.y -= (b.y - (H - edge)) * 0.004;
 
-      b.vx += ax * dt * 0.06; b.vy += ay * dt * 0.06;
-      var sp = Math.sqrt(b.vx * b.vx + b.vy * b.vy), lim = pointer ? MAX * 1.35 : MAX;
-      if (sp > lim) { b.vx *= lim / sp; b.vy *= lim / sp; }
-      else if (sp < 0.7 && sp > 0) { b.vx *= 0.7 / sp; b.vy *= 0.7 / sp; }
-      b.x += b.vx * dt * 0.06; b.y += b.vy * dt * 0.06;
+      // Turn with a capped force, so changes of direction are always gradual.
+      var al = Math.hypot(acc.x, acc.y);
+      if (al > FORCE) { acc.x *= FORCE / al; acc.y *= FORCE / al; }
+      b.vx += acc.x * k; b.vy += acc.y * k;
+      var sp = Math.hypot(b.vx, b.vy), cap = speed * 1.25;
+      if (sp > cap) { b.vx *= cap / sp; b.vy *= cap / sp; }
+      b.x += b.vx * k; b.y += b.vy * k;
+
+      // The glyph's dot points down (+y), so turn it by heading − 90°, along the shorter arc.
+      if (sp > 0.05) {
+        var want = Math.atan2(b.vy, b.vx) - Math.PI / 2;
+        var diff = Math.atan2(Math.sin(want - b.rot), Math.cos(want - b.rot));
+        b.rot += diff * (1 - Math.exp(-k * TURN));
+      }
     }
   }
 
   function draw() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < birds.length; i++) {
-      var b = birds[i];
-      ctx.save();
-      ctx.translate(b.x, b.y);
-      ctx.rotate(Math.atan2(b.vy, b.vx) * 0.35);
-      ctx.font = '400 ' + b.size + 'px "Libre Baskerville", Georgia, serif';
-      ctx.fillStyle = 'rgba(' + b.col + ',' + b.a + ')';
-      ctx.fillText('?', 0, 0);
-      ctx.restore();
+      var b = birds[i], img = sprites[b.sprite], c = Math.cos(b.rot), s = Math.sin(b.rot);
+      ctx.globalAlpha = b.alpha;
+      ctx.setTransform(c, s, -s, c, b.x * dpr, b.y * dpr);
+      ctx.drawImage(img, -img.width / 2, -img.height / 2);
     }
+    ctx.globalAlpha = 1;
   }
 
   var last = 0;
   function frame(t) {
-    var dt = Math.min(t - last, 50) || 16; last = t;
-    step(t, dt); draw();
+    var k = Math.min((t - last) / 16.667, 3); last = t;
+    // Sub-step long frames so a hitch never becomes a lurch.
+    var steps = Math.ceil(k);
+    for (var i = 0; i < steps; i++) step(k / steps);
+    draw();
     raf = visible ? requestAnimationFrame(frame) : 0;
   }
-  function start() { if (!raf && !reduce) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+  function start() {
+    if (raf || reduce) return;
+    last = performance.now();
+    raf = requestAnimationFrame(frame);
+  }
 
   function setPointer(e) {
-    var r = box.getBoundingClientRect();
-    pointer = { x: e.clientX - r.left, y: e.clientY - r.top };
+    var r = box.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    if (!pointer) { aim.x = x; aim.y = y; }
+    pointer = { x: x, y: y };
   }
   box.addEventListener('pointerenter', setPointer);
   box.addEventListener('pointermove', setPointer);
   box.addEventListener('pointerleave', function () { pointer = null; });
 
-  resize(); init();
-  if (reduce) { for (var s = 0; s < 400; s++) step(s * 16, 16); draw(); }
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); }).observe(box);
+  function boot() {
+    resize(); init();
+    if (reduce) { for (var s = 0; s < 400; s++) step(1); draw(); }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); }).observe(box);
+    }
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(function () { resize(); if (reduce) draw(); }).observe(box);
+    }
+    start();
   }
-  if ('ResizeObserver' in window) {
-    new ResizeObserver(function () { resize(); if (reduce) draw(); }).observe(box);
-  }
-  start();
+  // Wait for the serif so the sprites aren't drawn in the fallback face.
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('400 24px "Libre Baskerville"').then(boot, boot);
+  } else boot();
 })();
