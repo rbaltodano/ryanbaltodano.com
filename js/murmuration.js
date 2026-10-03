@@ -284,6 +284,7 @@
 
   // The countryside along the bottom is out of range: over it, they go back to the loop.
   function setPointer(e) {
+    if (e.pointerType === 'touch') return;   // touch has no hover; see tap-to-call below
     var r = box.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
     measureScene();
     if (overScene(x, y)) { pointer = null; return; }
@@ -292,7 +293,28 @@
   }
   box.addEventListener('pointerenter', setPointer);
   box.addEventListener('pointermove', setPointer);
-  box.addEventListener('pointerleave', function () { pointer = null; });
+  box.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') pointer = null; });
+
+  // Tap-to-call on touch screens: a tap (not a scroll) draws the flock to that spot; they circle
+  // it for a moment, then drift back to the loop. A tap on the photo is out of range.
+  var CALL_MS = 2000, tapStart = null, release = 0;
+  box.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'touch') tapStart = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+  });
+  box.addEventListener('pointercancel', function () { tapStart = null; });
+  box.addEventListener('pointerup', function (e) {
+    if (e.pointerType !== 'touch' || !tapStart) return;
+    var moved = Math.hypot(e.clientX - tapStart.x, e.clientY - tapStart.y), held = e.timeStamp - tapStart.t;
+    tapStart = null;
+    if (moved > 12 || held > 600) return;
+    var r = box.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    measureScene();
+    if (overScene(x, y)) return;
+    if (!pointer) { aim.x = x; aim.y = y; }
+    pointer = { x: x, y: y };
+    clearTimeout(release);
+    release = setTimeout(function () { pointer = null; }, CALL_MS);
+  });
 
   function boot() {
     resize(); init();
