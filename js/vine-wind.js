@@ -8,11 +8,14 @@
 
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var preparations = [];
-  function isBooting() { return document.documentElement.classList.contains('is-booting'); }
+  var finishers = [];
+  function isWaiting() {
+    return document.documentElement.classList.contains('is-booting') || window.siteEntranceStarted === false;
+  }
   function playback(vine) {
     Array.prototype.forEach.call(vine.querySelectorAll('img'), function (image) {
       var idleBehindPaint = !image.classList.contains('hero__vine-paint') && vine.querySelector('.hero__vine-paint');
-      image.style.animationPlayState = isBooting() || vine.dataset.onScreen === 'false' || idleBehindPaint ? 'paused' : 'running';
+      image.style.animationPlayState = isWaiting() || vine.dataset.onScreen === 'false' || idleBehindPaint ? 'paused' : 'running';
     });
   }
   Array.prototype.forEach.call(vines, function (vine) {
@@ -23,14 +26,14 @@
     var finished = false;
     var ready;
     preparations.push(new Promise(function (resolve) { ready = resolve; }));
-    // A stalled decorative image must never leave the idle artwork hidden indefinitely.
-    var loadTimeout = setTimeout(finish, 8000);
+    // Startup owns the stall deadline. An absolute vine timeout could cancel a healthy,
+    // slowly downloading entrance while the loading screen is still visible.
+    finishers.push(finish);
     paint.alt = '';
     paint.className = 'hero__vine-paint';
     function finish() {
       if (finished) return;
       finished = true;
-      clearTimeout(loadTimeout);
       paint.remove();
       vine.classList.add('is-painted');
       idle.style.visibility = '';
@@ -48,22 +51,37 @@
       var decoded = paint.decode ? paint.decode() : Promise.resolve();
       decoded.then(function () {
         if (finished || reducedMotion.matches) return;
-        clearTimeout(loadTimeout);
         // Park the idle on the first of the final four grow frames.
         idle.style.animation = 'none';
         idle.offsetWidth;
         idle.style.animation = '';
         idle.style.animationPlayState = 'paused';
-        paint.style.animationPlayState = isBooting() || vine.dataset.onScreen === 'false' ? 'paused' : 'running';
+        paint.style.animationPlayState = isWaiting() || vine.dataset.onScreen === 'false' ? 'paused' : 'running';
         vine.appendChild(paint);
         ready();
       }, finish);
     });
     reducedMotion.addEventListener('change', motionChanged);
-    paint.src = src;
+    if (window.siteAssetDownloads) {
+      window.siteAssetDownloads.get(src).then(function (url) {
+        if (finished) return;
+        if (url) paint.src = url;
+        else finish();
+      });
+    } else paint.src = src;
   });
   window.vineEntranceReady = Promise.all(preparations);
-  window.addEventListener('site:ready', function () {
+  window.addEventListener('site:ready', function (event) {
+    if (event.detail.timedOut) finishers.forEach(function (finish) { finish(); });
+    Array.prototype.forEach.call(vines, playback);
+  });
+  window.addEventListener('site:entrance', function () {
+    // Explicitly restart at frame one now that the page itself is fully visible.
+    document.querySelectorAll('.hero__vine-paint').forEach(function (paint) {
+      paint.style.animation = 'none';
+      void paint.offsetWidth;
+      paint.style.animation = '';
+    });
     Array.prototype.forEach.call(vines, playback);
   });
 

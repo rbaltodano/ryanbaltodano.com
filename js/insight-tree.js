@@ -1308,12 +1308,13 @@
         var ca = (scrollStudy ? 0.5 : 0.22) * dim * rest;
         if (g > 0.001) {
           if (scrollStudy) {
-            // Fade over the full connector so its entrance and 3D rotation keep the same falloff.
+            // Fade out at both ends (into the Node Concept and into the Insight), strongest midway.
             var connector = ctx.createLinearGradient(np.x, np.y, pr.x, pr.y);
-            connector.addColorStop(0, 'rgba(' + BROWN + ',' + (ca * 0.08).toFixed(3) + ')');
-            connector.addColorStop(0.18, 'rgba(' + BROWN + ',' + (ca * 0.35).toFixed(3) + ')');
+            connector.addColorStop(0, 'rgba(' + BROWN + ',0)');
+            connector.addColorStop(0.22, 'rgba(' + BROWN + ',' + (ca * 0.4).toFixed(3) + ')');
             connector.addColorStop(0.5, 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')');
-            connector.addColorStop(1, 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')');
+            connector.addColorStop(0.78, 'rgba(' + BROWN + ',' + (ca * 0.4).toFixed(3) + ')');
+            connector.addColorStop(1, 'rgba(' + BROWN + ',0)');
             ctx.strokeStyle = connector;
           } else {
             ctx.strokeStyle = 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')';

@@ -7,6 +7,34 @@
 
   var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var leaf = boot.querySelector('.site-boot__leaf');
+  var progress = boot.querySelector('.site-boot__progress');
+  var downloads = window.siteAssetDownloads;
+  var lastPercent = 0;
+  var nativeCompleted = 0;
+  var images = Array.prototype.slice.call(document.querySelectorAll('img[data-boot-src]'));
+
+  function showPercent(percent) {
+    lastPercent = Math.max(lastPercent, percent);
+    progress.textContent = lastPercent + '%';
+    progress.setAttribute('aria-valuenow', lastPercent);
+  }
+  function armStallDeadline() {
+    clearTimeout(window.siteBootDeadline);
+    // Keep waiting while bytes arrive, regardless of total transfer time. Release only
+    // after a genuinely stalled download or initialization, not after eight seconds.
+    window.siteBootDeadline = setTimeout(function () { window.releaseSiteBoot(true); }, 15000);
+  }
+  function updateProgress() {
+    if (!root.classList.contains('is-booting')) return;
+    var fraction = downloads ? downloads.progress() : nativeCompleted / images.length;
+    showPercent(Math.min(99, Math.floor(fraction * 100)));
+    armStallDeadline();
+  }
+  window.addEventListener('site:asset-progress', updateProgress);
+  updateProgress();
+  window.addEventListener('site:ready', function () {
+    window.removeEventListener('site:asset-progress', updateProgress);
+  }, { once: true });
   document.querySelectorAll('body > .nav, body > main, body > .footer').forEach(function (element) {
     if (element.inert) return;
     element.inert = true;
@@ -39,12 +67,28 @@
     }
   });
 
-  var assets = Array.prototype.map.call(document.querySelectorAll('.hero-phone img'), imageReady);
+  var assets = images.map(function (image) {
+    var src = image.getAttribute('data-boot-src');
+    var downloaded = downloads ? downloads.get(src) : Promise.resolve(src);
+    return downloaded.then(function (url) {
+      if (!url) {
+        if (!image.getAttribute('src')) {
+          image.removeAttribute('data-boot-src');
+          image.style.display = 'none';
+        }
+        return;
+      }
+      image.src = url;
+      return imageReady(image);
+    }).then(function () { nativeCompleted++; updateProgress(); });
+  });
   assets.push(window.vineEntranceReady || Promise.resolve());
   assets.push(document.fonts ? document.fonts.ready : Promise.resolve());
   assets.push(growing);
   Promise.all(assets).then(async function () {
     if (!root.classList.contains('is-booting')) return;
+    // 100% means both downloaded and decoded, with the entrance prepared to start.
+    showPercent(100);
     boot.classList.add('is-leaving');
     if (!motion.matches) await pause(500);
     window.releaseSiteBoot(false);

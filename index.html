@@ -20,6 +20,7 @@
   .site-boot__leaf { position: absolute; width: 144px; height: 144px; inset: 56px; background: url(assets/brand/boot-leaf.webp) 0 0 / 500% 100% no-repeat; filter: blur(8px); transition: filter 0.5s ease-in-out; }
   .site-boot.is-visible .site-boot__leaf { filter: blur(0); }
   .site-boot__name { position: absolute; top: 280px; left: 50%; transform: translateX(-50%); font: italic 400 34px/1.5 "Libre Baskerville", Georgia, serif; color: #614C40; }
+  .site-boot__progress { position: absolute; top: 344px; left: 0; width: 100%; text-align: center; font: 500 14px/1.5 "Figtree", -apple-system, sans-serif; font-variant-numeric: tabular-nums; color: rgba(74, 50, 28, 0.75); }
   .site-boot.is-leaving .site-boot__mark { opacity: 0; }
   .site-boot.is-leaving .site-boot__leaf { filter: blur(8px); }
   @keyframes boot-dots { to { transform: rotate(360deg); } }
@@ -32,12 +33,17 @@
 <script>
   (function () {
     var root = document.documentElement;
-    root.classList.add('is-booting');
+    root.classList.add('is-booting', 'waiting-vines');
+    window.siteEntranceStarted = false;
     // The inline deadline also works if a later script fails to download or initialize.
     window.releaseSiteBoot = function (timedOut) {
       if (!root.classList.contains('is-booting')) return;
       clearTimeout(window.siteBootDeadline);
       if (window.scrollY > 80) root.classList.remove('intro');
+      // Native URLs are a fail-safe if the download or boot script never initializes.
+      document.querySelectorAll('img[data-boot-src]').forEach(function (image) {
+        if (!image.getAttribute('src')) image.src = image.getAttribute('data-boot-src');
+      });
       root.classList.remove('is-booting');
       var boot = document.querySelector('.site-boot');
       if (boot) boot.remove();
@@ -46,6 +52,22 @@
         element.removeAttribute('data-boot-inert');
       });
       window.dispatchEvent(new CustomEvent('site:ready', { detail: { timedOut: !!timedOut } }));
+      // Start the vine growth after the page mask has finished, rather than behind it.
+      var hero = document.querySelector('.hero');
+      var entranceTimer;
+      function startVines(event) {
+        if (event && (event.target !== hero || event.animationName !== 'intro-reveal')) return;
+        if (window.siteEntranceStarted) return;
+        clearTimeout(entranceTimer);
+        if (hero) hero.removeEventListener('animationend', startVines);
+        window.siteEntranceStarted = true;
+        root.classList.remove('waiting-vines');
+        window.dispatchEvent(new Event('site:entrance'));
+      }
+      if (hero && root.classList.contains('intro') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        hero.addEventListener('animationend', startVines);
+        entranceTimer = setTimeout(function () { startVines(); }, 1800);
+      } else startVines();
     };
     window.siteBootDeadline = setTimeout(function () { window.releaseSiteBoot(true); }, 12000);
     window.addEventListener('pageshow', function (event) { if (event.persisted) window.releaseSiteBoot(false); });
@@ -63,19 +85,18 @@
 </script>
 <link rel="preload" as="image" href="assets/brand/boot-leaf.webp">
 <link rel="preload" as="image" href="assets/brand/boot-dots.svg">
-<link rel="preload" as="image" href="assets/home/vine-left-paint.webp">
-<link rel="preload" as="image" href="assets/home/vine-right-full-paint.webp">
-<link rel="preload" as="image" href="assets/app/home-dark.jpg">
-<link rel="preload" as="image" href="assets/home/iphone-frame.png">
-<link rel="stylesheet" href="css/site.css?v=20261003-app-boot">
+<script src="js/boot-assets.js?v=20261003-loading-progress"></script>
+<link rel="stylesheet" href="css/site.css?v=20261003-loading-progress">
+<noscript><style>img[data-boot-src] { display: none !important; }</style></noscript>
 </head>
 <body>
 
 <div class="site-boot" role="status" aria-label="Loading Angrove">
-  <div class="site-boot__mark" aria-hidden="true">
+  <div class="site-boot__mark">
     <img class="site-boot__dots" src="assets/brand/boot-dots.svg" alt="" width="256" height="256">
-    <span class="site-boot__leaf"></span>
-    <span class="site-boot__name">Angrove</span>
+    <span class="site-boot__leaf" aria-hidden="true"></span>
+    <span class="site-boot__name" aria-hidden="true">Angrove</span>
+    <span class="site-boot__progress" role="progressbar" aria-label="Loading Angrove" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0%</span>
   </div>
 </div>
 
@@ -113,10 +134,12 @@
       <div class="hero-phone">
         <!-- Painted vines sit behind the phone: out at the page edges on desktop, tucked behind its
              top right and bottom left on tablets and phones. -->
-        <span class="hero__vine hero__vine--left hero__vine--wind" data-paint-src="assets/home/vine-left-paint.webp" aria-hidden="true"><img src="assets/home/vine-left-paint.webp" alt="" width="8448" height="362"></span>
-        <span class="hero__vine hero__vine--right hero__vine--wind" data-paint-src="assets/home/vine-right-full-paint.webp" aria-hidden="true"><img src="assets/home/vine-right-full-paint.webp" alt="" width="8688" height="362"></span>
-        <img class="hero-phone__screen" src="assets/app/home-dark.jpg" alt="The Angrove home screen: a greeting, a month of activity with conversation and Insight counts, and the Question of the Day." width="754" height="1640">
-        <img class="phone-frame" src="assets/home/iphone-frame.png" alt="">
+        <span class="hero__vine hero__vine--left hero__vine--wind" data-paint-src="assets/home/vine-left-paint-web.webp" aria-hidden="true"><img data-boot-src="assets/home/vine-left-paint-web.webp" alt="" width="8448" height="362"><noscript><img src="assets/home/vine-left-paint-web.webp" alt="" width="8448" height="362"></noscript></span>
+        <span class="hero__vine hero__vine--right hero__vine--wind" data-paint-src="assets/home/vine-right-full-paint-web.webp" aria-hidden="true"><img data-boot-src="assets/home/vine-right-full-paint-web.webp" alt="" width="8688" height="362"><noscript><img src="assets/home/vine-right-full-paint-web.webp" alt="" width="8688" height="362"></noscript></span>
+        <img class="hero-phone__screen" data-boot-src="assets/app/home-dark.jpg" alt="The Angrove home screen: a greeting, a month of activity with conversation and Insight counts, and the Question of the Day." width="754" height="1640">
+        <noscript><img class="hero-phone__screen" src="assets/app/home-dark.jpg" alt="The Angrove home screen." width="754" height="1640"></noscript>
+        <img class="phone-frame" data-boot-src="assets/home/iphone-frame.webp" alt="">
+        <noscript><img class="phone-frame" src="assets/home/iphone-frame.webp" alt=""></noscript>
       </div>
     </div>
   </section>
@@ -403,8 +426,8 @@
 </footer>
 
 <script src="js/site.js?v=20261002-map-layout"></script>
-<script src="js/vine-wind.js?v=20261003-app-boot"></script>
-<script src="js/boot.js?v=20261003-app-boot"></script>
+<script src="js/vine-wind.js?v=20261003-loading-progress"></script>
+<script src="js/boot.js?v=20261003-loading-progress"></script>
 <script src="js/insight-tree.js?v=20261002-map-layout"></script>
 <script src="js/map-flow.js?v=20261002-map-layout"></script>
 <script src="js/grounding-demo.js"></script>
