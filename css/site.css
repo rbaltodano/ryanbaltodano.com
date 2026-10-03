@@ -355,6 +355,35 @@ a { color: inherit; text-decoration: none; }
 @keyframes vine-wind { to { transform: translateX(-100%); } }
 @media (prefers-reduced-motion: reduce) { .hero__vine--wind img { animation: none; } }
 .hero__vine--right { right: calc(50% - 50vw); top: -233px; }
+
+/* Page entrance, after the app's boot reveal: everything above the fold rises 32px while a soft
+   mask sweeps down the screen, with a fade 1.2 screens tall, so each height has its own fade.
+   The first mask layer is the soft edge, the second the fully shown area above it; both slide
+   together over 1.5s on the menu curve. Only while html.intro is set (an inline script in the
+   page head, off for Reduce Motion and for loads that restore a scrolled position). */
+@keyframes intro-reveal {
+  from {
+    transform: translateY(32px);
+    -webkit-mask-position: 0 -120vh, 0 -420vh;
+    mask-position: 0 -120vh, 0 -420vh;
+  }
+  to {
+    transform: none;
+    -webkit-mask-position: 0 100vh, 0 -200vh;
+    mask-position: 0 100vh, 0 -200vh;
+  }
+}
+.intro .nav, .intro .hero {
+  animation: intro-reveal 1.5s var(--ease-menu) 0.1s backwards;
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent), linear-gradient(#000, #000);
+  mask-image: linear-gradient(180deg, #000, transparent), linear-gradient(#000, #000);
+  -webkit-mask-size: 100% 120vh, 100% 300vh;
+  mask-size: 100% 120vh, 100% 300vh;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+/* The sweep is the headline's entrance here, so its words don't also blur in one by one. */
+.intro .hero .reveal .rw { opacity: 1; filter: none; translate: none; transition: none; }
 .hero__inner { position: relative; z-index: 1; }
 .hero__inner {
   max-width: var(--content);

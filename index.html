@@ -7,7 +7,16 @@
 <meta name="description" content="A private, local-first companion for the rigorous study of philosophy, history, and theology.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="css/site.css?v=20261002-map-layout">
+<script>
+  // Page entrance (css/site.css, .intro): skipped for Reduce Motion and when the browser restores a scrolled position.
+  (function () {
+    var root = document.documentElement;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('intro');
+    window.addEventListener('load', function () { if (window.scrollY > 80) root.classList.remove('intro'); });
+  })();
+</script>
+<link rel="stylesheet" href="css/site.css?v=20261002-intro">
 </head>
 <body>
 
