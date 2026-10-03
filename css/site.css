@@ -2069,7 +2069,7 @@ a { color: inherit; text-decoration: none; }
   .guide-steps { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .guide-step { padding: 24px; }
   :root { --gutter: 24px; --inset-panel-radius: 32px; }
-  .flow { --flow-content-pad: 0px; --flow-frame-pad: 0px; margin-inline: 0; }
+  .flow { --flow-content-pad: 0px; --flow-frame-pad: 0px; width: 100%; margin-inline: 0; }
   .flow__sticky { top: 0; height: 100vh; padding: 48px 24px; border-radius: 0; }
   .flow__head { padding: 0; }
   .flow__frame { padding: 24px 0 0; }
