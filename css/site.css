@@ -345,7 +345,7 @@ a { color: inherit; text-decoration: none; }
    The sheet steps along the row, one frame per step, then loops (js/vine-wind.js pauses it
    off screen). With reduced motion it rests on the first frame. */
 .hero__vine--wind { display: block; aspect-ratio: 358 / 327; overflow: hidden; }
-.hero__vine--wind img { display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 1.4s) steps(12) infinite; will-change: transform; }
+.hero__vine--wind img { display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 2.4s) steps(12) infinite; will-change: transform; }
 @keyframes vine-wind { to { transform: translateX(-100%); } }
 @media (prefers-reduced-motion: reduce) { .hero__vine--wind img { animation: none; } }
 .hero__vine--right { right: calc(50% - 50vw); top: -233px; }
