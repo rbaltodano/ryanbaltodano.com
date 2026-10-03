@@ -10,12 +10,12 @@
 <style>
   /* Keep startup visible even before the main stylesheet arrives. Assets and dimensions match
      the app's BootPresentation: a 144px leaf, a 256px dot field, and a 34px italic wordmark. */
-  .site-boot { display: none; opacity: 1; transition: opacity 0.5s ease-in-out; }
+  .site-boot { display: none; }
   html, body { background: var(--canvas, #F3EEE2); }
-  .is-booting body { overflow: hidden; }
+  .is-booting, .is-entering { overflow: hidden; overflow-anchor: none; }
+  .is-booting body, .is-entering body { overflow: hidden; overflow-anchor: none; }
   .is-booting body > .nav, .is-booting body > main, .is-booting body > .footer { visibility: hidden; }
-  .is-booting .site-boot, .site-boot.is-revealing { display: grid; place-items: center; position: fixed; inset: 0; z-index: 1000; background: var(--canvas, #F3EEE2); }
-  .site-boot.is-revealing { opacity: 0; pointer-events: none; }
+  .is-booting .site-boot { display: grid; place-items: center; position: fixed; inset: 0; z-index: 1000; background: var(--canvas, #F3EEE2); }
   .site-boot__mark { position: relative; width: 256px; height: 256px; opacity: 0; transition: opacity 0.5s ease-in-out; }
   .site-boot.is-visible .site-boot__mark { opacity: 1; }
   .site-boot__dots { position: absolute; inset: 0; width: 256px; height: 256px; animation: boot-dots 20s linear infinite; }
@@ -29,7 +29,7 @@
   @media (prefers-reduced-motion: reduce) {
     .site-boot__dots { animation: none; }
     .site-boot__leaf { background-position: 100% 0 !important; filter: none !important; }
-    .site-boot, .site-boot__mark, .site-boot__leaf { transition: none; }
+    .site-boot__leaf { transition: none; }
   }
 </style>
 <script>
@@ -37,47 +37,57 @@
     var root = document.documentElement;
     root.classList.add('is-booting', 'waiting-vines');
     window.siteEntranceStarted = false;
+    // A fresh home-page entrance starts at the top. Explicit section links retain their anchor.
+    if (!window.location.hash && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
+    function resetTop() {
+      if (!window.location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+    resetTop();
     // The inline deadline also works if a later script fails to download or initialize.
     window.releaseSiteBoot = function (timedOut) {
       if (!root.classList.contains('is-booting')) return;
       clearTimeout(window.siteBootDeadline);
-      if (window.scrollY > 80) root.classList.remove('intro');
+      resetTop();
+      if (window.location.hash && window.scrollY > 80) root.classList.remove('intro');
       // Native URLs are a fail-safe if the download or boot script never initializes.
       document.querySelectorAll('img[data-boot-src]').forEach(function (image) {
         if (!image.getAttribute('src')) image.src = image.getAttribute('data-boot-src');
       });
+      root.classList.add('is-entering');
       root.classList.remove('is-booting');
       var boot = document.querySelector('.site-boot');
-      if (boot) {
-        // Keep the overlay mounted while its background fades into the page reveal.
-        boot.classList.add('is-revealing');
-        boot.setAttribute('aria-hidden', 'true');
-        setTimeout(function () { boot.remove(); }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500);
-      }
-      document.querySelectorAll('[data-boot-inert]').forEach(function (element) {
-        element.inert = false;
-        element.removeAttribute('data-boot-inert');
-      });
+      // The mark has already faded and blurred out, as in the app. Reveal the page next.
+      if (boot) boot.remove();
       window.dispatchEvent(new CustomEvent('site:ready', { detail: { timedOut: !!timedOut } }));
       // Start the vine growth after the page mask has finished, rather than behind it.
       var hero = document.querySelector('.hero');
       var entranceTimer;
       function startVines(event) {
-        if (event && (event.target !== hero || event.animationName !== 'intro-reveal')) return;
+        if (event && (event.target !== hero || !['intro-reveal', 'intro-fade'].includes(event.animationName))) return;
         if (window.siteEntranceStarted) return;
         clearTimeout(entranceTimer);
         if (hero) hero.removeEventListener('animationend', startVines);
+        resetTop();
+        root.classList.remove('is-entering');
+        document.querySelectorAll('[data-boot-inert]').forEach(function (element) {
+          element.inert = false;
+          element.removeAttribute('data-boot-inert');
+        });
         window.siteEntranceStarted = true;
         root.classList.remove('waiting-vines');
         window.dispatchEvent(new Event('site:entrance'));
       }
-      if (hero && root.classList.contains('intro') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (hero && (root.classList.contains('intro') || reduceMotion)) {
         hero.addEventListener('animationend', startVines);
-        entranceTimer = setTimeout(function () { startVines(); }, 1800);
+        entranceTimer = setTimeout(function () { startVines(); }, reduceMotion ? 450 : 1800);
       } else startVines();
     };
     window.siteBootDeadline = setTimeout(function () { window.releaseSiteBoot(true); }, 12000);
-    window.addEventListener('pageshow', function (event) { if (event.persisted) window.releaseSiteBoot(false); });
+    window.addEventListener('pageshow', function (event) {
+      resetTop();
+      if (event.persisted) window.releaseSiteBoot(false);
+    });
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       root.classList.add('vine-entrance', 'intro');
     }
@@ -87,13 +97,16 @@
       if (root.classList.contains('is-booting')) event.viewTransition.skipTransition();
       else root.classList.add('vt');
     });
-    window.addEventListener('load', function () { if (window.scrollY > 80) root.classList.remove('intro'); });
+    window.addEventListener('load', function () {
+      if (window.location.hash && window.scrollY > 80) root.classList.remove('intro');
+      else if (root.classList.contains('is-booting') || root.classList.contains('is-entering')) resetTop();
+    });
   })();
 </script>
 <link rel="preload" as="image" href="assets/brand/boot-leaf.webp">
 <link rel="preload" as="image" href="assets/brand/boot-dots.svg">
 <script src="js/boot-assets.js?v=20261003-loading-progress"></script>
-<link rel="stylesheet" href="css/site.css?v=20261003-app-canvas-fade">
+<link rel="stylesheet" href="css/site.css?v=20261003-app-boot-sequence">
 <noscript><style>img[data-boot-src] { display: none !important; }</style></noscript>
 </head>
 <body>
@@ -432,9 +445,9 @@
   <p class="footer__wordmark" aria-hidden="true">Angrove</p>
 </footer>
 
-<script src="js/site.js?v=20261002-map-layout"></script>
+<script src="js/site.js?v=20261003-app-boot-sequence"></script>
 <script src="js/vine-wind.js?v=20261003-loading-progress"></script>
-<script src="js/boot.js?v=20261003-loading-progress"></script>
+<script src="js/boot.js?v=20261003-app-boot-sequence"></script>
 <script src="js/insight-tree.js?v=20261002-map-layout"></script>
 <script src="js/map-flow.js?v=20261002-map-layout"></script>
 <script src="js/grounding-demo.js"></script>

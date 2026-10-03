@@ -50,6 +50,10 @@ The boot percentage tracks received bytes, holds below 100% until decoding and p
 finish, and then the page reveals. Vine growth starts only after the page reveal completes.
 The download deadline resets when bytes arrive, so a healthy slow transfer is not cancelled.
 Original vine exports remain available alongside the `*-paint-web.webp` versions.
+The boot mark fades in and out over 0.5 seconds, followed by the app's 1.5-second page reveal
+(0.3-second opacity-only reveal with reduced motion). Scroll and page interaction stay locked
+until the reveal finishes. Home loads and reloads start at the top; explicit section links retain
+their destination.
 
 ## Still to do
 

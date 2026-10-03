@@ -42,6 +42,11 @@
   });
 
   function pause(ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); }
+  function paintedFrame() {
+    return new Promise(function (resolve) {
+      requestAnimationFrame(function () { requestAnimationFrame(resolve); });
+    });
+  }
   function imageReady(image) {
     if (image.decode) return image.decode().catch(function () {});
     if (image.complete) return Promise.resolve();
@@ -55,11 +60,17 @@
   leafSheet.src = 'assets/brand/boot-leaf.webp';
   var markReady = Promise.all([imageReady(leafSheet), imageReady(boot.querySelector('img'))]);
   var growing = markReady.then(async function () {
+    // Cached images can resolve before the browser paints the initial opacity of zero.
+    // Give that state a frame before fading in, so the entrance always animates.
+    await paintedFrame();
     if (!root.classList.contains('is-booting')) return;
+    // Establish the transparent style even when cached resources resolve before first paint.
+    void getComputedStyle(boot.querySelector('.site-boot__mark')).opacity;
+    void getComputedStyle(leaf).filter;
     boot.classList.add('is-visible');
-    if (motion.matches) return;
     // The leaf sharpens for 0.5 s, then each app sprite holds for 0.24 s.
     await pause(500);
+    if (motion.matches) return;
     for (var stage = 0; stage < 5; stage++) {
       if (!root.classList.contains('is-booting') || motion.matches) return;
       leaf.style.backgroundPosition = (stage * 25) + '% 0';
@@ -89,8 +100,10 @@
     if (!root.classList.contains('is-booting')) return;
     // 100% means both downloaded and decoded, with the entrance prepared to start.
     showPercent(100);
+    void getComputedStyle(boot.querySelector('.site-boot__mark')).opacity;
+    void getComputedStyle(leaf).filter;
     boot.classList.add('is-leaving');
-    if (!motion.matches) await pause(500);
+    await pause(500);
     window.releaseSiteBoot(false);
   });
 })();

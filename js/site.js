@@ -20,15 +20,20 @@
   if (!reduceMotion) {
     var EASE = 0.11;              // share of the remaining distance covered each frame
     var target = window.scrollY, current = window.scrollY, gliding = false;
+    function startupLocked() {
+      return document.documentElement.classList.contains('is-booting') || document.documentElement.classList.contains('is-entering');
+    }
     var limit = function () { return document.documentElement.scrollHeight - window.innerHeight; };
     function glide() {
       if (!gliding) return;
+      if (startupLocked()) { gliding = false; return; }
       current += (target - current) * EASE;
       if (Math.abs(target - current) < 0.4) { current = target; gliding = false; }
       window.scrollTo({ top: current, behavior: 'instant' });
       if (gliding) requestAnimationFrame(glide);
     }
     window.addEventListener('wheel', function (e) {
+      if (startupLocked()) { e.preventDefault(); gliding = false; return; }
       if (e.defaultPrevented) { gliding = false; return; }
       if (e.ctrlKey || e.metaKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;   // zoom, sideways
       e.preventDefault();
@@ -37,6 +42,10 @@
       target = Math.max(0, Math.min(limit(), target + delta));
       if (!gliding) { gliding = true; requestAnimationFrame(glide); }
     }, { passive: false });
+    window.addEventListener('site:entrance', function () {
+      gliding = false;
+      target = current = window.scrollY;
+    });
     // A press, key, or anchor jump takes over at once: drop any glide in progress.
     ['pointerdown', 'keydown', 'touchstart', 'hashchange'].forEach(function (type) {
       window.addEventListener(type, function () { gliding = false; }, { passive: true });
