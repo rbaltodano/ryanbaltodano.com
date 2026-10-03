@@ -661,6 +661,7 @@
         setT(0.5, false);
       }
       mid.phase = 'active';
+      if (guide) showExample();
       select(true);
       setFade(1);
       var a = treePoint(A), b = treePoint(B);
@@ -682,11 +683,11 @@
       var chip = document.createElement('div');
       chip.className = 'it-chip it-chip--placed';
       chip.innerHTML = '<svg class="it-chip__loading" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.25.6h7.5c.9 0 1.65.75 1.65 1.65V7.5c0 .9-.75 1.65-1.65 1.65H6.9L3.6 11.4V9.15H2.25C1.35 9.15.6 8.4.6 7.5V2.25C.6 1.35 1.35.6 2.25.6z"/></svg>'
-        + '<span class="it-chip__label"><img src="' + ICON + '" alt=""><span>Synderesis</span></span><i class="it-chip__dot"></i>';
+        + '<span class="it-chip__label"><img src="' + ICON + '" alt=""><span>' + (guide ? (q('example-title').textContent || 'A new concept') : 'Synderesis') + '</span></span><i class="it-chip__dot"></i>';
       layer.appendChild(chip);
       mid.placed = { el: chip, world: world, vis: new Spring(0) };
       mid.placed.vis.to(1, 0, now);
-      panTo(world[0], world[1]);
+      if (!guide) panTo(world[0], world[1]);
       // scheduleMidpointReveal: a 3.5 s minimum of loading, then the ripple and the title.
       later(reduceMotion ? 0 : 3500, function () {
         ripple(world, 2.8, 0.5);
@@ -695,7 +696,7 @@
         later(reduceMotion ? 0 : 650, function () {
           mid.phase = 'done';
           result.hidden = false;
-          panTo(0, 0);
+          if (!guide) panTo(0, 0);
           sync();
         });
       });
@@ -785,19 +786,127 @@
         card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
       }
     }
-    function label(button, text) { button.querySelector('span').textContent = text; }
+    // ---------- The dock (Model Controls) ----------
+    var dockEl = q('dock');
+    var dockBtns = {};
+    var dockSig = '';
+    var pulseTimer = null;
+    var DOCK = {
+      select: { icon: 'i-circle-dashed', label: function () { return selecting ? 'Done' : 'Select'; }, on: function () {
+        if (mid.phase !== 'idle') return;
+        selecting = !selecting; dock(null); sync();
+      } },
+      midpoint: { icon: 'i-graph-2d', label: function () { return 'Midpoint'; }, on: function () {
+        if (mid.phase === 'idle' && picked.length >= 2) { selecting = false; enter(); }
+      } },
+      back: { icon: 'i-chevron-left', label: function () { return 'Back'; }, on: function () { if (mid.phase === 'active') exit(); } },
+      center: { icon: 'i-lines-measurement-horizontal', label: function () { return 'Center'; }, on: function () { if (mid.phase === 'active') setT(0.5, true); } },
+      place: { icon: 'i-arrow-down', label: function () { return 'Place'; }, on: place },
+      reset: { icon: 'i-arrow-counterclockwise', label: function () { return 'Reset'; }, on: resetAll }
+    };
+    function makeDockButton(key) {
+      var def = DOCK[key];
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'guide-dock__btn is-entering';
+      b.dataset.key = key;
+      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('aria-hidden', 'true');
+      if (def.flip) svg.setAttribute('class', 'is-flipped');
+      var sym = document.getElementById(def.icon);
+      svg.innerHTML = sym ? sym.innerHTML : '';
+      Array.prototype.forEach.call(svg.querySelectorAll('path'), function (pth) { pth.setAttribute('pathLength', '1'); });
+      var span = document.createElement('span');
+      b.appendChild(svg); b.appendChild(span);
+      b.addEventListener('click', function (e) { e.stopPropagation(); def.on(); });
+      return b;
+    }
+    function dockKeys() {
+      if (mid.scripted) return ['select'];
+      if (mid.phase === 'active') return ['back', 'center', 'place'];
+      if (mid.phase === 'loading' || mid.phase === 'revealed') return ['status'];
+      if (mid.phase === 'done') return ['reset'];
+      var keys = ['select'];
+      if (picked.length >= 2) keys.push('midpoint');
+      if (picked.length >= 1) keys.push('reset');
+      return keys;
+    }
+    function renderDock() {
+      var keys = dockKeys();
+      var sig = keys.join('|');
+      var changed = sig !== dockSig;
+      var first = !dockSig;
+      dockSig = sig;
+      var oldW = dockEl.offsetWidth;
+      if (changed) {
+        Object.keys(dockBtns).forEach(function (k) {
+          if (keys.indexOf(k) >= 0) return;
+          var gone = dockBtns[k];
+          delete dockBtns[k];
+          gone.style.left = gone.offsetLeft + 'px';
+          gone.style.top = gone.offsetTop + 'px';
+          gone.classList.add('is-leaving');
+          setTimeout(function () { gone.remove(); }, reduceMotion ? 0 : 450);
+        });
+        keys.forEach(function (k) {
+          if (dockBtns[k]) return;
+          var b;
+          if (k === 'status') {
+            b = document.createElement('span');
+            b.className = 'mid-dock__status is-thinking guide-dock__btn is-entering';
+            b.textContent = 'Thinking';
+          } else {
+            b = makeDockButton(k);
+          }
+          dockBtns[k] = b;
+          dockEl.appendChild(b);
+        });
+        keys.forEach(function (k) { dockEl.appendChild(dockBtns[k]); });   // keep the order
+      }
+      keys.forEach(function (k) {
+        var def = DOCK[k], b = dockBtns[k];
+        if (!def) return;
+        b.querySelector('span').textContent = def.label();
+        b.disabled = mid.scripted;
+        b.classList.toggle('is-active', k === 'select' && selecting);
+      });
+      if (!changed) return;
+      // Re-measure with the spring, then reveal the arrivals (icons draw on after the capsule moves).
+      var newW = dockEl.offsetWidth;
+      if (!first && !reduceMotion && Math.abs(newW - oldW) > 1) {
+        dockEl.style.transition = 'none';
+        dockEl.style.width = oldW + 'px';
+        void dockEl.offsetWidth;
+        dockEl.style.transition = '';
+        dockEl.style.width = newW + 'px';
+        dockEl.classList.add('is-pulsed');
+        clearTimeout(pulseTimer);
+        pulseTimer = setTimeout(function () { dockEl.classList.remove('is-pulsed'); dockEl.style.width = ''; }, 700);
+      }
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        keys.forEach(function (k) {
+          var b = dockBtns[k];
+          if (!b) return;
+          b.classList.remove('is-entering');
+          if (b.tagName === 'BUTTON') setTimeout(function () { b.classList.add('is-drawn'); }, reduceMotion ? 0 : 60);
+        });
+      }); });
+    }
     function syncGuide() {
       var active = mid.phase === 'active';
       percentCard.hidden = !active;
-      q('example').hidden = !active;
+      q('example').hidden = mid.phase === 'idle';
       handle.disabled = !active;
-      var sel = q('select'), toggle = q('toggle');
-      label(sel, selecting ? 'Done' : 'Select');
-      sel.disabled = active || mid.scripted;
-      label(toggle, active ? 'Back' : 'Midpoint');
-      toggle.disabled = mid.scripted || (!active && picked.length < 2);
-      q('clear').disabled = mid.scripted;
       insights.forEach(function (ins) { ins.el.classList.toggle('is-selected', picked.indexOf(ins) >= 0); });
+      renderDock();
+    }
+    // Reset: clears the selection and any placed Midpoint, and returns to the whole tree.
+    function resetAll() {
+      if (mid.placed) { mid.placed.el.remove(); mid.placed = null; }
+      selecting = false; picked = [];
+      dock(null);
+      exit();
     }
     function exit() {
       mid.phase = 'idle';
@@ -809,24 +918,9 @@
       sync();
     }
     if (guide) {
-      q('select').addEventListener('click', function () {
-        if (mid.phase === 'active') return;
-        selecting = !selecting;
-        dock(null);
-        sync();
-      });
-      q('toggle').addEventListener('click', function () {
-        if (mid.phase === 'active') exit();
-        else if (picked.length >= 2) { selecting = false; enter(); }
-      });
-      q('clear').addEventListener('click', function () {
-        selecting = false; picked = [];
-        dock(null);
-        exit();
-      });
       // Tapping an Insight selects it while selecting, and otherwise opens its docked card.
       root.addEventListener('click', function (e) {
-        if (mid.phase === 'active' || state.step < 2 || mid.scripted) return;
+        if (mid.phase !== 'idle' || state.step < 2 || mid.scripted) return;
         if (e.target.closest && e.target.closest('button, .mid-cards')) return;
         var hit = insights.filter(function (ins) {
           var r = ins.el.getBoundingClientRect();
