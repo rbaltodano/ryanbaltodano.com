@@ -1,8 +1,8 @@
 // "A Map of Your Own Thinking" on the home page. The photo panel pins while the page scrolls,
-// and the scroll drives a horizontal track through three frames, right to left: an answer
+// and the scroll drives a horizontal track through three frames, right to left, 1:1: an answer
 // streams in, one of its terms arrives as a saved Insight card (the app's dark docked card),
 // the Insight Tree adds that Insight with the app's entrance (insight-tree.js, mode "add"),
-// and the same tree swings into Study in place. Each scene rests a moment before the next.
+// and the same tree swings into Study in place.
 // On tablets and phones the frames rise bottom to top instead of sliding sideways.
 (function () {
   var flow = document.querySelector('[data-flow]');
@@ -16,7 +16,7 @@
   var definitionTimer;
   var scrollAnimation;
   var animationStart = 0;
-  var animating = false, snapTimer, wheelTimer, wheelGesture = false, touching = false, pointerHeld = false;
+  var animating = false;
   var terms = flow.querySelectorAll('[data-flow-term]');
   var menuCurve = getComputedStyle(flow).getPropertyValue('--ease-menu').match(/[\d.]+/g).map(Number);
 
@@ -38,14 +38,13 @@
   }
   function stopAnimation() {
     cancelAnimationFrame(scrollAnimation);
-    clearTimeout(snapTimer);
     animating = false;
   }
   function scrollToPhase(targetPhase) {
     stopAnimation();
     var from = window.scrollY;
     var geometry = scrollGeometry(), origin = geometry.origin, travel = geometry.travel;
-    var rest = targetPhase === 0 ? 0 : targetPhase === last ? 1 : (targetPhase + 0.5) / phaseCount;
+    var rest = targetPhase / last;
     var destination = origin + travel * rest;
     if (reduceMotion) { window.scrollTo({ top: destination, behavior: 'instant' }); update(); return; }
     var fromPhase = position(Math.min(Math.max((from - origin) / travel, 0), 1));
@@ -73,58 +72,9 @@
   ['pointerdown', 'touchstart'].forEach(function (event) {
     window.addEventListener(event, stopAnimation, { passive: true });
   });
-  // One wheel/trackpad gesture advances one whole module. Consume its trailing momentum
-  // so it cannot leave the track halfway between panels or skip several modules.
-  window.addEventListener('wheel', function (event) {
-    if (event.ctrlKey || event.metaKey || Math.abs(event.deltaX) > Math.abs(event.deltaY) || !event.deltaY) return;
-    // An automatic scroll lasts half a second; if one is somehow still "running", let go of it.
-    if (animating && performance.now() - animationStart > 1500) stopAnimation();
-    var geometry = scrollGeometry();
-    if (geometry.progress < -0.002 || geometry.progress > 1.002) { stopAnimation(); return; }
-    var phase = position(Math.min(Math.max(geometry.progress, 0), 1));
-    var direction = event.deltaY > 0 ? 1 : -1;
-    // Over the tree, the wheel is plain page scrolling: it scrubs the Study turn and carries on
-    // down the page, instead of being held to one module per flick.
-    if (phase >= 1.5 && event.target.closest && event.target.closest('.tree-card')) { stopAnimation(); return; }
-    if (!animating && !wheelGesture && ((phase === 0 && direction < 0) || (phase === last && direction > 0))) return;
-    event.preventDefault();
-    clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(function () { wheelGesture = false; }, 180);
-    if (animating || wheelGesture) { wheelGesture = true; return; }
-    wheelGesture = true;
-    scrollToPhase(Math.min(Math.max(Math.round(phase) + direction, 0), last));
-  }, { passive: false, capture: true });
-
-  window.addEventListener('keydown', function (event) {
-    if (event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || event.target.closest('button, a, input, textarea, select, [contenteditable]')) return;
-    var direction = /^(ArrowDown|PageDown| )$/.test(event.key) ? (event.shiftKey ? -1 : 1) : /^(ArrowUp|PageUp)$/.test(event.key) ? -1 : 0;
-    if (!direction) { stopAnimation(); return; }
-    var geometry = scrollGeometry();
-    if (geometry.progress < -0.002 || geometry.progress > 1.002) return;
-    var phase = position(Math.min(Math.max(geometry.progress, 0), 1));
-    if (!animating && ((phase === 0 && direction < 0) || (phase === last && direction > 0))) return;
-    event.preventDefault();
-    if (!animating) scrollToPhase(Math.min(Math.max(Math.round(phase) + direction, 0), last));
-  });
-
-  function settle() {
-    clearTimeout(snapTimer);
-    if (animating || touching || pointerHeld) return;
-    snapTimer = setTimeout(function () {
-      var geometry = scrollGeometry();
-      if (animating || touching || pointerHeld || geometry.progress <= 0 || geometry.progress >= 1) return;
-      var phase = position(geometry.progress), nearest = Math.round(phase);
-      if (Math.abs(phase - nearest) > 0.002) scrollToPhase(nearest);
-    }, 180);
-  }
-  window.addEventListener('scroll', settle, { passive: true });
-  window.addEventListener('pointerdown', function () { pointerHeld = true; }, { passive: true });
-  ['pointerup', 'pointercancel'].forEach(function (event) {
-    window.addEventListener(event, function () { pointerHeld = false; settle(); }, { passive: true });
-  });
-  window.addEventListener('touchstart', function () { touching = true; }, { passive: true });
-  ['touchend', 'touchcancel'].forEach(function (event) {
-    window.addEventListener(event, function () { touching = false; settle(); }, { passive: true });
+  // Any direct input hands control back to the user.
+  ['wheel', 'keydown'].forEach(function (event) {
+    window.addEventListener(event, stopAnimation, { passive: true });
   });
   var definitions = {
     eudaimonia: ['Eudaimonia', 'Flourishing: the complete, well-lived human life that Aristotle held every action ultimately aims at. Not a feeling of happiness, but a life lived well over its whole length.'],
@@ -138,25 +88,8 @@
 
   // Scroll needed per frame of travel, as a share of the viewport height.
   var PER_FRAME = 0.9;
-  // Scroll progress (0–1) → track position (0 = first frame, last = final frame). Each frame
-  // gets an equal share of the scroll; it rests through the middle 30% of its share.
-  var STOPS = [];
-  for (var i = 0; i < phaseCount; i++) {
-    var share = 1 / phaseCount, start = i * share;
-    STOPS.push([i === 0 ? 0 : start + share * 0.35, i]);
-    STOPS.push([i === last ? 1 : start + share * 0.65, i]);
-  }
-  function position(p) {
-    for (var i = 1; i < STOPS.length; i++) {
-      if (p <= STOPS[i][0]) {
-        var a = STOPS[i - 1], b = STOPS[i];
-        var t = (p - a[0]) / (b[0] - a[0] || 1);
-        t = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        return a[1] + (b[1] - a[1]) * t;
-      }
-    }
-    return last;
-  }
+  // Scroll progress (0–1) → track position (0 = first frame, last = final frame), 1:1.
+  function position(p) { return p * last; }
 
   // ---------- The answer streams in, then its terms underline ----------
   var words = [];
@@ -215,8 +148,7 @@
         text.setAttribute('aria-busy', 'false');
         tree.dispatchEvent(new CustomEvent('journey:insight', { detail: { key: term.dataset.flowTerm } }));
         showInsight(definition);
-        // The midpoint of phase two rests exactly on the Insight panel in both layouts.
-        scrollToPhase(1);
+                scrollToPhase(1);
       }, reduceMotion ? 0 : 2000);
     });
   });
