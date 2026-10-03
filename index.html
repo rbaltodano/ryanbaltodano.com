@@ -13,10 +13,12 @@
     var root = document.documentElement;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     root.classList.add('intro');
+    // Arriving through a page transition, which brings the page in itself.
+    window.addEventListener('pagereveal', function (event) { if (event.viewTransition) root.classList.add('vt'); });
     window.addEventListener('load', function () { if (window.scrollY > 80) root.classList.remove('intro'); });
   })();
 </script>
-<link rel="stylesheet" href="css/site.css?v=20261002-intro">
+<link rel="stylesheet" href="css/site.css?v=20261002-vt">
 </head>
 <body>
 

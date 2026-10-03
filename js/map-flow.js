@@ -90,7 +90,7 @@
   var PER_FRAME = 0.9;
   // Scroll progress (0–1) → track position (0 = first frame, last = final frame), 1:1 after the hold.
   // The answer holds still for the first stretch of scroll, so the move to the Insight card is deliberate.
-  var HOLD = 0.1;
+  var HOLD = 0.17;
   function position(p) { return Math.max(0, p - HOLD) / (1 - HOLD) * last; }
 
   // ---------- The answer streams in, then its terms underline ----------
