@@ -1130,20 +1130,22 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- CTA ---------- */
 
+/* Full-bleed from the end of the section above to the footer. The countryside sits on the
+   footer's top edge; the murmuration flies over it and the copy sits above both. */
 .cta {
   position: relative;
   overflow: hidden;
-  padding: 120px var(--gutter);
+  padding: 48px var(--gutter) calc(100% * 397 / 2400 + 96px);
   display: flex;
   justify-content: center;
   text-align: center;
-  border-radius: 32px;
-  background: var(--canvas-secondary);
   isolation: isolate;
 }
-.cta__bg { display: none; }
-.cta__birds { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.cta__scene { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; display: block; z-index: 0; pointer-events: none; }
+.cta__birds { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 .cta__copy {
+  position: relative;
+  z-index: 2;
   max-width: 640px;
   display: flex;
   flex-direction: column;
@@ -1179,16 +1181,14 @@ a { color: inherit; text-decoration: none; }
    wordmark that spans the content width and fades out toward the bottom. */
 .footer {
   --footer-ink: 255, 250, 240;
-  width: calc(100% - 24px);
-  max-width: 1920px;
-  margin: 0 auto 12px;
-  /* Side padding keeps the footer's content aligned with the page content above it, at any footer width. */
-  padding: 84px max(calc(var(--gutter) - 12px), calc((min(100% - 24px, 1920px) - var(--content)) / 2)) 0;
+  width: 100%;
+  margin: 0;
+  /* Side padding keeps the footer's content aligned with the page content above it. */
+  padding: 84px max(var(--gutter), calc((100% - var(--content)) / 2)) 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
   overflow: hidden;
-  border-radius: var(--inset-panel-radius);
   background: var(--app-canvas-secondary-dark);
   container-type: inline-size;
 }
@@ -2148,7 +2148,9 @@ a { color: inherit; text-decoration: none; }
   .private__facts li:nth-child(odd) { padding-right: 16px; }
   .private__facts strong { font-size: 18px; }
   .private::before { background: linear-gradient(180deg, rgba(18, 15, 12, 0.9) 0%, rgba(18, 15, 12, 0.75) 60%, rgba(18, 15, 12, 0.5) 100%); }
-  .cta { padding: 72px 24px; border-radius: 24px; }
+  /* Show the scene at twice the width, cropped around the house, so it isn't a thin strip. */
+  .cta { padding: 32px 24px calc(200% * 397 / 2400 + 56px); }
+  .cta__scene { width: 200%; left: -70%; }
   .footer { padding: 24px; }
 }
 
