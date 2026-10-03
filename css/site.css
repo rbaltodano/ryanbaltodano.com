@@ -865,10 +865,6 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- The Library ---------- */
 
-/* Inset panel on the secondary canvas; inner cards swap to the primary canvas. */
-.section--panel { margin: 12px; padding: 84px; background: var(--canvas-secondary); border-radius: 84px; }
-.section--panel + .section--flush-top { padding-top: var(--section-y); }
-.section--panel .works section { background: var(--canvas); }
 .library { display: flex; align-items: center; gap: 84px; }
 .library__copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
 .facts { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
@@ -2064,7 +2060,6 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 992px) {
   .mt-frame { height: 450px; }
   :root { --gutter: 48px; --inset-panel-radius: 48px; }
-  .section--panel { padding: 48px; border-radius: 48px; }
   .footer { padding-top: 56px; }
 }
 
@@ -2074,7 +2069,6 @@ a { color: inherit; text-decoration: none; }
   :root { --gutter: 24px; --inset-panel-radius: 32px; }
   .flow { --flow-content-pad: 0px; --flow-frame-pad: 0px; margin-inline: 0; }
   .flow__sticky { top: 0; height: 100vh; padding: 48px 24px; border-radius: 0; }
-  .section--panel { padding: 24px 12px; border-radius: 32px; }
   .flow__head { padding: 0; }
   .flow__frame { padding: 24px 0 0; }
   .flow-answer { padding: 0; }
