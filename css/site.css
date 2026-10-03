@@ -4,10 +4,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=Figtree:wght@400;500;600;700&display=swap');
 
 :root {
-  /* The page is the lighter tone and surfaces on it the darker one. Inside windows into the
-     app it is the other way round, as in the app: a darker canvas with lighter cards. */
-  --canvas: #FFFAF0;
-  --canvas-secondary: #F3EEE2;
+  /* Match AngroveTheme.Colors: canvas is the app's background, and canvasSecondary is
+     the lighter surface used for cards and panels. */
+  --canvas: #F3EEE2;
+  --canvas-secondary: #FFFAF0;
   --app-canvas: #F3EEE2;
   --app-surface: #FFFAF0;
   --canvas-dark: #120F0C;
@@ -39,7 +39,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: clip; }
+html { scroll-behavior: smooth; overflow-x: clip; background: var(--canvas); }
 body {
   background: var(--canvas);
   color: var(--paragraph);

@@ -10,10 +10,12 @@
 <style>
   /* Keep startup visible even before the main stylesheet arrives. Assets and dimensions match
      the app's BootPresentation: a 144px leaf, a 256px dot field, and a 34px italic wordmark. */
-  .site-boot { display: none; }
+  .site-boot { display: none; opacity: 1; transition: opacity 0.5s ease-in-out; }
+  html, body { background: var(--canvas, #F3EEE2); }
   .is-booting body { overflow: hidden; }
   .is-booting body > .nav, .is-booting body > main, .is-booting body > .footer { visibility: hidden; }
-  .is-booting .site-boot { display: grid; place-items: center; position: fixed; inset: 0; z-index: 1000; background: #F3EEE2; }
+  .is-booting .site-boot, .site-boot.is-revealing { display: grid; place-items: center; position: fixed; inset: 0; z-index: 1000; background: var(--canvas, #F3EEE2); }
+  .site-boot.is-revealing { opacity: 0; pointer-events: none; }
   .site-boot__mark { position: relative; width: 256px; height: 256px; opacity: 0; transition: opacity 0.5s ease-in-out; }
   .site-boot.is-visible .site-boot__mark { opacity: 1; }
   .site-boot__dots { position: absolute; inset: 0; width: 256px; height: 256px; animation: boot-dots 20s linear infinite; }
@@ -27,7 +29,7 @@
   @media (prefers-reduced-motion: reduce) {
     .site-boot__dots { animation: none; }
     .site-boot__leaf { background-position: 100% 0 !important; filter: none !important; }
-    .site-boot__mark, .site-boot__leaf { transition: none; }
+    .site-boot, .site-boot__mark, .site-boot__leaf { transition: none; }
   }
 </style>
 <script>
@@ -46,7 +48,12 @@
       });
       root.classList.remove('is-booting');
       var boot = document.querySelector('.site-boot');
-      if (boot) boot.remove();
+      if (boot) {
+        // Keep the overlay mounted while its background fades into the page reveal.
+        boot.classList.add('is-revealing');
+        boot.setAttribute('aria-hidden', 'true');
+        setTimeout(function () { boot.remove(); }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500);
+      }
       document.querySelectorAll('[data-boot-inert]').forEach(function (element) {
         element.inert = false;
         element.removeAttribute('data-boot-inert');
@@ -86,7 +93,7 @@
 <link rel="preload" as="image" href="assets/brand/boot-leaf.webp">
 <link rel="preload" as="image" href="assets/brand/boot-dots.svg">
 <script src="js/boot-assets.js?v=20261003-loading-progress"></script>
-<link rel="stylesheet" href="css/site.css?v=20261003-loading-progress">
+<link rel="stylesheet" href="css/site.css?v=20261003-app-canvas-fade">
 <noscript><style>img[data-boot-src] { display: none !important; }</style></noscript>
 </head>
 <body>
