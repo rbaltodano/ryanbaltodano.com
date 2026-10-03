@@ -1,4 +1,4 @@
-// Vines loop remastered versions of the last four grow frames, only while on
+// Vines loop the last four grow frames (the sprite sheets in assets/home/), only while on
 // screen, so a page parked elsewhere is not animating in the background. They also drift behind
 // the page as it scrolls (parallax): each vine lags the scroll by its own share of the distance,
 // so the two read as sitting at different depths. Phones get no parallax.
@@ -33,10 +33,9 @@
     });
     paint.addEventListener('error', finish);
     paint.addEventListener('load', function () {
-      // Prepare both sheets before the entrance starts, so its handoff has no blank frame.
-      var decoded = [paint.decode ? paint.decode() : Promise.resolve(),
-        idle.decode ? idle.decode() : Promise.resolve()];
-      Promise.all(decoded).then(function () {
+      // Decode before starting the clock so a slow image cannot skip the opening frames.
+      var decoded = paint.decode ? paint.decode() : Promise.resolve();
+      decoded.then(function () {
         if (finished || reducedMotion.matches) return;
         clearTimeout(loadTimeout);
         // Park the idle on the first of the final four grow frames.
