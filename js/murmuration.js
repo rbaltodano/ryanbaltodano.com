@@ -24,7 +24,6 @@
   var VIEW = 70, SPACE = 22;              // neighbour radius, personal space
   var TURN = 0.14;                        // how quickly the drawn heading catches up
 
-  window.__mm = { birds: function () { return birds; }, step: function (k) { step(k); }, draw: function () { draw(); } };
   var W = 0, H = 0, dpr = 1, birds = [], sprites = [], raf = 0, visible = true, clock = 0;
   var pointer = null, aim = { x: 0, y: 0 }, follow = 0;
 
@@ -103,7 +102,7 @@
         rot: a - Math.PI / 2,
         f: f,
         seed: rand(0, 1000),
-        ring: rand(28, 120),            // the distance it likes to circle the cursor at
+        ring: rand(24, 96),            // the distance it likes to circle the cursor at
         sprite: Math.floor(Math.random() * sprites.length),
         alpha: rand(0.35, 0.7)
       });
