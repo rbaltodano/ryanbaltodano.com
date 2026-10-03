@@ -2284,3 +2284,10 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .guide-dock__btn svg path { stroke-dashoffset: 0; }
   .guide-dock__btn svg { filter: none; }
 }
+
+/* The Midpoint example's Insight cards come up like the app's docked card: bottomDockCard (scale 0.35
+   from the bottom edge, 24 pt lower, transparent) on springStandard, with the text already in place. */
+@keyframes dock-in { from { opacity: 0; transform: translateY(24px) scale(0.35); } }
+.guide-mid .mid-card--insight { transform-origin: 50% 100%; animation: dock-in 0.65s linear(0, 0.0257, 0.0895, 0.1752, 0.2712, 0.3695, 0.4645, 0.5528, 0.6324, 0.7024, 0.7629, 0.814, 0.8567, 0.8916, 0.9198, 0.9422, 0.9598, 0.9733, 0.9834, 0.9909, 0.9963, 1, 1.0024, 1.0039, 1.0047, 1.005, 1.005, 1.0047, 1.0043, 1.0038, 1.0033, 1.0028, 1.0024, 1.002, 1.0016, 1.0013, 1.001, 1.0008, 1.0006, 1.0004, 1) both; }
+.guide-mid .mid-card--insight .mid-card__body { animation: none; }
+@media (prefers-reduced-motion: reduce) { .guide-mid .mid-card--insight { animation: none; } }

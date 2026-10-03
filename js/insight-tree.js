@@ -685,7 +685,7 @@
       chip.innerHTML = '<svg class="it-chip__loading" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.25.6h7.5c.9 0 1.65.75 1.65 1.65V7.5c0 .9-.75 1.65-1.65 1.65H6.9L3.6 11.4V9.15H2.25C1.35 9.15.6 8.4.6 7.5V2.25C.6 1.35 1.35.6 2.25.6z"/></svg>'
         + '<span class="it-chip__label"><img src="' + ICON + '" alt=""><span>' + (guide ? (q('example-title').textContent || 'A new concept') : 'Synderesis') + '</span></span><i class="it-chip__dot"></i>';
       layer.appendChild(chip);
-      mid.placed = { el: chip, world: world, vis: new Spring(0) };
+      mid.placed = { el: chip, world: world, vis: new Spring(0), title: guide ? (q('example-title').textContent || 'A new concept') : '', body: guide ? q('example-body').textContent : '' };
       mid.placed.vis.to(1, 0, now);
       if (!guide) panTo(world[0], world[1]);
       // scheduleMidpointReveal: a 3.5 s minimum of loading, then the ripple and the title.
@@ -762,7 +762,7 @@
       docked.dataset.title = ins && !same ? ins.title : '';
       if (ins && !same) {
         q('docked-title').textContent = ins.title;
-        q('docked-body').textContent = GUIDE_DEFS[ins.title];
+        q('docked-body').textContent = ins.body || GUIDE_DEFS[ins.title] || '';
         // Replay the entrance for each new card.
         docked.style.animation = 'none'; void docked.offsetWidth; docked.style.animation = '';
       }
@@ -948,8 +948,16 @@
     if (guide) {
       // Tapping an Insight selects it while selecting, and otherwise opens its docked card.
       root.addEventListener('click', function (e) {
-        if (mid.phase !== 'idle' || state.step < 2 || mid.scripted) return;
+        if (state.step < 2 || mid.scripted) return;
         if (e.target.closest && e.target.closest('button, .mid-cards')) return;
+        // The placed Midpoint opens its own card, and tapping elsewhere puts it away.
+        if (mid.phase === 'done' && mid.placed) {
+          var pr = mid.placed.el.getBoundingClientRect();
+          var onChip = e.clientX >= pr.left - 6 && e.clientX <= pr.right + 6 && e.clientY >= pr.top - 6 && e.clientY <= pr.bottom + 6;
+          dock(onChip ? { title: mid.placed.title, body: mid.placed.body } : null);
+          return;
+        }
+        if (mid.phase !== 'idle') return;
         var hit = insights.filter(function (ins) {
           var r = ins.el.getBoundingClientRect();
           return e.clientX >= r.left - 6 && e.clientX <= r.right + 6 && e.clientY >= r.top - 6 && e.clientY <= r.bottom + 6;
