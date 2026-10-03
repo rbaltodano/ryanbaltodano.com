@@ -1036,12 +1036,10 @@
       if (Math.abs(state.spinVel) < 0.05) state.spinVel = 0;
     }
 
-    // Spins accumulate while in Study, but leaving Study unwinds at most half a turn: whole turns
-    // are dropped once it settles (invisible, a full turn looks the same), and the camera only
-    // uses the raw angle once Study is reached.
-    var wrapped = Math.atan2(Math.sin(state.yaw), Math.cos(state.yaw));
-    if (!state.dragging && state.spinVel === 0 && p > 0.999) state.yaw = wrapped;
-    var yaw = wrapped + (state.yaw - wrapped) * smoothstep(0.97, 1, p);
+    // Spins accumulate while in Study, but leaving Study unwinds at most half a turn: once the
+    // spin settles in Study, whole turns are dropped (a full turn looks the same).
+    if (!state.dragging && state.spinVel === 0 && p > 0.999) state.yaw = Math.atan2(Math.sin(state.yaw), Math.cos(state.yaw));
+    var yaw = state.yaw;
 
     var f = frame();
     var cam = camera(f, p, f.fitZoom, yaw);
@@ -1058,8 +1056,10 @@
       var o = project(cam, r.world);
       if (o) ripples.push({ x: o.x, y: o.y, progress: (time - r.start) / r.duration, strength: r.strength, radiusScale: r.radiusScale });
     });
-    drawTreeGrid(cam, f, gridTime, Math.pow(1 - p, 2) * node.vis.v, ripples);
-    drawFloor(cam, f, 0, p);
+    // The dot fields are the busiest thing moving during the swing, so each fades out of the way
+    // early: the tree's grid is gone by mid-swing, and the Study floor arrives once the camera settles.
+    drawTreeGrid(cam, f, gridTime, (1 - smoothstep(0, 0.45, p)) * node.vis.v, ripples);
+    drawFloor(cam, f, 0, smoothstep(0.45, 1, p));
     drawRing(f, p, yaw, p);
 
     var nodeProj = project(cam, [0, 0, 0]);
