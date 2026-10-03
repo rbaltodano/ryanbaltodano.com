@@ -7,7 +7,7 @@
 <meta name="description" content="The Angrove User Guide: how to ask a question, save Insights, read the Insight Tree, find a Midpoint, study a concept in 3D, and keep your data private.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="css/site.css?v=20261003-tech-accordion">
+<link rel="stylesheet" href="css/site.css?v=20261003-mid-fig">
 <link rel="stylesheet" href="css/app-windows.css">
 </head>
 <body>
@@ -249,15 +249,31 @@
           <div><h3 class="guide-label">A weighted center of meaning</h3><p class="guide-text">Midpoint works in the same embedding space as the tree. Each idea you select is an arrow (its 384-number embedding), scaled to length 1 so a longer definition can’t outweigh a shorter one. Your percentages become weights, and Angrove adds the arrows together in those proportions, then rescales the result to length 1:</p>
             <p class="guide-formula">center = normalize( w₁·â₁ + w₂·â₂ + … + wₙ·âₙ )</p>
             <p class="guide-text">At 50/50 between two ideas, the center points exactly between them; at 80/20, it leans toward the first. That direction is the region of meaning you’re asking about.</p></div>
-          <figure class="guide-fig">
-            <svg viewBox="0 0 540 220" role="img" aria-label="Two idea vectors, A and B, a weighted center between them leaning toward A, and five candidates with the nearest one chosen.">
-              <circle cx="80" cy="190" r="4" class="gf-dot"/>
-              <path d="M80 190 L430 150" class="gf-vec"/><circle cx="430" cy="150" r="5" class="gf-src"/><text x="440" y="155" class="gf-t">A · 70%</text>
-              <path d="M80 190 L250 20" class="gf-vec"/><circle cx="250" cy="20" r="5" class="gf-src"/><text x="262" y="24" class="gf-t">B · 30%</text>
-              <path d="M80 190 L380 92" class="gf-center"/><text x="238" y="160" class="gf-t gf-t--accent">center</text>
-              <circle cx="330" cy="60" r="4" class="gf-cand"/><circle cx="410" cy="100" r="4" class="gf-cand"/><circle cx="300" cy="140" r="4" class="gf-cand"/><circle cx="355" cy="40" r="4" class="gf-cand"/>
-              <circle cx="372" cy="80" r="7" class="gf-pick"/>
-              <text x="386" y="72" class="gf-t">nearest candidate</text>
+          <figure class="guide-fig" data-mid-fig>
+            <svg viewBox="0 0 540 220" role="img" aria-label="Two idea vectors, A at 70% and B at 30%, a weighted center between them leaning toward A, and five candidates, with the one nearest the center chosen.">
+              <defs>
+                <linearGradient id="gf-ga" gradientUnits="userSpaceOnUse" x1="80" y1="190" x2="430" y2="150"><stop offset="0" stop-color="rgb(74, 50, 28)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="0.5" stop-color="rgb(74, 50, 28)" stop-opacity="0.6"/><stop offset="0.78" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="1" stop-color="rgb(74, 50, 28)" stop-opacity="0"/></linearGradient>
+                <linearGradient id="gf-gb" gradientUnits="userSpaceOnUse" x1="80" y1="190" x2="250" y2="20"><stop offset="0" stop-color="rgb(74, 50, 28)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="0.5" stop-color="rgb(74, 50, 28)" stop-opacity="0.6"/><stop offset="0.78" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="1" stop-color="rgb(74, 50, 28)" stop-opacity="0"/></linearGradient>
+                <linearGradient id="gf-gc" gradientUnits="userSpaceOnUse" x1="80" y1="190" x2="380" y2="92"><stop offset="0" stop-color="rgb(134, 128, 62)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(134, 128, 62)" stop-opacity="0.40"/><stop offset="0.5" stop-color="rgb(134, 128, 62)" stop-opacity="1"/><stop offset="0.78" stop-color="rgb(134, 128, 62)" stop-opacity="0.40"/><stop offset="1" stop-color="rgb(134, 128, 62)" stop-opacity="0"/></linearGradient>
+                <mask id="gf-cmask" maskUnits="userSpaceOnUse" x="0" y="0" width="540" height="220"><path d="M80 190 L380 92" pathLength="1" class="gf-grow" style="--d:2500ms;--dur:700ms" stroke="#fff" stroke-width="8" fill="none"/></mask>
+              </defs>
+              <circle cx="80" cy="190" r="4" class="gf-dot gf-pop" style="--d:0ms"/>
+              <path d="M80 190 L430 150" pathLength="1" stroke="url(#gf-ga)" class="gf-vec gf-grow" style="--d:650ms"/>
+              <circle cx="430" cy="150" r="5" class="gf-src gf-pop" style="--d:200ms"/><text x="440" y="155" class="gf-t gf-fade" style="--d:350ms">A · 70%</text>
+              <path d="M80 190 L250 20" pathLength="1" stroke="url(#gf-gb)" class="gf-vec gf-grow" style="--d:1550ms"/>
+              <circle cx="250" cy="20" r="5" class="gf-src gf-pop" style="--d:1100ms"/><text x="262" y="24" class="gf-t gf-fade" style="--d:1250ms">B · 30%</text>
+              <path d="M80 190 L380 92" stroke="url(#gf-gc)" class="gf-center" mask="url(#gf-cmask)"/>
+              <circle cx="380" cy="92" r="3.5" class="gf-tip gf-pop" style="--d:3100ms"/>
+              <text x="238" y="160" class="gf-t gf-t--accent gf-fade" style="--d:3150ms">center</text>
+              <g class="gf-others">
+                <circle cx="330" cy="60" r="4" class="gf-cand gf-pop" style="--d:3600ms"/>
+                <circle cx="300" cy="140" r="4" class="gf-cand gf-pop" style="--d:3780ms"/>
+                <circle cx="410" cy="100" r="4" class="gf-cand gf-pop" style="--d:4140ms"/>
+                <circle cx="355" cy="40" r="4" class="gf-cand gf-pop" style="--d:4320ms"/>
+              </g>
+              <circle cx="372" cy="80" r="4" class="gf-cand gf-pop" style="--d:3960ms"/>
+              <circle cx="372" cy="80" r="7" class="gf-pick gf-pop" style="--d:4900ms"/>
+              <text x="386" y="72" class="gf-t gf-fade" style="--d:5050ms">nearest candidate</text>
             </svg>
           </figure>
           <div><h3 class="guide-label">Writing, then choosing</h3><p class="guide-text">Numbers alone can’t be read, so the on-device model writes five candidate Insights that try to put the shared idea into words, guided by each source and its weight. Angrove embeds all five and keeps the one whose arrow is closest to the center by cosine distance. The model proposes; the math decides. If an embedding can’t be made, Angrove falls back to the model’s first candidate.</p></div>
@@ -418,7 +434,7 @@
 <script src="js/site.js"></script>
 <script src="js/app-windows.js"></script>
 <script src="js/insight-tree.js"></script>
-<script src="js/guide.js?v=20261003-tech-accordion"></script>
+<script src="js/guide.js?v=20261003-mid-fig"></script>
 <script src="js/guide-tasks.js"></script>
 <script src="js/murmuration.js?v=20261003-tap"></script>
 </body>
