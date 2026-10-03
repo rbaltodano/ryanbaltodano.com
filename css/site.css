@@ -1142,6 +1142,7 @@ a { color: inherit; text-decoration: none; }
   isolation: isolate;
 }
 .cta__bg { display: none; }
+.cta__birds { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 .cta__copy {
   max-width: 640px;
   display: flex;
