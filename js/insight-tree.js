@@ -924,7 +924,7 @@
     function syncGuide() {
       var active = mid.phase === 'active';
       percentCard.hidden = !active;
-      q('example').hidden = mid.phase === 'idle';
+      q('example').hidden = true;   // the result is shown by the placed Insight and its card instead
       handle.disabled = !active;
       insights.forEach(function (ins) { ins.el.classList.toggle('is-selected', picked.indexOf(ins) >= 0); });
       renderDock();
