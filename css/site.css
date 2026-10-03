@@ -1729,12 +1729,12 @@ a { color: inherit; text-decoration: none; }
 .window--guide .w-read__answer.is-pending .w-term { pointer-events: none; }
 .window.window--guide .w-read__answer.is-pending .w-term::after, .window.window--guide .w-term.is-generating::after { transform: scaleX(0); transition: none; }
 .window--guide .w-term:focus-visible { outline: 2px solid var(--light-green); outline-offset: 4px; }
-.window--guide .w-scrim { position: absolute; inset: 0; z-index: 10; background: rgba(18, 15, 12, 0.34); opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-menu); }
+.window--guide .w-scrim { position: absolute; inset: 0; z-index: 10; background: rgba(18, 15, 12, 0.14); opacity: 0; pointer-events: none; transition: none; }
 .window--guide .w-scrim.is-open { opacity: 1; pointer-events: auto; }
-.window.window--guide[data-window="conversation"] .w-card { --spring-in: linear(0, 0.0257, 0.0895, 0.1752, 0.2712, 0.3695, 0.4645, 0.5528, 0.6324, 0.7024, 0.7629, 0.814, 0.8567, 0.8916, 0.9198, 0.9422, 0.9598, 0.9733, 0.9834, 0.9909, 0.9963, 1, 1.0024, 1.0039, 1.0047, 1.005, 1.005, 1.0047, 1.0043, 1.0038, 1.0033, 1.0028, 1.0024, 1.002, 1.0016, 1.0013, 1.001, 1.0008, 1.0006, 1.0004, 1); --spring-out: linear(0, 0.0262, 0.0909, 0.1778, 0.275, 0.3742, 0.4698, 0.5584, 0.6381, 0.708, 0.7682, 0.8189, 0.8611, 0.8955, 0.9232, 0.9451, 0.9621, 0.9751, 0.9849, 0.992, 0.9971, 1.0006, 1.0028, 1.0041, 1.0048, 1.005, 1.0049, 1.0046, 1.0042, 1.0037, 1.0032, 1.0027, 1.0023, 1.0018, 1.0015, 1.0012, 1.0009, 1.0007, 1.0005, 1.0004, 1); bottom: 10px; width: min(373px, calc(100% - 20px)); padding: 32px 32px 20px; gap: 16px; border: 1px solid rgba(34, 15, 1, 0.1); border-radius: 36px; box-shadow: 0 0 24px rgba(34, 15, 0, 0.15); transform-origin: 50% 100%; transition: opacity 0.65s var(--spring-in), transform 0.65s var(--spring-in); }
+.window.window--guide[data-window="conversation"] .w-card { --spring-in: linear(0, 0.0257, 0.0895, 0.1752, 0.2712, 0.3695, 0.4645, 0.5528, 0.6324, 0.7024, 0.7629, 0.814, 0.8567, 0.8916, 0.9198, 0.9422, 0.9598, 0.9733, 0.9834, 0.9909, 0.9963, 1, 1.0024, 1.0039, 1.0047, 1.005, 1.005, 1.0047, 1.0043, 1.0038, 1.0033, 1.0028, 1.0024, 1.002, 1.0016, 1.0013, 1.001, 1.0008, 1.0006, 1.0004, 1); --spring-out: linear(0, 0.0262, 0.0909, 0.1778, 0.275, 0.3742, 0.4698, 0.5584, 0.6381, 0.708, 0.7682, 0.8189, 0.8611, 0.8955, 0.9232, 0.9451, 0.9621, 0.9751, 0.9849, 0.992, 0.9971, 1.0006, 1.0028, 1.0041, 1.0048, 1.005, 1.0049, 1.0046, 1.0042, 1.0037, 1.0032, 1.0027, 1.0023, 1.0018, 1.0015, 1.0012, 1.0009, 1.0007, 1.0005, 1.0004, 1); bottom: 10px; width: min(373px, calc(100% - 20px)); padding: 32px 32px 20px; gap: 16px; border: 1px solid rgba(34, 15, 1, 0.1); border-radius: 36px; box-shadow: 0 0 24px rgba(34, 15, 0, 0.15); transform-origin: 50% 100%; transition: none; }
 /* The app's bottomDockCard: scale 0.35 from the bottom edge, 24 pt lower, and transparent; springStandard
    (response 0.42, damping 0.86) in, springQuick (0.32, 0.86) out. */
-.window.window--guide[data-window="conversation"] .w-card.is-closed { opacity: 0; filter: none; transform: translateY(24px) scale(0.35); transition: opacity 0.5s var(--spring-out), transform 0.5s var(--spring-out); }
+.window.window--guide[data-window="conversation"] .w-card.is-closed { opacity: 0; filter: none; transform: translateY(24px) scale(0.35); transition: none; }
 .window.window--guide[data-window="conversation"] .w-card.is-reset { transition: none; }
 /* The Guide's Midpoint example, as UserGuideMidpointExample lays it out: a 620 pt canvas with
    38 pt corners and a hairline, then (16 apart) the percent card, the Select / Midpoint / Reset
@@ -2138,7 +2138,7 @@ a { color: inherit; text-decoration: none; }
    16 pt apart by 12, all in placeholderText until saved (bookmark.fill in the accent red). Each one
    enters 0.1 s after the last: 0.28 s ease-out from blurred 4, scaled 0.88, and transparent. */
 .w-card__actions { display: flex; gap: 12px; }
-.window--guide .w-act { width: 16px; height: 16px; padding: 0; border: 0; background: none; cursor: pointer; color: rgba(74, 50, 28, 0.5); opacity: 1; filter: none; transform: none; transition: opacity 0.28s ease-out, filter 0.28s ease-out, transform 0.28s ease-out; transition-delay: calc(var(--i) * 0.1s); }
+.window--guide .w-act { width: 16px; height: 16px; padding: 0; border: 0; background: none; cursor: pointer; color: rgba(74, 50, 28, 0.5); opacity: 1; filter: none; transform: none; transition: none; }
 .window--guide .w-card.is-closed .w-act, .window--guide .w-card.is-reset .w-act { opacity: 0; filter: blur(4px); transform: scale(0.88); transition: none; }
 .window--guide .w-act svg { display: block; width: 16px; height: 16px; overflow: visible; }
 .window--guide .w-act:focus-visible { outline: 2px solid var(--light-green); outline-offset: 4px; border-radius: 4px; }
