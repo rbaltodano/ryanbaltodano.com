@@ -1596,7 +1596,7 @@ a { color: inherit; text-decoration: none; }
 .flow__sticky {
   position: sticky;
   top: 12px;
-  height: calc(100vh - 24px);
+  height: min(calc(100vh - 24px), 2160px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
