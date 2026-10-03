@@ -335,7 +335,13 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Hero ---------- */
 
 /* Centered copy with the phone, showing the app's home screen, beneath it. */
-.hero { padding-top: 216px; }
+.hero { position: relative; padding-top: 216px; }
+/* The vines sit behind the copy, hugging each edge of the page, with their centers level with the
+   middle of the headline block. */
+.hero__vine { position: absolute; top: 420px; translate: 0 -50%; width: min(580px, 29vw); height: auto; pointer-events: none; user-select: none; }
+.hero__vine--left { left: 0; }
+.hero__vine--right { right: 0; }
+.hero__inner { position: relative; z-index: 1; }
 .hero__inner {
   max-width: var(--content);
   margin: 0 auto;
@@ -1878,6 +1884,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 1024px) {
+  .hero__vine { display: none; }
   /* Guide and FAQ: the topic list leads the page once the columns stack, as in the app. */
   .faq { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .faq__head { position: static; }
