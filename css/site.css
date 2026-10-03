@@ -1680,8 +1680,21 @@ a { color: inherit; text-decoration: none; }
 .guide-demo { display: flex; flex-direction: column; gap: 8px; }
 .guide-demo__stage { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
 .guide-demo__stage .window-hint { margin-top: 6px; }
-.window--guide { height: 480px; }
+.window.window--guide { height: 560px; }
 .window--guide .w-read__answer { -webkit-mask-image: none; mask-image: none; }
+/* ConversationBranch's heading stack: leaf (24) and title (Libre Baskerville 34) 16 apart, the
+   question in quotation marks (trailing, 285 max), then the response. */
+.window--guide .w-read--thread { padding: 30px 24px 0; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: left; }
+.w-read--thread .w-read__leaf { width: 24px; height: 24px; }
+.w-read--thread .w-read__title { margin: 0 !important; font-size: 34px; line-height: 1.3; text-align: center; color: var(--brown); }
+.w-read--thread .w-read__col { width: min(100%, 440px); margin-top: 16px; display: flex; flex-direction: column; gap: 16px; }
+.w-read--thread .w-read__question { position: relative; align-self: flex-end; width: min(285px, 100%); padding: 0 22px; margin: 0 0 16px !important; font-family: var(--serif); font-weight: 400; font-size: 16px; line-height: 1.6; color: var(--brown); }
+.w-read--thread .w-read__quote { position: absolute; font-size: 28px; line-height: 1; }
+.w-read--thread .w-read__question .w-read__quote:first-child { top: 0; left: 0; }
+.w-read--thread .w-read__question .w-read__quote:last-child { bottom: 0; right: 0; }
+.w-read--thread .w-read__thinking { margin: 0 !important; font-family: var(--serif); font-weight: 400; font-size: 16px; line-height: 1.6; color: var(--brown); }
+.w-read--thread .w-read__thinking span { font-family: var(--sans); font-size: 14px; font-weight: 700; margin-left: 6px; }
+.w-read--thread .w-read__answer { width: 100%; max-width: none; margin: 0 !important; font-family: var(--serif); font-size: 16px; line-height: 1.8; text-align: left; hyphens: manual; color: var(--paragraph); }
 /* The Guide's Midpoint example, as UserGuideMidpointExample lays it out: a 620 pt canvas with
    38 pt corners and a hairline, then (16 apart) the percent card, the Select / Midpoint / Reset
    buttons (48 pt capsules, 12 apart, light green), and the Example Result card (24 padding, 28
@@ -1981,7 +1994,7 @@ a { color: inherit; text-decoration: none; }
   .guide-topic__intro { font-size: 17px; }
   .guide__topics { gap: 96px; }
   .guide-topic { gap: 40px; }
-  .window--guide { height: 520px; }
+  .window.window--guide { height: 700px; }
   .tree-card--guide { height: 520px; }
   .mt-frame { --mt-pad: 24px; border-radius: calc(36px + var(--mt-pad)); }
   .guide-controls { gap: 8px; }

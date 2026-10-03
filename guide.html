@@ -138,12 +138,17 @@
           <p class="guide-text">Tap an underlined word to open its definition, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-bookmark"/></svg>Save</span> to add it to your Insights.</p>
           <div class="guide-demo__stage">
   <div class="window window--guide" data-window="conversation">
-    <div class="w-read">
-      <p class="w-read__eyebrow">Add to study topic</p>
+    <!-- The conversation thread as the app lays it out: the leaf, the serif title, the question in
+         its quotation marks (right-aligned, 285 pt wide), then the response with its Thought-for row. -->
+    <div class="w-read w-read--thread">
+      <img class="w-read__leaf" src="assets/brand/angrove-leaf.png" width="24" height="24" alt="">
       <h3 class="w-read__title">Virtue and Habit</h3>
-      <p class="w-read__question">What does Aquinas mean by virtue?</p>
-      <hr class="w-read__rule">
-      <p class="w-read__answer">For Aquinas, virtue is a <button type="button" class="w-term" data-term="habit">habit</button> that disposes us to act well, formed by repeated good choices until acting well comes readily. Among the moral virtues, <button type="button" class="w-term" data-term="prudence">prudence</button> directs the others, because it judges what the good requires here and now.</p>
+      <div class="w-read__col">
+        <p class="w-read__question"><span class="w-read__quote" aria-hidden="true">&ldquo;</span><span>What does Aquinas mean by virtue?</span><span class="w-read__quote" aria-hidden="true">&rdquo;</span></p>
+        <p class="w-read__thinking">Thought for 12s <span aria-hidden="true">&rsaquo;</span></p>
+        <p class="w-read__answer">For Aquinas, virtue is a <button type="button" class="w-term" data-term="habit">habit</button> that disposes us to act well, formed by repeated good choices until acting well comes readily. Among the moral virtues, <button type="button" class="w-term" data-term="prudence">prudence</button> directs the others, because it judges what the good requires here and now.</p>
+    
+      </div>
     </div>
     <div class="w-card is-closed" data-card>
       <div class="w-card__head">
