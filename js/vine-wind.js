@@ -6,10 +6,52 @@
   var vines = document.querySelectorAll('.hero__vine--wind');
   if (!vines.length) return;
 
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  Array.prototype.forEach.call(vines, function (vine) {
+    var src = vine.getAttribute('data-paint-src');
+    if (!src || reducedMotion.matches) return;
+    var idle = vine.querySelector('img');
+    var paint = new Image();
+    var finished = false;
+    paint.alt = '';
+    paint.className = 'hero__vine-paint';
+    function finish() {
+      if (finished) return;
+      finished = true;
+      paint.remove();
+      idle.style.visibility = '';
+      idle.style.animationPlayState = vine.dataset.onScreen === 'false' ? 'paused' : 'running';
+      reducedMotion.removeEventListener('change', motionChanged);
+    }
+    function motionChanged(event) { if (event.matches) finish(); }
+    paint.addEventListener('animationend', function (event) {
+      if (event.animationName === 'vine-paint') finish();
+    });
+    paint.addEventListener('error', finish);
+    paint.addEventListener('load', function () {
+      if (finished || reducedMotion.matches) return;
+      // Keep the existing idle ready beneath the overlay, parked on its first frame.
+      idle.style.animation = 'none';
+      idle.offsetWidth;
+      idle.style.animation = '';
+      idle.style.animationPlayState = 'paused';
+      idle.style.visibility = 'hidden';
+      paint.style.animationPlayState = vine.dataset.onScreen === 'false' ? 'paused' : 'running';
+      vine.appendChild(paint);
+    });
+    reducedMotion.addEventListener('change', motionChanged);
+    paint.src = src;
+  });
+
   if ('IntersectionObserver' in window) {
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        entry.target.querySelector('img').style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+        var vine = entry.target;
+        vine.dataset.onScreen = String(entry.isIntersecting);
+        Array.prototype.forEach.call(vine.querySelectorAll('img'), function (image) {
+          var idleBehindPaint = !image.classList.contains('hero__vine-paint') && vine.querySelector('.hero__vine-paint');
+          image.style.animationPlayState = entry.isIntersecting && !idleBehindPaint ? 'running' : 'paused';
+        });
       });
     });
     Array.prototype.forEach.call(vines, function (vine) { seen.observe(vine); });
