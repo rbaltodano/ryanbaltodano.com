@@ -1031,8 +1031,15 @@
       if (Math.abs(state.spinVel) < 0.05) state.spinVel = 0;
     }
 
+    // Spins accumulate while in Study, but leaving Study unwinds at most half a turn: whole turns
+    // are dropped once it settles (invisible, a full turn looks the same), and the camera only
+    // uses the raw angle once Study is reached.
+    var wrapped = Math.atan2(Math.sin(state.yaw), Math.cos(state.yaw));
+    if (!state.dragging && state.spinVel === 0 && p > 0.999) state.yaw = wrapped;
+    var yaw = wrapped + (state.yaw - wrapped) * smoothstep(0.97, 1, p);
+
     var f = frame();
-    var cam = camera(f, p, f.fitZoom, state.yaw);
+    var cam = camera(f, p, f.fitZoom, yaw);
     state.cam = cam;
     state.hover.amount += ((state.hover.on && p < 0.05 ? 1 : 0) - state.hover.amount) * Math.min(1, dt * 7);
     if (mid) mid.cam = cam;
@@ -1048,7 +1055,7 @@
     });
     drawTreeGrid(cam, f, gridTime, Math.pow(1 - p, 2) * node.vis.v, ripples);
     drawFloor(cam, f, 0, p);
-    drawRing(f, p, state.yaw, p);
+    drawRing(f, p, yaw, p);
 
     var nodeProj = project(cam, [0, 0, 0]);
     var nv = clamp(node.vis.v, 0, 1);
