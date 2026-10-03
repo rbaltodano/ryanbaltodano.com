@@ -341,7 +341,7 @@ a { color: inherit; text-decoration: none; }
    headline block, the left one a little above the phone's middle. */
 .hero__vine { position: absolute; z-index: -1; translate: 0 -50%; width: min(580px, 29vw); height: auto; pointer-events: none; user-select: none; }
 .hero__vine--left { left: calc(50% - 50vw - 48px); top: 247px; }
-/* Idle repeats frames 21–24 of the 24-frame grow sheet through a one-frame window.
+/* Idle repeats remastered grow frames 21–24 from a dedicated four-frame sheet.
    JS pauses it off screen. Reduced motion rests on the fully grown final frame. */
 .hero__vine--wind { display: block; aspect-ratio: var(--vine-ratio, 358 / 335); overflow: hidden; transform: translate3d(0, var(--parallax, 0px), 0); will-change: transform; }
 /* Parallax (js/vine-wind.js): as the page scrolls, each vine falls behind it by a share of the
@@ -349,12 +349,12 @@ a { color: inherit; text-decoration: none; }
 /* Each vine keeps its own frame shape; the four-frame idle loops run at 4 fps. */
 .hero__vine--left.hero__vine--wind { --vine-ratio: 352 / 362; }
 .hero__vine--right.hero__vine--wind { --vine-ratio: 1; }
-.hero__vine--wind img { display: block; width: 2400%; height: 100%; max-width: none; transform: translateX(-83.3333333333%); animation: vine-wind 1s steps(4) infinite; will-change: transform; }
+.hero__vine--wind img { display: block; width: 400%; height: 100%; max-width: none; animation: vine-wind 1s steps(4) infinite; will-change: transform; }
 /* Set in the head, before any image can render. The finished artwork appears only after
    the paint-on entrance completes (or fails); without JS it stays visible as usual. */
 .vine-entrance .hero__vine--wind:not(.is-painted) > img:not(.hero__vine-paint) { visibility: hidden; }
 @keyframes vine-wind {
-  from { transform: translateX(-83.3333333333%); }
+  from { transform: translateX(0); }
   to { transform: translateX(-100%); }
 }
 /* One full paint-on entrance, then JS removes it to expose the four-frame idle loop. */
@@ -362,7 +362,7 @@ a { color: inherit; text-decoration: none; }
 @keyframes vine-paint { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__vine--wind img { animation: none; transform: translateX(-95.8333333333%); }
+  .hero__vine--wind img { animation: none; transform: translateX(-75%); }
   .vine-entrance .hero__vine--wind:not(.is-painted) > img:not(.hero__vine-paint) { visibility: visible; }
 }
 /* The right vine's window sits 24px past the page edge, so the stem that the artwork is cut on
