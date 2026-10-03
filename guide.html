@@ -7,7 +7,7 @@
 <meta name="description" content="The Angrove User Guide: how to ask a question, save Insights, read the Insight Tree, find a Midpoint, study a concept in 3D, and keep your data private.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="css/site.css?v=20261003-guide-tech">
+<link rel="stylesheet" href="css/site.css?v=20261003-tech-accordion">
 <link rel="stylesheet" href="css/app-windows.css">
 </head>
 <body>
@@ -38,6 +38,7 @@
   <symbol id="i-slider-horizontal-3" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2.2" fill="var(--canvas)"/><circle cx="16" cy="12" r="2.2" fill="var(--canvas)"/><circle cx="10" cy="18" r="2.2" fill="var(--canvas)"/></symbol>
   <symbol id="i-lock-shield" viewBox="0 0 24 24"><path d="M12 2.8 4.5 5.6v5.6c0 4.8 3.2 8.5 7.5 10 4.3-1.5 7.5-5.2 7.5-10V5.6z"/><rect x="9" y="11" width="6" height="5" rx="1"/><path d="M10.2 11V9.5a1.8 1.8 0 0 1 3.6 0V11"/></symbol>
   <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m5 9 7 7 7-7"/></symbol>
   <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
   <symbol id="i-lines-measurement-horizontal" viewBox="0 0 24 24"><path d="M3.5 12h17M3.5 8v8M20.5 8v8M12 9.5v5"/></symbol>
 </svg>
@@ -165,7 +166,8 @@
           <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Use the map to spot how several definitions belong to one larger question. Distance shows how related two ideas are, not whether they’re true or important.</p></div>
         </div>
               <div class="guide-tech">
-          <p class="guide-tech__eyebrow">Under the Hood</p>
+          <button type="button" class="guide-tech__toggle" aria-expanded="false" aria-controls="tech-tree"><span data-tech-label>Show Technical Details</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+          <div class="guide-tech__panel" id="tech-tree" inert><div class="guide-tech__inner">
           <div><h3 class="guide-label">Meaning as numbers</h3><p class="guide-text">To compare ideas, Angrove turns each one into an <em>embedding</em>: a list of 384 numbers that describes what the text means rather than which words it uses. It embeds an Insight’s title and definition together with MiniLM, a small language model that runs on your phone. Texts that mean similar things get similar numbers, so “mercy” and “forgiveness” land close together even though they share no letters.</p></div>
           <div><h3 class="guide-label">Cosine similarity</h3><p class="guide-text">Think of each embedding as an arrow pointing in a direction in 384-dimensional space. Cosine similarity measures the angle between two arrows, ignoring their length:</p>
             <p class="guide-formula">similarity(A, B) = (A · B) / (|A| |B|)</p>
@@ -177,6 +179,7 @@
               <li><span class="guide-tech__num">0.65</span><span>Two Node Concepts this similar are treated as one subject and merge, like “Ancient Greek States” and “Ancient Greek City-States.”</span></li>
             </ul>
             <p class="guide-text">The layout comes from the same distances. Angrove takes the distance between every pair of Node Concepts and finds positions that keep those distances as faithfully as a flat map can (a technique called multidimensional scaling), so related subjects sit near each other across the whole tree, not just along drawn lines. A third dimension sets each node’s depth.</p></div>
+        </div></div>
         </div>
       </article>
       <article class="guide-topic" id="study">
@@ -241,7 +244,8 @@
           <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Try a Midpoint between “justice” and “mercy” to see how they meet. The result depends on the ideas you choose and how you balance them.</p></div>
         </div>
               <div class="guide-tech">
-          <p class="guide-tech__eyebrow">Under the Hood</p>
+          <button type="button" class="guide-tech__toggle" aria-expanded="false" aria-controls="tech-midpoint"><span data-tech-label>Show Technical Details</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+          <div class="guide-tech__panel" id="tech-midpoint" inert><div class="guide-tech__inner">
           <div><h3 class="guide-label">A weighted center of meaning</h3><p class="guide-text">Midpoint works in the same embedding space as the tree. Each idea you select is an arrow (its 384-number embedding), scaled to length 1 so a longer definition can’t outweigh a shorter one. Your percentages become weights, and Angrove adds the arrows together in those proportions, then rescales the result to length 1:</p>
             <p class="guide-formula">center = normalize( w₁·â₁ + w₂·â₂ + … + wₙ·âₙ )</p>
             <p class="guide-text">At 50/50 between two ideas, the center points exactly between them; at 80/20, it leans toward the first. That direction is the region of meaning you’re asking about.</p></div>
@@ -258,6 +262,7 @@
           </figure>
           <div><h3 class="guide-label">Writing, then choosing</h3><p class="guide-text">Numbers alone can’t be read, so the on-device model writes five candidate Insights that try to put the shared idea into words, guided by each source and its weight. Angrove embeds all five and keeps the one whose arrow is closest to the center by cosine distance. The model proposes; the math decides. If an embedding can’t be made, Angrove falls back to the model’s first candidate.</p></div>
           <div><h3 class="guide-label">Why the result can surprise you</h3><p class="guide-text">A midpoint is the center of the ideas’ meanings, not a summary of their words. Two ideas that sit far apart can meet in a concept neither one names, which is often where the interesting connection is.</p></div>
+        </div></div>
         </div>
       </article>
       <article class="guide-topic" id="organization">
@@ -286,8 +291,10 @@
           <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Read a source passage alongside a discussion to check the author’s own wording and context.</p></div>
         </div>
               <div class="guide-tech">
-          <p class="guide-tech__eyebrow">Under the Hood</p>
+          <button type="button" class="guide-tech__toggle" aria-expanded="false" aria-controls="tech-library"><span data-tech-label>Show Technical Details</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+          <div class="guide-tech__panel" id="tech-library" inert><div class="guide-tech__inner">
           <div><h3 class="guide-label">Finding the right passage</h3><p class="guide-text">Every passage in the Library, about 41,000 of them, already has an embedding stored on your phone. When you ask a question, Angrove embeds it and compares it with every passage by cosine similarity, which takes less time than writing the answer. Only passages similar enough to your question (a cosine distance of 0.45 or less) are handed to the model as sources. If nothing clears that bar, Angrove answers without sources rather than citing ones that only share a word, like a passage about the city of Nicaea for a question about the Council of Nicaea.</p></div>
+        </div></div>
         </div>
       </article>
       <article class="guide-topic" id="home">
@@ -411,7 +418,7 @@
 <script src="js/site.js"></script>
 <script src="js/app-windows.js"></script>
 <script src="js/insight-tree.js"></script>
-<script src="js/guide.js"></script>
+<script src="js/guide.js?v=20261003-tech-accordion"></script>
 <script src="js/guide-tasks.js"></script>
 <script src="js/murmuration.js?v=20261003-tap"></script>
 </body>
