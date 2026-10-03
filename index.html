@@ -7,24 +7,77 @@
 <meta name="description" content="A private, local-first companion for the rigorous study of philosophy, history, and theology.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<style>
+  /* Keep startup visible even before the main stylesheet arrives. Assets and dimensions match
+     the app's BootPresentation: a 144px leaf, a 256px dot field, and a 34px italic wordmark. */
+  .site-boot { display: none; }
+  .is-booting body { overflow: hidden; }
+  .is-booting body > .nav, .is-booting body > main, .is-booting body > .footer { visibility: hidden; }
+  .is-booting .site-boot { display: grid; place-items: center; position: fixed; inset: 0; z-index: 1000; background: #F3EEE2; }
+  .site-boot__mark { position: relative; width: 256px; height: 256px; opacity: 0; transition: opacity 0.5s ease-in-out; }
+  .site-boot.is-visible .site-boot__mark { opacity: 1; }
+  .site-boot__dots { position: absolute; inset: 0; width: 256px; height: 256px; animation: boot-dots 20s linear infinite; }
+  .site-boot__leaf { position: absolute; width: 144px; height: 144px; inset: 56px; background: url(assets/brand/boot-leaf.webp) 0 0 / 500% 100% no-repeat; filter: blur(8px); transition: filter 0.5s ease-in-out; }
+  .site-boot.is-visible .site-boot__leaf { filter: blur(0); }
+  .site-boot__name { position: absolute; top: 280px; left: 50%; transform: translateX(-50%); font: italic 400 34px/1.5 "Libre Baskerville", Georgia, serif; color: #614C40; }
+  .site-boot.is-leaving .site-boot__mark { opacity: 0; }
+  .site-boot.is-leaving .site-boot__leaf { filter: blur(8px); }
+  @keyframes boot-dots { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .site-boot__dots { animation: none; }
+    .site-boot__leaf { background-position: 100% 0 !important; filter: none !important; }
+    .site-boot__mark, .site-boot__leaf { transition: none; }
+  }
+</style>
 <script>
-  // Page entrance (css/site.css, .intro): skipped for Reduce Motion and when the browser restores a scrolled position.
   (function () {
     var root = document.documentElement;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    // Hide the finished vines before the first paint; their entrance sheet loads separately.
-    root.classList.add('vine-entrance');
-    root.classList.add('intro');
-    // Arriving through a page transition, which brings the page in itself.
-    window.addEventListener('pagereveal', function (event) { if (event.viewTransition) root.classList.add('vt'); });
+    root.classList.add('is-booting');
+    // The inline deadline also works if a later script fails to download or initialize.
+    window.releaseSiteBoot = function (timedOut) {
+      if (!root.classList.contains('is-booting')) return;
+      clearTimeout(window.siteBootDeadline);
+      if (window.scrollY > 80) root.classList.remove('intro');
+      root.classList.remove('is-booting');
+      var boot = document.querySelector('.site-boot');
+      if (boot) boot.remove();
+      document.querySelectorAll('[data-boot-inert]').forEach(function (element) {
+        element.inert = false;
+        element.removeAttribute('data-boot-inert');
+      });
+      window.dispatchEvent(new CustomEvent('site:ready', { detail: { timedOut: !!timedOut } }));
+    };
+    window.siteBootDeadline = setTimeout(function () { window.releaseSiteBoot(true); }, 12000);
+    window.addEventListener('pageshow', function (event) { if (event.persisted) window.releaseSiteBoot(false); });
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.classList.add('vine-entrance', 'intro');
+    }
+    window.addEventListener('pagereveal', function (event) {
+      if (!event.viewTransition) return;
+      // Let the real boot screen and its asset readiness own the home page entrance.
+      if (root.classList.contains('is-booting')) event.viewTransition.skipTransition();
+      else root.classList.add('vt');
+    });
     window.addEventListener('load', function () { if (window.scrollY > 80) root.classList.remove('intro'); });
   })();
 </script>
+<link rel="preload" as="image" href="assets/brand/boot-leaf.webp">
+<link rel="preload" as="image" href="assets/brand/boot-dots.svg">
 <link rel="preload" as="image" href="assets/home/vine-left-paint.webp">
 <link rel="preload" as="image" href="assets/home/vine-right-full-paint.webp">
-<link rel="stylesheet" href="css/site.css?v=20261003-grow-tail-idle">
+<link rel="preload" as="image" href="assets/app/home-dark.jpg">
+<link rel="preload" as="image" href="assets/home/iphone-frame.png">
+<link rel="stylesheet" href="css/site.css?v=20261003-app-boot">
 </head>
 <body>
+
+<div class="site-boot" role="status" aria-label="Loading Angrove">
+  <div class="site-boot__mark" aria-hidden="true">
+    <img class="site-boot__dots" src="assets/brand/boot-dots.svg" alt="" width="256" height="256">
+    <span class="site-boot__leaf"></span>
+    <span class="site-boot__name">Angrove</span>
+  </div>
+</div>
 
 <!-- Figma: source-of-truth / Home (169:7019) -->
 
@@ -350,7 +403,8 @@
 </footer>
 
 <script src="js/site.js?v=20261002-map-layout"></script>
-<script src="js/vine-wind.js?v=20261003-grow-tail-idle"></script>
+<script src="js/vine-wind.js?v=20261003-app-boot"></script>
+<script src="js/boot.js?v=20261003-app-boot"></script>
 <script src="js/insight-tree.js?v=20261002-map-layout"></script>
 <script src="js/map-flow.js?v=20261002-map-layout"></script>
 <script src="js/grounding-demo.js"></script>

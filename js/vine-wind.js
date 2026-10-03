@@ -7,12 +7,22 @@
   if (!vines.length) return;
 
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var preparations = [];
+  function isBooting() { return document.documentElement.classList.contains('is-booting'); }
+  function playback(vine) {
+    Array.prototype.forEach.call(vine.querySelectorAll('img'), function (image) {
+      var idleBehindPaint = !image.classList.contains('hero__vine-paint') && vine.querySelector('.hero__vine-paint');
+      image.style.animationPlayState = isBooting() || vine.dataset.onScreen === 'false' || idleBehindPaint ? 'paused' : 'running';
+    });
+  }
   Array.prototype.forEach.call(vines, function (vine) {
     var src = vine.getAttribute('data-paint-src');
     if (!src || reducedMotion.matches) return;
     var idle = vine.querySelector('img');
     var paint = new Image();
     var finished = false;
+    var ready;
+    preparations.push(new Promise(function (resolve) { ready = resolve; }));
     // A stalled decorative image must never leave the idle artwork hidden indefinitely.
     var loadTimeout = setTimeout(finish, 8000);
     paint.alt = '';
@@ -24,8 +34,9 @@
       paint.remove();
       vine.classList.add('is-painted');
       idle.style.visibility = '';
-      idle.style.animationPlayState = vine.dataset.onScreen === 'false' ? 'paused' : 'running';
+      playback(vine);
       reducedMotion.removeEventListener('change', motionChanged);
+      ready();
     }
     function motionChanged(event) { if (event.matches) finish(); }
     paint.addEventListener('animationend', function (event) {
@@ -43,12 +54,17 @@
         idle.offsetWidth;
         idle.style.animation = '';
         idle.style.animationPlayState = 'paused';
-        paint.style.animationPlayState = vine.dataset.onScreen === 'false' ? 'paused' : 'running';
+        paint.style.animationPlayState = isBooting() || vine.dataset.onScreen === 'false' ? 'paused' : 'running';
         vine.appendChild(paint);
+        ready();
       }, finish);
     });
     reducedMotion.addEventListener('change', motionChanged);
     paint.src = src;
+  });
+  window.vineEntranceReady = Promise.all(preparations);
+  window.addEventListener('site:ready', function () {
+    Array.prototype.forEach.call(vines, playback);
   });
 
   if ('IntersectionObserver' in window) {
@@ -56,10 +72,7 @@
       entries.forEach(function (entry) {
         var vine = entry.target;
         vine.dataset.onScreen = String(entry.isIntersecting);
-        Array.prototype.forEach.call(vine.querySelectorAll('img'), function (image) {
-          var idleBehindPaint = !image.classList.contains('hero__vine-paint') && vine.querySelector('.hero__vine-paint');
-          image.style.animationPlayState = entry.isIntersecting && !idleBehindPaint ? 'running' : 'paused';
-        });
+        playback(vine);
       });
     });
     Array.prototype.forEach.call(vines, function (vine) { seen.observe(vine); });

@@ -25,6 +25,7 @@ site/
   css/site.css        All tokens and components
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal
+  js/boot.js          Home startup: the app's growing leaf/dots, waits for first-screen images
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights
   js/guide.js         Guide: the topic list marks the topic being read
   js/guide-tasks.js   Guide: the Model Tasks practice queue
@@ -34,6 +35,7 @@ site/
   js/insight-tree.js  Home page Insight Tree animation (port of the app's canvas and Study mode; one scroll-driven tree/3D view)
   js/grounding-demo.js  Home Library card: Library cards scrolling in a loop that follows page scroll
   assets/home/        Images exported from Figma
+  assets/brand/       Brand assets, including boot leaf frames and dots from the app
   assets/app/         Real app screenshots and the Study demo video (from Aquinas-iOS/Documentation)
 ```
 
