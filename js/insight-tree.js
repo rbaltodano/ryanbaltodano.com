@@ -37,12 +37,20 @@
     Justice: 'The constant will to give each person what is owed.',
     Mercy: 'Compassion for another\u2019s distress that moves us to relieve it, giving more than is owed.',
     Prudence: 'Practical wisdom that judges what the good requires here and now.',
-    Courage: 'Firmness of mind in facing danger or hardship for the sake of the good.'
+    Courage: 'Firmness of mind in facing danger or hardship for the sake of the good.',
+    Cynicism: 'The ancient school that held virtue alone is enough for a good life, and that conventions, wealth, and comfort only get in its way.',
+    Epicureanism: 'The school that taught the good life is found in lasting pleasure, chiefly peace of mind and freedom from fear and pain.',
+    Eudaimonia: 'Flourishing: the complete, well-lived human life that Aristotle held every action ultimately aims at.',
+    'Natural philosophy': 'The study of nature and how things change, understood through their causes and ends.'
   };
   var scrollStudy = root.hasAttribute('data-scroll-study');
   // The Guide's Insight Tree example (data-guide-tree): Cynicism and Epicureanism are already in
   // the Greek Philosophy tree, plus whichever Insights were saved in the Definitions example.
   var guideTree = root.hasAttribute('data-guide-tree');
+  // The Guide's Midpoint example opens on that same Greek Philosophy tree, then moves to a second
+  // Node Concept (Virtue) that hasn't been seen yet.
+  var greek = guideTree || guide;
+  var CL2_X = 700;                       // where the second cluster sits, in world units
   var studyProgress = null;
   // Inside the Features journey a card plays when its scene is shown, not when it scrolls into view.
   var journeyScene = root.closest('[data-scene]');
@@ -180,16 +188,20 @@
   }
 
   var node = {
-    el: el('it-node', scrollStudy ? 'assets/home/icon-node-dark.svg' : 'assets/home/icon-node.svg', guide ? 'Virtue' : isMid ? 'Moral Theology' : 'Greek Philosophy'),
+    el: el('it-node', scrollStudy ? 'assets/home/icon-node-dark.svg' : 'assets/home/icon-node.svg', guide ? 'Greek Philosophy' : isMid ? 'Moral Theology' : 'Greek Philosophy'),
     vis: new Spring(0)
   };
+  var node2 = guide ? { el: el('it-node', 'assets/home/icon-node.svg', 'Virtue'), vis: new Spring(0) } : null;
 
   // Evenly spaced from π/8 (baseChipAngle), with the odd one out level and its neighbours at
   // the top and bottom of the ±45° band. Like the app, each Insight appears in its final place.
   // The Midpoint tree stays flat, so the selection line meets its chips exactly.
-  var insights = (guide ? ['Justice', 'Mercy', 'Prudence', 'Courage'].map(function (title, i) {
-    return { title: title, angle: Math.PI / 8 + i * Math.PI / 2, elev: 0 };
-  }) : isMid ? [
+  var insights = (guide ? [
+    { title: 'Cynicism', angle: Math.PI / 8, elev: MAX_ELEVATION },
+    { title: 'Epicureanism', angle: Math.PI / 8 + Math.PI, elev: -MAX_ELEVATION }
+  ].concat(['Justice', 'Mercy', 'Prudence', 'Courage'].map(function (title, i) {
+    return { title: title, angle: Math.PI / 8 + i * Math.PI / 2, elev: 0, cl2: true };
+  })) : isMid ? [
     { title: 'Natural Law', angle: Math.PI / 8 + 2 * Math.PI / 3, elev: 0 },
     { title: 'Conscience', angle: Math.PI / 8, elev: 0 },
     { title: 'Prudence', angle: Math.PI / 8 + 4 * Math.PI / 3, elev: 0 }
@@ -213,7 +225,8 @@
       elv: new Spring(d.elev, 0.7, 0.9),
       el: el('it-chip', scrollStudy ? 'assets/home/icon-insight-dark.svg' : 'assets/home/icon-insight.svg', d.title),
       vis: new Spring(0),
-      lineStart: null
+      lineStart: null,
+      cl2: !!d.cl2
     };
   }
 
@@ -224,10 +237,11 @@
 
   var GUIDE_TERMS = { eudaimonia: ['Eudaimonia', 1], 'natural-philosophy': ['Natural philosophy', 1.45] };
   function guideLayout() {
-    var n = insights.length;
+    var group = insights.filter(function (ins) { return !ins.cl2; });
+    var n = group.length;
     var elevs = n === 2 ? [MAX_ELEVATION, -MAX_ELEVATION] : n === 3 ? [0, MAX_ELEVATION, -MAX_ELEVATION] : [0, MAX_ELEVATION, 0, -MAX_ELEVATION];
-    insights.forEach(function (ins, k) {
-      ins.order = k;
+    insights.forEach(function (ins, k) { ins.order = k; });
+    group.forEach(function (ins, k) {
       ins.finalAngle = Math.PI / 8 + k * 2 * Math.PI / n;
       ins.finalElev = elevs[k];
       ins.ang.to(ins.finalAngle, 0, performance.now());
@@ -253,17 +267,19 @@
       added.push(ins);
     });
     guideLayout();
-    var tags = insights.map(function (i) { return i.title; }).join(', ');
-    root.setAttribute('aria-label', 'An Insight Tree for the Node Concept Greek Philosophy, with the Insights ' + tags + '.');
+    var tags = insights.filter(function (i) { return !i.cl2; }).map(function (i) { return i.title; }).join(', ');
+    if (!guide) root.setAttribute('aria-label', 'An Insight Tree for the Node Concept Greek Philosophy, with the Insights ' + tags + '.');
     return added;
   }
-  if (guideTree) {
-    insights[0].el.remove();               // Cynicism and Epicureanism stay; Eudaimonia comes from a save
-    insights = insights.slice(1);
+  if (greek) {
+    if (!guide) {
+      insights[0].el.remove();             // Cynicism and Epicureanism stay; Eudaimonia comes from a save
+      insights = insights.slice(1);
+    }
     syncGuide();
     document.addEventListener('guide:saved', function () {
       var added = syncGuide();
-      if (state.step < 2) return;
+      if (state.step < 2 || (mid && mid.scripted)) return;
       added.forEach(playOnce);
     });
   }
@@ -352,7 +368,7 @@
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
   function treePoint(ins) {
-    return [Math.cos(ins.ang.v) * ins.bond, Math.sin(ins.ang.v) * ins.bond, 0];
+    return [Math.cos(ins.ang.v) * ins.bond + (ins.cl2 ? CL2_X : 0), Math.sin(ins.ang.v) * ins.bond, 0];
   }
   function panTo(x, y) { var now = performance.now(); state.panX.to(x, 0, now); state.panY.to(y, 0, now); }
   function ripple(world, strength, radiusScale) {
@@ -386,11 +402,13 @@
       return 0;
     }
     var t = nodeDelayMs + ENTRANCE_START;
-    if (guideTree) {
+    if (greek) {
       // The Guide's trees start with the Node Concept, Cynicism, and Epicureanism already in place;
       // only an Insight saved in the Definitions example enters, and only the first time it's seen.
       node.vis.v = node.vis.target = 1; node.vis.pending = null;
+      if (node2) { node2.vis.v = node2.vis.target = 0; node2.vis.pending = null; }
       var entering = insights.filter(function (ins) {
+        if (ins.cl2) { ins.vis.v = ins.vis.target = 0; ins.lineStart = null; return false; }
         if (ins.key && !ins.shown && !seen[ins.key]) return true;
         ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity;
         return false;
@@ -596,7 +614,8 @@
       A: A, B: B, handle: handle, phase: 'idle', cam: null, placed: null,
       fade: 0, fadeFrom: 0, fadeTo: 0, fadeStart: 0,       // the unselected tree fading out
       t: new Spring(0.5, 0.2, 0.9),                        // interactiveSpring for Center / keys
-      shown: new Spring(0, 0.36, 0.78)                     // springLively handle entrance
+      shown: new Spring(0, 0.36, 0.78),                    // springLively handle entrance
+      zk: guide ? new Spring(1, 0.58, 0.8) : null, span: null, base: 0, scripted: false
     };
 
     function setFade(to) { mid.fadeFrom = mid.fade; mid.fadeTo = to; mid.fadeStart = performance.now(); }
@@ -645,6 +664,7 @@
       select(true);
       setFade(1);
       var a = treePoint(A), b = treePoint(B);
+      if (mid.zk) mid.span = { dx: Math.abs(a[0] - b[0]), dy: Math.abs(a[1] - b[1]) };
       panTo((a[0] + b[0]) / 2, (a[1] + b[1]) / 2);
       // The handle waits for the camera to settle, as in the app.
       later(reduceMotion ? 0 : 680, function () { mid.shown.to(1, 0, performance.now()); });
@@ -773,13 +793,15 @@
       handle.disabled = !active;
       var sel = q('select'), toggle = q('toggle');
       label(sel, selecting ? 'Done' : 'Select');
-      sel.disabled = active;
+      sel.disabled = active || mid.scripted;
       label(toggle, active ? 'Back' : 'Midpoint');
-      toggle.disabled = !active && picked.length < 2;
+      toggle.disabled = mid.scripted || (!active && picked.length < 2);
+      q('clear').disabled = mid.scripted;
       insights.forEach(function (ins) { ins.el.classList.toggle('is-selected', picked.indexOf(ins) >= 0); });
     }
     function exit() {
       mid.phase = 'idle';
+      mid.span = null;
       setFade(0);
       mid.shown.to(0, 0, performance.now());
       panTo(0, 0);
@@ -804,7 +826,7 @@
       });
       // Tapping an Insight selects it while selecting, and otherwise opens its docked card.
       root.addEventListener('click', function (e) {
-        if (mid.phase === 'active' || state.step < 2) return;
+        if (mid.phase === 'active' || state.step < 2 || mid.scripted) return;
         if (e.target.closest && e.target.closest('button, .mid-cards')) return;
         var hit = insights.filter(function (ins) {
           var r = ins.el.getBoundingClientRect();
@@ -822,9 +844,44 @@
       });
     }
 
+    // The Guide's Midpoint opens by itself: on the Greek Philosophy tree from the sections above,
+    // one Insight is selected, the camera moves across to Virtue (a Node Concept not seen yet) as
+    // it grows, an Insight there is selected, and Midpoint opens between the two. It plays once.
+    var scripted = false;
+    function runScript() {
+      if (scripted) return;
+      scripted = true;
+      mid.scripted = true;
+      var greekList = insights.filter(function (ins) { return !ins.cl2; });
+      var virtue = insights.filter(function (ins) { return ins.cl2; });
+      var from = greekList[0], to = virtue[0];     // the newest saved Insight (or Cynicism), then Justice
+      var fast = reduceMotion;
+      var t = fast ? 0 : 1000;
+      later(t, function () { from.el.classList.add('is-selected'); picked = [from]; sync(); });
+      t += fast ? 0 : 900;
+      later(t, function () { panTo(CL2_X, 0); });
+      t += fast ? 0 : FOCUS_SETTLE;
+      later(t, function () {
+        var now = performance.now();
+        node2.vis.to(1, 0, now);
+        ripple([CL2_X, 0, 0]);
+      });
+      virtue.forEach(function (ins, k) {
+        later(t + (fast ? 0 : 350 + k * 260), function () { reveal(ins); ripple(treePoint(ins), 0.8); });
+      });
+      t += fast ? 0 : 350 + virtue.length * 260 + REVEAL_SETTLE + 400;
+      later(t, function () { to.el.classList.add('is-selected'); picked = [from, to]; sync(); });
+      t += fast ? 0 : 700;
+      later(t, function () {
+        mid.scripted = false;
+        selecting = false;
+        enter();
+      });
+    }
+
     // After the tree has grown: select one Insight, then the other, then enter Midpoint mode.
     mid.begin = function () {
-      if (guide) return;
+      if (guide) { runScript(); return; }
       var t = reduceMotion ? 0 : state.growMs + 500;
       later(t, function () { A.el.classList.add('is-selected'); });
       later(t + (reduceMotion ? 0 : 450), function () { B.el.classList.add('is-selected'); });
@@ -853,7 +910,9 @@
     var chipMargin = longestBond > BOND ? 100 : 70;
     // Midpoint: the docked cards cover the foot of the canvas, so the tree uses the rest.
     var treeH = isMid && !guide ? H - (W < 420 ? 226 : 200) : H;
-    var treeZoom = clamp(Math.min(W / 2 - chipMargin * ui, treeH / 2 - 50 * ui) / longestBond, longestBond > BOND ? 0.25 : 0.35, 1.1);
+    var baseZoom = clamp(Math.min(W / 2 - chipMargin * ui, treeH / 2 - 50 * ui) / longestBond, longestBond > BOND ? 0.25 : 0.35, 1.1);
+    // The Guide's Midpoint pulls back to hold both selected Insights when they sit in different clusters.
+    var treeZoom = baseZoom * (mid && mid.zk ? mid.zk.v : 1);
     // StudyFraming scaled to this card: the 300 pt slot, node 40% down, ring 80% down.
     var slot = Math.min(W, H) * 0.6;
     var nodeY = H * 0.4;
@@ -864,7 +923,7 @@
     var chipRadius = Math.min(W / 2 - chipMargin * ui, H * 0.34);
     var fitZoom = chipRadius / longestBond;
     return {
-      ui: ui, treeZoom: treeZoom, treeY: treeH / 2, nodeY: nodeY, studyZoom: studyZoom, fitZoom: fitZoom,
+      ui: ui, baseZoom: baseZoom, treeZoom: treeZoom, treeY: treeH / 2, nodeY: nodeY, studyZoom: studyZoom, fitZoom: fitZoom,
       floorDepth: floorDepth, studyDistance: studyDistance
     };
   }
@@ -885,7 +944,7 @@
   function insightWorld(ins, p) {
     var h = ins.bond;
     var a = ins.ang.v, e = ins.elv.v;
-    var tree = [Math.cos(a) * h, Math.sin(a) * h, h * Math.tan(e)];
+    var tree = [Math.cos(a) * h + (ins.cl2 ? CL2_X : 0), Math.sin(a) * h, h * Math.tan(e)];
     if (p <= 0) return tree;
     var dir = slerp(norm(tree), studyDirs[ins.order], p);
     var r = lerp(len(tree), ins.bond, p);
@@ -1031,6 +1090,7 @@
     var time = now / 1000;
 
     node.vis.step(dt, now);
+    if (node2) node2.vis.step(dt, now);
     insights.forEach(function (i) { i.vis.step(dt, now); i.ang.step(dt, now); i.elv.step(dt, now); });
     state.panX.step(dt, now); state.panY.step(dt, now);
     if (mid) {
@@ -1067,7 +1127,17 @@
     if (!state.dragging && state.spinVel === 0 && p > 0.999) state.yaw = Math.atan2(Math.sin(state.yaw), Math.cos(state.yaw));
     var yaw = state.yaw;
 
+    if (mid && mid.zk) {
+      var span = mid.span, uiK = clamp(W / 700, 0.7, 1);
+      var fit = 1;
+      if (span && mid.base) {
+        fit = Math.min((W / 2 - 80 * uiK) / (Math.max(span.dx, 1) / 2), (H / 2 - 60 * uiK) / (Math.max(span.dy, 1) / 2)) / mid.base;
+      }
+      mid.zk.to(clamp(fit, 0.2, 1), 0, now);
+      mid.zk.step(dt, now);
+    }
     var f = frame();
+    if (mid) mid.base = f.baseZoom;
     var cam = camera(f, p, f.fitZoom, yaw);
     state.cam = cam;
     state.hover.amount += ((state.hover.on && p < 0.05 ? 1 : 0) - state.hover.amount) * Math.min(1, dt * 7);
@@ -1092,9 +1162,16 @@
     var nv = clamp(node.vis.v, 0, 1);
     styleEl(node.el, nodeProj.x, nodeProj.y, f.ui * nodeProj.scale, nv * rest, (1 - nv) * 24, (1 - nv) * 8, 10);
 
+    var node2Proj = null;
+    if (node2) {
+      node2Proj = project(cam, [CL2_X, 0, 0]);
+      var nv2 = clamp(node2.vis.v, 0, 1);
+      styleEl(node2.el, node2Proj.x, node2Proj.y, f.ui * node2Proj.scale, nv2 * rest, (1 - nv2) * 24, (1 - nv2) * 8, 10);
+    }
     ctx.lineWidth = 1;
     insights.forEach(function (ins) {
       var world = insightWorld(ins, p);
+      var np = ins.cl2 && node2Proj ? node2Proj : nodeProj;
       var pr = project(cam, world);
       if (!pr) return;
       var v = clamp(ins.vis.v, 0, 1);
@@ -1109,7 +1186,7 @@
         if (g > 0.001) {
           if (scrollStudy) {
             // Fade over the full connector so its entrance and 3D rotation keep the same falloff.
-            var connector = ctx.createLinearGradient(nodeProj.x, nodeProj.y, pr.x, pr.y);
+            var connector = ctx.createLinearGradient(np.x, np.y, pr.x, pr.y);
             connector.addColorStop(0, 'rgba(' + BROWN + ',' + (ca * 0.08).toFixed(3) + ')');
             connector.addColorStop(0.18, 'rgba(' + BROWN + ',' + (ca * 0.35).toFixed(3) + ')');
             connector.addColorStop(0.5, 'rgba(' + BROWN + ',' + ca.toFixed(3) + ')');
@@ -1120,8 +1197,8 @@
           }
           ctx.lineCap = 'round';
           ctx.beginPath();
-          ctx.moveTo(nodeProj.x, nodeProj.y);
-          ctx.lineTo(lerp(nodeProj.x, pr.x, g), lerp(nodeProj.y, pr.y, g));
+          ctx.moveTo(np.x, np.y);
+          ctx.lineTo(lerp(np.x, pr.x, g), lerp(np.y, pr.y, g));
           ctx.stroke();
         }
       }
@@ -1249,7 +1326,7 @@
       if (visible) {
         if (mode === 'stream') { setStep(1); return; }
         if (state.step >= 2) return;
-        if (guideTree) syncGuide();
+        if (greek) syncGuide();
         setStep(2);
         if (mid) mid.begin();
         if (mode === 'study') studyTimer = setTimeout(function () { setStep(3); }, reduceMotion ? 0 : state.growMs + 600);
