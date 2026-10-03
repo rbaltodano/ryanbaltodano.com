@@ -80,6 +80,38 @@
       var dock = dockController(win);
       var saved = {}, current = null, timer = null;
 
+      // As on the home page: the answer streams in word by word, then its terms underline.
+      var words = [];
+      (function wrap(el) {
+        Array.prototype.slice.call(el.childNodes).forEach(function (child) {
+          if (child.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var word = document.createElement('span');
+              word.className = 'fw';
+              word.textContent = part;
+              words.push(word);
+              frag.appendChild(word);
+            });
+            child.replaceWith(frag);
+          } else if (child.nodeType === 1) { wrap(child); }
+        });
+      })(answer);
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        answer.classList.add('is-pending');
+        var seen = new IntersectionObserver(function (entries) {
+          if (!entries[0].isIntersecting) return;
+          seen.disconnect();
+          words.forEach(function (w, i) { setTimeout(function () { w.classList.add('is-in'); }, 200 + i * 40); });
+          setTimeout(function () { answer.classList.remove('is-pending'); }, 400 + words.length * 40);
+        }, { threshold: 0.5 });
+        seen.observe(win);
+      } else {
+        words.forEach(function (w) { w.classList.add('is-in'); });
+      }
+
       // The tapped term shimmers while its definition is generated, then the card rises from the
       // foot of the window and the window dims behind it, as the app's drawer does. Tapping the
       // dimmed window (or Escape) puts the card away.

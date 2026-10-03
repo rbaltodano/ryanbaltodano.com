@@ -1704,6 +1704,8 @@ a { color: inherit; text-decoration: none; }
 .guide-demo__stage { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
 .guide-demo__stage .window-hint { margin-top: 6px; }
 .window.window--guide { height: 580px; }
+.window--guide .fw { display: inline-block; opacity: 0; filter: blur(3px); translate: 0 10px; transition: opacity 0.55s ease-out, filter 0.55s ease-out, translate 0.55s ease-out; }
+.window--guide .fw.is-in { opacity: 1; filter: none; translate: none; }
 .window--guide .w-read__answer { -webkit-mask-image: none; mask-image: none; }
 /* ConversationBranch's heading stack: leaf (24) and title (Libre Baskerville 34) 16 apart, the
    question in quotation marks (trailing, 285 max), then the response. */
@@ -1723,13 +1725,13 @@ a { color: inherit; text-decoration: none; }
    definition is generated. The card then rises from the foot of the window and the window dims
    behind it, as the app dims the conversation when a drawer opens. */
 .window.window--guide .w-term { position: relative; padding-bottom: 2px; border-bottom: 0; border-radius: 0; line-height: inherit; font-family: inherit; font-size: inherit; }
-.window.window--guide .w-term::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--light-green); transform-origin: left; transition: transform 0.6s var(--ease-menu); pointer-events: none; }
+.window.window--guide .w-term::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: var(--light-green); transform-origin: left; transition: transform 0.42s ease-out; pointer-events: none; }
 .window--guide .w-read__answer.is-pending .w-term { pointer-events: none; }
 .window.window--guide .w-read__answer.is-pending .w-term::after, .window.window--guide .w-term.is-generating::after { transform: scaleX(0); transition: none; }
 .window--guide .w-term:focus-visible { outline: 2px solid var(--light-green); outline-offset: 4px; }
 .window--guide .w-scrim { display: none; position: absolute; inset: 0; z-index: 10; background: rgba(18, 15, 12, 0.34); opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-menu); }
 .window--guide .w-scrim.is-open { opacity: 1; pointer-events: auto; }
-.window.window--guide[data-window="conversation"] .w-card { bottom: 10px; width: min(373px, calc(100% - 20px)); padding: 32px 32px 20px; gap: 12px; border: 0; border-radius: 36px; box-shadow: none; transition: opacity 0.2s ease-out, filter 0.2s ease-out, transform 0.28s var(--ease-menu); }
+.window.window--guide[data-window="conversation"] .w-card { bottom: 10px; width: min(373px, calc(100% - 20px)); padding: 32px 32px 20px; gap: 12px; border: 0; border-radius: 36px; box-shadow: none; transition: opacity 0.22s ease-out, filter 0.22s ease-out, transform 0.22s ease-out; }
 .window.window--guide[data-window="conversation"] .w-card__body, .window.window--guide[data-window="conversation"] .w-card.is-closed .w-card__body { opacity: 1; filter: none; translate: none; transition: none; }
 .window.window--guide[data-window="conversation"] .w-card.is-closed { opacity: 0; filter: blur(3px); transform: translateY(14px) scale(0.95); }
 /* The Guide's Midpoint example, as UserGuideMidpointExample lays it out: a 620 pt canvas with
