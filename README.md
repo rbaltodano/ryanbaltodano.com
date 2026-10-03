@@ -26,6 +26,7 @@ site/
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal
   js/boot.js          Home startup: the app's growing leaf/dots, waits for first-screen images
+  js/boot-assets.js   Streams first-screen image downloads once; feeds the loading percentage
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights
   js/guide.js         Guide: the topic list marks the topic being read
   js/guide-tasks.js   Guide: the Model Tasks practice queue
@@ -42,6 +43,13 @@ site/
 Each page repeats the same header and footer markup; update all of them together.
 The interactive examples are illustrations, not live app inference. The three Library excerpts
 come from the bundled `passages.json` corpus; the explanatory connections are editorial copy.
+
+Home startup downloads about 2.13 MB of critical images. The web-optimized vine sheets preserve
+the original 24 frames and dimensions; each idle loop still repeats grow frames 21–24 at 4 fps.
+The boot percentage tracks received bytes, holds below 100% until decoding and preparation
+finish, and then the page reveals. Vine growth starts only after the page reveal completes.
+The download deadline resets when bytes arrive, so a healthy slow transfer is not cancelled.
+Original vine exports remain available alongside the `*-paint-web.webp` versions.
 
 ## Still to do
 
