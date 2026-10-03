@@ -347,10 +347,10 @@ a { color: inherit; text-decoration: none; }
 .hero__vine--wind { display: block; aspect-ratio: var(--vine-ratio, 358 / 335); overflow: hidden; transform: translate3d(0, var(--parallax, 0px), 0); will-change: transform; }
 /* Parallax (js/vine-wind.js): as the page scrolls, each vine falls behind it by a share of the
    scroll distance, the left one further back than the right, so they read as different depths. */
-/* Each vine keeps its own frame shape; the matched idle loops run at 12 fps. */
+/* Each vine keeps its own frame shape; the 12-frame idle loops run at 3 fps, half the entrance frame rate. */
 .hero__vine--left.hero__vine--wind { --vine-ratio: 352 / 362; }
-.hero__vine--left.hero__vine--wind img { --wind-dur: 1s; animation-delay: 0s; }
-.hero__vine--right.hero__vine--wind img { --wind-dur: 1s; }
+.hero__vine--left.hero__vine--wind img { --wind-dur: 4s; animation-delay: 0s; }
+.hero__vine--right.hero__vine--wind img { --wind-dur: 4s; }
 .hero__vine--wind img { position: relative; left: var(--vine-inset, 0px); display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 2.4s) steps(12) infinite; will-change: transform; }
 @keyframes vine-wind { to { transform: translateX(-100%); } }
 /* One paint-on entrance; its final frame matches idle frame one. JS removes it on completion. */
