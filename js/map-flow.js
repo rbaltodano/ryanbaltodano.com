@@ -88,8 +88,10 @@
 
   // Scroll needed per frame of travel, as a share of the viewport height.
   var PER_FRAME = 0.9;
-  // Scroll progress (0–1) → track position (0 = first frame, last = final frame), 1:1.
-  function position(p) { return p * last; }
+  // Scroll progress (0–1) → track position (0 = first frame, last = final frame), 1:1 after the hold.
+  // The answer holds still for the first stretch of scroll, so the move to the Insight card is deliberate.
+  var HOLD = 0.1;
+  function position(p) { return Math.max(0, p - HOLD) / (1 - HOLD) * last; }
 
   // ---------- The answer streams in, then its terms underline ----------
   var words = [];
