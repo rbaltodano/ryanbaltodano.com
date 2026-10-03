@@ -325,7 +325,7 @@
 
   var state = {
     step: -1,
-    p: 0, pFrom: 0, pTo: 0, pStart: 0,
+    p: 0, sp: 0, pFrom: 0, pTo: 0, pStart: 0,
     yaw: 0, spinVel: 0, ringHalfWidth: 150,
     // Tree camera pan, in world units (focusInsight's spring: response 0.58, damping 0.64).
     panX: new Spring(0, 0.58, 0.64), panY: new Spring(0, 0.58, 0.64),
@@ -1019,7 +1019,12 @@
     // Study progress: an eased 0.8 s swing, like the app's camera move.
     var dur = reduceMotion ? 1 : 800;
     var t = clamp((now - state.pStart) / dur, 0, 1);
-    state.p = studyProgress === null ? lerp(state.pFrom, state.pTo, easeInOut(t)) : studyProgress;
+    // Scroll arrives in coarse wheel steps; chase it with a critically damped ease so the swing is smooth.
+    if (studyProgress !== null) {
+      if (reduceMotion || Math.abs(studyProgress - state.sp) < 0.0005) state.sp = studyProgress;
+      else state.sp += (studyProgress - state.sp) * (1 - Math.exp(-dt * 12));
+    }
+    state.p = studyProgress === null ? lerp(state.pFrom, state.pTo, easeInOut(t)) : state.sp;
     var p = state.p;
 
     // Match the app's Study ring coast: cap frame time, decay at 3.2/s, stop at 0.05 rad/s.
