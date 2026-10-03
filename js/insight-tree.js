@@ -287,10 +287,9 @@
       node.vis.v = node.vis.target = 1; node.vis.pending = null;
       insights.slice(0, -1).forEach(function (ins) { ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity; });
       var newest = insights[insights.length - 1], at = treePoint(newest);
-      later(t, function () { panTo(at[0], at[1]); });
-      later(t + FOCUS_SETTLE, function () { reveal(newest); ripple(at); });
-      later(t + FOCUS_SETTLE + NEXT_INSIGHT + 600, function () { panTo(0, 0); });
-      return t + FOCUS_SETTLE * 2 + NEXT_INSIGHT + 600;
+      // No camera pan: the Insight appears in place with its usual entrance and ripple.
+      later(t, function () { reveal(newest); ripple(at); });
+      return t + REVEAL_SETTLE + CONNECTOR_GROW * 1000;
     }
     if (mode === 'study' || isMid) {
       later(t, function () {
