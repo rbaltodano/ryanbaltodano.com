@@ -2148,6 +2148,13 @@ a { color: inherit; text-decoration: none; }
   .private__facts li:nth-child(odd) { padding-right: 16px; }
   .private__facts strong { font-size: 18px; }
   .private::before { background: linear-gradient(180deg, rgba(18, 15, 12, 0.9) 0%, rgba(18, 15, 12, 0.75) 60%, rgba(18, 15, 12, 0.5) 100%); }
+  /* Phones: the vines are wider than the phone so they peek out on both sides of it, and they
+     stay put as the page scrolls (no parallax; js/vine-wind.js skips it here too). */
+  .hero { overflow-x: clip; }
+  .hero__vine { width: 400px; }
+  /* Its top edge sits just above the phone, clear of the Launch Status button. */
+  .hero__vine--right { top: 170px; }
+  .hero__vine--wind { transform: none; }
   /* Show the scene at twice the width, cropped around the house, so it isn't a thin strip. */
   .cta { padding: 32px 24px calc(200% * 397 / 2400 + 56px); }
   .cta__scene { width: 200%; left: -70%; }
