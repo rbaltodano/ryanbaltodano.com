@@ -351,6 +351,7 @@ a { color: inherit; text-decoration: none; }
    never move in lockstep. */
 .hero__vine--left.hero__vine--wind { --vine-ratio: 352 / 362; }
 .hero__vine--left.hero__vine--wind img { --wind-dur: 2.9s; animation-delay: -1.1s; }
+.hero__vine--right.hero__vine--wind img { --wind-dur: 1s; }
 .hero__vine--wind img { display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 2.4s) steps(12) infinite; will-change: transform; }
 @keyframes vine-wind { to { transform: translateX(-100%); } }
 /* One paint-on entrance; its final frame matches idle frame one. JS removes it on completion. */
