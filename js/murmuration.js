@@ -17,6 +17,7 @@
   var ctx = canvas.getContext('2d');
 
   var COLORS = ['#86803E', '#A28F1E', '#614C40'];
+  var LIGHT = '#FFFAF0';                  // canvas primary, used over the photo
   var FLOCKS = 3;
   var SPEED = 1.6, FOLLOW_SPEED = 4.3;   // px per 60fps frame
   var LOOP_SPEED = 1.3;                   // how fast the flocks travel round the box
@@ -31,24 +32,63 @@
 
   // Each colour/size is drawn once to its own canvas, centred on the glyph's visual middle,
   // so a frame is just rotated image blits.
+  var SIZES = [18, 23, 28, 33];
+  function glyph(color, size) {
+    var px = size * dpr, pad = Math.ceil(px * 0.3);
+    var cv = document.createElement('canvas'), g = cv.getContext('2d');
+    g.font = '400 ' + px + 'px "Libre Baskerville", Georgia, serif';
+    var m = g.measureText('?');
+    var w = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
+    var h = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
+    cv.width = Math.ceil(w + pad * 2); cv.height = Math.ceil(h + pad * 2);
+    g.font = '400 ' + px + 'px "Libre Baskerville", Georgia, serif';
+    g.fillStyle = color;
+    g.fillText('?', pad + m.actualBoundingBoxLeft, pad + m.actualBoundingBoxAscent);
+    return cv;
+  }
+  // sprites[colour * sizes + size]; lightSprites[size] is the canvas-primary version for over the photo.
+  var lightSprites = [];
   function makeSprites() {
-    sprites = [];
-    var sizes = [18, 23, 28, 33];
-    for (var c = 0; c < COLORS.length; c++) {
-      for (var s = 0; s < sizes.length; s++) {
-        var px = sizes[s] * dpr, pad = Math.ceil(px * 0.3);
-        var cv = document.createElement('canvas'), g = cv.getContext('2d');
-        g.font = '400 ' + px + 'px "Libre Baskerville", Georgia, serif';
-        var m = g.measureText('?');
-        var w = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
-        var h = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
-        cv.width = Math.ceil(w + pad * 2); cv.height = Math.ceil(h + pad * 2);
-        g.font = '400 ' + px + 'px "Libre Baskerville", Georgia, serif';
-        g.fillStyle = COLORS[c];
-        g.fillText('?', pad + m.actualBoundingBoxLeft, pad + m.actualBoundingBoxAscent);
-        sprites.push(cv);
+    sprites = []; lightSprites = [];
+    for (var c = 0; c < COLORS.length; c++) for (var s = 0; s < SIZES.length; s++) sprites.push(glyph(COLORS[c], SIZES[s]));
+    for (var t = 0; t < SIZES.length; t++) lightSprites.push(glyph(LIGHT, SIZES[t]));
+  }
+
+  // The photo's skyline, from its alpha: for each column, how far down the first solid pixel is
+  // (as a fraction of the image height). Marks below it are over the countryside.
+  var scene = box.querySelector('.cta__scene'), skyline = null, sceneRect = null;
+  function readSkyline() {
+    if (!scene || !scene.naturalWidth) return;
+    var cols = 400, rows = 80, cv = document.createElement('canvas'), g = cv.getContext('2d');
+    cv.width = cols; cv.height = rows;
+    g.drawImage(scene, 0, 0, cols, rows);
+    try {
+      var d = g.getImageData(0, 0, cols, rows).data;
+      skyline = new Float32Array(cols);
+      for (var x = 0; x < cols; x++) {
+        var y = 0;
+        while (y < rows && d[(y * cols + x) * 4 + 3] < 128) y++;
+        skyline[x] = y / rows;
       }
-    }
+    } catch (e) { skyline = null; }
+    measureScene();
+  }
+  function measureScene() {
+    if (!scene) return;
+    var b = box.getBoundingClientRect(), r = scene.getBoundingClientRect();
+    sceneRect = { x: r.left - b.left, y: r.top - b.top, w: r.width, h: r.height };
+  }
+  // Is a point (in box coordinates) over the countryside?
+  function overScene(x, y) {
+    if (!sceneRect || y < sceneRect.y) return false;
+    if (!skyline) return true;
+    var u = (x - sceneRect.x) / sceneRect.w;
+    if (u < 0 || u >= 1) return false;
+    return y >= sceneRect.y + skyline[Math.floor(u * skyline.length)] * sceneRect.h;
+  }
+  if (scene) {
+    if (scene.complete && scene.naturalWidth) readSkyline();
+    else scene.addEventListener('load', readSkyline);
   }
 
   function resize() {
@@ -61,6 +101,7 @@
     if (nd !== dpr || !sprites.length) { dpr = nd; makeSprites(); }
     for (var i = 0; i < birds.length; i++) { birds[i].x *= scaleX; birds[i].y *= scaleY; }
     buildPath();
+    measureScene();
   }
 
   // A smooth loop just inside the box: a superellipse, so it hugs the corners without the
@@ -105,7 +146,8 @@
         ring: rand(24, 96),            // the distance it likes to circle the cursor at
         bend: (Math.random() < 0.5 ? -1 : 1) * rand(0.15, 0.6),   // radians off a straight approach
         sprite: Math.floor(Math.random() * sprites.length),
-        alpha: rand(0.35, 0.7)
+        alpha: rand(0.35, 0.7),
+        light: 0                        // 0 = brand colour, 1 = canvas primary
       });
     }
   }
@@ -201,6 +243,7 @@
         var diff = Math.atan2(Math.sin(want - b.rot), Math.cos(want - b.rot));
         b.rot += diff * (1 - Math.exp(-k * TURN));
       }
+      b.light += ((overScene(b.x, b.y) ? 1 : 0) - b.light) * (1 - Math.exp(-k * 0.15));
     }
   }
 
@@ -209,9 +252,17 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < birds.length; i++) {
       var b = birds[i], img = sprites[b.sprite], c = Math.cos(b.rot), s = Math.sin(b.rot);
-      ctx.globalAlpha = b.alpha;
       ctx.setTransform(c, s, -s, c, b.x * dpr, b.y * dpr);
-      ctx.drawImage(img, -img.width / 2, -img.height / 2);
+      // Crossfade to the light glyph over the photo; it's drawn stronger to read on the trees.
+      if (b.light < 0.99) {
+        ctx.globalAlpha = b.alpha * (1 - b.light);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+      }
+      if (b.light > 0.01) {
+        var li = lightSprites[b.sprite % SIZES.length];
+        ctx.globalAlpha = Math.min(1, b.alpha + 0.3) * b.light;
+        ctx.drawImage(li, -li.width / 2, -li.height / 2);
+      }
     }
     ctx.globalAlpha = 1;
   }
@@ -232,10 +283,10 @@
   }
 
   // The countryside along the bottom is out of range: over it, they go back to the loop.
-  var scene = box.querySelector('.cta__scene');
   function setPointer(e) {
-    if (scene && e.clientY >= scene.getBoundingClientRect().top) { pointer = null; return; }
     var r = box.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    measureScene();
+    if (overScene(x, y)) { pointer = null; return; }
     if (!pointer) { aim.x = x; aim.y = y; }
     pointer = { x: x, y: y };
   }
