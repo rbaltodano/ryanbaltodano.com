@@ -341,24 +341,30 @@ a { color: inherit; text-decoration: none; }
    headline block, the left one a little above the phone's middle. */
 .hero__vine { position: absolute; z-index: -1; translate: 0 -50%; width: min(580px, 29vw); height: auto; pointer-events: none; user-select: none; }
 .hero__vine--left { left: calc(50% - 50vw - 48px); top: 247px; }
-/* A vine blowing in the wind: a sheet of 12 frames in one row, shown through a window one frame wide.
-   The sheet steps along the row, one frame per step, then loops (js/vine-wind.js pauses it
-   off screen). With reduced motion it rests on the first frame. */
+/* Idle repeats frames 21–24 of the 24-frame grow sheet through a one-frame window.
+   JS pauses it off screen. Reduced motion rests on the fully grown final frame. */
 .hero__vine--wind { display: block; aspect-ratio: var(--vine-ratio, 358 / 335); overflow: hidden; transform: translate3d(0, var(--parallax, 0px), 0); will-change: transform; }
 /* Parallax (js/vine-wind.js): as the page scrolls, each vine falls behind it by a share of the
    scroll distance, the left one further back than the right, so they read as different depths. */
-/* Each vine keeps its own frame shape; the 12-frame idle loops run at 4 fps. */
+/* Each vine keeps its own frame shape; the four-frame idle loops run at 4 fps. */
 .hero__vine--left.hero__vine--wind { --vine-ratio: 352 / 362; }
-.hero__vine--left.hero__vine--wind img { --wind-dur: 3s; animation-delay: 0s; }
 .hero__vine--right.hero__vine--wind { --vine-ratio: 1; }
-.hero__vine--right.hero__vine--wind img { --wind-dur: 3s; }
-.hero__vine--wind img { display: block; width: 1200%; height: 100%; max-width: none; animation: vine-wind var(--wind-dur, 2.4s) steps(12) infinite; will-change: transform; }
-@keyframes vine-wind { to { transform: translateX(-100%); } }
-/* One paint-on entrance; its final frame matches idle frame one. JS removes it on completion. */
+.hero__vine--wind img { display: block; width: 2400%; height: 100%; max-width: none; transform: translateX(-83.3333333333%); animation: vine-wind 1s steps(4) infinite; will-change: transform; }
+/* Set in the head, before any image can render. The finished artwork appears only after
+   the paint-on entrance completes (or fails); without JS it stays visible as usual. */
+.vine-entrance .hero__vine--wind:not(.is-painted) > img:not(.hero__vine-paint) { visibility: hidden; }
+@keyframes vine-wind {
+  from { transform: translateX(-83.3333333333%); }
+  to { transform: translateX(-100%); }
+}
+/* One full paint-on entrance, then JS removes it to expose the four-frame idle loop. */
 .hero__vine--wind img.hero__vine-paint { position: absolute; inset: 0 auto auto 0; width: 2400%; animation: vine-paint 4s steps(24) 1 both; }
-@keyframes vine-paint { to { transform: translateX(-100%); } }
+@keyframes vine-paint { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
-@media (prefers-reduced-motion: reduce) { .hero__vine--wind img { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero__vine--wind img { animation: none; transform: translateX(-95.8333333333%); }
+  .vine-entrance .hero__vine--wind:not(.is-painted) > img:not(.hero__vine-paint) { visibility: visible; }
+}
 /* The right vine's window sits 24px past the page edge, so the stem that the artwork is cut on
    stays out of sight. The sheet itself is never shifted inside its window (that would let the
    neighbouring frame's edge show). The hero clips the overhang, because iOS Safari ignores

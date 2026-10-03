@@ -12,13 +12,17 @@
   (function () {
     var root = document.documentElement;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Hide the finished vines before the first paint; their entrance sheet loads separately.
+    root.classList.add('vine-entrance');
     root.classList.add('intro');
     // Arriving through a page transition, which brings the page in itself.
     window.addEventListener('pagereveal', function (event) { if (event.viewTransition) root.classList.add('vt'); });
     window.addEventListener('load', function () { if (window.scrollY > 80) root.classList.remove('intro'); });
   })();
 </script>
-<link rel="stylesheet" href="css/site.css?v=20261003-full-vine-4fps">
+<link rel="preload" as="image" href="assets/home/vine-left-paint.webp">
+<link rel="preload" as="image" href="assets/home/vine-right-full-paint.webp">
+<link rel="stylesheet" href="css/site.css?v=20261003-grow-tail-idle">
 </head>
 <body>
 
@@ -56,8 +60,8 @@
       <div class="hero-phone">
         <!-- Painted vines sit behind the phone: out at the page edges on desktop, tucked behind its
              top right and bottom left on tablets and phones. -->
-        <span class="hero__vine hero__vine--left hero__vine--wind" data-paint-src="assets/home/vine-left-paint.webp" aria-hidden="true"><img src="assets/home/vine-left-painted-idle.webp" alt="" width="4224" height="362"></span>
-        <span class="hero__vine hero__vine--right hero__vine--wind" data-paint-src="assets/home/vine-right-full-paint.webp" aria-hidden="true"><img src="assets/home/vine-right-full-idle.webp" alt="" width="4344" height="362"></span>
+        <span class="hero__vine hero__vine--left hero__vine--wind" data-paint-src="assets/home/vine-left-paint.webp" aria-hidden="true"><img src="assets/home/vine-left-paint.webp" alt="" width="8448" height="362"></span>
+        <span class="hero__vine hero__vine--right hero__vine--wind" data-paint-src="assets/home/vine-right-full-paint.webp" aria-hidden="true"><img src="assets/home/vine-right-full-paint.webp" alt="" width="8688" height="362"></span>
         <img class="hero-phone__screen" src="assets/app/home-dark.jpg" alt="The Angrove home screen: a greeting, a month of activity with conversation and Insight counts, and the Question of the Day." width="754" height="1640">
         <img class="phone-frame" src="assets/home/iphone-frame.png" alt="">
       </div>
@@ -346,7 +350,7 @@
 </footer>
 
 <script src="js/site.js?v=20261002-map-layout"></script>
-<script src="js/vine-wind.js?v=20261003-left-paint"></script>
+<script src="js/vine-wind.js?v=20261003-grow-tail-idle"></script>
 <script src="js/insight-tree.js?v=20261002-map-layout"></script>
 <script src="js/map-flow.js?v=20261002-map-layout"></script>
 <script src="js/grounding-demo.js"></script>

@@ -1,4 +1,4 @@
-// Vines blowing in the wind (the sprite sheets in assets/home/): each plays only while it is on
+// Vines loop the last four grow frames (the sprite sheets in assets/home/), only while on
 // screen, so a page parked elsewhere is not animating in the background. They also drift behind
 // the page as it scrolls (parallax): each vine lags the scroll by its own share of the distance,
 // so the two read as sitting at different depths. Phones get no parallax.
@@ -13,12 +13,16 @@
     var idle = vine.querySelector('img');
     var paint = new Image();
     var finished = false;
+    // A stalled decorative image must never leave the idle artwork hidden indefinitely.
+    var loadTimeout = setTimeout(finish, 8000);
     paint.alt = '';
     paint.className = 'hero__vine-paint';
     function finish() {
       if (finished) return;
       finished = true;
+      clearTimeout(loadTimeout);
       paint.remove();
+      vine.classList.add('is-painted');
       idle.style.visibility = '';
       idle.style.animationPlayState = vine.dataset.onScreen === 'false' ? 'paused' : 'running';
       reducedMotion.removeEventListener('change', motionChanged);
@@ -29,15 +33,19 @@
     });
     paint.addEventListener('error', finish);
     paint.addEventListener('load', function () {
-      if (finished || reducedMotion.matches) return;
-      // Keep the existing idle ready beneath the overlay, parked on its first frame.
-      idle.style.animation = 'none';
-      idle.offsetWidth;
-      idle.style.animation = '';
-      idle.style.animationPlayState = 'paused';
-      idle.style.visibility = 'hidden';
-      paint.style.animationPlayState = vine.dataset.onScreen === 'false' ? 'paused' : 'running';
-      vine.appendChild(paint);
+      // Decode before starting the clock so a slow image cannot skip the opening frames.
+      var decoded = paint.decode ? paint.decode() : Promise.resolve();
+      decoded.then(function () {
+        if (finished || reducedMotion.matches) return;
+        clearTimeout(loadTimeout);
+        // Park the idle on the first of the final four grow frames.
+        idle.style.animation = 'none';
+        idle.offsetWidth;
+        idle.style.animation = '';
+        idle.style.animationPlayState = 'paused';
+        paint.style.animationPlayState = vine.dataset.onScreen === 'false' ? 'paused' : 'running';
+        vine.appendChild(paint);
+      }, finish);
     });
     reducedMotion.addEventListener('change', motionChanged);
     paint.src = src;
