@@ -239,7 +239,7 @@
   function syncGuide() {
     var want = (window.angroveSaved || []).filter(function (k) { return GUIDE_TERMS[k]; });
     insights = insights.filter(function (ins) {
-      if (ins.key && want.indexOf(ins.key) < 0) { ins.el.remove(); return false; }
+      if (ins.key && want.indexOf(ins.key) < 0) { ins.el.remove(); delete (window.angroveSeen || {})[ins.key]; return false; }
       return true;
     });
     var added = [];
@@ -264,7 +264,7 @@
     document.addEventListener('guide:saved', function () {
       var added = syncGuide();
       if (state.step < 2) return;
-      added.forEach(function (ins) { reveal(ins); ripple(treePoint(ins)); });
+      added.forEach(playOnce);
     });
   }
 
@@ -362,8 +362,19 @@
       duration: RIPPLE_BASE * (0.5 + 0.9 * strength)
     });
   }
+  // An Insight saved in the Definitions example enters once across the Guide's trees: the first
+  // one to show it plays the entrance, and the others already have it in place.
+  var seen = window.angroveSeen = window.angroveSeen || {};
+  function playOnce(ins) {
+    if (ins.key && seen[ins.key]) {
+      ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity; ins.shown = true;
+      return;
+    }
+    reveal(ins); ripple(treePoint(ins));
+  }
   function reveal(ins) {
     ins.shown = true;
+    if (ins.key) seen[ins.key] = true;
     ins.vis.to(1, 0, performance.now());
     later(REVEAL_SETTLE, function () { ins.lineStart = performance.now(); });
   }
@@ -380,7 +391,7 @@
       // only an Insight saved in the Definitions example enters, and only the first time it's seen.
       node.vis.v = node.vis.target = 1; node.vis.pending = null;
       var entering = insights.filter(function (ins) {
-        if (ins.key && !ins.shown) return true;
+        if (ins.key && !ins.shown && !seen[ins.key]) return true;
         ins.vis.v = ins.vis.target = 1; ins.lineStart = -Infinity;
         return false;
       });
