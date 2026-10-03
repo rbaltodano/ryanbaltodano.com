@@ -40,6 +40,9 @@
     Courage: 'Firmness of mind in facing danger or hardship for the sake of the good.'
   };
   var scrollStudy = root.hasAttribute('data-scroll-study');
+  // The Guide's Insight Tree example (data-guide-tree): Cynicism and Epicureanism are already in
+  // the Greek Philosophy tree, plus whichever Insights were saved in the Definitions example.
+  var guideTree = root.hasAttribute('data-guide-tree');
   var studyProgress = null;
   // Inside the Features journey a card plays when its scene is shown, not when it scrolls into view.
   var journeyScene = root.closest('[data-scene]');
@@ -218,6 +221,52 @@
     return norm([Math.cos(angle), Math.sin(angle), Math.tan(elev)]);
   }
   var studyDirs = sphereSpread(insights.map(function (i) { return treeDirection(i.finalAngle, i.finalElev); }));
+
+  var GUIDE_TERMS = { eudaimonia: ['Eudaimonia', 1], 'natural-philosophy': ['Natural philosophy', 1.45] };
+  function guideLayout() {
+    var n = insights.length;
+    var elevs = n === 2 ? [MAX_ELEVATION, -MAX_ELEVATION] : n === 3 ? [0, MAX_ELEVATION, -MAX_ELEVATION] : [0, MAX_ELEVATION, 0, -MAX_ELEVATION];
+    insights.forEach(function (ins, k) {
+      ins.order = k;
+      ins.finalAngle = Math.PI / 8 + k * 2 * Math.PI / n;
+      ins.finalElev = elevs[k];
+      ins.ang.to(ins.finalAngle, 0, performance.now());
+      ins.elv.to(ins.finalElev, 0, performance.now());
+    });
+    studyDirs = sphereSpread(insights.map(function (i) { return treeDirection(i.finalAngle, i.finalElev); }));
+  }
+  // Matches the tree to the Insights saved in the Definitions example; returns the new ones.
+  function syncGuide() {
+    var want = (window.angroveSaved || []).filter(function (k) { return GUIDE_TERMS[k]; });
+    insights = insights.filter(function (ins) {
+      if (ins.key && want.indexOf(ins.key) < 0) { ins.el.remove(); return false; }
+      return true;
+    });
+    var added = [];
+    want.forEach(function (key) {
+      if (insights.some(function (i) { return i.key === key; })) return;
+      var term = GUIDE_TERMS[key];
+      var ins = makeInsight({ title: term[0], angle: Math.PI / 8, elev: 0 }, 0);
+      ins.key = key;
+      ins.bond = BOND * term[1];
+      insights.unshift(ins);
+      added.push(ins);
+    });
+    guideLayout();
+    var tags = insights.map(function (i) { return i.title; }).join(', ');
+    root.setAttribute('aria-label', 'An Insight Tree for the Node Concept Greek Philosophy, with the Insights ' + tags + '.');
+    return added;
+  }
+  if (guideTree) {
+    insights[0].el.remove();               // Cynicism and Epicureanism stay; Eudaimonia comes from a save
+    insights = insights.slice(1);
+    syncGuide();
+    document.addEventListener('guide:saved', function () {
+      var added = syncGuide();
+      if (state.step < 2) return;
+      added.forEach(function (ins) { reveal(ins); ripple(treePoint(ins)); });
+    });
+  }
 
   // The home journey adds whichever term was chosen in the answer. Natural philosophy
   // sits farther from Greek Philosophy, with its longer connector retained in Study.
@@ -1162,6 +1211,7 @@
       if (visible) {
         if (mode === 'stream') { setStep(1); return; }
         if (state.step >= 2) return;
+        if (guideTree) syncGuide();
         setStep(2);
         if (mid) mid.begin();
         if (mode === 'study') studyTimer = setTimeout(function () { setStep(3); }, reduceMotion ? 0 : state.growMs + 600);

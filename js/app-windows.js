@@ -132,6 +132,10 @@
       save.addEventListener('click', function (e) {
         e.stopPropagation();
         saved[current] = !saved[current];
+        // Shared with the Guide's Insight Tree example, which shows whichever Insights are saved.
+        var list = window.angroveSaved = (window.angroveSaved || []).filter(function (k) { return k !== current; });
+        if (saved[current]) list.push(current);
+        document.dispatchEvent(new CustomEvent('guide:saved'));
         save.setAttribute('aria-pressed', String(saved[current]));
         setHint(win, saved[current] ? 'Saved. It now lives in your Insight Tree.' : 'Tap the bookmark to save it as an Insight.');
       });
