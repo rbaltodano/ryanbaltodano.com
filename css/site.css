@@ -340,7 +340,7 @@ a { color: inherit; text-decoration: none; }
    middle of the headline block. */
 .hero__vine { position: absolute; top: 1000px; translate: 0 -50%; width: min(580px, 29vw); height: auto; pointer-events: none; user-select: none; }
 .hero__vine--left { left: 0; }
-.hero__vine--right { right: 0; }
+.hero__vine--right { right: 0; top: 420px; }
 .hero__inner { position: relative; z-index: 1; }
 .hero__inner {
   max-width: var(--content);
