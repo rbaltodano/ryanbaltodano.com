@@ -231,7 +231,10 @@
     raf = requestAnimationFrame(frame);
   }
 
+  // The countryside along the bottom is out of range: over it, they go back to the loop.
+  var scene = box.querySelector('.cta__scene');
   function setPointer(e) {
+    if (scene && e.clientY >= scene.getBoundingClientRect().top) { pointer = null; return; }
     var r = box.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
     if (!pointer) { aim.x = x; aim.y = y; }
     pointer = { x: x, y: y };
