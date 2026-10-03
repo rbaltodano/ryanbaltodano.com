@@ -767,16 +767,44 @@
         docked.style.animation = 'none'; void docked.offsetWidth; docked.style.animation = '';
       }
     }
+    // Three example results per pair, picked by how the balance is set: leaning toward the first
+    // Insight, near the middle, or leaning toward the second (60% or more counts as leaning).
+    var RESULTS = {
+      'Justice|Mercy': [
+        ['Restorative Justice', 'Giving what is owed in a way that aims to heal the wrong and restore the offender, not only to punish.'],
+        ['Equity', 'Applying a just rule with mercy when its strict letter would defeat its purpose in a particular case.'],
+        ['Forgiveness', 'Freely releasing a debt one could justly claim, while still naming the wrong as a wrong.']],
+      'Cynicism|Prudence': [
+        ['Ascetic Freedom', 'Living deliberately with little, so that nothing outside oneself can compel one\u2019s choices.'],
+        ['Temperance', 'Moderating desire by reason: taking what is needed and refusing what would come to rule over you.'],
+        ['Prudent Simplicity', 'Choosing a plain life because careful judgment sees what actually serves the good.']],
+      'Epicureanism|Prudence': [
+        ['Tranquility', 'The settled peace of mind that comes from wanting little and fearing nothing.'],
+        ['Moderation of Pleasure', 'Choosing the pleasures that last and refusing those that bring later pain.'],
+        ['Wise Enjoyment', 'Judging which pleasures serve a good life, and when to take them.']],
+      'Eudaimonia|Prudence': [
+        ['Happiness as an End', 'The end every action aims at, pursued with the judgment to know what truly leads there.'],
+        ['Right Reason in Action', 'Acting according to reason so that a life moves steadily toward its proper end.'],
+        ['Deliberation', 'Weighing the means to a good end carefully before choosing how to act.']],
+      'Natural philosophy|Prudence': [
+        ['Natural Order', 'The pattern of ends built into things, which reason can read and then follow.'],
+        ['Practical Knowledge', 'Understanding how things work in order to act well among them.'],
+        ['Prudent Inquiry', 'Studying the world with an eye to what a good life asks of us.']]
+    };
     function showExample() {
       if (mid.phase !== 'active') return;
-      var names = [A.title, B.title], r;
-      if (names.indexOf('Justice') >= 0 && names.indexOf('Mercy') >= 0) {
-        var justice = A.title === 'Justice' ? 1 - mid.t.target : mid.t.target;
-        r = justice >= 0.6 ? ['Restorative Justice', 'Giving what is owed in a way that aims to heal the wrong and restore the offender, not only to punish.']
-          : justice <= 0.4 ? ['Forgiveness', 'Freely releasing a debt one could justly claim, while still naming the wrong as a wrong.']
-          : ['Equity', 'Applying a just rule with mercy when its strict letter would defeat its purpose in a particular case.'];
-      } else {
-        r = ['A new concept', 'In the app, Angrove proposes a concept that sits between ' + names.join(', ') + ', leaning toward the ideas you weight most.'];
+      var wA = 1 - mid.t.target;                       // the share given to the first Insight
+      var tier = wA >= 0.6 ? 0 : wA <= 0.4 ? 2 : 1;
+      var set = RESULTS[A.title + '|' + B.title], r;
+      if (!set && RESULTS[B.title + '|' + A.title]) {
+        var flip = RESULTS[B.title + '|' + A.title];
+        set = [flip[2], flip[1], flip[0]];
+      }
+      if (set) r = set[tier];
+      else {
+        var lean = tier === 0 ? A.title : tier === 2 ? B.title : null;
+        r = ['A new concept', lean ? 'In the app, Angrove proposes a concept that sits between ' + A.title + ' and ' + B.title + ', leaning toward ' + lean + '.'
+          : 'In the app, Angrove proposes a concept that sits between ' + A.title + ' and ' + B.title + ', weighing them about equally.'];
       }
       var title = q('example-title');
       if (title.textContent !== r[0]) {
@@ -948,7 +976,8 @@
       mid.scripted = true;
       var greekList = insights.filter(function (ins) { return !ins.cl2; });
       var virtue = insights.filter(function (ins) { return ins.cl2; });
-      var from = greekList[0], to = virtue[0];     // the newest saved Insight (or Cynicism), then Justice
+      var from = greekList[0];                      // the newest saved Insight (or Cynicism)
+      var to = virtue.filter(function (ins) { return ins.title === 'Prudence'; })[0];   // clear of the line back to the Greek tree
       var fast = reduceMotion;
       var t = fast ? 0 : 1000;
       later(t, function () { from.el.classList.add('is-selected'); picked = [from]; sync(); });
