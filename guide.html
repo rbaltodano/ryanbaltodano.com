@@ -7,7 +7,7 @@
 <meta name="description" content="The Angrove User Guide: how to ask a question, save Insights, read the Insight Tree, find a Midpoint, study a concept in 3D, and keep your data private.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="css/site.css?v=20261003-app-boot-sequence">
+<link rel="stylesheet" href="css/site.css?v=20261003-guide-tech">
 <link rel="stylesheet" href="css/app-windows.css">
 </head>
 <body>
@@ -164,6 +164,20 @@
           <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Drag to move around, pinch to zoom, and tap anything to read its card. Lines show which ideas are connected, and shorter lines mean the ideas are closer in meaning. <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-brain-head-profile"/></svg>Insights</span> in the menu has a larger tree that brings together everything you’ve saved; accept its update prompt to add your latest bookmarks.</p></div>
           <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Use the map to spot how several definitions belong to one larger question. Distance shows how related two ideas are, not whether they’re true or important.</p></div>
         </div>
+              <div class="guide-tech">
+          <p class="guide-tech__eyebrow">Under the Hood</p>
+          <div><h3 class="guide-label">Meaning as numbers</h3><p class="guide-text">To compare ideas, Angrove turns each one into an <em>embedding</em>: a list of 384 numbers that describes what the text means rather than which words it uses. It embeds an Insight’s title and definition together with MiniLM, a small language model that runs on your phone. Texts that mean similar things get similar numbers, so “mercy” and “forgiveness” land close together even though they share no letters.</p></div>
+          <div><h3 class="guide-label">Cosine similarity</h3><p class="guide-text">Think of each embedding as an arrow pointing in a direction in 384-dimensional space. Cosine similarity measures the angle between two arrows, ignoring their length:</p>
+            <p class="guide-formula">similarity(A, B) = (A · B) / (|A| |B|)</p>
+            <p class="guide-text">Arrows pointing the same way score 1, unrelated ideas land near 0, and Angrove treats <em>1 − similarity</em> as the distance between two ideas. It’s a ranking of relatedness, not a probability.</p></div>
+          <div><h3 class="guide-label">How the tree uses it</h3>
+            <ul class="guide-tech__list">
+              <li><span class="guide-tech__num">0.40</span><span>An Insight joins a Node Concept when its similarity to that subject is at least this high.</span></li>
+              <li><span class="guide-tech__num">0.60</span><span>A new answer starts a new Node Concept only when it falls below this against every existing subject, so ordinary follow-ups don’t create duplicates.</span></li>
+              <li><span class="guide-tech__num">0.65</span><span>Two Node Concepts this similar are treated as one subject and merge, like “Ancient Greek States” and “Ancient Greek City-States.”</span></li>
+            </ul>
+            <p class="guide-text">The layout comes from the same distances. Angrove takes the distance between every pair of Node Concepts and finds positions that keep those distances as faithfully as a flat map can (a technique called multidimensional scaling), so related subjects sit near each other across the whole tree, not just along drawn lines. A third dimension sets each node’s depth.</p></div>
+        </div>
       </article>
       <article class="guide-topic" id="study">
         <header class="guide-topic__head">
@@ -226,6 +240,25 @@
           <div><h3 class="guide-label">How to use it</h3><p class="guide-text">In the tree, tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-circle-dashed"/></svg>Select</span>, choose two to eight Insights or Node Concepts, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-graph-2d"/></svg>Midpoint</span>. Change the percentages to lean toward the ideas that matter most, then tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-arrow-down"/></svg>Place</span> to add the result to your tree.</p></div>
           <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Try a Midpoint between “justice” and “mercy” to see how they meet. The result depends on the ideas you choose and how you balance them.</p></div>
         </div>
+              <div class="guide-tech">
+          <p class="guide-tech__eyebrow">Under the Hood</p>
+          <div><h3 class="guide-label">A weighted center of meaning</h3><p class="guide-text">Midpoint works in the same embedding space as the tree. Each idea you select is an arrow (its 384-number embedding), scaled to length 1 so a longer definition can’t outweigh a shorter one. Your percentages become weights, and Angrove adds the arrows together in those proportions, then rescales the result to length 1:</p>
+            <p class="guide-formula">center = normalize( w₁·â₁ + w₂·â₂ + … + wₙ·âₙ )</p>
+            <p class="guide-text">At 50/50 between two ideas, the center points exactly between them; at 80/20, it leans toward the first. That direction is the region of meaning you’re asking about.</p></div>
+          <figure class="guide-fig">
+            <svg viewBox="0 0 540 220" role="img" aria-label="Two idea vectors, A and B, a weighted center between them leaning toward A, and five candidates with the nearest one chosen.">
+              <circle cx="80" cy="190" r="4" class="gf-dot"/>
+              <path d="M80 190 L430 150" class="gf-vec"/><circle cx="430" cy="150" r="5" class="gf-src"/><text x="440" y="155" class="gf-t">A · 70%</text>
+              <path d="M80 190 L250 20" class="gf-vec"/><circle cx="250" cy="20" r="5" class="gf-src"/><text x="262" y="24" class="gf-t">B · 30%</text>
+              <path d="M80 190 L380 92" class="gf-center"/><text x="238" y="160" class="gf-t gf-t--accent">center</text>
+              <circle cx="330" cy="60" r="4" class="gf-cand"/><circle cx="410" cy="100" r="4" class="gf-cand"/><circle cx="300" cy="140" r="4" class="gf-cand"/><circle cx="355" cy="40" r="4" class="gf-cand"/>
+              <circle cx="372" cy="80" r="7" class="gf-pick"/>
+              <text x="386" y="72" class="gf-t">nearest candidate</text>
+            </svg>
+          </figure>
+          <div><h3 class="guide-label">Writing, then choosing</h3><p class="guide-text">Numbers alone can’t be read, so the on-device model writes five candidate Insights that try to put the shared idea into words, guided by each source and its weight. Angrove embeds all five and keeps the one whose arrow is closest to the center by cosine distance. The model proposes; the math decides. If an embedding can’t be made, Angrove falls back to the model’s first candidate.</p></div>
+          <div><h3 class="guide-label">Why the result can surprise you</h3><p class="guide-text">A midpoint is the center of the ideas’ meanings, not a summary of their words. Two ideas that sit far apart can meet in a concept neither one names, which is often where the interesting connection is.</p></div>
+        </div>
       </article>
       <article class="guide-topic" id="organization">
         <header class="guide-topic__head">
@@ -235,9 +268,9 @@
         </header>
         
         <div class="guide-paras">
-          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Conversations helps you find and tidy past discussions. Study Topics collects related conversations, and their saved Insights, in one place.</p></div>
-          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-text-word-spacing"/></svg>Conversations</span> to search, rename, pin, move to a Study Topic, or delete a conversation. Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-square-stack"/></svg>Study Topics</span> to create a topic, give it a short description, and add conversations to it.</p></div>
-          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Create a Study Topic called “Ethics” and collect conversations about virtue, conscience, and responsibility. Pin a discussion you want to come back to soon.</p></div>
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Conversations helps you find and tidy past discussions. Study Topics collects related conversations, and their saved Insights, in one place. Each Study Topic also has its own Insight Tree that gathers every Insight you saved in any of its conversations, clustered and laid out just like a conversation’s tree, so you can see a whole subject across many discussions.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-text-word-spacing"/></svg>Conversations</span> to search, rename, pin, move to a Study Topic, or delete a conversation. Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-square-stack"/></svg>Study Topics</span> to create a topic, give it a short description, and add conversations to it. Inside a topic, tap <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-point-3-connected-trianglepath-dotted"/></svg>Insight Tree</span> at the top right, or swipe left, to open its tree; swipe right to return.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Create a Study Topic called “Ethics” and collect conversations about virtue, conscience, and responsibility; its Insight Tree then shows how the terms you saved in each one connect. Pin a discussion you want to come back to soon.</p></div>
         </div>
       </article>
       <article class="guide-topic" id="library">
@@ -251,6 +284,10 @@
           <div><h3 class="guide-label">What it does</h3><p class="guide-text">The Library lets you read the sources behind Angrove’s answers in their own words.</p></div>
           <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Open <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-books-vertical"/></svg>Library</span> from the menu. Browse the works or search by title or subject, then open a work to read it. The Passage of the Day is an easy place to start.</p></div>
           <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Read a source passage alongside a discussion to check the author’s own wording and context.</p></div>
+        </div>
+              <div class="guide-tech">
+          <p class="guide-tech__eyebrow">Under the Hood</p>
+          <div><h3 class="guide-label">Finding the right passage</h3><p class="guide-text">Every passage in the Library, about 41,000 of them, already has an embedding stored on your phone. When you ask a question, Angrove embeds it and compares it with every passage by cosine similarity, which takes less time than writing the answer. Only passages similar enough to your question (a cosine distance of 0.45 or less) are handed to the model as sources. If nothing clears that bar, Angrove answers without sources rather than citing ones that only share a word, like a passage about the city of Nicaea for a question about the Council of Nicaea.</p></div>
         </div>
       </article>
       <article class="guide-topic" id="home">
