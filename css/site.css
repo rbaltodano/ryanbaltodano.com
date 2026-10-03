@@ -1183,9 +1183,11 @@ a { color: inherit; text-decoration: none; }
    wordmark that spans the content width and fades out toward the bottom. */
 .footer {
   --footer-ink: 255, 250, 240;
-  margin: 0 12px 12px;
-  /* Side padding keeps the footer's content aligned with the page content above it. */
-  padding: 84px max(calc(var(--gutter) - 12px), calc((100% - var(--content)) / 2 - 12px)) 0;
+  width: calc(100% - 24px);
+  max-width: 1920px;
+  margin: 0 auto 12px;
+  /* Side padding keeps the footer's content aligned with the page content above it, at any footer width. */
+  padding: 84px max(calc(var(--gutter) - 12px), calc((min(100% - 24px, 1920px) - var(--content)) / 2)) 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
