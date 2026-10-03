@@ -76,6 +76,8 @@
       var body = win.querySelector('[data-card-body]');
       var save = win.querySelector('[data-card-save]');
       var scrim = win.querySelector('[data-scrim]');
+      var copy = win.querySelector('[data-card-copy]');
+      var copyTimer = null;
       var answer = win.querySelector('.w-read__answer');
       var dock = dockController(win);
       var saved = {}, current = null, timer = null;
@@ -164,6 +166,13 @@
         saved[current] = !saved[current];
         save.setAttribute('aria-pressed', String(saved[current]));
         setHint(win, saved[current] ? 'Saved. It now lives in your Insight Tree.' : 'Tap the bookmark to save it as an Insight.');
+      });
+      if (copy) copy.addEventListener('click', function (e) {
+        e.stopPropagation();
+        try { navigator.clipboard.writeText(title.textContent + ': ' + body.textContent); } catch (err) {}
+        copy.classList.add('is-copied');
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(function () { copy.classList.remove('is-copied'); }, 2000);
       });
       card.addEventListener('click', function (e) { e.stopPropagation(); });
       win.addEventListener('click', close);
