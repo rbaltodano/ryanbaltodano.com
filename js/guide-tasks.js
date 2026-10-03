@@ -187,7 +187,7 @@
     else if (empty.parentNode) empty.remove();
 
     countEl.hidden = !tasks.length;
-    countEl.textContent = completed.length + ' of ' + tasks.length;
+    countEl.textContent = (completed.length + (current ? 1 : 0)) + ' of ' + tasks.length;
     fitCard();
 
     if (reduceMotion) return;
