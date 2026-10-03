@@ -62,6 +62,8 @@
   var windows = {
     conversation: function (win) {
       var DEFS = {
+        eudaimonia: ['Eudaimonia', 'Flourishing: the complete, well-lived human life that Aristotle held every action ultimately aims at. Not a feeling of happiness, but a life lived well over its whole length.'],
+        'natural-philosophy': ['Natural philosophy', 'The study of nature and how things change, understood through their causes and ends. Aristotle’s ethics builds on this account of human nature to ask what it means for a person to live well.'],
         justice: ['Justice', 'The virtue of steadily giving each person what they are due. It orders a person toward others rather than toward themselves.'],
         aquinas: ['Thomas Aquinas', 'A thirteenth-century Dominican friar and theologian whose Summa Theologica joins Aristotle’s philosophy to Christian doctrine.'],
         virtue: ['Virtue', 'A settled disposition to act well, formed by practice, that makes both the action and the person who does it good.'],
@@ -149,7 +151,7 @@
         scrim.classList.remove('is-open');
         win.querySelectorAll('[data-term]').forEach(function (t) { t.classList.remove('is-active', 'is-generating'); });
         dock('idle');
-        setHint(win, 'Tap \u201Chabit\u201D or \u201Cprudence\u201D in the answer.');
+        setHint(win, 'Tap \u201CEudaimonia\u201D or \u201Cnatural philosophy\u201D in the answer.');
       }
       win.querySelectorAll('[data-term]').forEach(function (t) {
         t.addEventListener('click', function (e) {
