@@ -206,6 +206,8 @@
       order: i,
       finalAngle: d.angle,
       finalElev: d.elev,
+      ang: new Spring(d.angle, 0.7, 0.9),
+      elv: new Spring(d.elev, 0.7, 0.9),
       el: el('it-chip', scrollStudy ? 'assets/home/icon-insight-dark.svg' : 'assets/home/icon-insight.svg', d.title),
       vis: new Spring(0),
       lineStart: null
@@ -220,6 +222,18 @@
   // The home journey adds whichever term was chosen in the answer. Natural philosophy
   // sits farther from Greek Philosophy, with its longer connector retained in Study.
   // Choosing a different term later adds a further Insight to the same tree.
+  // Four Insights sit a quarter turn apart, rather than a third; the existing ones glide there.
+  // Slots run chosen Insight, Cynicism, Epicureanism, then the newcomer; heights alternate 0, up, 0, down.
+  function spreadEvenly() {
+    var slots = [insights[2], insights[0], insights[1], insights[3]];
+    var elevs = [0, MAX_ELEVATION, 0, -MAX_ELEVATION];
+    slots.forEach(function (ins, k) {
+      ins.finalAngle = Math.PI / 8 + k * Math.PI / 2;
+      ins.finalElev = elevs[k];
+      ins.ang.to(ins.finalAngle, 0, performance.now());
+      ins.elv.to(ins.finalElev, 0, performance.now());
+    });
+  }
   var TERMS = { eudaimonia: ['Eudaimonia', 1], 'natural-philosophy': ['Natural philosophy', 1.45] };
   var addedKeys = ['eudaimonia'];     // the default Insight, until a term is chosen before the tree is first seen
   var claimed = false;
@@ -238,9 +252,10 @@
         claimed = true;
         if (addedKeys.indexOf(key) >= 0) return;
         addedKeys.push(key);
-        var ins = makeInsight({ title: term[0], angle: Math.PI / 8 + Math.PI, elev: 0 }, insights.length);
+        var ins = makeInsight({ title: term[0], angle: Math.PI / 8 + 3 * Math.PI / 2, elev: 0 }, insights.length);
         ins.bond = BOND * term[1];
         insights.push(ins);
+        spreadEvenly();
         studyDirs = sphereSpread(insights.map(function (i) { return treeDirection(i.finalAngle, i.finalElev); }));
         if (state.step >= 2) unrevealed.push(ins);
       }
@@ -288,7 +303,7 @@
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
   function treePoint(ins) {
-    return [Math.cos(ins.finalAngle) * ins.bond, Math.sin(ins.finalAngle) * ins.bond, 0];
+    return [Math.cos(ins.ang.v) * ins.bond, Math.sin(ins.ang.v) * ins.bond, 0];
   }
   function panTo(x, y) { var now = performance.now(); state.panX.to(x, 0, now); state.panY.to(y, 0, now); }
   function ripple(world, strength, radiusScale) {
@@ -794,7 +809,7 @@
 
   function insightWorld(ins, p) {
     var h = ins.bond;
-    var a = ins.finalAngle, e = ins.finalElev;
+    var a = ins.ang.v, e = ins.elv.v;
     var tree = [Math.cos(a) * h, Math.sin(a) * h, h * Math.tan(e)];
     if (p <= 0) return tree;
     var dir = slerp(norm(tree), studyDirs[ins.order], p);
@@ -941,7 +956,7 @@
     var time = now / 1000;
 
     node.vis.step(dt, now);
-    insights.forEach(function (i) { i.vis.step(dt, now); });
+    insights.forEach(function (i) { i.vis.step(dt, now); i.ang.step(dt, now); i.elv.step(dt, now); });
     state.panX.step(dt, now); state.panY.step(dt, now);
     if (mid) {
       mid.t.step(dt, now); mid.shown.step(dt, now);

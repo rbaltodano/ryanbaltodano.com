@@ -174,6 +174,7 @@
     var r = sticky.getBoundingClientRect();
     if (r.top < window.innerHeight * 0.6 && r.bottom > 0) playAnswer();
     if (Math.abs(x - 1) < 0.3) playInsight();
+    if (x > 1.3) tree.parentNode.classList.add('is-seen');
     if (x > 1.7) {
       playCard('tree', tree);
       if (!treeShown) { treeShown = true; tree.dispatchEvent(new Event('journey:visible')); }

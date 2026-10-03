@@ -1621,8 +1621,10 @@ a { color: inherit; text-decoration: none; }
 .flow-insight.is-in .flow-insight__body { opacity: 1; filter: none; translate: none; }
 
 /* One transparent tree persists as its camera and layout turn into Study. */
-.flow .tree-card { width: min(760px, 100%); height: min(460px, 100%); background: transparent; border: 0; border-radius: 24px; box-shadow: none; }
+.flow .tree-card { width: min(760px, 100%); height: min(460px, 100%); opacity: 0; transition: opacity 0.9s ease-out; background: transparent; border: 0; border-radius: 24px; box-shadow: none; }
 
+.flow__frame.is-seen .tree-card { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .flow .tree-card { transition: none; } }
 .flow .it-node, .flow .it-chip, .flow .tree-card__hint { background: transparent; border: 0; box-shadow: none; color: var(--cream); }
 .flow .tree-card__hint { font-size: 14px; }
 
