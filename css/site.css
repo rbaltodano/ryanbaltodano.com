@@ -40,10 +40,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; overflow-x: clip; background: var(--canvas); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-/* Highlights (selected text, and the tap flash on phones) use the accent green at 20%. */
-::selection { background: rgba(134, 128, 62, 0.2); }
-::-moz-selection { background: rgba(134, 128, 62, 0.2); }
-html { -webkit-tap-highlight-color: rgba(134, 128, 62, 0.2); }
+/* Highlights (selected text, and the tap flash on phones) use the accent green at 25%. */
+::selection { background: rgba(134, 128, 62, 0.25); }
+::-moz-selection { background: rgba(134, 128, 62, 0.25); }
+html { -webkit-tap-highlight-color: rgba(134, 128, 62, 0.25); }
 body {
   background: var(--canvas);
   color: var(--paragraph);
