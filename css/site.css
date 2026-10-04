@@ -504,10 +504,11 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 
 .section--dark { background: var(--app-canvas-secondary-dark); }
 .why {
-  max-width: var(--content);
+  max-width: 760px;
   margin: 0 auto;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 48px;
 }
 .why__copy {
@@ -521,7 +522,7 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   color: rgba(255, 250, 240, 0.75);
 }
 /* Why I Made This: a pull quote from the note, in place of an app picture. */
-.why__quote { width: 484px; flex-shrink: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+.why__quote { margin: 0; display: flex; flex-direction: column; gap: 20px; }
 .why__mark { height: 0.5em; margin-bottom: 8px; font-family: var(--serif); font-size: 120px; line-height: 1; color: var(--dark-green-text); opacity: 0.55; }
 .why__quote blockquote { margin: 0; }
 .why__quote blockquote p { font-family: var(--serif); font-weight: 400; font-size: 38px; line-height: 1.35; letter-spacing: -0.02em; color: var(--cream); }
@@ -2315,7 +2316,6 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .flow__track { width: 100%; height: 300%; flex-direction: column; }
   .hero__inner { align-items: center; }
   .hero__copy, .why__copy { width: 100%; min-width: 0; }
-  .why__quote { width: 100%; max-width: 640px; }
   .scene { margin: 0 auto; }
   .pillars { flex-direction: column; }
   /* Stacked: no pinned card; each step shows its own card above its text. */
@@ -2389,7 +2389,7 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .tree-step + .tree-step { margin-top: 40px; }
   :root { --section-y: 72px; }
   .why .scene { display: none; }
-  .why__quote { width: 100%; gap: 16px; }
+  .why__quote { gap: 16px; }
   .why__mark { font-size: 88px; }
   .why__quote blockquote p { font-size: 28px; }
   .split-head { gap: 24px; margin-bottom: 32px; }
