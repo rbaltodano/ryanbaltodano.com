@@ -845,7 +845,7 @@
       back: { icon: 'i-chevron-left', label: function () { return 'Back'; }, on: function () { if (mid.phase === 'active') exit(); } },
       center: { icon: 'i-lines-measurement-horizontal', label: function () { return 'Center'; }, on: function () { if (mid.phase === 'active') setT(0.5, true); } },
       place: { icon: 'i-arrow-down', label: function () { return 'Place'; }, on: place },
-      reset: { icon: 'i-arrow-counterclockwise', label: function () { return 'Reset'; }, on: resetAll },
+      reset: { icon: 'i-arrow-counterclockwise', label: function () { return 'Reset'; }, on: function () { if (mid.phase === 'done') reopen(); else resetAll(); } },
       how: { icon: 'i-graph-2d', label: function () { return 'How It Works'; }, on: function () { if (mid.phase === 'done') showVectors(true); } },
       tree: { icon: 'i-point-3-connected-trianglepath-dotted', label: function () { return 'Back to Tree'; }, on: function () { showVectors(false); } }
     };
@@ -954,6 +954,17 @@
       selecting = false; picked = [];
       dock(null);
       exit();
+    }
+    // Reset after placing: back to the Midpoint selector for the same two Insights, at the same
+    // balance, without replaying the opening script.
+    function reopen() {
+      var t = mid.t.target;
+      if (mid.placed) { mid.placed.el.remove(); mid.placed = null; }
+      mid.vec.on = false; mid.vec.k = mid.vec.kFrom = mid.vec.kTo = 0;
+      root.classList.remove('is-vectors');
+      dock(null);
+      enter();
+      setT(t, false);
     }
     function exit() {
       mid.phase = 'idle';
