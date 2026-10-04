@@ -80,7 +80,7 @@
           var lit = trail[t] * fade;
           if (glow) {
             var dx = x - hover.x, dy = y - hover.y, d2 = dx * dx + dy * dy;
-            if (d2 < 40000) lit = Math.max(lit, 0.5 * hover.amount * Math.exp(-d2 / 6000));
+            if (d2 < 40000) lit = Math.max(lit, 0.16 * hover.amount * Math.exp(-d2 / 6000));
           }
           trail[t] = lit < 0.004 ? 0 : lit;
           var boost = 0;
