@@ -2557,6 +2557,6 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .guide-mid .mid-cards { left: 50%; right: auto; width: min(373px, calc(100% - 20px)); translate: -50% 0; }
 @media (min-width: 1025px) { .guide-mid .mid-cards { bottom: 24px; } }
 
-/* Slash commands read like the app's source citations: lightGreen text in a systemSelection capsule
+/* Slash commands read like the app's source citations: lightGreen text in a systemSelection rounded rectangle (8 pt radius)
    (10 pt either side, overhanging the line by 4 pt without changing its height). */
-code.cmd, .faq-item__a code.cmd { padding: 4px 10px; border-radius: 999px; background: #F0E9DA; font: inherit; font-weight: inherit; color: var(--light-green); -webkit-box-decoration-break: clone; box-decoration-break: clone; white-space: nowrap; }
+code.cmd, .faq-item__a code.cmd { padding: 4px 10px; border-radius: 8px; background: #F0E9DA; font: inherit; font-weight: inherit; color: var(--light-green); -webkit-box-decoration-break: clone; box-decoration-break: clone; white-space: nowrap; }
