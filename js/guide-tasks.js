@@ -145,7 +145,7 @@
   var empty = document.createElement('div');
   empty.className = 'mt-row mt-row--empty';
   empty.appendChild(svg(ICON.upcoming, 'mt-icon mt-icon--small'));
-  empty.appendChild(document.createTextNode('Model is current idle...'));
+  empty.appendChild(document.createTextNode('Model is currently idle...'));
 
   function render() {
     var tasks = all();
