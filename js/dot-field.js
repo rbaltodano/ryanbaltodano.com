@@ -9,7 +9,7 @@
 
   // AnimatedDotGridBackground.blobOpacity (js/insight-tree.js), stretched out and thresholded so
   // only a few, widely spaced patches light up at a time.
-  var TRAIL_FADE = 5;     // seconds for a dot the pointer touched to fade most of the way out
+  var TRAIL_FADE = 3.5;   // seconds for a dot the pointer touched to fade most of the way out
   function blobOpacity(wx, wy, time) {
     var x = wx * 0.011, y = wy * 0.011;
     var w1 = Math.sin(x * 1.1 + time * 0.22) * Math.cos(y * 0.95 + time * 0.17);
