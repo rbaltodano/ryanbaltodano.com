@@ -17,8 +17,8 @@ site/
   guide.html          The app's User Guide (Settings → User Guide) word for word: First Five Minutes, eleven topics, Try It app windows
   faq.html            Common questions: release, cost, privacy, the model and its sources
   features.html       Redirect to guide.html (also how-it-works.html, insight-tree.html)
-  model.html          Redirect to privacy.html#model (the model details now live on Privacy)
-  privacy.html        What stays on the phone, claims linked to the public source, live offline demo, model details (#model)
+  model.html          Redirect to faq.html (the model question)
+  privacy.html        Redirect to guide.html#privacy (the Privacy page was retired 2026-10-04)
   about.html          Founder note, the four principles, public repositories
   waitlist.html       Launch status: development milestones (email signup is not open yet)
   blog/index.html     Empty state until the first posts
@@ -31,7 +31,6 @@ site/
   js/guide.js         Guide: the topic list marks the topic being read
   js/guide-tasks.js   Guide: the Model Tasks practice queue
   js/map-flow.js       Home: the pinned photo panel that scrolls horizontally from answer to Insight to tree, which turns into Study in place
-  js/privacy-demo.js  Privacy: a question answered in airplane mode, with what did and didn't happen
   js/page-demos.js    Local-only internal-page interactions
   js/insight-tree.js  Home page Insight Tree animation (port of the app's canvas and Study mode; one scroll-driven tree/3D view)
   js/grounding-demo.js  Home Library card: Library cards scrolling in a loop that follows page scroll
@@ -59,7 +58,7 @@ their destination.
 
 - Add a real email signup service before restoring any waitlist form or promise to email visitors.
 - Write the first blog posts.
-- Keep the model details on `privacy.html#model` in step with the app's model. As of 2026-10-02 the
+- Keep the FAQ's model answer in step with the app's model. As of 2026-10-02 the
   main build uses the Gemma 4 E4B LiteRT Community package (not fine-tuned) on LiteRT-LM.
 
 ## Source docs
