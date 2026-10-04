@@ -1846,6 +1846,18 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .gf-pick { fill: var(--light-green); }
 .gf-t { font-size: 15px; fill: var(--paragraph); }
 .gf-t--accent { fill: var(--light-green); font-weight: 600; }
+/* The unit-sphere figure in Midpoint's Technical Details. */
+.gs-arc { fill: none; stroke: var(--paragraph); stroke-width: 1; opacity: 0.35; }
+.gs-chord { fill: none; stroke: rgb(74, 50, 28); stroke-width: 1; opacity: 0.35; }
+.gs-s { fill: var(--canvas-secondary); stroke: var(--heading); stroke-width: 1.5; }
+.gs-leader { fill: none; stroke: var(--paragraph); stroke-width: 1; stroke-dasharray: 2 3; }
+.gs-theta { fill: none; stroke: var(--light-green); stroke-width: 1.5; }
+.gs-math { font-family: var(--serif); font-style: italic; font-size: 16px; }
+.gs-small { font-family: var(--sans); font-style: normal; font-size: 12px; }
+.gs-cap { margin-top: 10px; font-size: 13px; line-height: 1.5; color: var(--paragraph); text-align: center; }
+.guide-tech__list--steps li { align-items: flex-start; }
+.guide-tech__list--steps b { font-weight: 700; color: var(--heading); }
+.guide-tech__list--steps .guide-tech__num { width: 24px; }
 [data-mid-fig] .gf-grow { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
 [data-mid-fig] .gf-pop { transform-box: fill-box; transform-origin: center; transform: scale(0); opacity: 0; }
 [data-mid-fig] .gf-cand.gf-pop { opacity: 0; }

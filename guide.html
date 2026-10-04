@@ -7,7 +7,7 @@
 <meta name="description" content="The Angrove User Guide: how to ask a question, save Insights, read the Insight Tree, find a Midpoint, study a concept in 3D, and keep your data private.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="css/site.css?v=20261004-mid-vectors5">
+<link rel="stylesheet" href="css/site.css?v=20261004-sphere">
 <link rel="stylesheet" href="css/app-windows.css">
 </head>
 <body>
@@ -246,40 +246,60 @@
               <div class="guide-tech">
           <button type="button" class="guide-tech__toggle" aria-expanded="false" aria-controls="tech-midpoint"><span data-tech-label>Show Technical Details</span><svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
           <div class="guide-tech__panel" id="tech-midpoint" inert><div class="guide-tech__inner">
-          <div><h3 class="guide-label">A weighted center of meaning</h3><p class="guide-text">Midpoint works in the same embedding space as the tree. Each idea you select is an arrow (its 384-number embedding), scaled to length 1 so a longer definition can’t outweigh a shorter one. Your percentages become weights, and Angrove adds the arrows together in those proportions, then rescales the result to length 1:</p>
-            <p class="guide-formula">center = normalize( w₁·â₁ + w₂·â₂ + … + wₙ·âₙ )</p>
-            <p class="guide-text">At 50/50 between two ideas, the center points exactly between them; at 80/20, it leans toward the first. That direction is the region of meaning you’re asking about.</p></div>
+          <div><h3 class="guide-label">The computation</h3><p class="guide-text">How It Works, above, draws the idea in two dimensions. This is what the app actually computes when you tap Place.</p>
+            <ul class="guide-tech__list guide-tech__list--steps">
+              <li><span class="guide-tech__num">1</span><span><b>Embed.</b> Each source’s title and definition are joined, split into WordPiece tokens (up to 128), and run through all-MiniLM-L6-v2, a six-layer transformer running on device through Core ML. Its token outputs are mean-pooled into one 384-dimensional vector <i>v</i>. An Insight’s stored embedding is reused when it came from the same model version.</span></li>
+              <li><span class="guide-tech__num">2</span><span><b>Normalize.</b> <i>â</i>ᵢ = <i>v</i>ᵢ / ‖<i>v</i>ᵢ‖, so every source lies on the unit sphere and only its direction counts.</span></li>
+              <li><span class="guide-tech__num">3</span><span><b>Weight.</b> Your percentages become <i>w</i>ᵢ = <i>p</i>ᵢ / Σ<i>p</i>, with negatives clipped to zero, across two to eight sources.</span></li>
+              <li><span class="guide-tech__num">4</span><span><b>Center.</b> <i>s</i> = Σ <i>w</i>ᵢ<i>â</i>ᵢ, then <i>ĉ</i> = <i>s</i> / ‖<i>s</i>‖.</span></li>
+              <li><span class="guide-tech__num">5</span><span><b>Generate.</b> Gemma 4 E4B, on device, receives each source’s title, definition, and weight, and returns five candidate Insights as JSON.</span></li>
+              <li><span class="guide-tech__num">6</span><span><b>Select.</b> Each candidate is embedded the same way, giving <i>ê</i>ⱼ, and Angrove keeps the one that minimizes <i>d</i>ⱼ = 1 − <i>ĉ</i> · <i>ê</i>ⱼ. If any embedding fails, it falls back to the model’s first candidate.</span></li>
+            </ul>
+            <p class="guide-formula"><i>ĉ</i> = Σ <i>w</i>ᵢ<i>â</i>ᵢ / ‖Σ <i>w</i>ᵢ<i>â</i>ᵢ‖ &nbsp;&nbsp;&nbsp; <i>j</i>* = argmin<sub>j</sub> (1 − <i>ĉ</i> · <i>ê</i>ⱼ)</p></div>
           <figure class="guide-fig" data-mid-fig>
-            <svg viewBox="60 28 510 210" role="img" aria-label="Insight A at 70% and Insight B at 30%, the weighted center between them as an unknown concept, and five candidate Insights, with the one nearest the unknown concept placed as the new Insight.">
+            <svg viewBox="40 30 460 290" role="img" aria-label="A slice of the unit hypersphere. Two unit vectors a-hat-1 at weight 0.7 and a-hat-2 at weight 0.3; their weighted sum s lies inside the sphere on the chord between them, with length about 0.89; normalizing s pushes it out to c-hat on the sphere. Five candidate embeddings e-hat lie on the sphere, and the one at the smallest angle theta from c-hat, the smallest cosine distance, is chosen.">
               <defs>
-                <linearGradient id="gf-ga" gradientUnits="userSpaceOnUse" x1="80" y1="220" x2="430" y2="180"><stop offset="0" stop-color="rgb(74, 50, 28)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="0.5" stop-color="rgb(74, 50, 28)" stop-opacity="0.6"/><stop offset="0.78" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="1" stop-color="rgb(74, 50, 28)" stop-opacity="0"/></linearGradient>
-                <linearGradient id="gf-gb" gradientUnits="userSpaceOnUse" x1="80" y1="220" x2="250" y2="50"><stop offset="0" stop-color="rgb(74, 50, 28)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="0.5" stop-color="rgb(74, 50, 28)" stop-opacity="0.6"/><stop offset="0.78" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="1" stop-color="rgb(74, 50, 28)" stop-opacity="0"/></linearGradient>
-                <linearGradient id="gf-gc" gradientUnits="userSpaceOnUse" x1="80" y1="220" x2="380" y2="122"><stop offset="0" stop-color="rgb(134, 128, 62)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(134, 128, 62)" stop-opacity="0.40"/><stop offset="0.5" stop-color="rgb(134, 128, 62)" stop-opacity="1"/><stop offset="0.78" stop-color="rgb(134, 128, 62)" stop-opacity="0.40"/><stop offset="1" stop-color="rgb(134, 128, 62)" stop-opacity="0"/></linearGradient>
-                <mask id="gf-cmask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="260"><path d="M80 220 L380 122" pathLength="1" class="gf-grow" style="--d:2500ms;--dur:700ms" stroke="#fff" stroke-width="8" fill="none"/></mask>
+                <linearGradient id="gs-g1" gradientUnits="userSpaceOnUse" x1="70.0" y1="300.0" x2="316.2" y2="256.6"><stop offset="0" stop-color="rgb(74, 50, 28)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="0.5" stop-color="rgb(74, 50, 28)" stop-opacity="0.6"/><stop offset="0.78" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="1" stop-color="rgb(74, 50, 28)" stop-opacity="0"/></linearGradient>
+                <linearGradient id="gs-g2" gradientUnits="userSpaceOnUse" x1="70.0" y1="300.0" x2="155.5" y2="65.1"><stop offset="0" stop-color="rgb(74, 50, 28)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="0.5" stop-color="rgb(74, 50, 28)" stop-opacity="0.6"/><stop offset="0.78" stop-color="rgb(74, 50, 28)" stop-opacity="0.24"/><stop offset="1" stop-color="rgb(74, 50, 28)" stop-opacity="0"/></linearGradient>
+                <linearGradient id="gs-gc" gradientUnits="userSpaceOnUse" x1="70.0" y1="300.0" x2="292.8" y2="186.5"><stop offset="0" stop-color="rgb(134, 128, 62)" stop-opacity="0"/><stop offset="0.22" stop-color="rgb(134, 128, 62)" stop-opacity="0.40"/><stop offset="0.5" stop-color="rgb(134, 128, 62)" stop-opacity="1"/><stop offset="0.78" stop-color="rgb(134, 128, 62)" stop-opacity="0.40"/><stop offset="1" stop-color="rgb(134, 128, 62)" stop-opacity="0"/></linearGradient>
+                <mask id="gs-cmask" maskUnits="userSpaceOnUse" x="0" y="0" width="520" height="340"><path d="M70.0 300.0 L292.8 186.5" pathLength="1" class="gf-grow" style="--d:3100ms;--dur:700ms" stroke="#fff" stroke-width="8" fill="none"/></mask>
               </defs>
-              <circle cx="80" cy="220" r="4" class="gf-dot gf-pop" style="--d:0ms"/>
-              <path d="M80 220 L430 180" pathLength="1" stroke="url(#gf-ga)" class="gf-vec gf-grow" style="--d:650ms"/>
-              <circle cx="430" cy="180" r="5" class="gf-src gf-pop" style="--d:200ms"/><text x="440" y="185" class="gf-t gf-fade" style="--d:350ms">Insight A · 70%</text>
-              <path d="M80 220 L250 50" pathLength="1" stroke="url(#gf-gb)" class="gf-vec gf-grow" style="--d:1550ms"/>
-              <circle cx="250" cy="50" r="5" class="gf-src gf-pop" style="--d:1100ms"/><text x="262" y="54" class="gf-t gf-fade" style="--d:1250ms">Insight B · 30%</text>
-              <path d="M80 220 L380 122" stroke="url(#gf-gc)" class="gf-center" mask="url(#gf-cmask)"/>
-              <circle cx="380" cy="122" r="3.5" class="gf-tip gf-pop" style="--d:3100ms"/>
-              <text x="238" y="190" class="gf-t gf-t--accent gf-fade" style="--d:3150ms">center</text>
-              <text x="330" y="152" class="gf-t gf-t--accent gf-fade" style="--d:3250ms">Unknown Concept</text>
+              <path d="M319.8 308.7 A250 250 0 0 0 61.3 50.2" pathLength="1" class="gs-arc gf-grow" style="--d:0ms;--dur:900ms"/>
+              <text x="327.8" y="311.0" class="gf-t gs-small gf-fade" style="--d:500ms">‖x‖ = 1</text>
+              <circle cx="70" cy="300" r="3.5" class="gf-dot gf-pop" style="--d:100ms"/>
+              <text x="64" y="304" text-anchor="end" class="gf-t gs-math gf-fade" style="--d:200ms">0</text>
+              <path d="M70.0 300.0 L316.2 256.6" pathLength="1" stroke="url(#gs-g1)" class="gf-vec gf-grow" style="--d:900ms"/>
+              <circle cx="316.2" cy="256.6" r="5" class="gf-src gf-pop" style="--d:700ms"/>
+              <text x="328.2" y="261.6" class="gf-t gs-math gf-fade" style="--d:850ms">â₁</text><text x="328.2" y="277.6" class="gf-t gs-small gf-fade" style="--d:950ms">w₁ = 0.7</text>
+              <path d="M70.0 300.0 L155.5 65.1" pathLength="1" stroke="url(#gs-g2)" class="gf-vec gf-grow" style="--d:1300ms"/>
+              <circle cx="155.5" cy="65.1" r="5" class="gf-src gf-pop" style="--d:1100ms"/>
+              <text x="143.5" y="69.1" text-anchor="end" class="gf-t gs-math gf-fade" style="--d:1250ms">â₂</text><text x="143.5" y="85.1" text-anchor="end" class="gf-t gs-small gf-fade" style="--d:1350ms">w₂ = 0.3</text>
+              <path d="M316.2 256.6 L155.5 65.1" pathLength="1" class="gs-chord gf-grow" style="--d:2000ms;--dur:600ms"/>
+              <circle cx="268.0" cy="199.1" r="4" class="gs-s gf-pop" style="--d:2500ms"/>
+              <path d="M210 170 L262.0 195.1" class="gs-leader gf-fade" style="--d:2600ms"/>
+              <text x="206" y="168" text-anchor="end" class="gf-t gs-math gf-fade" style="--d:2600ms">s = Σ wᵢâᵢ</text><text x="206" y="184" text-anchor="end" class="gf-t gs-small gf-fade" style="--d:2700ms">‖s‖ ≈ 0.89</text>
+              <path d="M70.0 300.0 L292.8 186.5" stroke="url(#gs-gc)" class="gf-center" mask="url(#gs-cmask)"/>
+              <circle cx="292.8" cy="186.5" r="4" class="gf-tip gf-pop" style="--d:3750ms"/>
+              <text x="309.0" y="185.3" class="gf-t gf-t--accent gs-math gf-fade" style="--d:3850ms">ĉ = s / ‖s‖</text>
               <g class="gf-others">
-                <circle cx="330" cy="90" r="4" class="gf-cand gf-pop" style="--d:3600ms"/>
-                <circle cx="300" cy="170" r="4" class="gf-cand gf-pop" style="--d:3780ms"/>
-                <circle cx="410" cy="130" r="4" class="gf-cand gf-pop" style="--d:4140ms"/>
-                <circle cx="355" cy="70" r="4" class="gf-cand gf-pop" style="--d:4320ms"/>
-                <text x="374" y="70" class="gf-t gf-fade" style="--d:4400ms">Candidate Insights</text>
+                <circle cx="301.8" cy="206.3" r="4.5" class="gf-cand gf-pop" style="--d:4300ms"/>
+                <circle cx="264.3" cy="142.7" r="4.5" class="gf-cand gf-pop" style="--d:4600ms"/>
+                <circle cx="240.5" cy="117.2" r="4.5" class="gf-cand gf-pop" style="--d:4750ms"/>
+                <circle cx="209.8" cy="92.7" r="4.5" class="gf-cand gf-pop" style="--d:4900ms"/>
+                <text x="203.0" y="69.6" class="gf-t gs-math gf-fade" style="--d:4900ms">êⱼ</text><text x="219.0" y="69.6" class="gf-t gs-small gf-fade" style="--d:4900ms">j = 1…5</text>
               </g>
-              <circle cx="372" cy="110" r="4" class="gf-cand gf-pop" style="--d:3960ms"/>
-              <circle cx="372" cy="110" r="7" class="gf-pick gf-pop" style="--d:4900ms"/>
-              <text x="386" y="102" class="gf-t gf-fade" style="--d:5050ms">New Insight</text>
+              <circle cx="282.0" cy="167.5" r="4.5" class="gf-cand gf-pop" style="--d:4450ms"/>
+              <path d="M239.3 213.8 A190 190 0 0 0 231.1 199.3" pathLength="1" class="gs-theta gf-grow" style="--d:5300ms;--dur:500ms"/>
+              <text x="227.4" y="211.4" class="gf-t gs-math gf-t--accent gf-fade" text-anchor="end" style="--d:5400ms">θ</text>
+              <circle cx="282.0" cy="167.5" r="6.5" class="gf-pick gf-pop" style="--d:5600ms"/>
+              <text x="300" y="150" class="gf-t gs-math gf-fade" style="--d:5750ms">argmin dⱼ = 1 − ĉ·êⱼ</text>
             </svg>
+            <figcaption class="gs-cap">A two-dimensional slice of the 384-dimensional unit sphere, drawn to scale for w = (0.7, 0.3).</figcaption>
           </figure>
-          <div><h3 class="guide-label">Writing, then choosing</h3><p class="guide-text">Numbers alone can’t be read, so the on-device model writes five candidate Insights that try to put the shared idea into words, guided by each source and its weight. Angrove embeds all five and keeps the one whose arrow is closest to the center by cosine distance. The model proposes; the math decides. If an embedding can’t be made, Angrove falls back to the model’s first candidate.</p></div>
-          <div><h3 class="guide-label">Why the result can surprise you</h3><p class="guide-text">A midpoint is the center of the ideas’ meanings, not a summary of their words. Two ideas that sit far apart can meet in a concept neither one names, which is often where the interesting connection is.</p></div>
+          <div><h3 class="guide-label">Why ‖s‖ is less than 1</h3><p class="guide-text">A weighted sum of unit vectors lands inside the sphere, on the chord between them. Its length measures how much the sources agree: identical sources give ‖<i>s</i>‖ = 1, and two sources at angle φ, weighted 50/50, give ‖<i>s</i>‖ = cos(φ/2). Normalizing throws that length away and keeps only the direction.</p></div>
+          <div><h3 class="guide-label">Not quite linear in the weights</h3><p class="guide-text">Normalizing a weighted sum (nlerp) is not the same as moving along the arc in proportion to the weights (slerp). In the figure, 30% of the way from <i>â</i>₁ to <i>â</i>₂ lands at 27.0° rather than 28°. The two agree exactly at 50/50, and the gap grows as the sources move apart.</p></div>
+          <div><h3 class="guide-label">Cosine is a dot product here</h3><p class="guide-text">Because <i>ĉ</i> and every <i>ê</i>ⱼ have length 1, cos θ = <i>ĉ</i> · <i>ê</i>ⱼ, so ranking by cosine distance is ranking by angle. No single one of the 384 dimensions means anything on its own; only the angles between vectors do.</p></div>
+          <div><h3 class="guide-label">Why the model writes first</h3><p class="guide-text"><i>ĉ</i> is a direction, not text, and there is no decoder from MiniLM’s space back into language. So Angrove asks the language model to propose wording and uses the embedding space to judge which proposal lands closest.</p></div>
         </div></div>
         </div>
       </article>
