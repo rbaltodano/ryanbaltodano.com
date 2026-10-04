@@ -119,3 +119,39 @@
     });
   }
 })();
+
+// FAQ: each <details> opens like the Guide's Technical Details. The answer's height animates on
+// the mobile menu's timing and curve (0.6s, --ease-menu) while its text fades and slides in.
+(function () {
+  var items = document.querySelectorAll('details.faq-item');
+  if (!items.length) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var EASE = 'cubic-bezier(0.55, 0, 0.17, 1)';
+  Array.prototype.forEach.call(items, function (item) {
+    var summary = item.querySelector('summary');
+    var answer = item.querySelector('.faq-item__a');
+    var anim = null;
+    if (item.open) item.classList.add('is-open');
+    function run(from, to, done) {
+      if (anim) anim.cancel();
+      anim = answer.animate([{ height: from + 'px' }, { height: to + 'px' }], { duration: reduce ? 0 : 600, easing: EASE });
+      anim.onfinish = function () { anim = null; if (done) done(); };
+    }
+    summary.addEventListener('click', function (e) {
+      e.preventDefault();
+      var start = answer.getBoundingClientRect().height;
+      if (!item.classList.contains('is-open')) {
+        item.open = true;
+        item.classList.add('is-open');
+        run(anim ? start : 0, answer.scrollHeight);
+      } else {
+        item.classList.remove('is-open');
+        run(start, 0, function () { item.open = false; });
+      }
+    });
+    // Opened some other way (find in page, a link): keep the class in step.
+    item.addEventListener('toggle', function () {
+      if (item.open && !anim) item.classList.add('is-open');
+    });
+  });
+})();
