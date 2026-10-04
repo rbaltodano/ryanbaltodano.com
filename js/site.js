@@ -87,7 +87,7 @@
   // ---------- Headline reveal ----------
   // Each word of a headline resolves from a blur, in order, the first time it comes into view.
   if (!reduceMotion && 'IntersectionObserver' in window) {
-    var headlines = document.querySelectorAll('h1.display, h2.display, .row__copy h2, .cta__copy h2');
+    var headlines = document.querySelectorAll('h1.display, h2.display, .row__copy h2, .cta__copy h2, .why__quote blockquote p');
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
