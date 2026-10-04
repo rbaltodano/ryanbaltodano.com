@@ -527,6 +527,14 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 /* Why I Made This: a pull quote from the note, in place of an app picture. */
 .why__quote { margin: 0; display: flex; flex-direction: column; gap: 20px; }
 .why__mark { height: 0.5em; margin-bottom: 8px; font-family: var(--serif); font-size: 120px; line-height: 1; color: var(--dark-green-text); opacity: 0.55; }
+/* The Insight entrance (js/site.js): opacity, a 24px rise, and an 8px blur on springRelaxed. */
+.why__quote.will-enter { opacity: 0; filter: blur(8px); transform: translateY(24px); }
+.why__quote.will-enter.is-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+  transition: opacity 0.45s ease-out, filter 0.55s ease-out, transform 0.8s cubic-bezier(0.25, 1.15, 0.45, 1);
+}
 .why__quote blockquote { margin: 0; }
 .why__quote blockquote p { font-family: var(--serif); font-weight: 400; font-size: 38px; line-height: 1.35; letter-spacing: -0.02em; color: var(--cream); }
 .why__quote em { color: var(--dark-green-text); }

@@ -1,6 +1,7 @@
 // Dot-grid background for [data-dot-field] sections: the app's AnimatedDotGridBackground (the same
 // drifting brightness the Insight Tree uses), plus a soft glow that follows the pointer.
-// data-dot-color sets the dot color as "r, g, b".
+// data-dot-color sets the dot color as "r, g, b". A "dotfield:ripple" event on the section, with
+// detail { x, y, strength } in client coordinates, sends the app's ripple out across the dots.
 (function () {
   var fields = document.querySelectorAll('[data-dot-field]');
   if (!fields.length) return;
@@ -31,6 +32,15 @@
     var cols = 0, rows = 0, ox = 0, oy = 0;
     // Each dot keeps the brightest glow the pointer gave it, fading slowly, so the cursor leaves a trail.
     var trail = new Float32Array(0);
+    // Ripples, as in the Insight Tree: a bright ring that expands and fades.
+    var ripples = [];
+    root.addEventListener('dotfield:ripple', function (e) {
+      if (reduceMotion) return;
+      var d = e.detail || {}, rect = root.getBoundingClientRect(), strength = d.strength || 1;
+      ripples.push({ x: d.x - rect.left, y: d.y - rect.top, start: performance.now() / 1000, strength: strength,
+        duration: 2.4 * (0.5 + 0.9 * strength) });
+      if (visible) start();
+    });
     // The glow eases toward the pointer and fades in and out with it.
     var hover = { x: 0, y: 0, tx: 0, ty: 0, on: false, amount: 0 };
 
@@ -52,6 +62,18 @@
       ctx.clearRect(0, 0, W, H);
       var glow = hover.amount > 0.01;
       var fade = Math.exp(-dt * 3 / TRAIL_FADE);
+      var secs = now / 1000;
+      ripples = ripples.filter(function (rp) { return secs - rp.start < rp.duration; });
+      var waves = ripples.map(function (rp) {
+        var progress = (secs - rp.start) / rp.duration;
+        var exponent = 4 + Math.max(0, rp.strength - 1) * 3;
+        return {
+          x: rp.x, y: rp.y,
+          radius: 400 * rp.strength * (1 - Math.pow(1 - progress, exponent)),
+          width: 95 * (0.6 + 0.4 * rp.strength),
+          gain: (1 - Math.pow(progress, 2.2)) * 0.25 * rp.strength
+        };
+      });
       for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {
           var x = ox + i * SPACING, y = oy + j * SPACING, t = i * rows + j;
@@ -61,7 +83,16 @@
             if (d2 < 40000) lit = Math.max(lit, 0.5 * hover.amount * Math.exp(-d2 / 6000));
           }
           trail[t] = lit < 0.004 ? 0 : lit;
-          var o = blobOpacity(x, y, time) * 1.6 + lit;
+          var boost = 0;
+          for (var w = 0; w < waves.length; w++) {
+            var wv = waves[w];
+            var front = Math.hypot(x - wv.x, y - wv.y) - wv.radius;
+            if (front > -wv.width && front < 8) {
+              var bump = Math.cos(Math.max(-1, front / wv.width) * Math.PI / 2);
+              boost += bump * bump * wv.gain;
+            }
+          }
+          var o = (blobOpacity(x, y, time) + boost) * 1.6 + lit;
           if (o < 0.012) continue;
           ctx.fillStyle = 'rgba(' + color + ',' + Math.min(o, 0.7).toFixed(3) + ')';
           ctx.fillRect(x - 0.9, y - 0.9, 1.8, 1.8);
