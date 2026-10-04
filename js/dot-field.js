@@ -7,14 +7,17 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var SPACING = 16;
 
-  // AnimatedDotGridBackground.blobOpacity, as in js/insight-tree.js.
+  // AnimatedDotGridBackground.blobOpacity (js/insight-tree.js), stretched out and thresholded so
+  // only a few, widely spaced patches light up at a time.
+  var TRAIL_FADE = 5;     // seconds for a dot the pointer touched to fade most of the way out
   function blobOpacity(wx, wy, time) {
-    var x = wx * 0.022, y = wy * 0.022;
+    var x = wx * 0.011, y = wy * 0.011;
     var w1 = Math.sin(x * 1.1 + time * 0.22) * Math.cos(y * 0.95 + time * 0.17);
     var w2 = Math.sin(x * 0.65 - y * 0.75 + time * 0.31) * 0.55;
     var w3 = Math.cos(x * 1.4 + y * 1.05 - time * 0.19) * 0.38;
     var n = ((w1 + w2 + w3) / 1.93 + 1) / 2;
-    return 0.01 + Math.pow(n, 4) * 0.28;
+    var peak = Math.max(0, (n - 0.62) / 0.38);
+    return 0.01 + Math.pow(peak, 2.2) * 0.3;
   }
 
   Array.prototype.forEach.call(fields, function (root) {
@@ -25,6 +28,9 @@
     root.insertBefore(canvas, root.firstChild);
     var ctx = canvas.getContext('2d');
     var W = 0, H = 0, DPR = 1, running = false, visible = false;
+    var cols = 0, rows = 0, ox = 0, oy = 0;
+    // Each dot keeps the brightest glow the pointer gave it, fading slowly, so the cursor leaves a trail.
+    var trail = new Float32Array(0);
     // The glow eases toward the pointer and fades in and out with it.
     var hover = { x: 0, y: 0, tx: 0, ty: 0, on: false, amount: 0 };
 
@@ -34,24 +40,28 @@
       DPR = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(W * DPR);
       canvas.height = Math.round(H * DPR);
-      if (!running) draw(performance.now());
+      cols = Math.ceil(W / SPACING); rows = Math.ceil(H / SPACING);
+      ox = (W - (cols - 1) * SPACING) / 2; oy = (H - (rows - 1) * SPACING) / 2;
+      trail = new Float32Array(cols * rows);
+      if (!running) draw(performance.now(), 0);
     }
 
-    function draw(now) {
+    function draw(now, dt) {
       var time = reduceMotion ? 0 : now / 1000;
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      var cols = Math.ceil(W / SPACING), rows = Math.ceil(H / SPACING);
-      var ox = (W - (cols - 1) * SPACING) / 2, oy = (H - (rows - 1) * SPACING) / 2;
       var glow = hover.amount > 0.01;
+      var fade = Math.exp(-dt * 3 / TRAIL_FADE);
       for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {
-          var x = ox + i * SPACING, y = oy + j * SPACING;
-          var o = blobOpacity(x, y, time) * 1.6;
+          var x = ox + i * SPACING, y = oy + j * SPACING, t = i * rows + j;
+          var lit = trail[t] * fade;
           if (glow) {
             var dx = x - hover.x, dy = y - hover.y, d2 = dx * dx + dy * dy;
-            if (d2 < 64000) o += 0.45 * hover.amount * Math.exp(-d2 / 11000);
+            if (d2 < 40000) lit = Math.max(lit, 0.5 * hover.amount * Math.exp(-d2 / 6000));
           }
+          trail[t] = lit < 0.004 ? 0 : lit;
+          var o = blobOpacity(x, y, time) * 1.6 + lit;
           if (o < 0.012) continue;
           ctx.fillStyle = 'rgba(' + color + ',' + Math.min(o, 0.7).toFixed(3) + ')';
           ctx.fillRect(x - 0.9, y - 0.9, 1.8, 1.8);
@@ -68,7 +78,7 @@
       hover.x += (hover.tx - hover.x) * k;
       hover.y += (hover.ty - hover.y) * k;
       hover.amount += ((hover.on ? 1 : 0) - hover.amount) * (1 - Math.exp(-dt * 6));
-      draw(now);
+      draw(now, dt);
       requestAnimationFrame(tick);
     }
     function start() {
