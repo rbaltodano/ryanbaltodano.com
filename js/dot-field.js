@@ -118,6 +118,11 @@
     root.addEventListener('pointerleave', function () {
       clearInterval(hover.timer); hover.timer = null;
     });
+    // A click or tap sends the same ripple out from that spot, as tapping the canvas does in the app.
+    root.addEventListener('pointerdown', function (e) {
+      if (e.target.closest && e.target.closest('a, button')) return;
+      root.dispatchEvent(new CustomEvent('dotfield:ripple', { detail: { x: e.clientX, y: e.clientY, strength: 1 } }));
+    });
 
     resize();
     if (window.ResizeObserver) new ResizeObserver(resize).observe(root);

@@ -25,7 +25,7 @@ site/
   css/site.css        All tokens and components
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal, FAQ accordions
-  js/dot-field.js     Dot-grid background for [data-dot-field] sections: idle shimmer plus a ripple from the pointer every 2 s
+  js/dot-field.js     Dot-grid background for [data-dot-field] sections: idle shimmer, a ripple from the pointer every 2 s, and a ripple on click/tap
   js/boot.js          Home startup: the app's growing leaf/dots, waits for first-screen images
   js/boot-assets.js   Streams first-screen image downloads once; feeds the loading percentage
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights

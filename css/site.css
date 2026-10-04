@@ -388,6 +388,8 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .hero__vine--wind img.hero__vine-paint { position: absolute; inset: 0 auto auto 0; width: 2400%; animation: vine-paint 4s steps(24) 1 both; }
 .is-booting .hero__vine--wind img, .waiting-vines .hero__vine--wind img { animation-play-state: paused !important; }
 @keyframes vine-paint { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+/* HomeVineWind: the left vine's entrance is held back 0.15 s so it follows the right one. */
+.hero__vine--left.hero__vine--wind img.hero__vine-paint { animation-delay: 0.15s; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero__vine--wind img { animation: none; transform: translateX(-95.8333333333%); }
