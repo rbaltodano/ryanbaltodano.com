@@ -615,8 +615,23 @@
       fade: 0, fadeFrom: 0, fadeTo: 0, fadeStart: 0,       // the unselected tree fading out
       t: new Spring(0.5, 0.2, 0.9),                        // interactiveSpring for Center / keys
       shown: new Spring(0, 0.36, 0.78),                    // springLively handle entrance
-      zk: guide ? new Spring(1, 0.58, 0.8) : null, span: null, base: 0, scripted: false
+      zk: guide ? new Spring(1, 0.58, 0.8) : null, span: null, base: 0, scripted: false,
+      // How It Works (Guide): the placed Midpoint's tree morphs into the vector diagram from the
+      // Technical Details. k is the eased morph; s0 starts the step-by-step timeline.
+      vec: { on: false, k: 0, kFrom: 0, kTo: 0, kStart: 0, s0: 0, revealed: false, rippled: false, cap: -1 }
     };
+    var vecCap = document.createElement('p');
+    vecCap.className = 'it-vec-cap';
+    vecCap.setAttribute('aria-live', 'polite');
+    if (guide) root.appendChild(vecCap);
+    mid.vecCap = vecCap;
+    function showVectors(on) {
+      var v = mid.vec, now = performance.now();
+      v.on = on; v.kFrom = v.k; v.kTo = on ? 1 : 0; v.kStart = now;
+      root.classList.toggle('is-vectors', on);   // phones give the diagram a taller card
+      if (on) { v.s0 = now; v.revealed = false; v.rippled = false; v.cap = -1; dock(null); }
+      sync();
+    }
 
     function setFade(to) { mid.fadeFrom = mid.fade; mid.fadeTo = to; mid.fadeStart = performance.now(); }
     function select(on) { A.el.classList.toggle('is-selected', on); B.el.classList.toggle('is-selected', on); }
@@ -830,7 +845,9 @@
       back: { icon: 'i-chevron-left', label: function () { return 'Back'; }, on: function () { if (mid.phase === 'active') exit(); } },
       center: { icon: 'i-lines-measurement-horizontal', label: function () { return 'Center'; }, on: function () { if (mid.phase === 'active') setT(0.5, true); } },
       place: { icon: 'i-arrow-down', label: function () { return 'Place'; }, on: place },
-      reset: { icon: 'i-arrow-counterclockwise', label: function () { return 'Reset'; }, on: resetAll }
+      reset: { icon: 'i-arrow-counterclockwise', label: function () { return 'Reset'; }, on: resetAll },
+      how: { icon: 'i-graph-2d', label: function () { return 'How It Works'; }, on: function () { if (mid.phase === 'done') showVectors(true); } },
+      tree: { icon: 'i-point-3-connected-trianglepath-dotted', label: function () { return 'Back to Tree'; }, on: function () { showVectors(false); } }
     };
     function makeDockButton(key) {
       var def = DOCK[key];
@@ -854,7 +871,7 @@
       if (mid.scripted) return ['select'];
       if (mid.phase === 'active') return ['back', 'center', 'place'];
       if (mid.phase === 'loading' || mid.phase === 'revealed') return ['status'];
-      if (mid.phase === 'done') return ['reset'];
+      if (mid.phase === 'done') return mid.vec.on ? ['tree'] : ['how', 'reset'];
       var keys = ['select'];
       if (picked.length >= 2) keys.push('midpoint');
       if (picked.length >= 1) keys.push('reset');
@@ -932,6 +949,8 @@
     // Reset: clears the selection and any placed Midpoint, and returns to the whole tree.
     function resetAll() {
       if (mid.placed) { mid.placed.el.remove(); mid.placed = null; }
+      mid.vec.on = false; mid.vec.k = mid.vec.kFrom = mid.vec.kTo = 0;
+      root.classList.remove('is-vectors');
       selecting = false; picked = [];
       dock(null);
       exit();
@@ -949,6 +968,7 @@
       // Tapping an Insight selects it while selecting, and otherwise opens its docked card.
       root.addEventListener('click', function (e) {
         if (state.step < 2 || mid.scripted) return;
+        if (mid.vec.on || mid.vec.k > 0.01) return;
         if (e.target.closest && e.target.closest('button, .mid-cards')) return;
         // The placed Midpoint opens its own card, and tapping elsewhere puts it away.
         if (mid.phase === 'done' && mid.placed) {
@@ -1204,6 +1224,150 @@
     elm.style.zIndex = z;
   }
 
+  // ---------- Midpoint: How It Works ----------
+  // The vector diagram from the Guide's Technical Details, drawn over the same canvas: each
+  // selected Insight is an arrow from the origin, the weights blend them into the center (an
+  // Unknown Concept), the model writes five candidates there, and the nearest becomes the Insight.
+  var VEC_T = { origin: 700, lineA: 900, lineB: 1200, center: 2000, tip: 2650, cands: 3300, pick: 4500, chip: 4600 };
+  var VEC_CAPS = [
+    [0, 'Each Insight becomes an arrow from the origin, pointing toward its meaning.'],
+    [VEC_T.center, 'Your percentages blend the arrows into one direction: an Unknown Concept, with no words yet.'],
+    [VEC_T.cands, 'The model writes five candidate Insights near that direction.'],
+    [VEC_T.pick, 'The candidate closest to the Unknown Concept becomes your new Insight.']
+  ];
+  var LABEL_FONT = getComputedStyle(root).fontFamily;
+  function backOut(x) { x = clamp(x, 0, 1) - 1; return 1 + 2.70158 * x * x * x + 1.70158 * x * x; }
+  function quintOut(x) { return 1 - Math.pow(1 - clamp(x, 0, 1), 5); }
+  function vecSeg(vg, t0, d) { return reduceMotion ? 1 : clamp((vg.el - t0) / d, 0, 1); }
+
+  function vecGeom(f) {
+    var ui = f.ui, A = mid.A, B = mid.B, now = performance.now();
+    var hA = A.el.offsetWidth * ui / 2, hB = B.el.offsetWidth * ui / 2, hh = A.el.offsetHeight * ui / 2;
+    var pad = 16;
+    // Narrow cards open the angle up so the diagram can use the height, and put each
+    // percentage above its Insight instead of beside it.
+    var narrow = W < 520;
+    var aA = (narrow ? 22 : 6) * Math.PI / 180, aB = (narrow ? 74 : 62) * Math.PI / 180;
+    var pctW = narrow ? 0 : 44 * ui, pctUp = narrow ? 20 * ui : 0, capH = narrow ? 84 : 60 * ui;
+    var O = { x: pad + Math.max(hB * 0.25, 24 * ui), y: H - pad - 40 * ui };
+    var L = Math.min((W - pad - hA - pctW - O.x) / Math.cos(aA), (O.y - pad - hh - pctUp - capH) / Math.sin(aB));
+    // Center the diagram across the canvas, and below the caption.
+    var left = Math.min(O.x - 20 * ui, O.x + Math.cos(aB) * L - hB);
+    var right = O.x + Math.cos(aA) * L + hA + pctW;
+    O.x += Math.max(0, (W - (right - left)) / 2 - left);
+    var top = O.y - Math.sin(aB) * L - hh - pctUp;
+    O.y -= Math.max(0, top - (pad + capH)) / 2;
+    var t = clamp(mid.t.v, 0, 1), wA = 1 - t, wB = t;
+    var ac = Math.atan2(wA * Math.sin(aA) + wB * Math.sin(aB), wA * Math.cos(aA) + wB * Math.cos(aB));
+    function P(r, a) { return { x: O.x + Math.cos(a) * r, y: O.y - Math.sin(a) * r }; }
+    var Lc = L * 0.6, T = P(Lc, ac);
+    var c = { x: Math.cos(ac), y: -Math.sin(ac) }, n = { x: -Math.sin(ac), y: -Math.cos(ac) };
+    var k = clamp(L / 240, 0.8, 1.5) * ui;   // candidate spread grows with the diagram
+    function at(dr, dp) { return { x: T.x + c.x * dr * k + n.x * dp * k, y: T.y + c.y * dr * k + n.y * dp * k }; }
+    var pick = at(16, 6);
+    var chipOff = 12 + hh / k;
+    return {
+      el: reduceMotion ? 1e9 : now - mid.vec.s0, ui: ui, hh: hh, hA: hA, hB: hB, narrow: narrow, O: O, L: L, ac: ac, T: T,
+      tipA: P(L, aA), tipB: P(L, aB), pctA: Math.round(wA * 100), pctB: 100 - Math.round(wA * 100),
+      pick: pick, chip: at(16, 6 + chipOff), label: at(0, -40 - 14 * ui / k),
+      cands: [at(-40, -14), at(46, -10), pick, at(-62, 8), at(78, 4)]
+    };
+  }
+
+  function vecLine(from, to, g, rgb, peak, width, dash) {
+    if (g <= 0.001) return;
+    var grad = ctx.createLinearGradient(from.x, from.y, to.x, to.y);
+    grad.addColorStop(0, 'rgba(' + rgb + ',0)');
+    grad.addColorStop(0.22, 'rgba(' + rgb + ',' + (peak * 0.4).toFixed(3) + ')');
+    grad.addColorStop(0.5, 'rgba(' + rgb + ',' + peak.toFixed(3) + ')');
+    grad.addColorStop(0.78, 'rgba(' + rgb + ',' + (peak * 0.4).toFixed(3) + ')');
+    grad.addColorStop(1, 'rgba(' + rgb + ',0)');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = width;
+    ctx.lineCap = dash ? 'butt' : 'round';
+    ctx.setLineDash(dash || []);
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(lerp(from.x, to.x, g), lerp(from.y, to.y, g));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  function vecDot(p, r, fill, stroke, alpha) {
+    if (alpha <= 0.001 || r <= 0.05) return;
+    ctx.globalAlpha = clamp(alpha, 0, 1);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.5; ctx.stroke(); }
+    ctx.globalAlpha = 1;
+  }
+  function vecText(text, p, color, weight, size, alpha, align) {
+    if (alpha <= 0.001) return;
+    ctx.globalAlpha = clamp(alpha, 0, 1);
+    ctx.fillStyle = color;
+    ctx.font = weight + ' ' + size.toFixed(1) + 'px ' + LABEL_FONT;
+    ctx.textAlign = align || 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, p.x, p.y);
+    ctx.globalAlpha = 1;
+  }
+
+  function drawVectors(vg, now) {
+    var v = mid.vec, ui = vg.ui;
+    // The diagram builds in after the morph and clears quickly on the way back to the tree.
+    var show = v.on ? 1 : clamp(v.k * 1.6 - 0.6, 0, 1);
+    var GREEN = '134, 128, 62', INK = 'rgb(74, 50, 28)', PARA = 'rgba(74, 50, 28, 0.75)';
+    var fs = 13 * Math.max(ui, 0.85);
+
+    var o = backOut(vecSeg(vg, VEC_T.origin, 450));
+    vecDot(vg.O, 4 * clamp(o, 0, 1.3), INK, null, show * clamp(o, 0, 1) * 0.8);
+    vecText('Origin', { x: vg.O.x, y: vg.O.y + 18 * ui }, PARA, 500, fs, show * vecSeg(vg, VEC_T.origin + 150, 400));
+
+    vecLine(vg.O, vg.tipA, quintOut(vecSeg(vg, VEC_T.lineA, 550)), BROWN, 0.55 * show, 1.5);
+    vecLine(vg.O, vg.tipB, quintOut(vecSeg(vg, VEC_T.lineB, 550)), BROWN, 0.55 * show, 1.5);
+    function pctAt(tip, half) {
+      return vg.narrow ? { x: tip.x, y: tip.y - vg.hh - 10 * ui } : { x: tip.x + half + 10 * ui, y: tip.y };
+    }
+    var pAlign = vg.narrow ? 'center' : 'left';
+    vecText(vg.pctA + '%', pctAt(vg.tipA, vg.hA), PARA, 600, fs, show * vecSeg(vg, VEC_T.lineA + 250, 400), pAlign);
+    vecText(vg.pctB + '%', pctAt(vg.tipB, vg.hB), PARA, 600, fs, show * vecSeg(vg, VEC_T.lineB + 250, 400), pAlign);
+
+    vecLine(vg.O, vg.T, quintOut(vecSeg(vg, VEC_T.center, 700)), GREEN, show, 2, [6, 5]);
+    var tp = backOut(vecSeg(vg, VEC_T.tip, 450));
+    vecDot(vg.T, 3.5 * clamp(tp, 0, 1.3), 'rgb(' + GREEN + ')', null, show * clamp(tp, 0, 1));
+    vecText('Unknown Concept', vg.label, 'rgb(' + GREEN + ')', 700, fs, show * vecSeg(vg, VEC_T.tip + 100, 400));
+
+    var chosen = vecSeg(vg, VEC_T.pick, 500);
+    vg.cands.forEach(function (p, i) {
+      var c = backOut(vecSeg(vg, VEC_T.cands + i * 150, 450));
+      var isPick = p === vg.pick;
+      var dim = isPick ? 1 : lerp(1, 0.35, chosen);
+      vecDot(p, 4 * clamp(c, 0, 1.3), null, PARA, show * clamp(c, 0, 1) * 0.75 * dim);
+      if (isPick) {
+        var pk = backOut(chosen);
+        vecDot(p, 5.5 * clamp(pk, 0, 1.3), 'rgb(' + GREEN + ')', null, show * clamp(pk, 0, 1));
+      }
+    });
+
+    if (v.on && vg.el >= VEC_T.chip && !v.revealed) v.revealed = true;
+    if (v.on && v.revealed && !v.rippled) {
+      v.rippled = true;
+      var cam = state.cam;
+      if (cam) ripple([(vg.pick.x - cam.ppx) / cam.zoom + cam.target[0], -(vg.pick.y - cam.ppy) / cam.zoom + cam.target[1], 0], 2, 0.5);
+    }
+
+    // The caption names each step as it plays.
+    var cap = 0;
+    VEC_CAPS.forEach(function (c, i) { if (vg.el >= c[0]) cap = i; });
+    if (v.on && cap !== v.cap) {
+      v.cap = cap;
+      var el = mid.vecCap;
+      el.classList.add('is-out');
+      setTimeout(function () { el.textContent = VEC_CAPS[cap][1]; el.classList.remove('is-out'); }, el.textContent ? 220 : 0);
+    }
+    mid.vecCap.style.opacity = (v.on ? clamp(v.k * 2 - 0.4, 0, 1) : show).toFixed(3);
+  }
+
   // ---------- Loop ----------
 
   var last = performance.now();
@@ -1230,6 +1394,8 @@
       // The app fades the unselected tree with easeInOut over 0.3 s.
       var fadeT = reduceMotion ? 1 : clamp((now - mid.fadeStart) / 300, 0, 1);
       mid.fade = lerp(mid.fadeFrom, mid.fadeTo, easeInOut(fadeT));
+      var vk = mid.vec, kT = reduceMotion ? 1 : clamp((now - vk.kStart) / 900, 0, 1);
+      vk.k = lerp(vk.kFrom, vk.kTo, easeInOut(kT));
     }
     var rest = mid ? 1 - mid.fade : 1;   // opacity of everything outside a Midpoint selection
 
@@ -1289,6 +1455,10 @@
     drawFloor(cam, f, 0, smoothstep(0.45, 1, p));
     drawRing(f, p, yaw, p);
 
+    var vg = mid && mid.placed && (mid.vec.on || mid.vec.k > 0.001) ? vecGeom(f) : null;
+    var ek = vg ? mid.vec.k : 0;
+    rest *= 1 - ek;
+
     var nodeProj = project(cam, [0, 0, 0]);
     var nv = clamp(node.vis.v, 0, 1);
     styleEl(node.el, nodeProj.x, nodeProj.y, f.ui * nodeProj.scale, nv * rest, (1 - nv) * 24, (1 - nv) * 8, 10);
@@ -1335,7 +1505,12 @@
         }
       }
       var keep = mid && (ins === mid.A || ins === mid.B) ? 1 : rest;
-      styleEl(ins.el, pr.x, pr.y, f.ui * pr.scale, v * dim * keep, (1 - v) * 24, (1 - v) * 8,
+      var cx = pr.x, cy = pr.y;
+      if (vg && (ins === mid.A || ins === mid.B)) {
+        var tip = ins === mid.A ? vg.tipA : vg.tipB;
+        cx = lerp(pr.x, tip.x, ek); cy = lerp(pr.y, tip.y, ek);
+      }
+      styleEl(ins.el, cx, cy, f.ui * pr.scale, v * dim * keep, (1 - v) * 24, (1 - v) * 8,
         behind > 0.5 ? 5 : 30 + Math.round(pr.scale * 5));
     });
 
@@ -1367,8 +1542,16 @@
         ctx.moveTo(pa.x, pa.y); ctx.lineTo(pp.x, pp.y);
         ctx.moveTo(pb.x, pb.y); ctx.lineTo(pp.x, pp.y);
         ctx.stroke();
-        styleEl(mid.placed.el, pp.x, pp.y, f.ui * pp.scale, pv, (1 - pv) * 24, (1 - pv) * 8, 40);
+        if (vg && mid.vec.revealed) {
+          // Revealed in the diagram: it pops in at the nearest candidate, and rides back on exit.
+          var pop = mid.vec.on ? backOut(vecSeg(vg, VEC_T.chip, 500)) : 1;
+          styleEl(mid.placed.el, lerp(pp.x, vg.chip.x, ek), lerp(pp.y, vg.chip.y, ek), f.ui * pp.scale * lerp(0.6, 1, clamp(pop, 0, 1.2)),
+            clamp(pop, 0, 1), 0, 0, 40);
+        } else {
+          styleEl(mid.placed.el, pp.x, pp.y, f.ui * pp.scale, pv * (1 - ek), (1 - pv) * 24, (1 - pv) * 8, 40);
+        }
       }
+      if (vg) drawVectors(vg, now);
     }
 
     requestAnimationFrame(tick);
