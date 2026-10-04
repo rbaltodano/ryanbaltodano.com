@@ -71,7 +71,7 @@
           x: rp.x, y: rp.y,
           radius: 400 * rp.strength * (1 - Math.pow(1 - progress, exponent)),
           width: 95 * (0.6 + 0.4 * rp.strength),
-          gain: (1 - Math.pow(progress, 2.2)) * 0.25 * rp.strength
+          gain: (1 - Math.pow(progress, 2.2)) * 0.11 * rp.strength
         };
       });
       for (var i = 0; i < cols; i++) {
