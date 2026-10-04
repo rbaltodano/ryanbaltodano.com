@@ -528,9 +528,9 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .why__quote { margin: 0; display: flex; flex-direction: column; gap: 20px; }
 .why__mark { height: 0.5em; margin-bottom: 8px; font-family: var(--serif); font-size: 120px; line-height: 1; color: var(--dark-green-text); opacity: 0.55; }
 /* The Insight entrance (js/site.js): opacity, a 24px rise, and an 8px blur on springRelaxed. */
-.why__quote.will-enter { opacity: 0; filter: blur(8px); transform: translateY(24px); }
-.why__quote.will-enter.is-in {
-  opacity: 1;
+.why__mark.will-enter { opacity: 0; filter: blur(8px); transform: translateY(24px); }
+.why__mark.will-enter.is-in {
+  opacity: 0.55;
   filter: blur(0);
   transform: none;
   transition: opacity 0.45s ease-out, filter 0.55s ease-out, transform 0.8s cubic-bezier(0.25, 1.15, 0.45, 1);

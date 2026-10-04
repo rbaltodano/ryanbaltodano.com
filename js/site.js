@@ -84,31 +84,31 @@
     wordmarkSeen.observe(wordmark);
   }
 
-  // ---------- Founder quote ----------
-  // The whole quote enters the way a new Insight does in the app (a relaxed spring up out of a
-  // blur), and the dot grid behind it ripples out from the quote at the same moment.
-  var quote = document.querySelector('.why__quote');
-  if (quote && !reduceMotion && 'IntersectionObserver' in window) {
-    quote.classList.add('will-enter');
-    var quoteSeen = new IntersectionObserver(function (entries) {
+  // ---------- Founder quote mark ----------
+  // The quotation mark enters the way a new Insight does in the app (a relaxed spring up out of a
+  // blur), and the dot grid behind it ripples out from the mark at the same moment.
+  var quoteMark = document.querySelector('.why__mark');
+  if (quoteMark && !reduceMotion && 'IntersectionObserver' in window) {
+    quoteMark.classList.add('will-enter');
+    var markSeen = new IntersectionObserver(function (entries) {
       if (!entries[0].isIntersecting) return;
-      quoteSeen.disconnect();
-      quote.classList.add('is-in');
-      var field = quote.closest('[data-dot-field]');
+      markSeen.disconnect();
+      quoteMark.classList.add('is-in');
+      var field = quoteMark.closest('[data-dot-field]');
       if (field) {
-        var q = quote.getBoundingClientRect();
+        var q = quoteMark.getBoundingClientRect();
         field.dispatchEvent(new CustomEvent('dotfield:ripple', {
           detail: { x: q.left + q.width / 2, y: q.top + q.height / 2, strength: 1.6 }
         }));
       }
     }, { threshold: 0.5, rootMargin: '0px 0px -8% 0px' });
-    quoteSeen.observe(quote);
+    markSeen.observe(quoteMark);
   }
 
   // ---------- Headline reveal ----------
   // Each word of a headline resolves from a blur, in order, the first time it comes into view.
   if (!reduceMotion && 'IntersectionObserver' in window) {
-    var headlines = document.querySelectorAll('h1.display, h2.display, .row__copy h2, .cta__copy h2');
+    var headlines = document.querySelectorAll('h1.display, h2.display, .row__copy h2, .cta__copy h2, .why__quote blockquote p');
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
