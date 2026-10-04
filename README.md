@@ -24,7 +24,8 @@ site/
   blog/index.html     Empty state until the first posts
   css/site.css        All tokens and components
   css/demos.css       Internal-page interaction styles
-  js/site.js          Mobile menu, smooth scrolling, headline reveal
+  js/site.js          Mobile menu, smooth scrolling, headline reveal, FAQ accordions
+  js/dot-field.js     Dot-grid background for [data-dot-field] sections: idle shimmer plus a cursor glow
   js/boot.js          Home startup: the app's growing leaf/dots, waits for first-screen images
   js/boot-assets.js   Streams first-screen image downloads once; feeds the loading percentage
   js/hero-phone.js    Home hero: live question, streamed answer, floating Insights

@@ -503,6 +503,9 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 /* ---------- Why I Made This ---------- */
 
 .section--dark { background: var(--app-canvas-secondary-dark); }
+/* js/dot-field.js draws the dot grid behind a section's content. */
+[data-dot-field] { position: relative; isolation: isolate; }
+.dot-field { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 .why {
   max-width: 760px;
   margin: 0 auto;
