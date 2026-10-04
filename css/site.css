@@ -1580,6 +1580,101 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .repo { text-decoration: none; transition: transform 0.2s; }
 .repo:hover { transform: translateY(-2px); }
 
+/* About: Principles. A ruled index, like a book's contents: the heading holds its place on the
+   left while the four tenets read down the right, each opened by a large italic numeral. */
+.tenets { display: flex; align-items: flex-start; gap: 84px; }
+.tenets__head { position: sticky; top: 120px; width: 420px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+.tenets__head > .eyebrow { margin-bottom: -8px; }
+.tenets__head .display { font-size: clamp(34px, 3.6vw, 48px); line-height: 1.3; }
+.tenets__head .para { max-width: 340px; }
+.tenets__list { flex: 1; min-width: 0; list-style: none; border-top: 1px solid rgba(34, 15, 1, 0.14); }
+.tenet {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  column-gap: 32px;
+  row-gap: 10px;
+  padding: 36px 0;
+  border-bottom: 1px solid rgba(34, 15, 1, 0.14);
+}
+.tenet__num { grid-row: span 2; font-family: var(--serif); font-style: italic; font-size: 56px; line-height: 1; color: var(--light-green); opacity: 0.85; }
+.tenet h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.3; letter-spacing: -0.02em; color: var(--heading); }
+.tenet p { max-width: 560px; font-size: 16px; line-height: 1.75; color: var(--paragraph); }
+
+/* About: who it's for. A dark inset panel; the four readers sit in quadrants divided by hairlines. */
+.kept {
+  display: flex;
+  gap: 72px;
+  padding: 72px;
+  border-radius: 32px;
+  background: var(--canvas-dark);
+  color: rgba(255, 250, 240, 0.75);
+}
+.kept__head { width: 400px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; font-size: 16px; line-height: 1.6; }
+.kept__head > .eyebrow { margin-bottom: -8px; }
+.kept__head .display { font-size: clamp(32px, 3.2vw, 44px); line-height: 1.3; color: var(--cream); }
+.kept__head .display em { color: var(--dark-green-text); }
+.kept__grid { flex: 1; min-width: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; }
+.kept__grid li { padding: 32px; display: flex; flex-direction: column; gap: 12px; font-size: 15px; line-height: 1.7; }
+.kept__grid li:nth-child(odd) { padding-left: 0; border-right: 1px solid rgba(255, 250, 240, 0.12); }
+.kept__grid li:nth-child(even) { padding-right: 0; }
+.kept__grid li:nth-child(-n+2) { padding-top: 0; border-bottom: 1px solid rgba(255, 250, 240, 0.12); }
+.kept__grid li:nth-child(n+3) { padding-bottom: 0; }
+.kept__grid h3 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 22px; line-height: 1.35; color: var(--cream); }
+
+/* About: the source. A repository listing: path, what it holds, its stack, and a way in. */
+.source-head { width: 647px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+.source-head .display { width: auto; font-size: clamp(34px, 3.6vw, 48px); line-height: 1.3; }
+.repos { list-style: none; border-radius: 24px; background: var(--canvas-secondary); border: 1px solid var(--border); overflow: hidden; }
+.repos li + li { border-top: 1px solid var(--border); }
+.repo-row {
+  display: grid;
+  grid-template-columns: 280px 1fr 160px 16px;
+  align-items: center;
+  gap: 32px;
+  padding: 28px 36px;
+  transition: background-color 0.2s ease;
+}
+.repo-row:hover { background: rgba(134, 128, 62, 0.06); }
+.repo-row__path { font: 500 14px ui-monospace, "SF Mono", Menlo, monospace; color: var(--paragraph-dim); overflow-wrap: anywhere; }
+.repo-row__path b { font-weight: 600; color: var(--light-green); }
+.repo-row__body { display: flex; flex-direction: column; gap: 4px; }
+.repo-row__name { font-weight: 700; font-size: 17px; line-height: 1.4; color: var(--heading); }
+.repo-row__desc { font-size: 14px; line-height: 1.65; color: var(--paragraph); }
+.repo-row__tag { justify-self: start; padding: 4px 12px; border-radius: 48px; background: var(--canvas); font-weight: 700; font-size: 12px; line-height: 1.5; letter-spacing: 0.04em; text-transform: uppercase; color: var(--light-green); white-space: nowrap; }
+.repo-row__arrow { width: 16px; height: 12px; background: var(--light-green); -webkit-mask: url(../assets/home/icon-arrow-right.svg) center / contain no-repeat; mask: url(../assets/home/icon-arrow-right.svg) center / contain no-repeat; transition: transform 0.2s; }
+.repo-row:hover .repo-row__arrow { transform: translateX(4px); }
+
+@media (max-width: 1280px) {
+  .tenets { gap: 56px; }
+  .tenets__head { width: 340px; }
+  .kept { flex-direction: column; gap: 48px; }
+  .kept__head { width: auto; max-width: 640px; }
+  .source-head { width: auto; flex: 1; }
+}
+@media (max-width: 1024px) {
+  .tenets { flex-direction: column; gap: 40px; }
+  .tenets__head { position: static; width: auto; max-width: 640px; }
+  .repo-row { grid-template-columns: 1fr auto 16px; row-gap: 8px; }
+  .repo-row__path { grid-column: 1 / -1; }
+  .repo-row__body { grid-column: 1; }
+}
+@media (max-width: 768px) {
+  .kept { padding: 48px 32px; }
+}
+@media (max-width: 560px) {
+  .tenet { grid-template-columns: 56px 1fr; column-gap: 16px; padding: 28px 0; }
+  .tenet__num { font-size: 36px; }
+  .tenet h3 { font-size: 24px; }
+  .kept { padding: 40px 24px; border-radius: 24px; }
+  .kept__grid { grid-template-columns: 1fr; }
+  .kept__grid li, .kept__grid li:nth-child(n) { padding: 24px 0; border-right: 0; border-bottom: 1px solid rgba(255, 250, 240, 0.12); }
+  .kept__grid li:first-child { padding-top: 0; }
+  .kept__grid li:last-child { padding-bottom: 0; border-bottom: 0; }
+  .repo-row { grid-template-columns: 1fr 16px; padding: 24px; }
+  .repo-row__tag { grid-column: 1; grid-row: 3; }
+  .repo-row__arrow { grid-column: 2; grid-row: 2; }
+}
+
 .fine { font-size: 13px; line-height: 1.6; color: var(--paragraph-dim); max-width: 460px; }
 
 .empty {
