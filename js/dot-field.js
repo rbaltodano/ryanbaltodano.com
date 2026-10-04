@@ -1,5 +1,6 @@
 // Dot-grid background for [data-dot-field] sections: the app's AnimatedDotGridBackground (the same
-// drifting brightness the Insight Tree uses), plus a soft glow that follows the pointer.
+// drifting brightness the Insight Tree uses). While the pointer is over a section it sends a ripple
+// out from the pointer every 2 seconds, the cadence of the app's hover pulse on an Insight.
 // data-dot-color sets the dot color as "r, g, b". A "dotfield:ripple" event on the section, with
 // detail { x, y, strength } in client coordinates, sends the app's ripple out across the dots.
 (function () {
@@ -10,7 +11,7 @@
 
   // AnimatedDotGridBackground.blobOpacity (js/insight-tree.js), stretched out and thresholded so
   // only a few, widely spaced patches light up at a time.
-  var TRAIL_FADE = 3.5;   // seconds for a dot the pointer touched to fade most of the way out
+  var HOVER_PULSE_MS = 2000;   // InsightTreeCanvasView's hover pulse: a ripple every 2 s
   function blobOpacity(wx, wy, time) {
     var x = wx * 0.011, y = wy * 0.011;
     var w1 = Math.sin(x * 1.1 + time * 0.22) * Math.cos(y * 0.95 + time * 0.17);
@@ -30,8 +31,6 @@
     var ctx = canvas.getContext('2d');
     var W = 0, H = 0, DPR = 1, running = false, visible = false;
     var cols = 0, rows = 0, ox = 0, oy = 0;
-    // Each dot keeps the brightest glow the pointer gave it, fading slowly, so the cursor leaves a trail.
-    var trail = new Float32Array(0);
     // Ripples, as in the Insight Tree: a bright ring that expands and fades.
     var ripples = [];
     root.addEventListener('dotfield:ripple', function (e) {
@@ -41,8 +40,8 @@
         duration: 2.4 * (0.5 + 0.9 * strength) });
       if (visible) start();
     });
-    // The glow eases toward the pointer and fades in and out with it.
-    var hover = { x: 0, y: 0, tx: 0, ty: 0, on: false, amount: 0 };
+    // The pointer's position inside the section, and the timer that pulses from it while it's there.
+    var hover = { x: 0, y: 0, timer: null };
 
     function resize() {
       var r = root.getBoundingClientRect();
@@ -52,16 +51,13 @@
       canvas.height = Math.round(H * DPR);
       cols = Math.ceil(W / SPACING); rows = Math.ceil(H / SPACING);
       ox = (W - (cols - 1) * SPACING) / 2; oy = (H - (rows - 1) * SPACING) / 2;
-      trail = new Float32Array(cols * rows);
-      if (!running) draw(performance.now(), 0);
+      if (!running) draw(performance.now());
     }
 
-    function draw(now, dt) {
+    function draw(now) {
       var time = reduceMotion ? 0 : now / 1000;
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      var glow = hover.amount > 0.01;
-      var fade = Math.exp(-dt * 3 / TRAIL_FADE);
       var secs = now / 1000;
       ripples = ripples.filter(function (rp) { return secs - rp.start < rp.duration; });
       var waves = ripples.map(function (rp) {
@@ -76,13 +72,7 @@
       });
       for (var i = 0; i < cols; i++) {
         for (var j = 0; j < rows; j++) {
-          var x = ox + i * SPACING, y = oy + j * SPACING, t = i * rows + j;
-          var lit = trail[t] * fade;
-          if (glow) {
-            var dx = x - hover.x, dy = y - hover.y, d2 = dx * dx + dy * dy;
-            if (d2 < 40000) lit = Math.max(lit, 0.16 * hover.amount * Math.exp(-d2 / 6000));
-          }
-          trail[t] = lit < 0.004 ? 0 : lit;
+          var x = ox + i * SPACING, y = oy + j * SPACING;
           var boost = 0;
           for (var w = 0; w < waves.length; w++) {
             var wv = waves[w];
@@ -92,7 +82,7 @@
               boost += bump * bump * wv.gain;
             }
           }
-          var o = (blobOpacity(x, y, time) + boost) * 1.6 + lit;
+          var o = (blobOpacity(x, y, time) + boost) * 1.6;
           if (o < 0.012) continue;
           ctx.fillStyle = 'rgba(' + color + ',' + Math.min(o, 0.7).toFixed(3) + ')';
           ctx.fillRect(x - 0.9, y - 0.9, 1.8, 1.8);
@@ -103,13 +93,7 @@
     var last = performance.now();
     function tick(now) {
       if (!visible) { running = false; return; }
-      var dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
-      var k = 1 - Math.exp(-dt * 14);
-      hover.x += (hover.tx - hover.x) * k;
-      hover.y += (hover.ty - hover.y) * k;
-      hover.amount += ((hover.on ? 1 : 0) - hover.amount) * (1 - Math.exp(-dt * 6));
-      draw(now, dt);
+      draw(now);
       requestAnimationFrame(tick);
     }
     function start() {
@@ -119,19 +103,20 @@
       requestAnimationFrame(tick);
     }
 
+    function pulse() {
+      var rect = root.getBoundingClientRect();
+      root.dispatchEvent(new CustomEvent('dotfield:ripple', {
+        detail: { x: rect.left + hover.x, y: rect.top + hover.y, strength: 1 }
+      }));
+    }
     root.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch') return;
       var r = root.getBoundingClientRect();
-      hover.tx = e.clientX - r.left; hover.ty = e.clientY - r.top;
-      if (!hover.on) { hover.x = hover.tx; hover.y = hover.ty; }
-      hover.on = true;
-      if (visible) start();
+      hover.x = e.clientX - r.left; hover.y = e.clientY - r.top;
+      if (!hover.timer) hover.timer = setInterval(pulse, HOVER_PULSE_MS);
     });
-    root.addEventListener('pointerleave', function () { hover.on = false; });
-    // A click or tap sends the same ripple out from that spot, as tapping the canvas does in the app.
-    root.addEventListener('pointerdown', function (e) {
-      if (e.target.closest && e.target.closest('a, button')) return;
-      root.dispatchEvent(new CustomEvent('dotfield:ripple', { detail: { x: e.clientX, y: e.clientY, strength: 1 } }));
+    root.addEventListener('pointerleave', function () {
+      clearInterval(hover.timer); hover.timer = null;
     });
 
     resize();
