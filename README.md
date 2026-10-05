@@ -20,7 +20,7 @@ site/
   model.html          Redirect to faq.html (the model question)
   privacy.html        Redirect to guide.html#privacy (the Privacy page was retired 2026-10-04)
   about.html          Founder note, the four principles, public repositories
-  case-study.html     Product/engineering case study: workflow, architecture, decisions and measured evidence
+  case-study.html     Case Studies: chronological product and engineering work
   waitlist.html       Launch status: development milestones (email signup is not open yet)
   blog/index.html     Empty state until the first posts
   css/site.css        All tokens and components
@@ -76,7 +76,7 @@ The guide’s privacy topic explains AES-256-GCM, Keychain keys, local backups a
 and that deliberate conversation exports remain readable JSON. Appearance preferences, public
 books/model assets, displayed content and Apple-managed backup protection are outside this claim.
 
-## Case study
+## Case Studies
 
 `case-study.html` is linked after About in every primary navbar and footer, and from the About
 essay. It uses the October 5, 2026 captures in `assets/app/case-study-2026-10-05/` and the existing Study clip; the full product walkthrough
@@ -85,8 +85,12 @@ independent acceptance, phone performance, user outcomes and release status. Sou
 aggregate evaluation evidence live in Angrove-iOS `Documentation/Case-Study.md` and
 `Documentation/Evaluation.md`. Keep the values aligned when new evidence is published.
 
-The seven current JPEG originals are preserved unchanged. The Case Study groups them into
+The seven current JPEG originals are preserved unchanged. The Case Studies page groups them into
 product, semantic-map documentation, and expanded source-detail galleries with full-size image
 links. The two technical diagrams are mobile browser captures of the website User Guide.
 The Nature of Evil conversation shows Corpus Grounded details and Summa Theologica links.
 Matching originals live in the iOS repo’s dated Screenshots directory.
+
+The page orders dated work oldest first: August–September model exploration, October 2
+evaluation, then the October product, architecture, and engineering work. The opening problem
+and closing next steps frame that chronology. The existing URL remains `case-study.html`.

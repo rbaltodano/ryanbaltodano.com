@@ -4,7 +4,8 @@
 .page-hero .case-links { justify-content: center; }
 .case-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 84px; align-items: start; }
 .case-index { position: sticky; top: 48px; display: flex; flex-direction: column; gap: 12px; font-size: 15px; line-height: 1.6; }
-.case-index .eyebrow { margin-bottom: 12px; }
+.case-index .eyebrow { margin-bottom: 0; }
+.case-order { font-size: 13px; color: var(--paragraph); margin-bottom: 12px; }
 .case-index a { width: fit-content; padding-block: 4px; border-bottom: 1px solid var(--border); }
 .case-index a:hover { color: var(--light-green); }
 .case-story { min-width: 0; max-width: 900px; }
@@ -52,7 +53,7 @@
 @media (max-width: 900px) {
   .case-layout { grid-template-columns: 1fr; gap: 40px; }
   .case-index { position: static; flex-direction: row; flex-wrap: wrap; gap: 12px 20px; }
-  .case-index .eyebrow { width: 100%; margin-bottom: 0; }
+  .case-index .eyebrow, .case-index .case-order { width: 100%; margin-bottom: 0; }
   .case-section { padding-bottom: 56px; margin-bottom: 56px; }
 }
 @media (max-width: 600px) {
