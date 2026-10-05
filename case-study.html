@@ -48,6 +48,7 @@
         <a href="#product">The product</a>
         <a href="#architecture">The architecture</a>
         <a href="#decisions">Engineering decisions</a>
+        <a href="#exploration">Models &amp; runtimes explored</a>
         <a href="#evaluation">Measured results</a>
         <a href="#next">What comes next</a>
       </nav>
@@ -103,8 +104,18 @@
           <div class="case-decision"><h3>Protect saved personal data.</h3><p><strong>Fully Encrypted saved personal data</strong> uses AES-256-GCM with Keychain-managed keys in the development implementation. A separate widget key limits access, and startup validates ciphertext before migrating plaintext. Source integration and physical-device lock and backup-restore checks remain release work. Deliberate conversation exports are readable JSON; displayed content and screenshots are outside this storage boundary. <a class="link-inline" href="guide.html#privacy">Read the coverage and recovery details.</a></p></div>
         </section>
 
+        <section class="case-section" id="exploration">
+          <p class="eyebrow">05 · Models &amp; runtimes explored</p>
+          <h2 class="display display--tight">A Working Model Is Only <em>the First Gate.</em></h2>
+          <p>Before the current E4B/LiteRT integration, I explored larger Gemma packages and a smaller Qwen model through isolated llama.cpp Metal probes on a base iPhone 17. Those experiments tested whether alternative packages could sustain a useful session, and whether a model swap would fix source errors.</p>
+          <div class="case-decision"><h3>Gemma 4 12B: generation passed, retention failed.</h3><p>A 4.37 GB IQ2_M GGUF generated short text at 512-token context after reducing prefill to 32-token chunks. A retained-session trial produced 48 tokens, then terminated with signal 9 during a requested 40-second hold, correlated with system memory pressure. The available system report did not identify the probe as a specific jetsam victim. Successful short generation had not established enough headroom for a durable app session.</p></div>
+          <div class="case-decision"><h3>Qwen3-4B: smaller and feasible, but citations still needed work.</h3><p>The roughly 2.33 GiB Q4_K_M package passed bounded multi-turn probes at 2K and 4K context and a 40-second resident hold. A research-only adapter then exercised it in the actual conversation UI. Fine-tuning uncovered corrupted PDF article boundaries; cleaning the data and reformatting question/answer pairs improved output form, but a citation test still fabricated source text. That reinforced the need to evaluate retrieval and passage use separately from voice and fluency.</p></div>
+          <aside class="case-note"><h3>Historical exploration, not a model leaderboard.</h3><p>The tested smaller model was Qwen3-4B. Qwen3.5 appeared in a later candidate proposal; it does not inherit these results. Context sizes, token caps, packages, and tasks differed, so these are exploratory observations rather than a matched blind benchmark. The 12B and Qwen research was shelved on September 25, 2026. No experiments were rerun for this case study.</p></aside>
+          <p>Current development remains on Gemma 4 E4B and LiteRT-LM. The lesson is to count working buffers, KV cache, session retention, and factual behavior—not just model size or an attractive answer. <a class="link-inline" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Documentation/Model-Exploration.md">Read the configurations, observations, and archived-record fingerprints.</a></p>
+        </section>
+
         <section class="case-section" id="evaluation">
-          <p class="eyebrow">05 · Measured results</p>
+          <p class="eyebrow">06 · Measured results</p>
           <h2 class="display display--tight">Measure Before <em>Choosing a Default.</em></h2>
           <p>I compared native thinking on and off through the app pipeline in four completed simulator CPU runs on October 2, 2026. The same build and stock model answered two previously used 40-case development sets.</p>
           <p class="case-table-hint">Swipe the table to see answer times.</p>
@@ -119,7 +130,7 @@
         </section>
 
         <section class="case-section" id="next">
-          <p class="eyebrow">06 · What comes next</p>
+          <p class="eyebrow">07 · What comes next</p>
           <h2 class="display display--tight">Validate the Product <em>in People’s Hands.</em></h2>
           <p>Angrove is in active development. I have not published adoption, retention, or learning-outcome results. The next product questions are whether people revisit saved Insights, check the source passages, and find the map useful.</p>
           <p>Before release, engineering work includes sustained phone memory, thermal, and lifecycle validation; encryption migration and backup recovery; model delivery; and a supported-device matrix. Historical phone scores whose raw run artifacts were lost are not used as headline evidence here.</p>
