@@ -2582,3 +2582,11 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 /* Slash commands read like the app's source citations: lightGreen text in a systemSelection rounded rectangle (8 pt radius)
    (10 pt either side, overhanging the line by 4 pt without changing its height). */
 code.cmd, .faq-item__a code.cmd { padding: 4px 10px; border-radius: 8px; background: #F0E9DA; border: 1px solid rgba(134, 128, 62, 0.1); font: inherit; font-weight: 600; color: var(--light-green); -webkit-box-decoration-break: clone; box-decoration-break: clone; white-space: nowrap; }
+
+/* Secondary résumé links alongside the app download. */
+.btn-pill.btn-resume, .cta .btn-block.btn-resume {
+  background: transparent;
+  color: var(--light-green);
+  box-shadow: inset 0 0 0 1.5px rgba(134, 128, 62, 0.45);
+}
+.creator-note { margin-top: 18px; font-size: 13px; line-height: 1.6; color: var(--light-green); }
