@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User Guide — Angrove</title>
-<meta name="description" content="The Angrove User Guide: how to ask a question, save Insights, read the Insight Tree, find a Midpoint, study a concept in 3D, and keep your data private.">
+<meta name="description" content="The Angrove User Guide: how to ask a question, save Insights, read the Insight Tree, find a Midpoint, study a concept in 3D, and keep your saved personal data private and fully encrypted on your device.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="css/site.css?v=20261004-stands">
@@ -551,13 +551,14 @@
         <header class="guide-topic__head">
           <span class="guide-topic__icon"><svg class="ic" aria-hidden="true"><use href="#i-lock-shield"/></svg></span>
           <h2>Privacy &amp; Your Data</h2>
-          <p class="guide-topic__intro">Everything you do in Angrove stays on your phone. Your conversations, saved Insights, and the model that answers you are never sent to a server. <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-gearshape"/></svg>Settings</span> → Privacy &amp; Data is where you lock the app and back up or clear your data.</p>
+          <p class="guide-topic__intro">Angrove answers on your phone without sending your questions to a model server. Your saved personal data is fully encrypted on your device. <span class="ui-btn"><svg class="ic" aria-hidden="true"><use href="#i-gearshape"/></svg>Settings</span> → Privacy &amp; Data is where you lock the app and back up or clear your data.</p>
         </header>
         
         <div class="guide-paras">
-          <div><h3 class="guide-label">What it does</h3><p class="guide-text">Your conversations and Insights are stored only on your phone, and the model runs on it too.</p></div>
-          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Turn on App Lock to require Face ID, and choose how soon it locks. Export Conversations saves your conversations to a file, and Import Conversations reads one back. Clear Insight Tree removes saved Insights and tree data but keeps your conversations.</p></div>
-          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Export before importing: importing replaces your current conversations. An export holds conversations only, not Insights or settings, and it contains your discussion text, so keep it somewhere safe.</p></div>
+          <div><h3 class="guide-label">What it does</h3><p class="guide-text"><strong>Fully Encrypted.</strong> Your saved personal data is encrypted with AES-256-GCM before it is stored, including conversations, attachments, saved Insights, Study Topics, personal settings, and local backups. Apple Keychain protects the encryption keys. Encryption is automatic; you do not need to turn it on or manage a password. The model runs on your phone too.</p></div>
+          <div><h3 class="guide-label">How to use it</h3><p class="guide-text">Turn on App Lock to require Face ID, and choose how soon it locks. Export Conversations saves a readable JSON file, and Import Conversations reads one back. Exports are not encrypted; anyone with an exported file can read it. Clear Insight Tree removes saved Insights and tree data but keeps your conversations.</p></div>
+          <div><h3 class="guide-label">When it helps</h3><p class="guide-text">Export before importing: importing replaces your current conversations. An export holds conversations only, not Insights or settings, and it contains readable discussion text, so keep it somewhere safe. To restore encrypted app data on another phone, restore both the app data and its Keychain through an encrypted device backup or a supported transfer that preserves both. Angrove cannot recover content if its encryption key is lost.</p></div>
+          <div><h3 class="guide-label">What encryption covers</h3><p class="guide-text">Encryption protects saved personal data inside Angrove. The app decrypts content in memory while you use it. Readable exports, copied text, screenshots, notification previews, and the optional Lock Screen widget display are outside that storage boundary. Apple manages device-backup protection; this is not a claim of end-to-end encryption for iCloud Backup. The upgrade does not change older backups or exports.</p></div>
         </div>
       </article>
       </div>
@@ -569,7 +570,7 @@
     <div class="cta__copy">
       <p class="eyebrow eyebrow--light">Coming to iPhone</p>
       <h2>Bring the Question You've Been <em>Carrying.</em></h2>
-      <p>Angrove is free, private, and in active development. Check launch status for updates as development continues.</p>
+      <p>Angrove is free and private, with saved personal data fully encrypted on your device. It is in active development; check launch status for updates.</p>
       <div class="cta-row">
         <a href="waitlist.html" class="btn-block">Download for iOS</a>
         <span class="btn-block is-soon"><small>Coming Soon</small>Download for Mac</span>
@@ -588,7 +589,7 @@
           <img src="assets/brand/angrove-logo-light.png" alt="Angrove" width="185" height="56">
         </span>
       </a>
-      <p class="footer__tagline">A private place for serious questions.</p>
+      <p class="footer__tagline">A private place for serious questions. <a href="guide.html#privacy">Fully Encrypted on your device.</a></p>
     </div>
     <nav class="nav__links" aria-label="Footer">
       <a href="index.html">Home</a>

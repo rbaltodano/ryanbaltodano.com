@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FAQ — Angrove</title>
-<meta name="description" content="Answers to common questions about Angrove: release, cost, privacy, the on-device model, and its sources.">
+<meta name="description" content="Answers to common questions about Angrove: release, cost, fully encrypted personal storage, the on-device model, and its sources.">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="css/site.css?v=20261004-stands">
@@ -80,23 +80,27 @@
       <div class="faq__list">
           <details class="faq-item">
             <summary>Does anything I type leave my phone?</summary>
-            <div class="faq-item__a"><p>No. The model that answers you runs on your iPhone, and your conversations, Insights, and Insight Tree are stored only on it. The app makes no network requests to answer a question or build your tree. Its only network code downloads the model itself.</p><p>The source is public, so you can <a href="about.html#source">check it yourself</a>.</p></div>
+            <div class="faq-item__a"><p>No. The model that answers you runs on your iPhone, and your conversations, Insights, and Insight Tree are stored with fully encrypted personal data on your device. The app makes no network requests to answer a question or build your tree. Its only network code downloads the model itself.</p><p>The source is public, so you can <a href="about.html#source">check it yourself</a>.</p></div>
           </details>
           <details class="faq-item">
             <summary>Does it work offline?</summary>
             <div class="faq-item__a"><p>Yes. Once the model is on your phone, Angrove answers in airplane mode.</p></div>
           </details>
           <details class="faq-item">
+            <summary>Is my data encrypted?</summary>
+            <div class="faq-item__a"><p><strong>Fully Encrypted.</strong> Your saved personal data is encrypted on your device with AES-256-GCM. This includes conversations, attachments, saved Insights, Study Topics, personal settings, and local backups. Apple Keychain protects the keys. Encryption is automatic and does not require a password from you.</p><p>Conversation exports are readable JSON. Copied text, screenshots, notification previews, and the optional Lock Screen widget display are outside the app’s encrypted storage. <a href="guide.html#privacy">Read about encryption and recovery</a>.</p></div>
+          </details>
+          <details class="faq-item">
             <summary>Are my conversations backed up?</summary>
-            <div class="faq-item__a"><p>Angrove keeps its data in the app’s own storage, like any other app. If you use iCloud Backup, iOS may include that data in your device backup. You can also export your conversations to a file in Settings → Privacy &amp; Data. An export holds conversations only, not Insights or settings.</p></div>
+            <div class="faq-item__a"><p>Angrove keeps encrypted app data on your phone, including encrypted local conversation backups. iOS may include that data in device backups. To restore it on another phone, restore both the app data and its Keychain through an encrypted device backup or a supported transfer that preserves both. Angrove cannot recover content if the encryption key is lost. Apple manages device-backup protection; we do not claim end-to-end encryption for iCloud Backup. Older backups and exports are unchanged.</p><p>You can also export conversations in Settings → Privacy &amp; Data. An export is readable JSON, is not encrypted, and holds conversations only, not Insights or settings.</p></div>
           </details>
           <details class="faq-item">
             <summary>Can I lock the app?</summary>
-            <div class="faq-item__a"><p>Yes. Turn on App Lock in Settings → Privacy &amp; Data to require Face ID, and choose how soon it locks.</p></div>
+            <div class="faq-item__a"><p>Yes. Turn on App Lock in Settings → Privacy &amp; Data to require Face ID, and choose how soon it locks. Your saved personal data is already fully encrypted, whether App Lock is on or off.</p></div>
           </details>
           <details class="faq-item">
             <summary>How do I delete my data?</summary>
-            <div class="faq-item__a"><p>Deleting a conversation removes it from the app. Clear Insight Tree removes saved Insights and tree data but keeps your conversations. Deleting the app removes everything Angrove stored on your phone.</p></div>
+            <div class="faq-item__a"><p>Deleting a conversation removes it from the active app library; older local or device backups may still contain it. Clear Insight Tree removes saved Insights and tree data but keeps conversations. Deleting the app removes its app container. iOS may retain Keychain keys and system-managed backups separately.</p></div>
           </details>
       </div>
     </div>
@@ -141,7 +145,7 @@
     <div class="cta__copy">
       <p class="eyebrow eyebrow--light">Coming to iPhone</p>
       <h2>Bring the Question You've Been <em>Carrying.</em></h2>
-      <p>Angrove is free, private, and in active development. Check launch status for updates as development continues.</p>
+      <p>Angrove is free and private, with saved personal data fully encrypted on your device. It is in active development; check launch status for updates.</p>
       <div class="cta-row">
         <a href="waitlist.html" class="btn-block">Download for iOS</a>
         <span class="btn-block is-soon"><small>Coming Soon</small>Download for Mac</span>
@@ -160,7 +164,7 @@
           <img src="assets/brand/angrove-logo-light.png" alt="Angrove" width="185" height="56">
         </span>
       </a>
-      <p class="footer__tagline">A private place for serious questions.</p>
+      <p class="footer__tagline">A private place for serious questions. <a href="guide.html#privacy">Fully Encrypted on your device.</a></p>
     </div>
     <nav class="nav__links" aria-label="Footer">
       <a href="index.html">Home</a>

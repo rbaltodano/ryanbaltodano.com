@@ -66,3 +66,11 @@ their destination.
 
 Copy sources: `../WEBSITE_COPY.md`, `../CONTENT.md`, and the Angrove-Foundations docs
 (`MISSION.md`, `FUNCTIONALITY.md`, `MODEL-INTEGRATION.md`).
+
+## Encryption copy
+
+Use **Fully Encrypted** with the scope “Your saved personal data is encrypted on your device.”
+The home, About, FAQ, User Guide, launch page, blog and shared footer use this wording.
+The guide’s privacy topic explains AES-256-GCM, Keychain keys, local backups and recovery,
+and that deliberate conversation exports remain readable JSON. Appearance preferences, public
+books/model assets, displayed content and Apple-managed backup protection are outside this claim.
