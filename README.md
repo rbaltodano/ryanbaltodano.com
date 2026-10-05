@@ -79,8 +79,14 @@ books/model assets, displayed content and Apple-managed backup protection are ou
 ## Case study
 
 `case-study.html` is linked after About in every primary navbar and footer, and from the About
-essay. It uses existing app captures and the existing Study clip; the full product walkthrough
+essay. It uses the October 5, 2026 captures in `assets/app/case-study-2026-10-05/` and the existing Study clip; the full product walkthrough
 will be recorded separately. The report distinguishes historical simulator comparisons from
 independent acceptance, phone performance, user outcomes and release status. Source text and
 aggregate evaluation evidence live in Angrove-iOS `Documentation/Case-Study.md` and
 `Documentation/Evaluation.md`. Keep the values aligned when new evidence is published.
+
+The seven supplied JPEG originals are preserved unchanged. The Case Study groups them into
+product, semantic-map documentation, and processing-state galleries with full-size image links.
+The technical-details image is a website browser capture. The processing captures display a
+Nicaea source for a space-race question, so their caption explicitly distinguishes UI state from
+retrieval correctness. Matching originals live in the iOS repo’s dated Screenshots directory.

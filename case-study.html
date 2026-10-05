@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="css/site.css?v=20261005-case-study">
-<link rel="stylesheet" href="css/case-study.css?v=20261005">
+<link rel="stylesheet" href="css/case-study.css?v=20261005-screenshots">
 </head>
 <body>
 <header class="nav">
@@ -73,8 +73,13 @@
           </ol>
           <p>Automatic analysis can suggest broader Node Concepts. It does not silently save an Insight for the user. Semantic distance represents relatedness, not truth or importance.</p>
           <figure class="case-screens">
-            <div class="case-screens__row"><img src="assets/app/conv-light.jpg" alt="Angrove conversation showing an answer and highlighted concepts" width="754" height="1640" loading="lazy"><img src="assets/app/library-light.jpg" alt="Angrove Library of primary sources" width="754" height="1640" loading="lazy"><img src="assets/app/insight-tree-dark.jpg" alt="Angrove Insight Tree showing connected concepts" width="754" height="1640" loading="lazy"></div>
-            <figcaption>Existing app captures: conversation, Library, and Insight Tree. <a class="link-inline" href="guide.html">The User Guide explains the complete flow.</a></figcaption>
+            <div class="case-screens__row case-screens__row--four">
+              <a href="assets/app/case-study-2026-10-05/home.jpg"><img src="assets/app/case-study-2026-10-05/home.jpg" alt="Angrove Home with activity, saved Insights, and a Question of the Day" width="588" height="1280" loading="lazy"></a>
+              <a href="assets/app/case-study-2026-10-05/conversation-peloponnesian-war.jpg"><img src="assets/app/case-study-2026-10-05/conversation-peloponnesian-war.jpg" alt="Peloponnesian War inquiry with underlined concepts in the answer" width="588" height="1280" loading="lazy"></a>
+              <a href="assets/app/case-study-2026-10-05/conversation-homoousios.jpg"><img src="assets/app/case-study-2026-10-05/conversation-homoousios.jpg" alt="Homoousios conversation with consubstantial highlighted as a contextual concept" width="588" height="1280" loading="lazy"></a>
+              <a href="assets/app/case-study-2026-10-05/insight-map.jpg"><img src="assets/app/case-study-2026-10-05/insight-map.jpg" alt="Ancient Greek Politics map with related concepts and a saved Insight card" width="589" height="1280" loading="lazy"></a>
+            </div>
+            <figcaption>October 5, 2026 captures: Home, two conversations, and the Ancient Greek Politics map. Select a screenshot to view it at full size. <a class="link-inline" href="guide.html">The User Guide explains the complete flow.</a></figcaption>
           </figure>
           <p><a class="link-inline" href="assets/app/study-3d-demo.mp4">Watch the existing Study view clip</a>. A longer product walkthrough is still to be recorded. The site’s interactive examples are illustrations rather than live model inference.</p>
         </section>
@@ -92,6 +97,10 @@
             <li><strong>Saved Insight and map</strong><span>User-selected concepts persist and organize through semantic relatedness.</span></li>
           </ol>
           <p>Definitions, naming, and tree labels share the same runtime. A lifecycle manager controls loading, idle unloading, background transitions, and cancellation. There is no HTTP model backend or cloud fallback.</p>
+          <figure class="case-screens case-screens--single">
+            <a href="assets/app/case-study-2026-10-05/guide-semantic-map.jpg"><img src="assets/app/case-study-2026-10-05/guide-semantic-map.jpg" alt="Angrove website User Guide explaining 384-dimensional MiniLM embeddings and cosine similarity" width="588" height="1280" loading="lazy"></a>
+            <figcaption>The website User Guide makes the map's technical details inspectable: embeddings, cosine similarity, and how the tree is built. This is a mobile browser capture.</figcaption>
+          </figure>
           <p>The large model and grounding assets are excluded from Git. A source checkout can build the interface, but full inference requires the development artifacts. <a class="link-inline" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Documentation/Development-Setup.md">The setup guide spells out that boundary.</a></p>
         </section>
 
@@ -100,6 +109,13 @@
           <h2 class="display display--tight">The Tradeoffs Shape <em>the Experience.</em></h2>
           <div class="case-decision"><h3>Retrieve evidence locally.</h3><p>A memory-mapped matrix of 384-dimensional passage vectors supports a vectorized cosine scan. Semantic similarity alone can mistake Nicaea the city for the council, so source routing and text locators complement ranking. Regression tests check that the relevant source text reaches the prompt.</p></div>
           <div class="case-decision"><h3>Make model work visible.</h3><p>Answers, definitions, and tree tasks compete for the same engine. The queue gives users cancellation and reordering, while persisted conversation and branch identifiers keep late results attached to the original question after navigation. When local generation fails, the app exposes a failure rather than inventing a substitute answer.</p></div>
+          <figure class="case-screens">
+            <div class="case-screens__row case-screens__row--two">
+              <a href="assets/app/case-study-2026-10-05/response-thinking.jpg"><img src="assets/app/case-study-2026-10-05/response-thinking.jpg" alt="Space-race conversation while processing, with an approach line, a source label, and Thinking controls" width="588" height="1280" loading="lazy"></a>
+              <a href="assets/app/case-study-2026-10-05/response-writing.jpg"><img src="assets/app/case-study-2026-10-05/response-writing.jpg" alt="Conversation showing Writing Response status above the Thinking controls" width="588" height="1280" loading="lazy"></a>
+            </div>
+            <figcaption>Two processing-state captures show the approach line, source label, and response status. The displayed Nicaea source does not match the space-race question; these captures illustrate the interface, not evidence of retrieval correctness or answer quality.</figcaption>
+          </figure>
           <div class="case-decision"><h3>Keep unsupported claims out of the answer.</h3><p>Some source requests can return verified passages without another generation. Others use retrieved evidence or abstain when reliable evidence is absent. This makes sources inspectable, but it can also narrow coverage and produce unhelpful refusals. Retrieval quality needs its own evaluation.</p></div>
           <div class="case-decision"><h3>Protect saved personal data.</h3><p><strong>Fully Encrypted saved personal data</strong> uses AES-256-GCM with Keychain-managed keys in the development implementation. A separate widget key limits access, and startup validates ciphertext before migrating plaintext. Source integration and physical-device lock and backup-restore checks remain release work. Deliberate conversation exports are readable JSON; displayed content and screenshots are outside this storage boundary. <a class="link-inline" href="guide.html#privacy">Read the coverage and recovery details.</a></p></div>
         </section>

@@ -18,6 +18,10 @@
 .case-flow p { font-size: 14px; line-height: 1.6; }
 .case-screens { padding: 24px; border-radius: 24px; background: var(--canvas-secondary); }
 .case-screens__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.case-screens a { display: block; min-width: 0; }
+.case-screens__row--four, .case-screens__row--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.case-screens--single > a { max-width: 300px; margin-inline: auto; }
+.case-screens a:focus-visible { outline: 2px solid var(--light-green); outline-offset: 6px; border-radius: 16px; }
 .case-screens img { width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--border); }
 .case-screens figcaption { margin-top: 20px; font-size: 14px; line-height: 1.7; }
 .case-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -55,7 +59,6 @@
   .case-section { font-size: 16px; }
   .case-screens { padding: 16px; }
   .case-screens__row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .case-screens img:last-child { grid-column: 1 / -1; width: 50%; justify-self: center; }
   .case-table-hint { display: block; margin-bottom: -12px; font-size: 14px; }
   .case-table th, .case-table td { padding: 12px; }
   .case-table { min-width: 520px; }
