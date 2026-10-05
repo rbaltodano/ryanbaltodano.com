@@ -20,6 +20,7 @@ site/
   model.html          Redirect to faq.html (the model question)
   privacy.html        Redirect to guide.html#privacy (the Privacy page was retired 2026-10-04)
   about.html          Founder note, the four principles, public repositories
+  case-study.html     Product/engineering case study: workflow, architecture, decisions and measured evidence
   waitlist.html       Launch status: development milestones (email signup is not open yet)
   blog/index.html     Empty state until the first posts
   css/site.css        All tokens and components
@@ -74,3 +75,12 @@ The home, About, FAQ, User Guide, launch page, blog and shared footer use this w
 The guide’s privacy topic explains AES-256-GCM, Keychain keys, local backups and recovery,
 and that deliberate conversation exports remain readable JSON. Appearance preferences, public
 books/model assets, displayed content and Apple-managed backup protection are outside this claim.
+
+## Case study
+
+`case-study.html` is linked after About in every primary navbar and footer, and from the About
+essay. It uses existing app captures and the existing Study clip; the full product walkthrough
+will be recorded separately. The report distinguishes historical simulator comparisons from
+independent acceptance, phone performance, user outcomes and release status. Source text and
+aggregate evaluation evidence live in Angrove-iOS `Documentation/Case-Study.md` and
+`Documentation/Evaluation.md`. Keep the values aligned when new evidence is published.
