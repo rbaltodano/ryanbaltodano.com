@@ -975,6 +975,7 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 /* The closing CTA sizes its paragraphs at 16px; its eyebrow stays an eyebrow. */
 .cta__copy .eyebrow { font-size: 14px; }
 .section--flush-top { padding-top: 0; }
+.section--harness { padding-top: calc(var(--section-y) - 48px); } /* hero ends with 48px; this brings the gap to one full section (144px) */
 
 /* ---------- The Library ---------- */
 
