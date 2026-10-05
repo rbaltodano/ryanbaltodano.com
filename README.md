@@ -85,8 +85,8 @@ independent acceptance, phone performance, user outcomes and release status. Sou
 aggregate evaluation evidence live in Angrove-iOS `Documentation/Case-Study.md` and
 `Documentation/Evaluation.md`. Keep the values aligned when new evidence is published.
 
-The seven supplied JPEG originals are preserved unchanged. The Case Study groups them into
-product, semantic-map documentation, and processing-state galleries with full-size image links.
-The technical-details image is a website browser capture. The processing captures display a
-Nicaea source for a space-race question, so their caption explicitly distinguishes UI state from
-retrieval correctness. Matching originals live in the iOS repo’s dated Screenshots directory.
+The seven current JPEG originals are preserved unchanged. The Case Study groups them into
+product, semantic-map documentation, and expanded source-detail galleries with full-size image
+links. The two technical diagrams are mobile browser captures of the website User Guide.
+The Nature of Evil conversation shows Corpus Grounded details and Summa Theologica links.
+Matching originals live in the iOS repo’s dated Screenshots directory.
