@@ -20,7 +20,7 @@ site/
   model.html          Redirect to faq.html (the model question)
   privacy.html        Redirect to guide.html#privacy (the Privacy page was retired 2026-10-04)
   about.html          Founder note, the four principles, public repositories
-  case-study.html     Case Studies: chronological product and engineering work
+  case-study.html     Case Studies: current product, architecture, decisions, and supporting research
   waitlist.html       Launch status: development milestones (email signup is not open yet)
   blog/index.html     Empty state until the first posts
   css/site.css        All tokens and components
@@ -91,6 +91,7 @@ links. The two technical diagrams are mobile browser captures of the website Use
 The Nature of Evil conversation shows Corpus Grounded details and Summa Theologica links.
 Matching originals live in the iOS repo’s dated Screenshots directory.
 
-The page orders dated work oldest first: August–September model exploration, October 2
-evaluation, then the October product, architecture, and engineering work. The opening problem
-and closing next steps frame that chronology. The existing URL remains `case-study.html`.
+The page leads with the problem and Ryan’s role, followed by the current product, architecture,
+and engineering decisions. Measured evaluation and earlier model exploration follow as supporting
+evidence, with next steps last. Dates preserve the chronology of the work without making readers
+start with the oldest experiments. The existing URL remains `case-study.html`.

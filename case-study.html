@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Case Studies — Building Angrove</title>
-<meta name="description" content="Ryan Baltodano’s chronological AI product engineering case studies: building Angrove with on-device inference, local retrieval, encrypted personal storage, and measured evaluation decisions.">
+<meta name="description" content="Ryan Baltodano’s product and engineering case studies: building Angrove with on-device inference, local retrieval, encrypted personal storage, and measured evaluation decisions.">
 <link rel="canonical" href="https://angrove.app/case-study.html">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
@@ -34,7 +34,7 @@
     <div class="page-hero__inner">
       <p class="eyebrow">Product &amp; Engineering Case Studies</p>
       <h1 class="display display--tight">An AI Product Built <em>Around Understanding.</em></h1>
-      <p class="lede">How I’m building Angrove: a private study workspace that brings local AI, primary sources, and a map of your thinking onto an iPhone. Follow the work from earlier model experiments to measured decisions and the current product.</p>
+      <p class="lede">How I’m building Angrove: a private study workspace that brings local AI, primary sources, and a map of your thinking onto an iPhone. Explore the current app, the architecture behind it, and the engineering decisions and experiments that shaped it.</p>
       <p class="case-byline">Ryan Baltodano · Solo product designer &amp; engineer · Active development · October 2026</p>
       <div class="case-links"><a class="link-inline" href="https://github.com/rbaltodano/Angrove-iOS">Explore the repository</a><a class="link-inline" href="guide.html">Walk through the product</a></div>
     </div>
@@ -44,51 +44,26 @@
     <div class="container case-layout">
       <nav class="case-index" aria-label="Case Studies sections">
         <p class="eyebrow">Inside the build</p>
-        <p class="case-order">Oldest work first</p>
-        <a href="#problem">The problem</a>
-        <a href="#exploration">Aug–Sep 2026 · Models &amp; runtimes</a>
-        <a href="#evaluation">Oct 2, 2026 · Measured results</a>
+        <p class="case-order">From product to process</p>
+        <a href="#problem">The problem &amp; my role</a>
         <a href="#product">Oct 5, 2026 · The product</a>
         <a href="#architecture">Oct 2026 · Architecture</a>
         <a href="#decisions">Oct 2026 · Engineering decisions</a>
+        <a href="#evaluation">Oct 2, 2026 · Measured results</a>
+        <a href="#exploration">Aug–Sep 2026 · Models &amp; runtimes</a>
         <a href="#next">What comes next</a>
       </nav>
       <article class="case-story">
         <section class="case-section" id="problem">
-          <p class="eyebrow">01 · The problem</p>
+          <p class="eyebrow">01 · The problem &amp; my role</p>
           <h2 class="display display--tight">Give Inquiry Somewhere <em>to Grow.</em></h2>
           <p>A conversation is easy to start and easy to lose. For questions about philosophy, theology, and history, I wanted a workspace where someone could test an argument, inspect its sources, and keep the concepts they wanted to return to.</p>
-          <p>My product hypothesis is that conversation, contextual definitions, and a lasting map of saved ideas can help people stay with difficult questions. That hypothesis still needs user validation; I’m not claiming a measured improvement in learning.</p>
           <p>I own the product design, SwiftUI implementation, local model integration, retrieval, persistence, and evaluation. The work is public, and the app has not been publicly released.</p>
-        </section>
-
-        <section class="case-section" id="exploration">
-          <p class="eyebrow">02 · August–September 2026 · Models &amp; runtimes explored</p>
-          <h2 class="display display--tight">A Working Model Is Only <em>the First Gate.</em></h2>
-          <p>Before the current E4B/LiteRT integration, I explored larger Gemma packages and a smaller Qwen model through isolated llama.cpp Metal probes on a base iPhone 17. Those experiments tested whether alternative packages could sustain a useful session, and whether a model swap would fix source errors.</p>
-          <div class="case-decision"><h3>Gemma 4 12B: generation passed, retention failed.</h3><p>A 4.37 GB IQ2_M GGUF generated short text at 512-token context after reducing prefill to 32-token chunks. A retained-session trial produced 48 tokens, then terminated with signal 9 during a requested 40-second hold, correlated with system memory pressure. The available system report did not identify the probe as a specific jetsam victim. Successful short generation had not established enough headroom for a durable app session.</p></div>
-          <div class="case-decision"><h3>Qwen3-4B: smaller and feasible, but citations still needed work.</h3><p>The roughly 2.33 GiB Q4_K_M package passed bounded multi-turn probes at 2K and 4K context and a 40-second resident hold. A research-only adapter then exercised it in the actual conversation UI. Fine-tuning uncovered corrupted PDF article boundaries; cleaning the data and reformatting question/answer pairs improved output form, but a citation test still fabricated source text. That reinforced the need to evaluate retrieval and passage use separately from voice and fluency.</p></div>
-          <aside class="case-note"><h3>Historical exploration, not a model leaderboard.</h3><p>The tested smaller model was Qwen3-4B. Qwen3.5 appeared in a later candidate proposal; it does not inherit these results. Context sizes, token caps, packages, and tasks differed, so these are exploratory observations rather than a matched blind benchmark. The 12B and Qwen research was shelved on September 25, 2026. No experiments were rerun for this case study.</p></aside>
-          <p>Current development remains on Gemma 4 E4B and LiteRT-LM. The lesson is to count working buffers, KV cache, session retention, and factual behavior—not just model size or an attractive answer. <a class="link-inline" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Documentation/Model-Exploration.md">Read the configurations, observations, and archived-record fingerprints.</a></p>
-        </section>
-
-        <section class="case-section" id="evaluation">
-          <p class="eyebrow">03 · October 2, 2026 · Measured results</p>
-          <h2 class="display display--tight">Measure Before <em>Choosing a Default.</em></h2>
-          <p>I compared native thinking on and off through the app pipeline in four completed simulator CPU runs on October 2, 2026. The same build and stock model answered two previously used 40-case development sets.</p>
-          <p class="case-table-hint">Swipe the table to see answer times.</p>
-          <div class="case-table-wrap" role="region" aria-label="Native thinking comparison" tabindex="0">
-            <table class="case-table"><caption>Native thinking comparison · Simulator CPU · 40 cases per set</caption><thead><tr><th scope="col">Development set</th><th scope="col">Thinking off</th><th scope="col">Thinking on</th><th scope="col">Median answer time<br>off / on</th></tr></thead><tbody><tr><th scope="row">Held-out</th><td>37/40</td><td>36/40</td><td>23.0 s / 43.7 s</td></tr><tr><th scope="row">Sealed-1</th><td>37/40</td><td>38/40</td><td>23.5 s / 47.6 s</td></tr><tr><th scope="row">Total objective passes</th><td>74/80</td><td>74/80</td><td>—</td></tr></tbody></table>
-          </div>
-          <p><strong>The decision:</strong> keep native thinking off by default. It showed no aggregate increase in objective passes here and roughly doubled answer time. That observation supports this configuration; it does not establish that thinking never helps.</p>
-          <aside class="case-note"><h3>What these numbers mean</h3><p>The scorer checks patterns and output constraints. It can miss substantive errors or penalize valid wording, so these scores are not a general accuracy percentage. Both sets had already been used for development. Times are conventional medians across all cases, including retrieval and any audit pass; they exclude model loading, queue wait, and UI reveal. Simulator timing does not establish phone performance.</p></aside>
-          <p>The public report retains the exact experiment build, model and fixture hashes, aggregate outcomes, and input-artifact hashes. It excludes personal content and native logs. Original fixtures and scoring material remain in the private evaluation archive, so the public summaries support inspection but are not a complete independent replication kit.</p>
-          <p><a class="link-inline" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Documentation/Evaluation.md">Read the methodology and inspect the four evidence reports</a>.</p>
-          <p>Behavior tests separately cover model lifecycle, retrieval, source locators, conversation persistence, semantic membership, and encrypted-storage migration. A test suite’s presence is not a claim that the latest working tree has passed a full release gate.</p>
+          <p>My product hypothesis is that conversation, contextual definitions, and a lasting map of saved ideas can help people stay with difficult questions. That hypothesis still needs user validation; I’m not claiming a measured improvement in learning.</p>
         </section>
 
         <section class="case-section" id="product">
-          <p class="eyebrow">04 · October 5, 2026 · The product</p>
+          <p class="eyebrow">02 · October 5, 2026 · The product</p>
           <h2 class="display display--tight">From a Question <em>to an Insight.</em></h2>
           <p>The central flow starts with a question. A source-oriented answer leads to a contextual definition; the user chooses whether to save that definition as an Insight. Saved Insights become a semantic map that can be revisited in the Insight Tree and Study view.</p>
           <ol class="case-flow" aria-label="The product workflow">
@@ -111,7 +86,7 @@
         </section>
 
         <section class="case-section" id="architecture">
-          <p class="eyebrow">05 · October 2026 · The architecture</p>
+          <p class="eyebrow">03 · October 2026 · The architecture</p>
           <h2 class="display display--tight">A Whole System <em>on the Phone.</em></h2>
           <p>The current development build uses stock instruction-tuned Gemma 4 E4B from the LiteRT Community package. It is not an Angrove fine-tune. Core ML MiniLM embeddings support local passage retrieval and relationships in the map.</p>
           <div class="case-facts"><div><strong>On-device</strong><span>Generation &amp; retrieval</span></div><div><strong>37 works</strong><span>Current Library export</span></div><div><strong>51,836 passages</strong><span>Locally searchable sources</span></div></div>
@@ -134,7 +109,7 @@
         </section>
 
         <section class="case-section" id="decisions">
-          <p class="eyebrow">06 · October 2026 · Engineering decisions</p>
+          <p class="eyebrow">04 · October 2026 · Engineering decisions</p>
           <h2 class="display display--tight">The Tradeoffs Shape <em>the Experience.</em></h2>
           <div class="case-decision"><h3>Retrieve evidence locally.</h3><p>A memory-mapped matrix of 384-dimensional passage vectors supports a vectorized cosine scan. Semantic similarity alone can mistake Nicaea the city for the council, so source routing and text locators complement ranking. Regression tests check that the relevant source text reaches the prompt.</p></div>
           <div class="case-decision"><h3>Make model work visible.</h3><p>Answers, definitions, and tree tasks compete for the same engine. The queue gives users cancellation and reordering, while persisted conversation and branch identifiers keep late results attached to the original question after navigation. When local generation fails, the app exposes a failure rather than inventing a substitute answer.</p></div>
@@ -144,6 +119,31 @@
           </figure>
           <div class="case-decision"><h3>Keep unsupported claims out of the answer.</h3><p>Some source requests can return verified passages without another generation. Others use retrieved evidence or abstain when reliable evidence is absent. This makes sources inspectable, but it can also narrow coverage and produce unhelpful refusals. Retrieval quality needs its own evaluation.</p></div>
           <div class="case-decision"><h3>Protect saved personal data.</h3><p><strong>Fully Encrypted saved personal data</strong> uses AES-256-GCM with Keychain-managed keys in the development implementation. A separate widget key limits access, and startup validates ciphertext before migrating plaintext. Source integration and physical-device lock and backup-restore checks remain release work. Deliberate conversation exports are readable JSON; displayed content and screenshots are outside this storage boundary. <a class="link-inline" href="guide.html#privacy">Read the coverage and recovery details.</a></p></div>
+        </section>
+
+        <section class="case-section" id="evaluation">
+          <p class="eyebrow">05 · October 2, 2026 · Measured results</p>
+          <h2 class="display display--tight">Measure Before <em>Choosing a Default.</em></h2>
+          <p>I compared native thinking on and off through the app pipeline in four completed simulator CPU runs on October 2, 2026. The same build and stock model answered two previously used 40-case development sets.</p>
+          <p class="case-table-hint">Swipe the table to see answer times.</p>
+          <div class="case-table-wrap" role="region" aria-label="Native thinking comparison" tabindex="0">
+            <table class="case-table"><caption>Native thinking comparison · Simulator CPU · 40 cases per set</caption><thead><tr><th scope="col">Development set</th><th scope="col">Thinking off</th><th scope="col">Thinking on</th><th scope="col">Median answer time<br>off / on</th></tr></thead><tbody><tr><th scope="row">Held-out</th><td>37/40</td><td>36/40</td><td>23.0 s / 43.7 s</td></tr><tr><th scope="row">Sealed-1</th><td>37/40</td><td>38/40</td><td>23.5 s / 47.6 s</td></tr><tr><th scope="row">Total objective passes</th><td>74/80</td><td>74/80</td><td>—</td></tr></tbody></table>
+          </div>
+          <p><strong>The decision:</strong> keep native thinking off by default. It showed no aggregate increase in objective passes here and roughly doubled answer time. That observation supports this configuration; it does not establish that thinking never helps.</p>
+          <aside class="case-note"><h3>What these numbers mean</h3><p>The scorer checks patterns and output constraints. It can miss substantive errors or penalize valid wording, so these scores are not a general accuracy percentage. Both sets had already been used for development. Times are conventional medians across all cases, including retrieval and any audit pass; they exclude model loading, queue wait, and UI reveal. Simulator timing does not establish phone performance.</p></aside>
+          <p>The public report retains the exact experiment build, model and fixture hashes, aggregate outcomes, and input-artifact hashes. It excludes personal content and native logs. Original fixtures and scoring material remain in the private evaluation archive, so the public summaries support inspection but are not a complete independent replication kit.</p>
+          <p><a class="link-inline" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Documentation/Evaluation.md">Read the methodology and inspect the four evidence reports</a>.</p>
+          <p>Behavior tests separately cover model lifecycle, retrieval, source locators, conversation persistence, semantic membership, and encrypted-storage migration. A test suite’s presence is not a claim that the latest working tree has passed a full release gate.</p>
+        </section>
+
+        <section class="case-section" id="exploration">
+          <p class="eyebrow">06 · August–September 2026 · Models &amp; runtimes explored</p>
+          <h2 class="display display--tight">A Working Model Is Only <em>the First Gate.</em></h2>
+          <p>Before the current E4B/LiteRT integration, I explored larger Gemma packages and a smaller Qwen model through isolated llama.cpp Metal probes on a base iPhone 17. Those experiments tested whether alternative packages could sustain a useful session, and whether a model swap would fix source errors.</p>
+          <div class="case-decision"><h3>Gemma 4 12B: generation passed, retention failed.</h3><p>A 4.37 GB IQ2_M GGUF generated short text at 512-token context after reducing prefill to 32-token chunks. A retained-session trial produced 48 tokens, then terminated with signal 9 during a requested 40-second hold, correlated with system memory pressure. The available system report did not identify the probe as a specific jetsam victim. Successful short generation had not established enough headroom for a durable app session.</p></div>
+          <div class="case-decision"><h3>Qwen3-4B: smaller and feasible, but citations still needed work.</h3><p>The roughly 2.33 GiB Q4_K_M package passed bounded multi-turn probes at 2K and 4K context and a 40-second resident hold. A research-only adapter then exercised it in the actual conversation UI. Fine-tuning uncovered corrupted PDF article boundaries; cleaning the data and reformatting question/answer pairs improved output form, but a citation test still fabricated source text. That reinforced the need to evaluate retrieval and passage use separately from voice and fluency.</p></div>
+          <aside class="case-note"><h3>Historical exploration, not a model leaderboard.</h3><p>The tested smaller model was Qwen3-4B. Qwen3.5 appeared in a later candidate proposal; it does not inherit these results. Context sizes, token caps, packages, and tasks differed, so these are exploratory observations rather than a matched blind benchmark. The 12B and Qwen research was shelved on September 25, 2026. No experiments were rerun for this case study.</p></aside>
+          <p>Current development remains on Gemma 4 E4B and LiteRT-LM. The lesson is to count working buffers, KV cache, session retention, and factual behavior—not just model size or an attractive answer. <a class="link-inline" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Documentation/Model-Exploration.md">Read the configurations, observations, and archived-record fingerprints.</a></p>
         </section>
 
         <section class="case-section" id="next">
