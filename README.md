@@ -37,7 +37,7 @@ site/
   js/grounding-demo.js  Home Library card: Library cards scrolling in a loop that follows page scroll
   assets/home/        Images exported from Figma
   assets/brand/       Brand assets, including boot leaf frames and dots from the app
-  assets/app/         Real app screenshots and the Study demo video (from Aquinas-iOS/Documentation)
+  assets/app/         Real app screenshots and the Study demo video (from Angrove-iOS/Documentation)
 ```
 
 Each page repeats the same header and footer markup; update all of them together.
@@ -64,5 +64,5 @@ their destination.
 
 ## Source docs
 
-Copy sources: `../WEBSITE_COPY.md`, `../CONTENT.md`, and the Aquinas-Foundations docs
+Copy sources: `../WEBSITE_COPY.md`, `../CONTENT.md`, and the Angrove-Foundations docs
 (`MISSION.md`, `FUNCTIONALITY.md`, `MODEL-INTEGRATION.md`).
