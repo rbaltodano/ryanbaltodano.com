@@ -842,7 +842,10 @@
       midpoint: { icon: 'i-graph-2d', label: function () { return 'Midpoint'; }, on: function () {
         if (mid.phase === 'idle' && picked.length >= 2) { selecting = false; enter(); }
       } },
-      back: { icon: 'i-chevron-left', label: function () { return 'Back'; }, on: function () { if (mid.phase === 'active') exit(); } },
+      back: { icon: 'i-chevron-left', label: function () { return 'Back'; }, on: function () {
+        if (mid.phase === 'done') reopen();
+        else if (mid.phase === 'active') exit();
+      } },
       center: { icon: 'i-lines-measurement-horizontal', label: function () { return 'Center'; }, on: function () { if (mid.phase === 'active') setT(0.5, true); } },
       place: { icon: 'i-arrow-down', label: function () { return 'Place'; }, on: place },
       reset: { icon: 'i-arrow-counterclockwise', label: function () { return 'Reset'; }, on: function () { if (mid.phase === 'done') reopen(); else resetAll(); } },
@@ -871,7 +874,7 @@
       if (mid.scripted) return ['select'];
       if (mid.phase === 'active') return ['back', 'center', 'place'];
       if (mid.phase === 'loading' || mid.phase === 'revealed') return ['status'];
-      if (mid.phase === 'done') return mid.vec.on ? ['tree'] : ['how', 'reset'];
+      if (mid.phase === 'done') return mid.vec.on ? ['back', 'tree'] : ['back', 'how'];
       var keys = ['select'];
       if (picked.length >= 2) keys.push('midpoint');
       if (picked.length >= 1) keys.push('reset');
