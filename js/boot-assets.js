@@ -5,7 +5,7 @@
   var manifest = [
     ['assets/home/vine-left-paint-web.webp', 934070],
     ['assets/home/vine-right-full-paint-web.webp', 876132],
-    ['assets/app/home-dark.jpg', 101075],
+    ['assets/app/home-masthead-20261006.jpg', 86191],
     ['assets/home/iphone-frame.webp', 217644]
   ];
   var entries = {};
