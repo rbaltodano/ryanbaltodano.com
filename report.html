@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report a Bug — Angrove</title>
+<meta name="description" content="Send a bug report to the Angrove team.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Angrove">
+<meta property="og:title" content="Report a Bug — Angrove">
+<meta property="og:description" content="Tell us what went wrong in Angrove.">
+<meta property="og:url" content="https://angrove.app/report.html">
+<link rel="icon" type="image/png" href="assets/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="stylesheet" href="css/site.css?v=20261007-bug-report">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="logo">
+      <span class="logo__leaf" aria-hidden="true"></span>
+      <span>Angrove</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="guide.html">User Guide</a>
+      <a href="case-study.html">Case Studies</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+    <a href="waitlist.html" class="btn-pill">Download for iOS</a>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Open menu"><span class="nav__burger" aria-hidden="true"><i></i><i></i></span></button>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="page-hero__inner">
+      <p class="eyebrow">Support</p>
+      <h1 class="display display--tight">Report a <em>Bug.</em></h1>
+      <p class="lede">Tell us what happened and how to reproduce it. We’ll prepare an email to the Angrove bug report inbox for you to review and send.</p>
+    </div>
+  </section>
+
+  <section class="section section--flush-top section--after-hero">
+    <div class="container report-layout">
+      <form class="report-form" id="bug-report-form">
+        <label class="report-field">
+          <span>What happened?</span>
+          <textarea name="description" rows="6" required placeholder="Describe what you saw and what you were trying to do."></textarea>
+        </label>
+        <label class="report-field">
+          <span>Steps to reproduce <small>(optional)</small></span>
+          <textarea name="steps" rows="4" placeholder="1. Open…&#10;2. Tap…&#10;3. The app…"></textarea>
+        </label>
+        <label class="report-field">
+          <span>Your email <small>(optional, if you’d like a reply)</small></span>
+          <input type="email" name="replyTo" autocomplete="email" placeholder="you@example.com">
+        </label>
+        <button class="btn-block report-submit" type="submit">Continue to Email</button>
+        <p class="report-note" id="report-note" role="status">Your email app will open with the report filled in. Nothing is sent until you review it and tap Send.</p>
+      </form>
+      <aside class="report-help">
+        <p class="eyebrow">A note on privacy</p>
+        <p>Only the details you enter here are added to the email. Please leave out passwords, private conversations, or other sensitive information.</p>
+        <p>If the form doesn’t open your email app, write directly to <a class="link-inline" href="mailto:bugreport@angrove.app">bugreport@angrove.app</a>.</p>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__row">
+    <div class="footer__brand">
+      <a href="index.html" class="logo logo--footer">
+        <span class="logo__art">
+          <span class="logo__leaf" aria-hidden="true"></span>
+          <img src="assets/brand/angrove-logo-light.png" alt="Angrove" width="185" height="56">
+        </span>
+      </a>
+      <p class="footer__tagline">A private place for serious questions. <a href="guide.html#privacy">Fully Encrypted on your device.</a></p>
+    </div>
+    <nav class="nav__links" aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="guide.html">User Guide</a>
+      <a href="case-study.html">Case Studies</a>
+      <a href="faq.html">FAQ</a>
+      <a href="report.html">Report a Bug</a>
+      <a href="blog/index.html">Blog</a>
+    </nav>
+  </div>
+  <p class="footer__disclaimer">Angrove is a tool for private study and reflection. It is not a substitute for professional counseling, spiritual direction, or clergy.</p>
+  <p class="footer__legal">© 2026 Semper Doctrina. All rights reserved.</p>
+  <p class="footer__wordmark" aria-hidden="true">Angrove</p>
+</footer>
+
+<script src="js/site.js"></script>
+<script src="js/bug-report.js"></script>
+</body>
+</html>
