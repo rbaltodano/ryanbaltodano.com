@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://angrove.app/report.html">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="css/site.css?v=20261007-bug-report">
+<link rel="stylesheet" href="css/site.css?v=20261007-formspree">
 </head>
 <body>
 
@@ -39,13 +39,13 @@
     <div class="page-hero__inner">
       <p class="eyebrow">Support</p>
       <h1 class="display display--tight">Report a <em>Bug.</em></h1>
-      <p class="lede">Tell us what happened and how to reproduce it. We’ll prepare an email to the Angrove bug report inbox for you to review and send.</p>
+      <p class="lede">Tell us what happened and how to reproduce it. Your report will be sent to the Angrove support inbox.</p>
     </div>
   </section>
 
   <section class="section section--flush-top section--after-hero">
     <div class="container report-layout">
-      <form class="report-form" id="bug-report-form">
+      <form class="report-form" id="bug-report-form" action="https://formspree.io/f/xnpjppgj" method="POST">
         <label class="report-field">
           <span>What happened?</span>
           <textarea name="description" rows="6" required placeholder="Describe what you saw and what you were trying to do."></textarea>
@@ -56,10 +56,11 @@
         </label>
         <label class="report-field">
           <span>Your email <small>(optional, if you’d like a reply)</small></span>
-          <input type="email" name="replyTo" autocomplete="email" placeholder="you@example.com">
+          <input type="email" name="_replyto" autocomplete="email" placeholder="you@example.com">
         </label>
-        <button class="btn-block report-submit" type="submit">Continue to Email</button>
-        <p class="report-note" id="report-note" role="status">Your email app will open with the report filled in. Nothing is sent until you review it and tap Send.</p>
+        <input type="hidden" name="_subject" value="Angrove bug report">
+        <button class="btn-block report-submit" type="submit">Send report</button>
+        <p class="report-note" id="report-note" role="status" aria-live="polite">Please leave out passwords, private conversations, or other sensitive information.</p>
       </form>
       <aside class="report-help">
         <p class="eyebrow">A note on privacy</p>
@@ -97,6 +98,6 @@
 </footer>
 
 <script src="js/site.js"></script>
-<script src="js/bug-report.js"></script>
+<script src="js/bug-report.js?v=20261007-formspree"></script>
 </body>
 </html>

@@ -1,25 +1,33 @@
 (function () {
   var form = document.getElementById('bug-report-form');
   var note = document.getElementById('report-note');
-  if (!form) return;
+  if (!form || !note) return;
 
-  form.addEventListener('submit', function (event) {
+  form.addEventListener('submit', async function (event) {
     event.preventDefault();
-    var data = new FormData(form);
-    var description = String(data.get('description') || '').trim();
-    if (!description) return;
+    if (!form.reportValidity()) return;
 
-    var steps = String(data.get('steps') || '').trim() || 'Not provided';
-    var replyTo = String(data.get('replyTo') || '').trim() || 'Not provided';
-    var body = [
-      'What happened:', description,
-      '', 'Steps to reproduce:', steps,
-      '', 'Reply-to email (optional):', replyTo
-    ].join('\n');
+    var button = form.querySelector('[type="submit"]');
+    var originalLabel = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    note.textContent = 'Sending your report…';
 
-    var mailto = 'mailto:bugreport@angrove.app?subject=' +
-      encodeURIComponent('Angrove bug report') + '&body=' + encodeURIComponent(body);
-    note.textContent = 'Your email app should open with the report filled in. Nothing is sent until you review it and tap Send.';
-    window.location.href = mailto;
+    try {
+      var response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) throw new Error('Submission failed');
+
+      form.reset();
+      note.textContent = 'Thanks. Your bug report was sent to the Angrove team.';
+      button.textContent = 'Report sent';
+    } catch (error) {
+      note.textContent = 'We couldn’t send your report. Please try again, or email bugreport@angrove.app directly.';
+      button.disabled = false;
+      button.textContent = originalLabel;
+    }
   });
 }());
