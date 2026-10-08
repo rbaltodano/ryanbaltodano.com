@@ -35,7 +35,7 @@
 .case-pipeline strong { display: block; }
 .case-pipeline span { display: block; font-size: 15px; }
 .case-decision { display: flex; flex-direction: column; gap: 12px; }
-.case-decision h3, .case-note h3 { font-family: var(--serif); font-weight: 400; font-size: 25px; line-height: 1.5; color: var(--heading); }
+.case-decision h3, .case-note h3, .case-subhead { font-family: var(--serif); font-weight: 400; font-size: 25px; line-height: 1.5; color: var(--heading); }
 .case-table-hint { display: none; }
 .case-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 20px; background: var(--canvas-secondary); }
 .case-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; line-height: 1.6; }
