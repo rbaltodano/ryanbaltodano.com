@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About — Angrove</title>
 <meta name="description" content="Why Angrove exists, the four principles it is built on, and the person building it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Angrove">
+<meta property="og:title" content="About — Angrove">
+<meta property="og:description" content="Why Angrove exists, the four principles it is built on, and the person building it.">
+<meta property="og:url" content="https://angrove.app/about.html">
+<meta property="og:image" content="https://angrove.app/assets/brand/social-sharing-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Angrove wordmark and vine leaf above an Italian countryside landscape">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About — Angrove">
+<meta name="twitter:description" content="Why Angrove exists, the four principles it is built on, and the person building it.">
+<meta name="twitter:image" content="https://angrove.app/assets/brand/social-sharing-image.png">
+<meta name="twitter:image:alt" content="Angrove wordmark and vine leaf above an Italian countryside landscape">
 <link rel="icon" type="image/png" href="assets/brand/favicon.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="css/site.css?v=20261005-case-study">
@@ -34,7 +49,7 @@
     <div class="page-hero__inner">
       <p class="eyebrow">About</p>
       <h1 class="display display--tight">Built Because It <em>Needed to Exist.</em></h1>
-      <p class="lede">Angrove gives serious questions a place that is private, lasting, and open to everyone. Your saved personal data is fully encrypted on your device. It's a personal project, built in the open, by one person who believes this particular use of AI should exist.</p>
+      <p class="lede">Angrove gives serious questions a place that is private, lasting, and open to everyone. Your saved personal data is fully encrypted on your device. It's a personal project by one person who believes this particular use of AI should exist.</p>
     </div>
   </section>
 
@@ -46,7 +61,7 @@
       <div class="harness__body">
         <div class="harness__founder">
           <h2>From the Founder</h2>
-          <p>I'm Ryan, a web designer and now a software developer, with a lasting interest in philosophy, theology, and history. Angrove began when I learned that a capable language model could run entirely on a phone. That technical fact raised a more human question: what might someone finally be willing to ask if they knew the conversation could not leave their device?</p>
+          <p>I'm Ryan, a web designer and now a software engineer, with a lasting interest in philosophy, theology, and history. Angrove began when I learned that a capable language model could run entirely on a phone. That technical fact raised a more human question: what might someone finally be willing to ask if they knew the conversation could not leave their device?</p>
           <p>I kept thinking about the questions people carry quietly, about faith, doubt, meaning, and truth, and about how little technology is built to help us stay with them. I wanted something that would make inquiry deeper rather than easier to avoid: a place to test an argument, follow a contradiction, and keep the ideas worth returning to.</p>
           <p>I didn't build Angrove as a demonstration of what AI can do. I'm building it because I believe this particular use of it should exist, and because the people who need it most are often the least served by the technology we already have.</p>
         </div>
@@ -90,31 +105,31 @@
     <div class="container">
       <div class="split-head">
         <div class="source-head">
-          <p class="eyebrow">Built in the open</p>
-          <h2 class="display display--tight">Read the <em>Source</em></h2>
+          <p class="eyebrow">Engineering work</p>
+          <h2 class="display display--tight">Explore the <em>Engineering</em></h2>
         </div>
-        <p class="para">Angrove is in active development and isn't publicly released yet. The work happens in three public repositories.</p>
+        <p class="para">Angrove is in active development and isn't publicly released yet. These case studies explain selected engineering decisions. A separate showcase of runnable implementation examples is in preparation.</p>
       </div>
       <ul class="repos">
         <li>
-          <a class="repo-row" href="https://github.com/rbaltodano/Angrove-iOS">
-            <span class="repo-row__path">rbaltodano/<b>Angrove-iOS</b></span>
+          <a class="repo-row" href="case-study.html#architecture">
+            <span class="repo-row__path">Selected <b>implementation examples</b></span>
             <span class="repo-row__body">
-              <span class="repo-row__name">Angrove iOS</span>
-              <span class="repo-row__desc">The iPhone app: the on-device model runtime, source-grounded study, and the Insight Tree.</span>
+              <span class="repo-row__name">Engineering showcase · in preparation</span>
+              <span class="repo-row__desc">A dated slice of Midpoint and Insight Tree embedding code, with sample data, tests, and technical notes. Read the current case studies while the showcase is being prepared.</span>
             </span>
-            <span class="repo-row__tag">SwiftUI</span>
+            <span class="repo-row__tag">Case Studies</span>
             <span class="repo-row__arrow" aria-hidden="true"></span>
           </a>
         </li>
         <li>
-          <a class="repo-row" href="https://github.com/rbaltodano/Angrove-Foundations">
-            <span class="repo-row__path">rbaltodano/<b>Angrove-Foundations</b></span>
+          <a class="repo-row" href="case-study.html#decisions">
+            <span class="repo-row__path">Angrove / <b>architecture notes</b></span>
             <span class="repo-row__body">
-              <span class="repo-row__name">Angrove Foundations</span>
-              <span class="repo-row__desc">Product, design, and architecture documents, plus research on running and fine-tuning models on a phone.</span>
+              <span class="repo-row__name">Product &amp; architecture notes</span>
+              <span class="repo-row__desc">How local retrieval, a shared model runtime, and a lasting map of saved ideas shape the app. Read the engineering decisions and their tradeoffs.</span>
             </span>
-            <span class="repo-row__tag">Docs and research</span>
+            <span class="repo-row__tag">Case Studies</span>
             <span class="repo-row__arrow" aria-hidden="true"></span>
           </a>
         </li>
@@ -130,6 +145,7 @@
           </a>
         </li>
       </ul>
+      <p class="para para--16" id="review-request">Selected implementation examples and technical notes are the focus of the planned showcase. Full-source review is available on request. <a class="link-inline" href="mailto:rbaltodano337@gmail.com?subject=Angrove%20engineering%20review">Contact Ryan about an engineering review</a>.</p>
     </div>
   </section>
 

@@ -44,7 +44,7 @@
     stopAnimation();
     var from = window.scrollY;
     var geometry = scrollGeometry(), origin = geometry.origin, travel = geometry.travel;
-    var rest = targetPhase / last;
+    var rest = progressForPhase(targetPhase);
     var destination = origin + travel * rest;
     if (reduceMotion) { window.scrollTo({ top: destination, behavior: 'instant' }); update(); return; }
     var fromPhase = position(Math.min(Math.max((from - origin) / travel, 0), 1));
@@ -56,12 +56,7 @@
       // Animate the visible panel with the menu curve, then invert the scroll mapping.
       // This avoids applying the manual-scroll pauses and easing a second time.
       var phase = fromPhase + (targetPhase - fromPhase) * scrollEase(progress);
-      var low = 0, high = 1;
-      for (var i = 0; i < 24; i++) {
-        var p = (low + high) / 2;
-        if (position(p) < phase) low = p; else high = p;
-      }
-      window.scrollTo({ top: progress === 1 ? destination : origin + travel * (low + high) / 2, behavior: 'instant' });
+      window.scrollTo({ top: progress === 1 ? destination : origin + travel * progressForPhase(phase), behavior: 'instant' });
       update();
       if (progress < 1) scrollAnimation = requestAnimationFrame(frame);
       else animating = false;
@@ -92,6 +87,8 @@
   // The answer holds still for the first stretch of scroll, so the move to the Insight card is deliberate.
   var HOLD = 0.17;
   function position(p) { return Math.max(0, p - HOLD) / (1 - HOLD) * last; }
+  // Include the answer's initial hold when converting a panel back to page scroll.
+  function progressForPhase(phase) { return HOLD + phase / last * (1 - HOLD); }
 
   // ---------- The answer streams in, then its terms underline ----------
   var words = [];
@@ -151,7 +148,7 @@
         text.setAttribute('aria-busy', 'false');
         tree.dispatchEvent(new CustomEvent('journey:insight', { detail: { key: term.dataset.flowTerm } }));
         showInsight(definition);
-                scrollToPhase(1);
+        scrollToPhase(1);
       }, reduceMotion ? 0 : 2000);
     });
   });
