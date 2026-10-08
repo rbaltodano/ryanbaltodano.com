@@ -69,3 +69,22 @@
   .case-table { min-width: 520px; }
   .case-note { padding: 20px; }
 }
+/* Phone performance charts (js/case-charts.js) */
+.case-chart { position: relative; margin: 0; padding: 24px; border: 1px solid var(--border); border-radius: 20px; background: var(--canvas-secondary); }
+.case-chart__legend { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 0 16px; padding: 0; font-size: 14px; color: var(--paragraph); }
+.case-chart__legend li { display: flex; align-items: center; gap: 8px; }
+.case-chart__swatch { width: 12px; height: 12px; border-radius: 3px; }
+.case-chart__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.case-chart__grid { stroke: var(--border); stroke-width: 1; }
+.case-chart__base { stroke: rgba(34, 15, 1, 0.24); stroke-width: 1; }
+.case-chart__tick { font-family: var(--sans); font-size: 12px; fill: var(--paragraph-dim); }
+.case-chart__label { font-family: var(--sans); font-size: 14px; font-weight: 700; fill: var(--heading); }
+.case-chart__inlabel { font-family: var(--sans); font-size: 13px; font-weight: 700; fill: var(--cream); }
+.case-chart svg [tabindex]:focus-visible { outline: none; stroke: var(--light-green); stroke-width: 2; }
+.case-chart figcaption { margin-top: 16px; font-size: 14px; line-height: 1.7; }
+.case-chart__tip { position: absolute; z-index: 2; padding: 10px 14px; border-radius: 12px; background: var(--canvas-dark-secondary); color: var(--cream); font-size: 13px; line-height: 1.5; pointer-events: none; white-space: nowrap; }
+.case-chart__plot { position: relative; }
+.case-chart__tip strong { color: var(--cream); }
+@media (max-width: 640px) {
+  .case-chart { padding: 16px; }
+}
