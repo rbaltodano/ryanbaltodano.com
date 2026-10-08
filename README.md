@@ -77,8 +77,7 @@ books/model assets, displayed content and Apple-managed backup protection are ou
 ## Case Studies
 
 `case-study.html` is linked after About in every primary navbar and footer, and from the About
-essay. It uses the October 5, 2026 captures in `assets/app/case-study-2026-10-05/` and the existing Study clip; the full product walkthrough
-will be recorded separately. The report distinguishes historical simulator comparisons from
+essay. It uses the October 5, 2026 captures in `assets/app/case-study-2026-10-05/` and the existing Study clip. Three October 8 app recordings now appear in the product section: a question and its conversation tree, the global Insight Tree, and on-device read-aloud playback. The report distinguishes historical simulator comparisons from
 independent acceptance, phone performance, user outcomes and release status. Source text and
 aggregate evaluation evidence live in Angrove-iOS `Documentation/Case-Study.md` and
 `Documentation/Evaluation.md`. Keep the values aligned when new evidence is published.
@@ -114,3 +113,17 @@ website links. Backend remains a separate supporting offline-tooling link; its v
 is outside this change. The résumé download and editable sources now link to the existing Case Studies page
 and describe an independent iOS project. They do not claim the app is open source or
 that the planned showcase has been published.
+
+## App demo recordings
+
+Web playback copies and JPEG posters live in `assets/app/demos/`. Desktop originals are preserved
+outside this repository. The players use native controls, keep audio, and do not autoplay or
+preload the recordings. `css/demo-videos.css` provides the shared responsive layout.
+
+- `user-question-and-insight-tree.mp4` — 1:49; Case Studies and User Guide → Starting a Conversation.
+- `global-insight-tree.mp4` — 0:24; Case Studies and User Guide → Understanding the Insight Tree.
+- `on-device-reader.mp4` — 0:50; Case Studies and User Guide → Starting a Conversation.
+  This shows reading an answer aloud, not the bundled Library reader.
+
+Link GitHub README demos to `https://angrove.app/case-study.html#demos` or the individual
+`#demo-conversation`, `#demo-global-tree`, and `#demo-reader` anchors.
