@@ -22,8 +22,6 @@ site/
   about.html          Founder note, the four principles, engineering showcase preparation and review contact
   case-study.html     Case Studies: current product, architecture, decisions, and supporting research
   report.html         Bug report form that prepares an email to the support inbox
-  waitlist.html       Launch status: development milestones (email signup is not open yet)
-  blog/index.html     Empty state until the first posts
   css/site.css        All tokens and components
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal, FAQ accordions
@@ -60,8 +58,6 @@ their destination.
 
 ## Still to do
 
-- Add a real email signup service before restoring any waitlist form or promise to email visitors.
-- Write the first blog posts.
 - Keep the FAQ's model answer in step with the app's model. As of 2026-10-02 the
   main build uses the Gemma 4 E4B LiteRT Community package (not fine-tuned) on LiteRT-LM.
 
@@ -73,7 +69,7 @@ Copy sources: `../WEBSITE_COPY.md`, `../CONTENT.md`, and the Angrove-Foundations
 ## Encryption copy
 
 Use **Fully Encrypted** with the scope “Your saved personal data is encrypted on your device.”
-The home, About, FAQ, User Guide, launch page, blog and shared footer use this wording.
+The home, About, FAQ, User Guide and shared footer use this wording.
 The guide’s privacy topic explains AES-256-GCM, Keychain keys, local backups and recovery,
 and that deliberate conversation exports remain readable JSON. Appearance preferences, public
 books/model assets, displayed content and Apple-managed backup protection are outside this claim.
