@@ -93,3 +93,17 @@
 @media (max-width: 640px) {
   .case-chart { padding: 16px; }
 }
+/* Bars grow in from their axis (springStandard curve) the first time a chart scrolls into view:
+   the breakdown rows one after another, the sequence bars left to right. Labels fade in after. */
+.case-chart__grow { transform-box: fill-box; transition: transform 0.65s linear(0, 0.0257, 0.0895, 0.1752, 0.2712, 0.3695, 0.4645, 0.5528, 0.6324, 0.7024, 0.7629, 0.814, 0.8567, 0.8916, 0.9198, 0.9422, 0.9598, 0.9733, 0.9834, 0.9909, 0.9963, 1, 1.0024, 1.0039, 1.0047, 1.005, 1.005, 1.0047, 1.0043, 1.0038, 1.0033, 1.0028, 1.0024, 1.002, 1.0016, 1.0013, 1.001, 1.0008, 1.0006, 1.0004, 1); transition-delay: calc(var(--i) * 0.12s); }
+.case-chart__grow--y { transform-origin: 50% 100%; transition-delay: calc(var(--i) * 0.035s); }
+.case-chart__grow--x { transform-origin: 0 50%; }
+.case-chart__after { transition: opacity 0.3s ease; transition-delay: calc(0.45s + var(--i) * 0.12s); }
+.case-chart:not(.is-revealed) .case-chart__grow--x { transform: scaleX(0); }
+.case-chart:not(.is-revealed) .case-chart__grow--y { transform: scaleY(0); }
+.case-chart:not(.is-revealed) .case-chart__after { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .case-chart__grow, .case-chart__after { transition: none; }
+  .case-chart:not(.is-revealed) .case-chart__grow--x, .case-chart:not(.is-revealed) .case-chart__grow--y { transform: none; }
+  .case-chart:not(.is-revealed) .case-chart__after { opacity: 1; }
+}

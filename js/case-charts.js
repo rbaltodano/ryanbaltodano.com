@@ -97,13 +97,15 @@
       const y = top + i * (rowH + gap) + 18;
       el('text', { x: left, y: y - 8, class: 'case-chart__label' }, svg).textContent = row.label;
       let x = 0;
+      const bar = el('g', { class: 'case-chart__grow case-chart__grow--x', style: `--i:${i}` }, svg);
+      const labels = el('g', { class: 'case-chart__after', style: `--i:${i}` }, svg);
       SERIES.forEach((s, j) => {
         const w = sx(row[s.key]);
         const last = j === SERIES.length - 1;
         const width = last ? w : w - 2; // 2px surface gap between segments
-        if (last) row.mark = el('path', { d: endRounded(x, y, width, rowH, 4, true), fill: s.color }, svg);
-        else el('rect', { x, y, width, height: rowH, fill: s.color }, svg);
-        const label = el('text', { x: x + width / 2, y: y + rowH / 2 + 4, class: 'case-chart__inlabel', 'text-anchor': 'middle' }, svg);
+        if (last) row.mark = el('path', { d: endRounded(x, y, width, rowH, 4, true), fill: s.color }, bar);
+        else el('rect', { x, y, width, height: rowH, fill: s.color }, bar);
+        const label = el('text', { x: x + width / 2, y: y + rowH / 2 + 4, class: 'case-chart__inlabel', 'text-anchor': 'middle' }, labels);
         label.textContent = `${row[s.key].toFixed(1)} s`;
         x += w;
       });
@@ -135,12 +137,13 @@
       const y = top + plotH;
       const wh = sy(write);
       let mark;
+      const bar = el('g', { class: 'case-chart__grow case-chart__grow--y', style: `--i:${i}` }, svg);
       if (reload > 0) {
-        el('rect', { x, y: y - wh, width: barW, height: wh, fill: SERIES[1].color }, svg);
+        el('rect', { x, y: y - wh, width: barW, height: wh, fill: SERIES[1].color }, bar);
         const rh = sy(reload) - 2;
-        mark = el('path', { d: endRounded(x, y - wh - 2 - rh, barW, rh, 4, false), fill: SERIES[0].color }, svg);
+        mark = el('path', { d: endRounded(x, y - wh - 2 - rh, barW, rh, 4, false), fill: SERIES[0].color }, bar);
       } else {
-        mark = el('path', { d: endRounded(x, y - wh, barW, wh, 4, false), fill: SERIES[1].color }, svg);
+        mark = el('path', { d: endRounded(x, y - wh, barW, wh, 4, false), fill: SERIES[1].color }, bar);
       }
       if (i === 0 || (i + 1) % 5 === 0) {
         el('text', { x: x + barW / 2, y: H - 8, class: 'case-chart__tick', 'text-anchor': 'middle' }, svg).textContent = i + 1;
@@ -166,5 +169,11 @@
     };
     new ResizeObserver(draw).observe(plot);
     draw();
+    const reveal = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      figure.classList.add('is-revealed');
+      reveal.disconnect();
+    }, { threshold: 0.4 });
+    reveal.observe(figure);
   });
 })();
