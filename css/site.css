@@ -1662,6 +1662,9 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .prose { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; font-size: 17px; line-height: 1.75; color: var(--paragraph); }
 .prose h2 { margin-top: 24px; font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.3; color: var(--heading); }
 .prose strong { color: var(--heading); }
+.prose ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.prose li { position: relative; padding-left: 24px; }
+.prose li::before { content: ""; position: absolute; left: 0; top: 0.85em; width: 10px; height: 2px; background: var(--light-green); }
 
 /* Repo cards (About) */
 .repo { text-decoration: none; transition: transform 0.2s; }

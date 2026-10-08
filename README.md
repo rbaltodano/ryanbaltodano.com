@@ -18,14 +18,14 @@ site/
   faq.html            Common questions: release, cost, privacy, the model and its sources
   features.html       Redirect to guide.html (also how-it-works.html, insight-tree.html)
   model.html          Redirect to faq.html (the model question)
-  privacy.html        Redirect to guide.html#privacy (the Privacy page was retired 2026-10-04)
+  privacy.html        Privacy Policy for the app and website (linked from every footer)
   about.html          Founder note, the four principles, engineering showcase preparation and review contact
   case-study.html     Case Studies: current product, architecture, decisions, and supporting research
-  report.html         Bug report form that prepares an email to the support inbox
+  report.html         Bug report form that sends to the support inbox through Formspree
   css/site.css        All tokens and components
   css/demos.css       Internal-page interaction styles
   js/site.js          Mobile menu, smooth scrolling, headline reveal, FAQ accordions
-  js/bug-report.js    Turns the support form into a user-reviewed email draft
+  js/bug-report.js    Submits the support form to Formspree and shows the result
   js/dot-field.js     Dot-grid background for [data-dot-field] sections: idle shimmer, a ripple from the pointer every 2 s, and a ripple on click/tap
   js/boot.js          Home startup: the app's growing leaf/dots, waits for first-screen images
   js/boot-assets.js   Streams first-screen image downloads once; feeds the loading percentage
