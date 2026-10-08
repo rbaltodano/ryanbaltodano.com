@@ -33,7 +33,7 @@
     let currentTarget = null;
     function retire(tip) {
       tip.classList.remove('is-open');
-      setTimeout(() => tip.remove(), 500);
+      setTimeout(() => tip.remove(), 350);
     }
     return {
       show(target, html) {
