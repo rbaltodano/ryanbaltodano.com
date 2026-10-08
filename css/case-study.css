@@ -17,10 +17,14 @@
 .case-flow li { padding: 20px; border-radius: 20px; background: var(--canvas-secondary); }
 .case-flow span { display: block; margin-bottom: 8px; font-weight: 700; color: var(--heading); }
 .case-flow p { font-size: 14px; line-height: 1.6; }
-.case-screens { padding: 24px; border-radius: 24px; background: var(--canvas-secondary); }
+.case-screens { padding: 24px; border-radius: 24px; background: var(--canvas-secondary); container-type: inline-size; }
 .case-screens__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
 .case-screens a { display: block; min-width: 0; width: fit-content; max-width: 100%; justify-self: center; }
 .case-screens__row--four, .case-screens__row--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Four across whenever the card is wide enough for them (desktop); two by two below that. */
+@container (min-width: 620px) {
+  .case-screens__row--four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 .case-screens--single > a { margin-inline: auto; }
 .case-screens a:focus-visible { outline: 2px solid var(--light-green); outline-offset: 6px; border-radius: 16px; }
 .case-screens img { display: block; width: auto; max-width: 100%; height: auto; max-height: 400px; border-radius: 16px; border: 1px solid var(--border); }
