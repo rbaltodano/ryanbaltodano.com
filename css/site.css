@@ -52,8 +52,7 @@ body {
 }
 
 /* ---------- Bug report form ---------- */
-.report-layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
-.report-form { display: grid; gap: 28px; }
+.report-form { display: grid; gap: 28px; max-width: 760px; margin-inline: auto; }
 .report-field { display: grid; gap: 10px; }
 .report-field__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .report-field label { color: var(--heading); font: 600 16px/1.4 var(--sans); }
@@ -73,12 +72,7 @@ body {
 .btn-block.report-submit:disabled { opacity: 0.6; cursor: default; }
 .report-note { display: flex; gap: 10px; align-items: flex-start; color: var(--paragraph); font: 400 15px/1.6 var(--sans); }
 .report-note::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: 8px; border-radius: 50%; background: var(--light-green); }
-.report-help { display: grid; gap: 14px; padding: 28px; background: var(--canvas-secondary); border: 1px solid var(--border); border-radius: 28px; color: var(--paragraph); font: 400 15px/1.7 var(--sans); }
-.report-help__icon { width: 28px; height: 28px; color: var(--light-green); }
-.report-help__icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-@media (min-width: 761px) { .report-help { position: sticky; top: 112px; } }
 @media (max-width: 760px) {
-  .report-layout { grid-template-columns: 1fr; gap: 32px; }
   .report-submit { width: 100%; text-align: center; }
 }
 img { display: block; max-width: none; }
