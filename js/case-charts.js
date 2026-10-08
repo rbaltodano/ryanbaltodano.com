@@ -26,15 +26,24 @@
   }
 
   // Appears like the app's docked Insight card (bottomDockCard): grows from 35% scale and 24 pt
-  // lower, anchored at its bottom edge. Moving between bars while it's open just re-aims it.
+  // lower, anchored at its bottom edge. Switching bars swaps cards the way the app does: the old
+  // card shrinks away while a new one grows in from the newly hovered bar.
   function tooltip(host) {
-    const tip = document.createElement('div');
-    tip.className = 'case-chart__tip';
-    tip.setAttribute('aria-hidden', 'true');
-    host.appendChild(tip);
+    let current = null;
+    let currentTarget = null;
+    function retire(tip) {
+      tip.classList.remove('is-open');
+      setTimeout(() => tip.remove(), 500);
+    }
     return {
       show(target, html) {
+        if (current && currentTarget === target) return;
+        if (current) retire(current);
+        const tip = document.createElement('div');
+        tip.className = 'case-chart__tip';
+        tip.setAttribute('aria-hidden', 'true');
         tip.innerHTML = html;
+        host.appendChild(tip);
         const box = host.getBoundingClientRect();
         const r = target.getBoundingClientRect();
         let x = r.left + r.width / 2 - box.left - tip.offsetWidth / 2;
@@ -42,9 +51,16 @@
         tip.style.left = `${x}px`;
         tip.style.top = `${r.top - box.top - tip.offsetHeight - 10}px`;
         tip.style.transformOrigin = `${r.left + r.width / 2 - box.left - x}px 100%`;
+        tip.getBoundingClientRect(); // commit the closed state so the entrance animates
         tip.classList.add('is-open');
+        current = tip;
+        currentTarget = target;
       },
-      hide() { tip.classList.remove('is-open'); },
+      hide() {
+        if (current) retire(current);
+        current = null;
+        currentTarget = null;
+      },
     };
   }
 
