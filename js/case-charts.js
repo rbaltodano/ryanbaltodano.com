@@ -25,23 +25,26 @@
     host.appendChild(list);
   }
 
+  // Appears like the app's docked Insight card (bottomDockCard): grows from 35% scale and 24 pt
+  // lower, anchored at its bottom edge. Moving between bars while it's open just re-aims it.
   function tooltip(host) {
     const tip = document.createElement('div');
     tip.className = 'case-chart__tip';
-    tip.hidden = true;
+    tip.setAttribute('aria-hidden', 'true');
     host.appendChild(tip);
     return {
       show(target, html) {
         tip.innerHTML = html;
-        tip.hidden = false;
         const box = host.getBoundingClientRect();
         const r = target.getBoundingClientRect();
         let x = r.left + r.width / 2 - box.left - tip.offsetWidth / 2;
         x = Math.max(0, Math.min(x, box.width - tip.offsetWidth));
         tip.style.left = `${x}px`;
-        tip.style.top = `${r.top - box.top - tip.offsetHeight - 8}px`;
+        tip.style.top = `${r.top - box.top - tip.offsetHeight - 10}px`;
+        tip.style.transformOrigin = `${r.left + r.width / 2 - box.left - x}px 100%`;
+        tip.classList.add('is-open');
       },
-      hide() { tip.hidden = true; },
+      hide() { tip.classList.remove('is-open'); },
     };
   }
 
