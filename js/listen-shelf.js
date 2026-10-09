@@ -1,14 +1,16 @@
 // Listening shelf on the home page, after the app's Library listening cards. One work is read
 // at a time: pressing a card picks up that work where you left off. The card moves to the front
-// of the shelf at 1.1x and swaps its play icon for a ring showing how far through the work you
-// are. Pressing its Listen pill again pauses. The shelf rearranges on the app's menu curve.
+// of the shelf at 1.1x (the rest sit at 0.9x) and swaps its play icon for a ring showing how far through the work you
+// are. Pressing its Listen pill again pauses. The shelf rearranges on the app's menu curve,
+// with a little overshoot so the cards bounce into place.
 // Without JS the cards simply rest.
 (function () {
   var shelf = document.querySelector('[data-listen-shelf]');
   if (!shelf) return;
 
-  var EASE = 'cubic-bezier(0.55, 0, 0.17, 1)';
-  var MOVE_MS = 700;
+  var EASE = 'cubic-bezier(0.55, 0, 0.2, 1.3)';
+  var MOVE_MS = 750;
+  var REST = 0.9, PLAYING = 1.1;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var cards = Array.prototype.slice.call(shelf.children);
   var playing = shelf.querySelector('.listen-card.is-playing');
@@ -36,7 +38,7 @@
     if (reduce.matches) return;
     cards.forEach(function (c) {
       var was = before.get(c), now = center(c);
-      var scale = c.classList.contains('is-playing') ? 1.1 : 1;
+      var scale = c.classList.contains('is-playing') ? PLAYING : REST;
       var dx = was.at.x - now.x, dy = was.at.y - now.y;
       if (!dx && !dy && was.scale === scale) return;
       c.animate([

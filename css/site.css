@@ -1080,6 +1080,7 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .listen-card {
   position: relative;
   z-index: 0;
+  transform: scale(0.9);
   min-height: 250px;
   padding: 28px;
   overflow: hidden;
@@ -1127,8 +1128,9 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 /* The card being read aloud leads the shelf at 1.1x (js/listen-shelf.js moves it); its ring
    pops in and its pill breathes. */
 .listen-card.is-playing { z-index: 1; transform: scale(1.1); }
-/* Hovering a card lifts it slightly; the card being read stays at 1.1x. */
-.listen-card { cursor: pointer; transition: transform 0.35s cubic-bezier(0.55, 0, 0.17, 1); }
+/* Cards rest at 0.9x; hovering one lifts it to 1.05x and the card being read stays at 1.1x.
+   Both settle with a slight overshoot. */
+.listen-card { cursor: pointer; transition: transform 0.45s cubic-bezier(0.55, 0, 0.2, 1.3); }
 .listen-card.is-playing { cursor: default; }
 .listen-card.is-playing .listen-card__pill { cursor: pointer; }
 @media (hover: hover) {
