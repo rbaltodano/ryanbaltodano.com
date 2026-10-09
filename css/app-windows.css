@@ -1,4 +1,4 @@
-/* App windows: small live views into Aquinas on the internal pages (js/app-windows.js).
+/* App windows: small live views into Angrove on the internal pages (js/app-windows.js).
    Same frame as the home page's Insight Tree card; the pieces inside use the app's own
    components and sizes (DockedInsightCards: 24–32 padding, 28–36 radius; dock pill 64 tall). */
 

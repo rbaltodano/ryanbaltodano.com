@@ -1,5 +1,5 @@
 // Live app windows on the internal pages. Each [data-window] is a small working view of an
-// Aquinas feature, modeled on the app's own behavior:
+// Angrove feature, modeled on the app's own behavior:
 //   conversation   the answer streams in and its terms underline; a tapped term shimmers while its
 //                  definition is generated, then the card rises from the foot of the window and
 //                  the window dims behind it (DockedInsightCards)

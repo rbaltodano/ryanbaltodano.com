@@ -1,6 +1,6 @@
 // Insight Tree preview for the home page's "A Map of Your Own Thinking" section.
 //
-// A small port of the iOS app's Insight Tree canvas and Study mode (Aquinas-iOS-main):
+// A small port of the iOS app's Insight Tree canvas and Study mode (Angrove-iOS):
 //   - OrbitCamera.swift           perspective camera orbiting a target (project / turn)
 //   - InsightTreeCamera.swift     overhead tree camera (focal length 3990)
 //   - InsightClusterSpatialLayout Insights at ±45° elevation, alternating around the node
