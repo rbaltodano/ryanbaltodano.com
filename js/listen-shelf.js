@@ -9,7 +9,7 @@
   if (!shelf) return;
 
   var EASE = 'cubic-bezier(0.55, 0, 0.2, 1.3)';
-  var MOVE_MS = 750;
+  var MOVE_MS = 500;
   var REST = 0.9, PLAYING = 1.1;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var cards = Array.prototype.slice.call(shelf.children);
