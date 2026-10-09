@@ -358,112 +358,39 @@
       </div>
     </div>
     <!-- Listening: the app's Library listening cards (LibraryListeningCard). Each work is read
-         aloud on the phone by the Paradee voice; the ring shows how far through the work you are. -->
+         aloud on the phone by the Paradee voice. Press Listen (js/listen-shelf.js) and that card moves
+         to the front, grows, and its ring fills with progress through the work. -->
     <div class="container listen">
       <div class="listen__head">
         <h3 class="heading-md heading-md--tight listen__title">Or put the phone down and <em>listen.</em></h3>
         <p class="para para--16">Angrove reads any work in the Library aloud with a voice that runs entirely on your iPhone. Each word lights up as it's spoken, it picks up where you left off, and it keeps playing from the Lock Screen.</p>
       </div>
-      <ul class="listen__shelf">
-          <li class="listen-card is-playing" style="--p: 0.62">
+      <ul class="listen__shelf" data-listen-shelf>
+          <li class="listen-card is-playing" style="--p: 0.08">
             <p class="listen-card__title">On the Incarnation</p>
             <p class="listen-card__author">Athanasius of Alexandria</p>
-            <span class="listen-card__pill"><span class="listen-card__ring" aria-hidden="true"></span>Listening</span>
+            <button type="button" class="listen-card__pill" aria-pressed="true" aria-label="Listen to On the Incarnation"><svg class="listen-card__play" viewBox="0 0 12 12" aria-hidden="true"><path d="M0 6a6 6 0 1 1 12 0A6 6 0 0 1 0 6zm4.41-2.55a.56.56 0 0 0-.29.49v4.12c0 .2.11.39.29.49.18.1.39.1.57-.01l3.37-2.06a.56.56 0 0 0 0-.96L4.98 3.45a.56.56 0 0 0-.57-.01z"/></svg><span class="listen-card__ring" aria-hidden="true"></span><span data-listen-label>Listening</span></button>
             <img class="listen-card__art" src="assets/library/listen-church.png" alt="" width="640" height="503" loading="lazy" decoding="async">
           </li>
-          <li class="listen-card" style="--p: 0.28">
+          <li class="listen-card" style="--p: 0">
             <p class="listen-card__title">Nicomachean Ethics</p>
             <p class="listen-card__author">Aristotle</p>
-            <span class="listen-card__pill"><span class="listen-card__ring" aria-hidden="true"></span>Listen</span>
+            <button type="button" class="listen-card__pill" aria-pressed="false" aria-label="Listen to Nicomachean Ethics"><svg class="listen-card__play" viewBox="0 0 12 12" aria-hidden="true"><path d="M0 6a6 6 0 1 1 12 0A6 6 0 0 1 0 6zm4.41-2.55a.56.56 0 0 0-.29.49v4.12c0 .2.11.39.29.49.18.1.39.1.57-.01l3.37-2.06a.56.56 0 0 0 0-.96L4.98 3.45a.56.56 0 0 0-.57-.01z"/></svg><span class="listen-card__ring" aria-hidden="true"></span><span data-listen-label>Listen</span></button>
             <img class="listen-card__art" src="assets/library/listen-philosophy.png" alt="" width="640" height="503" loading="lazy" decoding="async">
           </li>
-          <li class="listen-card" style="--p: 0.12">
+          <li class="listen-card" style="--p: 0">
             <p class="listen-card__title">World English Bible</p>
             <p class="listen-card__author">Sacred Scripture</p>
-            <span class="listen-card__pill"><span class="listen-card__ring" aria-hidden="true"></span>Listen</span>
+            <button type="button" class="listen-card__pill" aria-pressed="false" aria-label="Listen to World English Bible"><svg class="listen-card__play" viewBox="0 0 12 12" aria-hidden="true"><path d="M0 6a6 6 0 1 1 12 0A6 6 0 0 1 0 6zm4.41-2.55a.56.56 0 0 0-.29.49v4.12c0 .2.11.39.29.49.18.1.39.1.57-.01l3.37-2.06a.56.56 0 0 0 0-.96L4.98 3.45a.56.56 0 0 0-.57-.01z"/></svg><span class="listen-card__ring" aria-hidden="true"></span><span data-listen-label>Listen</span></button>
             <img class="listen-card__art" src="assets/library/listen-scripture.png" alt="" width="640" height="503" loading="lazy" decoding="async">
           </li>
-          <li class="listen-card" style="--p: 0.45">
+          <li class="listen-card" style="--p: 0">
             <p class="listen-card__title">History of Rome</p>
             <p class="listen-card__author">Livy</p>
-            <span class="listen-card__pill"><span class="listen-card__ring" aria-hidden="true"></span>Listen</span>
+            <button type="button" class="listen-card__pill" aria-pressed="false" aria-label="Listen to History of Rome"><svg class="listen-card__play" viewBox="0 0 12 12" aria-hidden="true"><path d="M0 6a6 6 0 1 1 12 0A6 6 0 0 1 0 6zm4.41-2.55a.56.56 0 0 0-.29.49v4.12c0 .2.11.39.29.49.18.1.39.1.57-.01l3.37-2.06a.56.56 0 0 0 0-.96L4.98 3.45a.56.56 0 0 0-.57-.01z"/></svg><span class="listen-card__ring" aria-hidden="true"></span><span data-listen-label>Listen</span></button>
             <img class="listen-card__art" src="assets/library/listen-history.png" alt="" width="640" height="503" loading="lazy" decoding="async">
           </li>
       </ul>
-    </div>
-    <div class="container">
-      <details class="catalog">
-        <summary>See all 37 works</summary>
-        <div class="works">
-          <section>
-            <h3>Scripture and Creeds</h3>
-            <ul>
-              <li>World English Bible</li>
-              <li>The Ecumenical Creeds</li>
-              <li>The Didache</li>
-            </ul>
-          </section>
-          <section>
-            <h3>Fathers and Doctors</h3>
-            <ul>
-              <li>Summa Theologica</li>
-              <li>City of God</li>
-              <li>Confessions</li>
-              <li>Against Heresies</li>
-              <li>On the Incarnation</li>
-              <li>First Apology</li>
-              <li>Proslogion</li>
-              <li>Ecclesiastical History</li>
-              <li>Ecclesiastical History of the English People</li>
-            </ul>
-          </section>
-          <section>
-            <h3>Councils, Catechisms, and Confessions</h3>
-            <ul>
-              <li>The Seven Ecumenical Councils</li>
-              <li>Canons and Decrees of the Council of Trent</li>
-              <li>Catechism of the Council of Trent</li>
-              <li>Baltimore Catechism No. 3</li>
-              <li>Heidelberg Catechism</li>
-              <li>Augsburg Confession</li>
-              <li>Belgic Confession</li>
-              <li>Westminster Confession of Faith</li>
-              <li>Thirty-Nine Articles</li>
-            </ul>
-          </section>
-          <section>
-            <h3>Philosophy</h3>
-            <ul>
-              <li>Nicomachean Ethics</li>
-              <li>Metaphysics</li>
-              <li>Categories</li>
-              <li>The Consolation of Philosophy</li>
-              <li>The Prince</li>
-              <li>The Wealth of Nations</li>
-            </ul>
-          </section>
-          <section>
-            <h3>History</h3>
-            <ul>
-              <li>History of Rome</li>
-              <li>Antiquities of the Jews and The Jewish War</li>
-              <li>Parallel Lives</li>
-              <li>The Histories</li>
-              <li>History of the Peloponnesian War</li>
-              <li>Annals and Histories</li>
-              <li>The Decline and Fall of the Roman Empire</li>
-            </ul>
-          </section>
-          <section>
-            <h3>Founding Documents</h3>
-            <ul>
-              <li>Magna Carta</li>
-              <li>Declaration of Independence</li>
-              <li>Constitution of the United States</li>
-            </ul>
-          </section>
-        </div>
-      </details>
     </div>
   </section>
 
@@ -516,6 +443,7 @@
 <script src="js/insight-tree.js?v=20261002-map-layout"></script>
 <script src="js/map-flow.js?v=20261005-insight-scroll"></script>
 <script src="js/grounding-demo.js"></script>
+<script src="js/listen-shelf.js"></script>
 <script src="js/murmuration.js?v=20261003-tap"></script>
 </body>
 </html>

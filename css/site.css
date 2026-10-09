@@ -1071,7 +1071,7 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 
 /* Listening shelf: the app's Library listening cards (LibraryListeningCard, light theme).
    Title and Listen pill on the left, the subject's painted artwork pinned to the bottom. */
-.listen { margin-top: 112px; display: flex; flex-direction: column; gap: 40px; }
+.listen { margin-top: 112px; display: flex; flex-direction: column; gap: 56px; }
 .listen__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 84px; }
 .listen__title { flex: none; }
 .listen__title em { font-style: italic; color: var(--light-green); }
@@ -1079,6 +1079,7 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .listen__shelf { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .listen-card {
   position: relative;
+  z-index: 0;
   min-height: 250px;
   padding: 28px;
   overflow: hidden;
@@ -1097,10 +1098,17 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   min-height: 48px;
   background: var(--canvas);
   border-radius: 999px;
+  font: inherit;
   font-weight: 700;
   font-size: 15px;
   color: var(--light-green);
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+.listen-card__pill:hover { background: #EAE3D2; }
+.listen-card__pill:focus-visible { outline: 2px solid var(--light-green); outline-offset: 3px; }
+.listen-card__play { width: 12px; height: 12px; flex: none; fill: currentColor; }
 /* ContextUsageIcon: a ring that fills with how far through the work you are. */
 .listen-card__ring {
   width: 12px;
@@ -1109,15 +1117,25 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   background: conic-gradient(currentColor calc(var(--p) * 360deg), rgba(134, 128, 62, 0.25) 0);
   -webkit-mask: radial-gradient(circle, transparent 3px, #000 3.5px);
   mask: radial-gradient(circle, transparent 3px, #000 3.5px);
+  flex: none;
 }
+/* Works not being read show the play icon; the one being read shows its progress ring. */
+.listen-card__ring, .listen-card.is-playing .listen-card__play { display: none; }
+.listen-card.is-playing .listen-card__ring { display: block; }
 .listen-card__art { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; pointer-events: none; }
-/* The card being read aloud: its ring creeps forward and its pill breathes. */
-@property --p { syntax: "<number>"; inherits: true; initial-value: 0; }
+/* The card being read aloud leads the shelf at 1.1x (js/listen-shelf.js moves it); its ring
+   pops in and its pill breathes. */
+.listen-card.is-playing { z-index: 1; transform: scale(1.1); }
+/* Hovering a card lifts it slightly; the card being read stays at 1.1x. */
+.listen-card { transition: transform 0.35s cubic-bezier(0.55, 0, 0.17, 1); }
+@media (hover: hover) {
+  .listen-card:not(.is-playing):hover { z-index: 1; transform: scale(1.05); }
+}
 @media (prefers-reduced-motion: no-preference) {
-  .listen-card.is-playing { animation: listen-progress 90s linear infinite alternate; }
+  .listen-card.is-playing .listen-card__ring { animation: listen-ring-in 0.4s cubic-bezier(0.55, 0, 0.17, 1); }
   .listen-card.is-playing .listen-card__pill { animation: listen-breathe 2.4s ease-in-out infinite; }
 }
-@keyframes listen-progress { from { --p: 0.62; } to { --p: 0.9; } }
+@keyframes listen-ring-in { from { opacity: 0; transform: scale(0.3); } }
 @keyframes listen-breathe { 50% { box-shadow: 0 0 0 6px rgba(134, 128, 62, 0.12); } }
 @media (max-width: 1280px) {
   .listen__shelf { grid-template-columns: repeat(2, 1fr); }
@@ -1133,7 +1151,7 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
     display: flex;
     gap: 12px;
     margin: 0 calc(var(--gutter) * -1);
-    padding: 0 var(--gutter);
+    padding: 16px var(--gutter);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-padding: 0 var(--gutter);
@@ -1673,35 +1691,6 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .spec code { font: 600 14px ui-monospace, "SF Mono", Menlo, monospace; color: var(--light-green); }
 
 /* Library works list */
-.works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.works section {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: var(--canvas-secondary);
-  border-radius: 24px;
-}
-.works h3 { font-family: var(--serif); font-weight: 400; font-size: 22px; color: var(--heading); }
-.works ul { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.5; color: var(--paragraph); }
-
-/* Collapsed works list under the home Library section */
-.catalog { margin-top: 56px; border-top: 1px solid var(--border); }
-.catalog summary {
-  padding: 24px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  list-style: none;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--heading);
-}
-.catalog summary::-webkit-details-marker { display: none; }
-.catalog summary::after { content: "+"; font-size: 22px; font-weight: 400; color: var(--light-green); }
-.catalog[open] summary::after { content: "–"; }
-.catalog .works { padding-bottom: 8px; }
 
 /* Callout note */
 .note {
@@ -2385,7 +2374,6 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .hero__copy { width: auto; flex: 1; }
   .split-head .display { width: auto; flex: 1; }
   .tree-story, .library, .row { gap: 48px; }
-  .works { grid-template-columns: repeat(2, 1fr); }
   .cards--4 { grid-template-columns: repeat(2, 1fr); }
   .audiences { grid-template-columns: repeat(2, 1fr); }
   .private { padding: 56px; }
@@ -2563,11 +2551,11 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .lede { font-size: 16px; }
   .rows { gap: 80px; }
   .phone { width: 250px; }
-  .cards, .cards--4, .works { grid-template-columns: 1fr; }
+  .cards, .cards--4 { grid-template-columns: 1fr; }
   .spec { grid-template-columns: 1fr; }
   .spec dt { padding-bottom: 4px; border-bottom: 0; }
   .spec dd { padding-top: 0; }
-  .ledger section, .works section, .mock { padding: 24px; }
+  .ledger section, .mock { padding: 24px; }
   .audience { padding: 28px; }
   .lib-card { height: 460px; }
   .sources { padding: 32px 12px 0; }
