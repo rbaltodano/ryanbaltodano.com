@@ -1125,11 +1125,10 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .listen-card__ring, .listen-card.is-playing .listen-card__play { display: none; }
 .listen-card.is-playing .listen-card__ring { display: block; }
 .listen-card__art { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; pointer-events: none; }
-/* The card being read aloud leads the shelf at 1.1x (js/listen-shelf.js moves it); its ring
+/* The card being read aloud leads the shelf (js/listen-shelf.js moves it); its ring
    pops in and its pill breathes. */
-.listen-card.is-playing { z-index: 1; transform: scale(1.1); }
-/* Cards rest at 0.9x; hovering one lifts it to 0.95x and the card being read stays at 1.1x.
-   Both use the app's menu curve. */
+.listen-card.is-playing { z-index: 1; }
+/* Cards are all the same size; hovering one eases it to 0.95x on the app's menu curve. */
 .listen-card { cursor: pointer; transition: transform 0.15s cubic-bezier(0.55, 0, 0.17, 1); }
 .listen-card.is-playing { cursor: default; }
 .listen-card.is-playing .listen-card__pill { cursor: pointer; }
@@ -1165,6 +1164,8 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .listen__shelf::-webkit-scrollbar { display: none; }
   .listen-card { flex: 0 0 82%; min-height: 250px; }
   .listen-card[data-copy] { display: block; }
+  /* Sub-pixel remainder of the drift (js/listen-shelf.js). */
+  .listen-card { translate: var(--drift, 0) 0; }
 }
 
 /* ThinkingShimmer: a bright band (half-width 40% of the text) sweeps left to right for 1 s,

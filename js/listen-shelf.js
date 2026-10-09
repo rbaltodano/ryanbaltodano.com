@@ -1,6 +1,5 @@
 // Listening shelf on the home page, after the app's Library listening cards. One work is read
-// at a time: pressing a card picks up that work where you left off, at 1.1x (the rest sit at
-// 0.9x), with a ring in place of its play icon showing how far through the work you are.
+// at a time: pressing a card picks up that work where you left off, with a ring in place of its play icon showing how far through the work you are.
 // Pressing its Listen pill again pauses.
 // Wider screens: the card being read moves to the front of the shelf, and every five seconds
 // the next work takes the lead, rearranging on the app's menu curve.
@@ -14,8 +13,8 @@
   var EASE = 'cubic-bezier(0.55, 0, 0.17, 1)';
   var MOVE_MS = 500;
   var ROTATE_MS = 5000;
-  var REST = 0.9, PLAYING = 1.1;
-  var DRIFT = 24;          // px per second the phone loop moves on its own
+  var REST = 1, PLAYING = 1;
+  var DRIFT = 60;          // px per second the phone loop moves on its own
   var COPIES = 4;          // extra sets of cards on phones, so a fling never reaches an end
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var phone = window.matchMedia('(max-width: 560px)');
@@ -132,13 +131,21 @@
     var mid = w * (COPIES / 2);
     while (pos < mid - w / 2) pos += w;
     while (pos >= mid + w / 2) pos -= w;
-    shelf.scrollLeft = pos;
+    place();
+  }
+
+  // scrollLeft only lands on whole device pixels, which makes a slow drift step at a fraction of
+  // the display's refresh rate. Scroll to the nearest pixel and shift the cards by the remainder.
+  function place() {
+    var whole = Math.round(pos);
+    shelf.scrollLeft = whole;
+    shelf.style.setProperty('--drift', (whole - pos) + 'px');
   }
 
   function startPhone() {
     buildCopies();
     pos = setWidth() * (COPIES / 2);
-    shelf.scrollLeft = pos;
+    place();
     run();
   }
 
@@ -146,6 +153,7 @@
     shelf.querySelectorAll('[data-copy]').forEach(function (c) { c.remove(); });
     cancelAnimationFrame(frame);
     frame = 0;
+    shelf.style.removeProperty('--drift');
   }
 
   shelf.addEventListener('touchstart', function () { touching = true; }, { passive: true });
