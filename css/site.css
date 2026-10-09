@@ -1150,7 +1150,9 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .listen { margin-top: 80px; }
   .listen__head { flex-direction: column; align-items: stretch; gap: 16px; }
 }
-/* Phones: the shelf scrolls sideways, one card and a peek of the next. */
+/* Phones: the shelf is an endless sideways loop (js/listen-shelf.js adds copies of the cards
+   and drifts it along); it can still be swiped either way. Copies only exist on phones. */
+.listen-card[data-copy] { display: none; }
 @media (max-width: 560px) {
   .listen__shelf {
     display: flex;
@@ -1158,12 +1160,11 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
     margin: 0 calc(var(--gutter) * -1);
     padding: 16px var(--gutter);
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding: 0 var(--gutter);
     scrollbar-width: none;
   }
   .listen__shelf::-webkit-scrollbar { display: none; }
-  .listen-card { flex: 0 0 82%; min-height: 250px; scroll-snap-align: start; }
+  .listen-card { flex: 0 0 82%; min-height: 250px; }
+  .listen-card[data-copy] { display: block; }
 }
 
 /* ThinkingShimmer: a bright band (half-width 40% of the text) sweeps left to right for 1 s,
@@ -1336,21 +1337,6 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .proofs__more { margin-top: 24px; font-size: 15px; color: var(--paragraph); }
 .proofs__more a { color: var(--light-green); font-weight: 700; border-bottom: 1px solid rgba(134, 128, 62, 0.4); }
 
-/* Launch Status: the milestone list. */
-.milestones { list-style: none; max-width: 880px; border-radius: 28px; background: var(--canvas-secondary); padding: 8px 32px; }
-.milestone { padding: 22px 0; display: flex; align-items: flex-start; gap: 18px; border-bottom: 1px solid var(--border); }
-.milestone:last-child { border-bottom: 0; }
-.milestone > div { flex: 1; min-width: 0; }
-.milestone__title { font-weight: 700; font-size: 16px; line-height: 1.4; color: var(--heading); }
-.milestone__body { margin-top: 2px; font-size: 15px; line-height: 1.6; color: var(--paragraph); }
-.milestone__mark { position: relative; flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; border: 2px solid rgba(74, 50, 28, 0.25); }
-.milestone--done .milestone__mark { background: var(--light-green); border-color: var(--light-green); }
-.milestone--done .milestone__mark::after { content: ""; position: absolute; left: 6px; top: 2.5px; width: 5px; height: 10px; border: solid var(--cream); border-width: 0 2px 2px 0; transform: rotate(45deg); }
-.milestone--active .milestone__mark { border-color: var(--light-green); background: conic-gradient(var(--light-green) 0 50%, transparent 0); }
-.milestone--todo .milestone__title { color: var(--paragraph); }
-.milestone__state { flex-shrink: 0; margin-top: 2px; padding: 4px 12px; border-radius: 48px; font-weight: 700; font-size: 12px; line-height: 1.5; color: var(--paragraph-dim); background: var(--canvas); }
-.milestone--done .milestone__state { color: var(--light-green); }
-.milestone--active .milestone__state { color: var(--cream); background: var(--light-green); }
 
 /* ---------- Who it's for ---------- */
 
@@ -2523,9 +2509,6 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   .nav .btn-pill { padding: 14px 20px; }
   .logo { font-size: 28px; }
   .tree-card { height: 340px; }
-  .milestones { padding: 4px 20px; }
-  .milestone { flex-wrap: wrap; gap: 12px; }
-  .milestone__state { margin-left: 34px; }
   .tree-step + .tree-step { margin-top: 40px; }
   :root { --section-y: 72px; }
   .why .scene { display: none; }
