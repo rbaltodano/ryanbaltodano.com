@@ -1119,7 +1119,8 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
   mask: radial-gradient(circle, transparent 3px, #000 3.5px);
   flex: none;
 }
-/* Works not being read show the play icon; the one being read shows its progress ring. */
+/* Works not being read show the play icon; the one being read shows its ring at the
+   listening position, where it picks up. */
 .listen-card__ring, .listen-card.is-playing .listen-card__play { display: none; }
 .listen-card.is-playing .listen-card__ring { display: block; }
 .listen-card__art { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; pointer-events: none; }
@@ -1127,7 +1128,9 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
    pops in and its pill breathes. */
 .listen-card.is-playing { z-index: 1; transform: scale(1.1); }
 /* Hovering a card lifts it slightly; the card being read stays at 1.1x. */
-.listen-card { transition: transform 0.35s cubic-bezier(0.55, 0, 0.17, 1); }
+.listen-card { cursor: pointer; transition: transform 0.35s cubic-bezier(0.55, 0, 0.17, 1); }
+.listen-card.is-playing { cursor: default; }
+.listen-card.is-playing .listen-card__pill { cursor: pointer; }
 @media (hover: hover) {
   .listen-card:not(.is-playing):hover { z-index: 1; transform: scale(1.05); }
 }
