@@ -1069,6 +1069,80 @@ a { color: inherit; text-decoration: none; transition: color 0.25s ease, border-
 .work__title { white-space: nowrap; line-height: 26px; }
 .work__serif { font-family: var(--serif); font-size: 20px; color: var(--heading); }
 
+/* Listening shelf: the app's Library listening cards (LibraryListeningCard, light theme).
+   Title and Listen pill on the left, the subject's painted artwork pinned to the bottom. */
+.listen { margin-top: 112px; display: flex; flex-direction: column; gap: 40px; }
+.listen__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 84px; }
+.listen__title { flex: none; }
+.listen__title em { font-style: italic; color: var(--light-green); }
+.listen__head .para { max-width: 520px; }
+.listen__shelf { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.listen-card {
+  position: relative;
+  min-height: 250px;
+  padding: 28px;
+  overflow: hidden;
+  background: var(--canvas-secondary);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+}
+.listen-card > p, .listen-card__pill { position: relative; z-index: 1; max-width: 160px; }
+.listen-card__title { font-family: var(--serif); font-style: italic; font-size: 18px; line-height: 1.55; color: var(--heading); }
+.listen-card__author { padding: 5px 0 8px; font-size: 15px; line-height: 1.5; color: var(--paragraph); }
+.listen-card__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  min-height: 48px;
+  background: var(--canvas);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--light-green);
+}
+/* ContextUsageIcon: a ring that fills with how far through the work you are. */
+.listen-card__ring {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: conic-gradient(currentColor calc(var(--p) * 360deg), rgba(134, 128, 62, 0.25) 0);
+  -webkit-mask: radial-gradient(circle, transparent 3px, #000 3.5px);
+  mask: radial-gradient(circle, transparent 3px, #000 3.5px);
+}
+.listen-card__art { position: absolute; left: 0; bottom: 0; width: 100%; height: auto; pointer-events: none; }
+/* The card being read aloud: its ring creeps forward and its pill breathes. */
+@property --p { syntax: "<number>"; inherits: true; initial-value: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .listen-card.is-playing { animation: listen-progress 90s linear infinite alternate; }
+  .listen-card.is-playing .listen-card__pill { animation: listen-breathe 2.4s ease-in-out infinite; }
+}
+@keyframes listen-progress { from { --p: 0.62; } to { --p: 0.9; } }
+@keyframes listen-breathe { 50% { box-shadow: 0 0 0 6px rgba(134, 128, 62, 0.12); } }
+@media (max-width: 1280px) {
+  .listen__shelf { grid-template-columns: repeat(2, 1fr); }
+  .listen-card { min-height: 280px; }
+}
+@media (max-width: 1024px) {
+  .listen { margin-top: 80px; }
+  .listen__head { flex-direction: column; align-items: stretch; gap: 16px; }
+}
+/* Phones: the shelf scrolls sideways, one card and a peek of the next. */
+@media (max-width: 560px) {
+  .listen__shelf {
+    display: flex;
+    gap: 12px;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--gutter);
+    scrollbar-width: none;
+  }
+  .listen__shelf::-webkit-scrollbar { display: none; }
+  .listen-card { flex: 0 0 82%; min-height: 250px; scroll-snap-align: start; }
+}
+
 /* ThinkingShimmer: a bright band (half-width 40% of the text) sweeps left to right for 1 s,
    then rests off the right edge for 1 s. */
 .shimmer {
