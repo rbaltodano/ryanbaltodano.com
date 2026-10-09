@@ -1,9 +1,14 @@
-# Aquinas — Website
+# Angrove — Website
 
-Plain HTML/CSS/JS, no build step. Open `index.html` directly in a browser, or serve the folder:
+Source for [angrove.app](https://angrove.app): the product site, User Guide, FAQ, case studies,
+privacy policy, and bug-report form for Angrove, a private iOS study app whose language model runs
+entirely on the iPhone. The app itself lives in
+[Angrove-iOS](https://github.com/rbaltodano/Angrove-iOS).
+
+Plain HTML/CSS/JS, no build step, deployed with GitHub Pages from `main`. Open `index.html`
+directly in a browser, or serve the repository root:
 
 ```bash
-cd site
 python3 -m http.server 8000
 ```
 
@@ -12,7 +17,7 @@ Then visit `http://localhost:8000`.
 ## Pages
 
 ```
-site/
+(repository root)
   index.html          Home (built from Figma "source-of-truth" / Home, node 169:7019)
   guide.html          The app's User Guide (Settings → User Guide) word for word: First Five Minutes, eleven topics, Try It app windows
   faq.html            Common questions: release, cost, privacy, the model and its sources
@@ -127,3 +132,8 @@ preload the recordings. `css/demo-videos.css` provides the shared responsive lay
 
 Link GitHub README demos to `https://angrove.app/case-study.html#demos` or the individual
 `#demo-conversation`, `#demo-global-tree`, and `#demo-reader` anchors.
+
+## License
+
+Copyright © 2026 Ryan Baltodano (Sine Viridian). All rights reserved. The source is published
+for reference and review; see [`LICENSE`](LICENSE). Bundled fonts keep their own licenses.
