@@ -165,25 +165,26 @@ ul { list-style: none; }
 }
 
 /* ---------- Footer ---------- */
-/* A light panel under the countryside painting, ending in an oversized italic surname that fades
-   toward the bottom edge. */
+/* A dark panel in Angrove's dark-mode canvasSecondary, ending in an oversized italic surname that
+   fades toward the bottom edge. */
 .footer {
+  --footer-ink: 255, 250, 240;
   padding: 72px max(var(--gutter), calc((100% - var(--content)) / 2)) 0;
   display: flex; flex-direction: column; gap: 28px;
   overflow: hidden; container-type: inline-size;
-  background: var(--surface); border-top: 1px solid var(--border); color: var(--text); font-size: 14px;
+  background: #24201C; color: rgba(var(--footer-ink), 0.7); font-size: 14px;
 }
 .footer__row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px 48px; flex-wrap: wrap; }
 .footer__brand { display: grid; gap: 10px; }
-.footer .wordmark { font-size: 24px; }
-.footer nav { display: flex; flex-wrap: wrap; gap: 12px 28px; font-weight: 600; font-size: 15px; color: var(--heading); }
-.footer nav a:hover { color: var(--accent); }
-.footer__legal { font-weight: 500; color: var(--text-dim); }
+.footer .wordmark { font-size: 24px; color: rgb(var(--footer-ink)); }
+.footer nav { display: flex; flex-wrap: wrap; gap: 12px 28px; font-weight: 600; font-size: 15px; color: rgb(var(--footer-ink)); }
+.footer nav a:hover { color: #B7AE78; }
+.footer__legal { font-weight: 500; color: rgba(var(--footer-ink), 0.5); }
 .footer__wordmark {
   margin: 8px -0.12em -0.2em; padding: 0 0.12em;
   font: italic 400 calc(100cqi / 5.1)/1 var(--serif); letter-spacing: -0.05em;
   white-space: nowrap; text-align: center; color: transparent;
-  background: linear-gradient(180deg, rgba(58, 44, 34, 0.55) 0%, rgba(58, 44, 34, 0.18) 45%, rgba(58, 44, 34, 0) 80%);
+  background: linear-gradient(180deg, rgba(var(--footer-ink), 0.7) 0%, rgba(var(--footer-ink), 0.22) 45%, rgba(var(--footer-ink), 0) 80%);
   -webkit-background-clip: text; background-clip: text;
   user-select: none;
 }
