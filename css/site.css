@@ -58,6 +58,8 @@ ul { list-style: none; }
 .btn:hover { transform: translateY(-1px); }
 .btn--primary { background: var(--ink); color: var(--on-ink); }
 .btn--surface { border: 1px solid var(--border); background: var(--canvas-secondary); color: var(--heading); }
+/* Angrove's dark-mode canvasSecondary, matching the footer. */
+.btn--dark { background: #24201C; color: #FFFAF0; }
 .btn--ghost { border: 1px solid var(--border); background: var(--surface); color: var(--heading); }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 
