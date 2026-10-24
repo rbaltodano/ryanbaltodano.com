@@ -7,6 +7,7 @@
 :root {
   --canvas: #F5F1E8;
   --surface: #FFFCF5;
+  --canvas-secondary: #FFFAF0;
   --heading: #3A2C22;
   --text: rgba(58, 40, 24, 0.78);
   --text-dim: rgba(58, 40, 24, 0.55);
@@ -56,6 +57,7 @@ ul { list-style: none; }
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 24px; border-radius: 999px; font: 700 15px/1.2 var(--sans); transition: transform 0.2s ease, background 0.2s ease; }
 .btn:hover { transform: translateY(-1px); }
 .btn--primary { background: var(--ink); color: var(--on-ink); }
+.btn--surface { border: 1px solid var(--border); background: var(--canvas-secondary); color: var(--heading); }
 .btn--ghost { border: 1px solid var(--border); background: var(--surface); color: var(--heading); }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
 
