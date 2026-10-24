@@ -115,6 +115,11 @@ ul { list-style: none; }
 .split .stack { display: grid; gap: 20px; }
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
 
+/* ---------- About ---------- */
+/* A single readable column; a headshot can sit beside it later. */
+.about { display: grid; gap: 16px; max-width: 760px; }
+.about__body { font-size: clamp(18px, 1.8vw, 20px); line-height: 1.75; }
+
 /* ---------- Writing ---------- */
 /* Post cards match angrove.app's Development Notes index (css/blog.css there). */
 .notes-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
