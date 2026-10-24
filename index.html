@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Ryan Baltodano — Applied AI Engineer &amp; Product Designer</title>
+<meta name="description" content="Ryan Baltodano designs and builds native apps around on-device AI. Featured work: Angrove, a private AI study app for iPhone and Mac.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ryan Baltodano — Applied AI Engineer &amp; Product Designer">
+<meta property="og:description" content="Designed and built Angrove solo: on-device LLM inference, offline retrieval, and encrypted storage on iPhone and Mac.">
+<meta property="og:url" content="https://ryanbaltodano.com/">
+<meta property="og:image" content="https://ryanbaltodano.com/assets/media/mac-boards-1.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ryanbaltodano.com/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/site.css?v=20261024">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "url": "https://ryanbaltodano.com/",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Ryan Baltodano",
+    "jobTitle": "Applied AI Engineer and Product Designer",
+    "url": "https://ryanbaltodano.com/",
+    "sameAs": ["https://github.com/rbaltodano", "https://angrove.app/"]
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="wordmark" href="/">Ryan Baltodano</a>
+    <nav aria-label="Primary">
+      <a href="#work">Work</a>
+      <a class="hide-sm" href="#writing">Writing</a>
+      <a href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <p class="eyebrow">Applied AI engineer · Product designer</p>
+    <h1 class="display">I design and build native apps around <em>on-device AI.</em></h1>
+    <p class="lede">Most recently, I built Angrove on my own: a private study app that runs a 4-billion-parameter language model, source retrieval, and encrypted storage entirely on iPhone and Mac, with no server. I did the product design, the SwiftUI engineering, the model integration, and the website.</p>
+    <div class="actions">
+      <a class="btn btn--primary" href="#work">See the work</a>
+      <a class="btn btn--ghost" href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      <a class="link" href="https://github.com/rbaltodano">GitHub</a>
+    </div>
+    <p class="status">Open to product and iOS engineering roles · Open to relocation</p>
+  </section>
+
+  <section class="section" id="work">
+    <article class="project reveal">
+      <div class="project__head">
+        <img class="project__icon" src="assets/media/angrove-leaf.png" alt="" width="196" height="208">
+        <div>
+          <h2 class="h2">Angrove</h2>
+          <div class="project__meta">
+            <span class="chip">iPhone beta on TestFlight</span>
+            <span class="chip">Mac in development</span>
+            <span class="chip">Solo, since April 2026</span>
+          </div>
+        </div>
+      </div>
+      <p class="project__summary">A private AI study workspace for philosophy, history, and theology. Ask a question, check the primary sources behind the answer, and save the ideas worth keeping in a semantic map. Everything runs on the device: no model server, no account, works offline.</p>
+
+      <div class="media">
+        <figure class="phone">
+          <video muted playsinline loop preload="metadata" data-play-in-view poster="assets/media/user-question-and-insight-tree.jpg" width="588" height="1280" aria-label="iPhone recording: asking a question and growing an Insight Tree">
+            <source src="assets/media/user-question-and-insight-tree-inline.mp4" type="video/mp4">
+          </video>
+          <figcaption><strong>iPhone</strong>A grounded answer, contextual definitions, and a map that grows with the conversation. <a class="link" href="https://angrove.app/assets/app/demos/user-question-and-insight-tree.mp4">With sound · 1:49</a></figcaption>
+        </figure>
+        <figure class="desktop">
+          <video muted playsinline loop preload="metadata" data-play-in-view poster="assets/media/learn-easier-poster.jpg" aria-label="Mac recording: a conversation on a study Board">
+            <source src="assets/media/learn-easier.mp4" type="video/mp4">
+          </video>
+          <figcaption><strong>Mac</strong>Spatial study Boards: notes, images, saved Insights, and live conversations on one canvas.</figcaption>
+        </figure>
+      </div>
+
+      <div class="facts">
+        <div><strong>On-device LLM</strong><span>Gemma 4 E4B on LiteRT-LM. No model server, works offline.</span></div>
+        <div><strong>51,836 passages</strong><span>Searched locally with Core ML MiniLM embeddings.</span></div>
+        <div><strong>iPhone + Mac</strong><span>One SwiftUI codebase, native on each platform.</span></div>
+        <div><strong>AES-256-GCM</strong><span>Encrypted personal data with Keychain-managed keys.</span></div>
+        <div><strong>900+ tests</strong><span>Behavior and regression coverage across both apps.</span></div>
+        <div><strong>End to end</strong><span>Design, engineering, evaluation, and release.</span></div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn--primary" href="https://angrove.app/case-study.html">Read the case study</a>
+        <a class="btn btn--ghost" href="https://github.com/rbaltodano/Angrove-iOS">Source on GitHub</a>
+        <a class="link" href="https://testflight.apple.com/join/qHDFeAUa">Try the iPhone beta</a>
+        <a class="link" href="https://angrove.app/">angrove.app</a>
+      </div>
+    </article>
+  </section>
+
+  <section class="section" id="engineering">
+    <div class="section-head reveal">
+      <p class="eyebrow">Engineering highlights</p>
+      <h2 class="h2">The hard parts, <em>and the code.</em></h2>
+    </div>
+    <div class="grid-2">
+      <div class="card reveal">
+        <h3 class="h3">One model, many jobs</h3>
+        <p>Answers, definitions, and tree updates all compete for a single on-device model. A shared task queue serializes them with cancellation and reordering, and a lifecycle manager handles loading, idle unloading, and background transitions.</p>
+        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Shared/Features/Conversation/ModelTaskQueue.swift">ModelTaskQueue.swift</a>
+      </div>
+      <div class="card reveal">
+        <h3 class="h3">Grounded answers, offline</h3>
+        <p>A bundled library of 37 primary works is embedded and searched on the phone. Source routing and passage locators pick the text a question actually needs, and answers link back to the passages they drew on.</p>
+        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Shared/Services/MiniLMGroundingProvider.swift">MiniLMGroundingProvider.swift</a>
+      </div>
+      <div class="card reveal">
+        <h3 class="h3">Encryption without data loss</h3>
+        <p>Saved personal data is encrypted at rest with per-platform Keychain keys. Startup validates ciphertext and migrates existing plaintext installs in place, covered by migration regression tests.</p>
+        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Packages/AngroveCore/Sources/AngroveCore/LocalDataEncryption.swift">LocalDataEncryption.swift</a>
+      </div>
+      <div class="card reveal">
+        <h3 class="h3">Two native apps, one core</h3>
+        <p>Conversation, persistence, retrieval, and design-system code live in a shared layer. Each platform owns its navigation, windows, and input, so the Mac app feels like a Mac app rather than a stretched phone.</p>
+        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/macOS/Features/MacWorkspaceView.swift">MacWorkspaceView.swift</a>
+      </div>
+    </div>
+    <div class="note reveal">
+      <h3 class="h3">Decisions backed by measurement</h3>
+      <p>The model's native “thinking” mode roughly doubled answer time without improving objective passes across two evaluation sets, so it ships off by default. <a class="link" href="https://angrove.app/blog/choosing-a-thinking-default.html">Read the comparison</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="design">
+    <div class="split reveal">
+      <div class="stack">
+        <p class="eyebrow">Design and web</p>
+        <h2 class="h2">From Figma to <em>shipping UI.</em></h2>
+        <p>I designed Angrove's interface and visual identity in Figma, then built it as a SwiftUI design system shared by both apps. I also designed and hand-built <a class="link" href="https://angrove.app/">angrove.app</a> in plain HTML, CSS, and JavaScript, including the interactive explainers in its <a class="link" href="https://angrove.app/guide.html">User Guide</a>.</p>
+        <p class="muted">Background: web design, now product engineering.</p>
+      </div>
+      <img src="assets/media/mac-boards-1.webp" alt="An Angrove study Board on Mac combining a heading, an image, and study notes" width="2400" height="1560" loading="lazy">
+    </div>
+  </section>
+
+  <section class="section" id="writing">
+    <div class="section-head reveal">
+      <p class="eyebrow">Writing</p>
+      <h2 class="h2">Engineering notes, <em>with the numbers.</em></h2>
+    </div>
+    <div class="list reveal">
+      <a href="https://angrove.app/blog/better-sources-bigger-model.html">
+        <span class="h3">Better sources beat a bigger model</span>
+        <p>Testing compressed models led back to a more useful question: what happens when the model has the right source?</p>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="https://angrove.app/blog/where-the-wait-goes.html">
+        <span class="h3">Where the wait actually goes</span>
+        <p>Fresh launches, twenty answers in a row, and the cost of restarting the model engine on an iPhone 17.</p>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="https://angrove.app/blog/choosing-a-thinking-default.html">
+        <span class="h3">Measure before choosing a default</span>
+        <p>Four simulator runs tested whether native thinking earned its extra answer time.</p>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="https://angrove.app/blog/a-working-model-is-the-first-gate.html">
+        <span class="h3">A working model is only the first gate</span>
+        <p>Earlier Gemma 12B and Qwen3-4B experiments, and why generation, session retention, and citations need separate checks.</p>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<section class="cta" id="contact">
+  <img class="cta__scene" src="assets/media/italian-countryside.png" alt="" width="2400" height="397" loading="lazy">
+  <div class="cta__copy reveal">
+    <p class="eyebrow">Contact</p>
+    <h2>Let's Build Something <em>Worth Keeping.</em></h2>
+    <p>Open to product and iOS engineering roles, and to relocation. Happy to walk through any part of the code.</p>
+    <div class="actions actions--center">
+      <a class="btn btn--accent" href="mailto:rbaltodano337@gmail.com?subject=Hello%20from%20ryanbaltodano.com">Email me</a>
+      <a class="btn btn--outline" href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">View my résumé</a>
+    </div>
+    <p class="cta__aside">Or try the work yourself: <a class="link" href="https://testflight.apple.com/join/qHDFeAUa">download the Angrove beta</a> for iPhone.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__row">
+    <div class="footer__brand">
+      <a class="wordmark" href="/">Ryan Baltodano</a>
+      <p>Applied AI engineer and product designer.</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="#work">Work</a>
+      <a href="#writing">Writing</a>
+      <a href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+      <a href="https://github.com/rbaltodano">GitHub</a>
+      <a href="https://angrove.app/">Angrove</a>
+      <a href="mailto:rbaltodano337@gmail.com">Email</a>
+    </nav>
+  </div>
+  <p class="footer__legal">© 2026 Ryan Baltodano</p>
+  <p class="footer__wordmark" aria-hidden="true">Baltodano</p>
+</footer>
+
+<script src="js/site.js?v=20261024"></script>
+</body>
+</html>
