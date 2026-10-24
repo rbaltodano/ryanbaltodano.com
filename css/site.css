@@ -1,22 +1,23 @@
 /* ryanbaltodano.com: a personal portfolio. Shares Angrove's typefaces and warm palette so the
-   two sites read as siblings, with a quieter, editorial layout of its own. Light only: each
-   section sets its own surface, like angrove.app. */
+   two sites read as siblings, with a quieter, editorial layout of its own. Dark only, in the
+   app's dark-mode palette. */
 
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=Figtree:wght@400;500;600;700&display=swap');
 
 :root {
-  --canvas: #F5F1E8;
-  --surface: #FFFCF5;
-  --canvas-secondary: #FFFAF0;
-  --heading: #3A2C22;
-  --text: rgba(58, 40, 24, 0.78);
-  --text-dim: rgba(58, 40, 24, 0.55);
-  --accent: #7A7436;
-  --accent-soft: rgba(122, 116, 54, 0.12);
-  --border: rgba(34, 15, 1, 0.09);
-  --ink: #16120E;
-  --on-ink: #FFFCF5;
-  --shadow: 0 30px 60px -32px rgba(34, 15, 1, 0.45);
+  /* Angrove's dark-mode colors (AngroveTheme.Colors, dark values). */
+  --canvas: #120F0C;
+  --surface: #24201C;
+  --canvas-secondary: #24201C;
+  --heading: #FFFAF0;
+  --text: rgba(255, 250, 240, 0.75);
+  --text-dim: rgba(255, 250, 240, 0.5);
+  --accent: #B7AE78;
+  --accent-soft: rgba(183, 174, 120, 0.14);
+  --border: rgba(255, 250, 240, 0.08);
+  --ink: #FFFAF0;
+  --on-ink: #120F0C;
+  --shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.7);
 
   --serif: "Libre Baskerville", Georgia, serif;
   --sans: "Figtree", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -88,7 +89,8 @@ ul { list-style: none; }
 .media figure { min-width: 0; display: grid; gap: 14px; }
 .media video { width: 100%; background: #1D1A17; box-shadow: var(--shadow); }
 .media .phone video { max-width: 260px; margin-inline: auto; border-radius: 32px; }
-.media .desktop video { border-radius: 14px; }
+.mac-video { width: 100%; }
+.media .desktop video, .mac-video { border-radius: 1.4% / 2.25%; background: var(--canvas); box-shadow: var(--shadow), 0 0 0 1px var(--border); }
 .media figcaption { font-size: 14px; line-height: 1.6; color: var(--text-dim); }
 .media figcaption strong { display: block; color: var(--heading); font: 400 18px/1.4 var(--serif); }
 @media (max-width: 760px) { .media { grid-template-columns: 1fr; } }
@@ -111,7 +113,6 @@ ul { list-style: none; }
 
 /* ---------- Design ---------- */
 .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
-.split img { border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
 .split .stack { display: grid; gap: 20px; }
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
 
@@ -142,7 +143,7 @@ ul { list-style: none; }
 }
 
 /* ---------- Footer ---------- */
-/* A light panel under the countryside painting, ending in an oversized italic surname that fades
+/* A raised panel under the countryside painting, ending in an oversized italic surname that fades
    toward the bottom edge. */
 .footer {
   padding: 72px max(var(--gutter), calc((100% - var(--content)) / 2)) 0;
@@ -160,7 +161,7 @@ ul { list-style: none; }
   margin: 8px -0.12em -0.2em; padding: 0 0.12em;
   font: italic 400 calc(100cqi / 5.1)/1 var(--serif); letter-spacing: -0.05em;
   white-space: nowrap; text-align: center; color: transparent;
-  background: linear-gradient(180deg, rgba(58, 44, 34, 0.55) 0%, rgba(58, 44, 34, 0.18) 45%, rgba(58, 44, 34, 0) 80%);
+  background: linear-gradient(180deg, rgba(255, 250, 240, 0.6) 0%, rgba(255, 250, 240, 0.18) 45%, rgba(255, 250, 240, 0) 80%);
   -webkit-background-clip: text; background-clip: text;
   user-select: none;
 }
