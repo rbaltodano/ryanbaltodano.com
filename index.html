@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://ryanbaltodano.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/site.css?v=20261024-mac">
+<link rel="stylesheet" href="css/site.css?v=20261024-notes">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -50,7 +50,6 @@
     <h1 class="display">I design and build native apps around <em>on-device AI.</em></h1>
     <p class="lede">Most recently, I built Angrove on my own: a private study app that runs a 4-billion-parameter language model, source retrieval, and encrypted storage entirely on iPhone and Mac, with no server. I did the product design, the SwiftUI engineering, the model integration, and the website.</p>
     <div class="actions">
-      <a class="btn btn--surface" href="#work">See the work</a>
       <a class="btn btn--ghost" href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">Résumé</a>
       <a class="link" href="https://github.com/rbaltodano">GitHub</a>
     </div>
@@ -155,27 +154,47 @@
       <p class="eyebrow">Writing</p>
       <h2 class="h2">Engineering notes, <em>with the numbers.</em></h2>
     </div>
-    <div class="list reveal">
-      <a href="https://angrove.app/blog/better-sources-bigger-model.html">
-        <span class="h3">Better sources beat a bigger model</span>
-        <p>Testing compressed models led back to a more useful question: what happens when the model has the right source?</p>
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="https://angrove.app/blog/where-the-wait-goes.html">
-        <span class="h3">Where the wait actually goes</span>
-        <p>Fresh launches, twenty answers in a row, and the cost of restarting the model engine on an iPhone 17.</p>
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="https://angrove.app/blog/choosing-a-thinking-default.html">
-        <span class="h3">Measure before choosing a default</span>
-        <p>Four simulator runs tested whether native thinking earned its extra answer time.</p>
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="https://angrove.app/blog/a-working-model-is-the-first-gate.html">
-        <span class="h3">A working model is only the first gate</span>
-        <p>Earlier Gemma 12B and Qwen3-4B experiments, and why generation, session retention, and citations need separate checks.</p>
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
+    <div class="notes-grid reveal">
+      <article class="note-card note-card--featured">
+        <a class="note-card__image" href="https://angrove.app/blog/better-sources-bigger-model.html" tabindex="-1" aria-hidden="true"><img src="assets/media/open-door.jpg" alt="" loading="eager" width="1680" height="720"><span class="note-card__tag">Models &amp; retrieval</span></a>
+        <div class="note-card__body">
+          <div class="note-card__meta"><time datetime="2026-10-20">October 20, 2026</time><span aria-hidden="true">·</span><span>4 min read</span></div>
+          <h3><a href="https://angrove.app/blog/better-sources-bigger-model.html">Better Sources Beat a Bigger Model</a></h3>
+          <p class="note-card__excerpt">Testing compressed models led back to a more useful question: what happens when the model has the right source?</p>
+          <p class="note-card__takeaway"><strong>Takeaway</strong> Gemma 4 E4B stays. The next step is better evidence, including an optional Wikipedia search.</p>
+          <div class="note-card__foot"><span class="note-card__author"><img src="assets/media/angrove-leaf.png" alt="" width="17" height="18">Ryan Baltodano</span><a class="note-card__more" href="https://angrove.app/blog/better-sources-bigger-model.html">Read post <span aria-hidden="true">→</span><span class="visually-hidden">: Better Sources Beat a Bigger Model</span></a></div>
+        </div>
+      </article>
+      <article class="note-card">
+        <a class="note-card__image" href="https://angrove.app/blog/where-the-wait-goes.html" tabindex="-1" aria-hidden="true"><img src="assets/media/olive-sapling.jpg" alt="" loading="lazy" width="1680" height="720"><span class="note-card__tag">Performance</span></a>
+        <div class="note-card__body">
+          <div class="note-card__meta"><time datetime="2026-10-08">October 8, 2026</time><span aria-hidden="true">·</span><span>2 min read</span></div>
+          <h3><a href="https://angrove.app/blog/where-the-wait-goes.html">Where the Wait Actually Goes</a></h3>
+          <p class="note-card__excerpt">Fresh launches, twenty answers in a row, and the cost of restarting the model engine on an iPhone 17.</p>
+          <p class="note-card__takeaway"><strong>Takeaway</strong> Loading and periodic engine restarts are part of the wait people experience, so they need to be measured alongside generation.</p>
+          <div class="note-card__foot"><span class="note-card__author"><img src="assets/media/angrove-leaf.png" alt="" width="17" height="18">Ryan Baltodano</span><a class="note-card__more" href="https://angrove.app/blog/where-the-wait-goes.html">Read post <span aria-hidden="true">→</span><span class="visually-hidden">: Where the Wait Actually Goes</span></a></div>
+        </div>
+      </article>
+      <article class="note-card">
+        <a class="note-card__image" href="https://angrove.app/blog/choosing-a-thinking-default.html" tabindex="-1" aria-hidden="true"><img src="assets/media/olive-bench.jpg" alt="" loading="lazy" width="1680" height="720"><span class="note-card__tag">Evaluation</span></a>
+        <div class="note-card__body">
+          <div class="note-card__meta"><time datetime="2026-10-02">October 2, 2026</time><span aria-hidden="true">·</span><span>2 min read</span></div>
+          <h3><a href="https://angrove.app/blog/choosing-a-thinking-default.html">Measure Before Choosing a Default</a></h3>
+          <p class="note-card__excerpt">Four simulator runs tested whether native thinking earned its extra answer time in Angrove.</p>
+          <p class="note-card__takeaway"><strong>Takeaway</strong> Native thinking stays off by default: aggregate objective passes were unchanged across these development sets, while answer time roughly doubled.</p>
+          <div class="note-card__foot"><span class="note-card__author"><img src="assets/media/angrove-leaf.png" alt="" width="17" height="18">Ryan Baltodano</span><a class="note-card__more" href="https://angrove.app/blog/choosing-a-thinking-default.html">Read post <span aria-hidden="true">→</span><span class="visually-hidden">: Measure Before Choosing a Default</span></a></div>
+        </div>
+      </article>
+      <article class="note-card">
+        <a class="note-card__image" href="https://angrove.app/blog/a-working-model-is-the-first-gate.html" tabindex="-1" aria-hidden="true"><img src="assets/media/olive-bowl.jpg" alt="" loading="lazy" width="1680" height="720"><span class="note-card__tag">Research archive</span></a>
+        <div class="note-card__body">
+          <div class="note-card__meta">August–September 2026<span aria-hidden="true">·</span><span>2 min read</span></div>
+          <h3><a href="https://angrove.app/blog/a-working-model-is-the-first-gate.html">A Working Model Is Only the First Gate</a></h3>
+          <p class="note-card__excerpt">Earlier Gemma 12B and Qwen3-4B experiments showed why short generation, session retention, and trustworthy citations need separate checks.</p>
+          <p class="note-card__takeaway"><strong>Takeaway</strong> A successful short answer is only the first gate. These experiments were shelved on September 25, 2026.</p>
+          <div class="note-card__foot"><span class="note-card__author"><img src="assets/media/angrove-leaf.png" alt="" width="17" height="18">Ryan Baltodano</span><a class="note-card__more" href="https://angrove.app/blog/a-working-model-is-the-first-gate.html">Read post <span aria-hidden="true">→</span><span class="visually-hidden">: A Working Model Is Only the First Gate</span></a></div>
+        </div>
+      </article>
     </div>
   </section>
 

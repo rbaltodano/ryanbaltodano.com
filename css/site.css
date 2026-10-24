@@ -116,13 +116,45 @@ ul { list-style: none; }
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
 
 /* ---------- Writing ---------- */
-.list { border-top: 1px solid var(--border); }
-.list a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 24px; padding: 24px 4px; border-bottom: 1px solid var(--border); transition: background 0.2s; }
-.list a:hover { background: var(--accent-soft); }
-.list .h3 { font-size: 20px; }
-.list p { grid-column: 1; font-size: 15px; }
-.list .arrow { grid-row: 1 / span 2; grid-column: 2; align-self: center; color: var(--accent); font-weight: 700; transition: transform 0.2s; }
-.list a:hover .arrow { transform: translateX(4px); }
+/* Post cards match angrove.app's Development Notes index (css/blog.css there). */
+.notes-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.note-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border-radius: 20px; border: 1px solid var(--border); background: var(--canvas-secondary); transition: transform .2s ease, box-shadow .2s ease; }
+.note-card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(74, 50, 28, 0.12); }
+.note-card__image { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--border); }
+.note-card__image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.note-card:hover .note-card__image img { transform: scale(1.04); }
+.note-card__image img[src$="open-door.jpg"] { object-position: 60% 50%; }
+.note-card__image img[src$="olive-sapling.jpg"] { object-position: 80% 50%; }
+.note-card__image img[src$="olive-bench.jpg"] { object-position: 60% 50%; }
+.note-card__tag { position: absolute; top: 16px; left: 16px; padding: 5px 12px; border-radius: 999px; background: var(--canvas); color: var(--accent); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); font-size: 14px; font-weight: 700; letter-spacing: .04em; line-height: 1.4; text-transform: uppercase; }
+.note-card__body { display: flex; flex: 1; flex-direction: column; gap: 14px; padding: 24px 28px 26px; }
+.note-card__meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 13px; line-height: 1.6; color: var(--text-dim); }
+.note-card h3 { font: 400 clamp(22px, 2.2vw, 26px)/1.35 var(--serif); color: var(--heading); }
+.note-card h3 a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.note-card:hover h3 a { color: var(--accent); }
+.note-card__excerpt { font-size: 15px; line-height: 1.7; }
+.note-card__takeaway { padding: 12px 16px; border-radius: 12px; background: var(--canvas); font-size: 14px; line-height: 1.65; }
+.note-card__takeaway strong { display: block; margin-bottom: 2px; color: #A28F1E; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.note-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+.note-card__author { display: inline-flex; align-items: center; gap: 8px; color: var(--heading); font-weight: 600; }
+.note-card__author img { width: 17px; height: 18px; }
+.note-card__more { position: relative; z-index: 2; color: var(--accent); font-weight: 700; }
+.note-card__more:hover { text-decoration: underline; text-underline-offset: 4px; }
+.note-card a:focus-visible { outline-offset: 2px; }
+.note-card h3 a:focus-visible { outline: none; }
+.note-card h3 a:focus-visible::after { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 20px; }
+.note-card--featured { grid-column: 1 / -1; flex-direction: row; }
+.note-card--featured .note-card__image { flex: 1; aspect-ratio: auto; min-height: 280px; }
+.note-card--featured .note-card__body { flex: 1.3; justify-content: center; gap: 12px; padding: 28px 36px; }
+.note-card--featured h3 { font-size: clamp(26px, 2.8vw, 34px); }
+.note-card--featured .note-card__foot { margin-top: 8px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (max-width: 860px) {
+  .note-card--featured { flex-direction: column; }
+  .note-card--featured .note-card__image { flex: none; height: min(56.25vw, 300px); min-height: 0; }
+  .note-card--featured .note-card__body { padding: 24px 28px 26px; }
+}
+@media (max-width: 700px) { .notes-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
 
 /* ---------- Closing call to action ---------- */
 /* Mirrors angrove.app's closing section: centered copy over the painted countryside. */
