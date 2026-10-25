@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://ryanbaltodano.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/site.css?v=20261025-sections">
+<link rel="stylesheet" href="css/site.css?v=20261025-system2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -152,16 +152,165 @@
       <div class="board__item board__item--video" data-board-item style="--x: 45%; --y: 7%;">
         <video class="mac-video" muted playsinline loop preload="metadata" data-play-in-view poster="assets/media/lay-your-ideas-out-poster.jpg" width="2400" height="1496" aria-label="Mac recording: laying out notes and images on a study Board"><source src="assets/media/lay-your-ideas-out.mp4" type="video/mp4"></video>
       </div>
-      <div class="board__item board__item--tokens" data-board-item style="--x: 52%; --y: 67%;">
-        <p class="board__label">Angrove design system</p>
-        <ul class="swatches">
-          <li><span style="background:#F3EEE2"></span>Canvas</li>
-          <li><span style="background:#FFFAF0"></span>Canvas Secondary</li>
-          <li><span style="background:#86803E"></span>Light Green</li>
-          <li><span style="background:#614C40"></span>Heading</li>
-          <li><span style="background:#24201C"></span>Dark Canvas</li>
-        </ul>
-        <p class="board__type"><span class="serif">Libre Baskerville</span> · <span>Figtree</span></p>
+      <div class="board__item board__item--icons" data-board-item style="--x: 56%; --y: 66%;">
+        <img src="assets/media/app-icon-light.png" alt="Angrove app icon, light" width="256" height="256">
+        <img src="assets/media/app-icon-dark.png" alt="Angrove app icon, dark" width="256" height="256">
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="system">
+    <div class="ds reveal" data-ds data-mode="light">
+      <div class="ds__head">
+        <div class="ds__titles">
+          <p class="eyebrow">Design system</p>
+          <h2 class="h2">One system, <em>two platforms.</em></h2>
+          <p class="ds__intro">The tokens behind Angrove, mirrored from Figma paint styles into SwiftUI and shared by the iPhone app, the Mac app, and angrove.app.</p>
+        </div>
+        <div class="ds-toggle" role="group" aria-label="Appearance">
+          <button type="button" data-mode-set="light" aria-pressed="true">Light</button>
+          <button type="button" data-mode-set="dark" aria-pressed="false">Dark</button>
+        </div>
+      </div>
+
+      <div class="ds__grid">
+        <article class="ds-panel ds-brand">
+          <p class="ds-label">Brand</p>
+          <div class="ds-brand__icons">
+            <img src="assets/media/app-icon-light.png" alt="Angrove app icon, light" width="256" height="256">
+            <img src="assets/media/app-icon-dark.png" alt="Angrove app icon, dark" width="256" height="256">
+          </div>
+          <img class="ds-logo ds-logo--light" src="assets/media/logo-dark-text.png" alt="Angrove wordmark" width="800" height="242">
+          <img class="ds-logo ds-logo--dark" src="assets/media/logo-light-text.png" alt="Angrove wordmark" width="800" height="242">
+        </article>
+
+        <article class="ds-panel ds-color">
+          <p class="ds-label">Color</p>
+          <ul class="ds-swatches">
+          <li><button type="button" class="ds-swatch" style="--l: #F3EEE2; --d: #120F0C;" data-light="#F3EEE2" data-dark="#120F0C" aria-label="Copy Canvas hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Canvas</span>
+            <code class="ds-swatch__token">canvas</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#F3EEE2</span><span class="ds-hex ds-hex--dark">#120F0C</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #FFFAF0; --d: #24201C;" data-light="#FFFAF0" data-dark="#24201C" aria-label="Copy Canvas Secondary hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Canvas Secondary</span>
+            <code class="ds-swatch__token">canvasSecondary</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#FFFAF0</span><span class="ds-hex ds-hex--dark">#24201C</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #86803E; --d: #B7AE78;" data-light="#86803E" data-dark="#B7AE78" aria-label="Copy Light Green hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Light Green</span>
+            <code class="ds-swatch__token">lightGreen</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#86803E</span><span class="ds-hex ds-hex--dark">#B7AE78</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #6F6844; --d: #B7AE78;" data-light="#6F6844" data-dark="#B7AE78" aria-label="Copy Dark Green hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Dark Green</span>
+            <code class="ds-swatch__token">darkGreen</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#6F6844</span><span class="ds-hex ds-hex--dark">#B7AE78</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #614C40; --d: #FFFAF0;" data-light="#614C40" data-dark="#FFFAF0" aria-label="Copy Heading hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Heading</span>
+            <code class="ds-swatch__token">headingText</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#614C40</span><span class="ds-hex ds-hex--dark">#FFFAF0</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #4A321C; --d: #FFFAF0;" data-light="#4A321C" data-dark="#FFFAF0" aria-label="Copy Primary Brown hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Primary Brown</span>
+            <code class="ds-swatch__token">primaryBrown</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#4A321C</span><span class="ds-hex ds-hex--dark">#FFFAF0</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #4A321CBF; --d: #FFFAF0BF;" data-light="#4A321C" data-dark="#FFFAF0" aria-label="Copy Paragraph hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Paragraph</span>
+            <code class="ds-swatch__token">paragraphText</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#4A321C</span><span class="ds-hex ds-hex--dark">#FFFAF0</span><span class="ds-swatch__alpha">75%</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #220F011A; --d: #FFFAF014;" data-light="#220F01" data-dark="#FFFAF0" aria-label="Copy Border hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Border</span>
+            <code class="ds-swatch__token">brownBorder</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#220F01</span><span class="ds-hex ds-hex--dark">#FFFAF0</span><span class="ds-swatch__alpha">10% / 8%</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #AF4949; --d: #AF4949;" data-light="#AF4949" data-dark="#AF4949" aria-label="Copy Accent Red hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Accent Red</span>
+            <code class="ds-swatch__token">accentRed</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#AF4949</span><span class="ds-hex ds-hex--dark">#AF4949</span></span>
+          </button></li>
+          <li><button type="button" class="ds-swatch" style="--l: #408CFF; --d: #408CFF;" data-light="#408CFF" data-dark="#408CFF" aria-label="Copy Unread hex">
+            <span class="ds-swatch__chip"></span>
+            <span class="ds-swatch__name">Unread</span>
+            <code class="ds-swatch__token">unreadDot</code>
+            <span class="ds-swatch__hex"><span class="ds-hex ds-hex--light">#408CFF</span><span class="ds-hex ds-hex--dark">#408CFF</span></span>
+          </button></li>
+          </ul>
+        </article>
+
+        <article class="ds-panel ds-type">
+          <p class="ds-label">Typography</p>
+          <div class="ds-families">
+            <div class="ds-family"><span class="ds-family__glyph ds-sample--serif">Aa</span><p><strong>Libre Baskerville</strong>The editorial voice: titles, headings, and quotes.</p></div>
+            <div class="ds-family"><span class="ds-family__glyph ds-sample--sans">Aa</span><p><strong>Figtree</strong>The interface: labels, body copy, buttons, and cards.</p></div>
+          </div>
+          <ol class="ds-scale">
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>titleXLarge</code><span>Libre Baskerville · 40</span></span>
+            <span class="ds-sample ds-sample--serif " style="--size: 40px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>titleLarge</code><span>Libre Baskerville · 34</span></span>
+            <span class="ds-sample ds-sample--serif " style="--size: 34px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>title</code><span>Libre Baskerville · 24</span></span>
+            <span class="ds-sample ds-sample--serif " style="--size: 24px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>heading</code><span>Libre Baskerville · 20</span></span>
+            <span class="ds-sample ds-sample--serif " style="--size: 20px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>quote</code><span>Libre Baskerville Italic · 16</span></span>
+            <span class="ds-sample ds-sample--serif is-italic" style="--size: 16px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>uiHeading</code><span>Figtree Bold · 18</span></span>
+            <span class="ds-sample ds-sample--sans is-bold" style="--size: 18px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>uiSubheading</code><span>Figtree Bold · 14</span></span>
+            <span class="ds-sample ds-sample--sans is-bold" style="--size: 14px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>body</code><span>Figtree Regular · 14</span></span>
+            <span class="ds-sample ds-sample--sans " style="--size: 14px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          <li class="ds-scale__row">
+            <span class="ds-scale__meta"><code>uiLabel</code><span>Figtree Bold · 12</span></span>
+            <span class="ds-sample ds-sample--sans is-bold is-label" style="--size: 12px;" contenteditable="plaintext-only" spellcheck="false" data-sample>What do we owe each other?</span>
+          </li>
+          </ol>
+        </article>
+
+        <article class="ds-panel ds-parts">
+          <p class="ds-label">Components</p>
+          <div class="ds-insight">
+            <p class="ds-insight__kind">Insight</p>
+            <p class="ds-insight__title">Prudence</p>
+            <p class="ds-insight__body">Right reason applied to action: the virtue of choosing well in particular circumstances.</p>
+            <div class="ds-insight__chips"><span>Virtue</span><span>Aquinas</span></div>
+          </div>
+          <dl class="ds-specs">
+            <div><dt>Card radius</dt><dd>28</dd></div>
+            <div><dt>Small radius</dt><dd>16</dd></div>
+            <div><dt>Grid unit</dt><dd>8</dd></div>
+            <div><dt>Control height</dt><dd>44</dd></div>
+          </dl>
+        </article>
       </div>
     </div>
   </section>
@@ -262,6 +411,7 @@
 <script src="js/dot-field.js?v=20261025"></script>
 <script src="js/guide-tasks.js?v=20261025"></script>
 <script src="js/board.js?v=20261025"></script>
+<script src="js/design-system.js?v=20261025"></script>
 <script src="js/murmuration.js?v=20261025"></script>
 </body>
 </html>
