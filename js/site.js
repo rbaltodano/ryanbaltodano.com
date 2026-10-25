@@ -33,20 +33,3 @@
   videos.forEach(function (video) { watcher.observe(video); });
 })();
 
-// The Model Tasks card starts with a short practice queue the first time it scrolls into view, so it
-// shows the queue at work instead of an idle card.
-(function () {
-  var demo = document.querySelector('[data-guide-tasks]');
-  if (!demo || !('IntersectionObserver' in window)) return;
-  var seen = new IntersectionObserver(function (entries) {
-    if (!entries[0].isIntersecting) return;
-    seen.disconnect();
-    ['question', 'define', 'tree', 'define'].forEach(function (kind, i) {
-      setTimeout(function () {
-        var button = demo.querySelector('[data-practice="' + kind + '"]');
-        if (button) button.click();
-      }, 400 + i * 350);
-    });
-  }, { threshold: 0.4 });
-  seen.observe(demo);
-})();
