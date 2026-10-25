@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://ryanbaltodano.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/site.css?v=20261025-btn">
+<link rel="stylesheet" href="css/site.css?v=20261025-sections">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -72,22 +72,15 @@
     </figure>
   </section>
 
-  <section class="section" id="work">
-    <article class="project reveal">
-      <div class="project__head">
-        <img class="project__icon" src="assets/media/angrove-leaf.png" alt="" width="196" height="208">
-        <div>
-          <h2 class="h2">Angrove</h2>
-          <div class="project__meta">
-            <span class="chip">iPhone beta on TestFlight</span>
-            <span class="chip">Mac in development</span>
-            <span class="chip">Solo, since April 2026</span>
-          </div>
-        </div>
+  <section class="case bleed" id="work" data-dot-field data-dot-color="255, 250, 240">
+    <div class="case__inner">
+      <div class="case__head reveal">
+        <p class="eyebrow">Selected work · 2026</p>
+        <h2 class="case__title"><img src="assets/media/angrove-leaf.png" alt="" width="196" height="208">Angrove</h2>
+        <p class="case__meta">iPhone beta on TestFlight · Mac in development · Solo since April 2026</p>
       </div>
-      <p class="project__summary">A private AI study workspace for philosophy, history, and theology. Ask a question, check the primary sources behind the answer, and save the ideas worth keeping in a semantic map. Everything runs on the device: no model server, no account, works offline.</p>
-
-      <div class="facts">
+      <p class="case__summary reveal">A private AI study workspace for philosophy, history, and theology. Ask a question, check the primary sources behind the answer, and save the ideas worth keeping in a semantic map. Everything runs on the device: no model server, no account, works offline.</p>
+      <div class="case__facts reveal">
         <div><strong>On-device LLM</strong><span>Gemma 4 E4B on LiteRT-LM. No model server, works offline.</span></div>
         <div><strong>51,836 passages</strong><span>Searched locally with Core ML MiniLM embeddings.</span></div>
         <div><strong>iPhone + Mac</strong><span>One SwiftUI codebase, native on each platform.</span></div>
@@ -95,14 +88,12 @@
         <div><strong>900+ tests</strong><span>Behavior and regression coverage across both apps.</span></div>
         <div><strong>End to end</strong><span>Design, engineering, evaluation, and release.</span></div>
       </div>
-
-      <div class="actions">
-        <a class="btn btn--primary" href="https://angrove.app/case-study.html">Read the case study</a>
-        <a class="btn btn--ghost" href="https://github.com/rbaltodano/Angrove-iOS">Source on GitHub</a>
+      <div class="actions reveal">
+        <a class="btn btn--accent" href="https://angrove.app/case-study.html">Read the case study</a>
+        <a class="link" href="https://github.com/rbaltodano/Angrove-iOS">Source on GitHub</a>
         <a class="link" href="https://testflight.apple.com/join/qHDFeAUa">Try the iPhone beta</a>
-        <a class="link" href="https://angrove.app/">angrove.app</a>
       </div>
-    </article>
+    </div>
   </section>
 
   <section class="section" id="engineering">
@@ -110,50 +101,76 @@
       <p class="eyebrow">Engineering highlights</p>
       <h2 class="h2">The hard parts, <em>and the code.</em></h2>
     </div>
-    <div class="grid-2">
-      <div class="card reveal">
-        <h3 class="h3">One model, many jobs</h3>
-        <p>Answers, definitions, and tree updates all compete for a single on-device model. A shared task queue serializes them with cancellation and reordering, and a lifecycle manager handles loading, idle unloading, and background transitions.</p>
-        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Shared/Features/Conversation/ModelTaskQueue.swift">ModelTaskQueue.swift</a>
+    <div class="eng reveal">
+      <div class="eng__list">
+        <details class="eng__item" name="eng" open>
+          <summary><span class="eng__title">One model, many jobs</span><span class="eng__file">ModelTaskQueue.swift</span></summary>
+          <div class="eng__body"><p>Answers, definitions, and tree updates all compete for a single on-device model. A shared task queue serializes them with cancellation and reordering, and a lifecycle manager handles loading, idle unloading, and background transitions. The card beside this list is that queue, running practice tasks.</p><a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Shared/Features/Conversation/ModelTaskQueue.swift">Read ModelTaskQueue.swift</a></div>
+        </details>
+        <details class="eng__item" name="eng">
+          <summary><span class="eng__title">Grounded answers, offline</span><span class="eng__file">MiniLMGroundingProvider.swift</span></summary>
+          <div class="eng__body"><p>A bundled library of 37 primary works is embedded and searched on the phone. Source routing and passage locators pick the text a question actually needs, and answers link back to the passages they drew on.</p><a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Shared/Services/MiniLMGroundingProvider.swift">Read MiniLMGroundingProvider.swift</a></div>
+        </details>
+        <details class="eng__item" name="eng">
+          <summary><span class="eng__title">Encryption without data loss</span><span class="eng__file">LocalDataEncryption.swift</span></summary>
+          <div class="eng__body"><p>Saved personal data is encrypted at rest with per-platform Keychain keys. Startup validates ciphertext and migrates existing plaintext installs in place, covered by migration regression tests.</p><a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Packages/AngroveCore/Sources/AngroveCore/LocalDataEncryption.swift">Read LocalDataEncryption.swift</a></div>
+        </details>
+        <details class="eng__item" name="eng">
+          <summary><span class="eng__title">Two native apps, one core</span><span class="eng__file">MacWorkspaceView.swift</span></summary>
+          <div class="eng__body"><p>Conversation, persistence, retrieval, and design-system code live in a shared layer. Each platform owns its navigation, windows, and input, so the Mac app feels like a Mac app rather than a stretched phone.</p><a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/macOS/Features/MacWorkspaceView.swift">Read MacWorkspaceView.swift</a></div>
+        </details>
+        <div class="note">
+          <h3 class="h3">Decisions backed by measurement</h3>
+          <p>The model's native “thinking” mode roughly doubled answer time without improving objective passes across two evaluation sets, so it ships off by default. <a class="link" href="https://angrove.app/blog/choosing-a-thinking-default.html">Read the comparison</a>.</p>
+        </div>
       </div>
-      <div class="card reveal">
-        <h3 class="h3">Grounded answers, offline</h3>
-        <p>A bundled library of 37 primary works is embedded and searched on the phone. Source routing and passage locators pick the text a question actually needs, and answers link back to the passages they drew on.</p>
-        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Shared/Services/MiniLMGroundingProvider.swift">MiniLMGroundingProvider.swift</a>
+      <div class="eng__demo" data-guide-tasks>
+        <div class="mt-frame">
+          <img class="mt-frame__bg" src="assets/media/vineyard-hills.jpg" alt="" loading="lazy" width="1680" height="720">
+          <div class="mt-card" aria-live="polite">
+            <div class="mt-card__head"><p class="mt-card__title">Model Tasks</p><span class="mt-card__count" data-mt-count hidden></span></div>
+            <div class="mt-card__rows" data-mt-rows></div>
+          </div>
+        </div>
+        <div class="practice-list">
+          <button type="button" class="practice" data-practice="question"><svg class="practice__plus" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v9M1.5 6h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Ask a Question</span></button>
+          <button type="button" class="practice" data-practice="define"><svg class="practice__plus" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v9M1.5 6h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Define a Word</span></button>
+          <button type="button" class="practice" data-practice="midpoint"><svg class="practice__plus" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v9M1.5 6h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Create a Midpoint</span></button>
+          <button type="button" class="practice" data-practice="tree"><svg class="practice__plus" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1.5v9M1.5 6h9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Update the Insight Tree</span></button>
+        </div>
       </div>
-      <div class="card reveal">
-        <h3 class="h3">Encryption without data loss</h3>
-        <p>Saved personal data is encrypted at rest with per-platform Keychain keys. Startup validates ciphertext and migrates existing plaintext installs in place, covered by migration regression tests.</p>
-        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/Packages/AngroveCore/Sources/AngroveCore/LocalDataEncryption.swift">LocalDataEncryption.swift</a>
-      </div>
-      <div class="card reveal">
-        <h3 class="h3">Two native apps, one core</h3>
-        <p>Conversation, persistence, retrieval, and design-system code live in a shared layer. Each platform owns its navigation, windows, and input, so the Mac app feels like a Mac app rather than a stretched phone.</p>
-        <a class="code-link" href="https://github.com/rbaltodano/Angrove-iOS/blob/main/macOS/Features/MacWorkspaceView.swift">MacWorkspaceView.swift</a>
-      </div>
-    </div>
-    <div class="note reveal">
-      <h3 class="h3">Decisions backed by measurement</h3>
-      <p>The model's native “thinking” mode roughly doubled answer time without improving objective passes across two evaluation sets, so it ships off by default. <a class="link" href="https://angrove.app/blog/choosing-a-thinking-default.html">Read the comparison</a>.</p>
     </div>
   </section>
 
   <section class="section" id="design">
-    <div class="split reveal">
-      <div class="stack">
+    <div class="board reveal" data-board data-dot-field data-dot-color="134, 128, 62" data-dot-rest="hidden">
+      <div class="board__item board__item--text" data-board-item style="--x: 4%; --y: 9%;">
         <p class="eyebrow">Design and web</p>
         <h2 class="h2">From Figma to <em>shipping UI.</em></h2>
         <p>I designed Angrove's interface and visual identity in Figma, then built it as a SwiftUI design system shared by both apps. I also designed and hand-built <a class="link" href="https://angrove.app/">angrove.app</a> in plain HTML, CSS, and JavaScript, including the interactive explainers in its <a class="link" href="https://angrove.app/guide.html">User Guide</a>.</p>
       </div>
-      <video class="mac-video" muted playsinline loop preload="metadata" data-play-in-view poster="assets/media/lay-your-ideas-out-poster.jpg" width="2400" height="1496" aria-label="Mac recording: laying out notes and images on a study Board"><source src="assets/media/lay-your-ideas-out.mp4" type="video/mp4"></video>
+      <div class="board__item board__item--video" data-board-item style="--x: 45%; --y: 7%;">
+        <video class="mac-video" muted playsinline loop preload="metadata" data-play-in-view poster="assets/media/lay-your-ideas-out-poster.jpg" width="2400" height="1496" aria-label="Mac recording: laying out notes and images on a study Board"><source src="assets/media/lay-your-ideas-out.mp4" type="video/mp4"></video>
+      </div>
+      <div class="board__item board__item--tokens" data-board-item style="--x: 52%; --y: 67%;">
+        <p class="board__label">Angrove design system</p>
+        <ul class="swatches">
+          <li><span style="background:#F3EEE2"></span>Canvas</li>
+          <li><span style="background:#FFFAF0"></span>Canvas Secondary</li>
+          <li><span style="background:#86803E"></span>Light Green</li>
+          <li><span style="background:#614C40"></span>Heading</li>
+          <li><span style="background:#24201C"></span>Dark Canvas</li>
+        </ul>
+        <p class="board__type"><span class="serif">Libre Baskerville</span> · <span>Figtree</span></p>
+      </div>
     </div>
   </section>
 
   <section class="section" id="about">
-    <div class="about reveal">
+    <div class="about-ed reveal">
       <p class="eyebrow">About</p>
-      <h2 class="h2">Design and engineering as <em>one decision.</em></h2>
-      <p class="about__body">I started as a web designer and became a software engineer by building the things I wanted to exist. Angrove began when I learned a capable language model could run entirely on a phone, and I wanted to see what a private, thoughtful AI tool could look like end to end. I care about products where design and engineering are one decision, not a handoff. I'm looking for product engineering, design engineering, or iOS roles, including design-focused teams, and I'm open to relocating.</p>
+      <h2 class="about-ed__statement">Design and engineering as <em>one decision.</em></h2>
+      <p class="about-ed__body">I started as a web designer and became a software engineer by building the things I wanted to exist. Angrove began when I learned a capable language model could run entirely on a phone, and I wanted to see what a private, thoughtful AI tool could look like end to end. I care about products where design and engineering are one decision, not a handoff. I'm looking for product engineering, design engineering, or iOS roles, including design-focused teams, and I'm open to relocating.</p>
     </div>
   </section>
 
@@ -241,6 +258,10 @@
   <p class="footer__wordmark" aria-hidden="true">Baltodano</p>
 </footer>
 
-<script src="js/site.js?v=20261024"></script>
+<script src="js/site.js?v=20261025"></script>
+<script src="js/dot-field.js?v=20261025"></script>
+<script src="js/guide-tasks.js?v=20261025"></script>
+<script src="js/board.js?v=20261025"></script>
+<script src="js/murmuration.js?v=20261025"></script>
 </body>
 </html>
