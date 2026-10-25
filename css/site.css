@@ -308,7 +308,7 @@ ul { list-style: none; }
 .swatch-card__hex { font-size: 18px; line-height: 1.2; }
 .swatch-card__hex b { font-weight: 700; }
 .swatch-card__name { font-size: 13px; line-height: 1.4; opacity: 0.7; text-align: right; }
-.swatch-card__glyph { grid-column: 1 / -1; grid-row: 3; justify-self: end; font-size: 112px; line-height: 0.8; letter-spacing: -0.03em; }
+.swatch-card__glyph { grid-column: 1 / -1; grid-row: 3; justify-self: end; font-style: italic; font-size: 112px; line-height: 0.8; letter-spacing: -0.03em; }
 @media (max-width: 860px) { .ds { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) {
   .swatch-stack { --step: 18px; width: calc(240px + 4 * var(--step)); height: 280px; }
