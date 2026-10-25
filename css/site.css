@@ -79,8 +79,7 @@ ul { list-style: none; }
 .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #5FA05A; box-shadow: 0 0 0 4px rgba(95, 160, 90, 0.18); }
 
 /* ---------- Masthead ---------- */
-/* The work is the masthead: copy on the left, Angrove on Mac and iPhone on the right, with two pinned
-   facts that say what is unusual about it. */
+/* The work is the masthead: copy on the left, Angrove on Mac and iPhone on the right. */
 .masthead { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 72px); align-items: center; padding-block: clamp(48px, 7vw, 96px) clamp(16px, 3vw, 40px); }
 .masthead__copy { display: grid; gap: 24px; min-width: 0; }
 .masthead .display { font-size: clamp(36px, 4.4vw, 58px); line-height: 1.1; text-wrap: balance; }
@@ -91,21 +90,12 @@ ul { list-style: none; }
 .stage__mac video { width: 100%; border-radius: 1.4% / 2.25%; background: #120F0C; box-shadow: 0 40px 80px -36px rgba(34, 15, 1, 0.55), 0 0 0 1px var(--border); }
 .stage__phone { position: absolute; left: 0; bottom: -14%; width: 27%; animation: stage-in 0.9s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 .stage__phone video { width: 100%; border-radius: 13% / 6%; background: #1D1A17; box-shadow: 0 30px 60px -20px rgba(34, 15, 1, 0.6), 0 0 0 4px #1D1A17; }
-.pin { position: absolute; z-index: 2; display: grid; gap: 2px; padding: 10px 14px; border-radius: 14px; background: var(--canvas-secondary); border: 1px solid var(--border); box-shadow: 0 12px 30px -16px rgba(34, 15, 1, 0.35); font-size: 13px; line-height: 1.35; color: var(--text); white-space: nowrap; animation: pin-in 0.6s 0.6s ease both; }
-.pin strong { font: 400 16px/1.3 var(--serif); color: var(--heading); }
-.pin::before { content: ""; position: absolute; top: 50%; right: 100%; width: 36px; height: 1px; background: var(--accent); }
-.pin::after { content: ""; position: absolute; top: 50%; right: calc(100% + 32px); width: 7px; height: 7px; margin-top: -3px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
-.pin--model { top: 6px; right: -8px; }
-.pin--search { right: 6%; bottom: 8px; }
 @keyframes stage-in { from { opacity: 0; translate: 0 28px; } }
-@keyframes pin-in { from { opacity: 0; translate: 6px 0; } }
-@media (prefers-reduced-motion: reduce) { .stage__mac, .stage__phone, .pin { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .stage__mac, .stage__phone { animation: none; } }
 @media (max-width: 900px) {
   .masthead { grid-template-columns: minmax(0, 1fr); }
-  .stage { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 8px 0 0; }
-  .stage__devices { grid-column: 1 / -1; margin-bottom: 18%; }
-  .pin { position: static; white-space: normal; animation: none; }
-  .pin::before, .pin::after { display: none; }
+  .stage { padding: 8px 0 0; }
+  .stage__devices { margin-bottom: 18%; }
 }
 
 /* ---------- Featured project ---------- */
