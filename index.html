@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://ryanbaltodano.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/site.css?v=20261024-resume">
+<link rel="stylesheet" href="css/site.css?v=20261025-masthead">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,15 +45,33 @@
 </header>
 
 <main class="container">
-  <section class="hero">
-    <p class="eyebrow">Applied AI engineer · Product designer</p>
-    <h1 class="display">I design and build native apps around <em>on-device AI.</em></h1>
-    <p class="lede">Most recently, I built Angrove on my own: a private study app that runs a 4-billion-parameter language model, source retrieval, and encrypted storage entirely on iPhone and Mac, with no server. I did the product design, the SwiftUI engineering, the model integration, and the website.</p>
-    <div class="actions">
-      <a class="btn btn--dark" href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">View My Résumé</a>
-      <a class="link" href="https://github.com/rbaltodano">GitHub</a>
+  <section class="masthead" aria-labelledby="masthead-title">
+    <div class="masthead__copy">
+      <p class="eyebrow">Applied AI engineer · Product designer</p>
+      <h1 class="display" id="masthead-title">I design and build native apps around <em>on-device AI.</em></h1>
+      <p class="lede">Most recently, I built Angrove on my own: a private study app that runs a 4-billion-parameter language model, source retrieval, and encrypted storage entirely on iPhone and Mac, with no server.</p>
+      <div class="actions">
+        <a class="btn btn--dark" href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">View My Résumé</a>
+        <a class="link" href="https://github.com/rbaltodano">GitHub</a>
+      </div>
+      <p class="status">Open to product, design engineering, and iOS roles · Open to relocation</p>
     </div>
-    <p class="status">Open to product, design engineering, and iOS roles · Open to relocation</p>
+    <figure class="stage" aria-label="Angrove running on Mac and iPhone">
+      <div class="stage__devices">
+        <div class="stage__mac">
+          <video muted playsinline loop autoplay preload="metadata" poster="assets/media/learn-easier-poster.jpg" width="2400" height="1496" aria-label="Mac recording: a conversation on a study Board">
+            <source src="assets/media/learn-easier.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="stage__phone">
+          <video muted playsinline loop autoplay preload="metadata" poster="assets/media/user-question-and-insight-tree.jpg" width="588" height="1280" aria-label="iPhone recording: asking a question and growing an Insight Tree">
+            <source src="assets/media/user-question-and-insight-tree-inline.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <p class="pin pin--model"><strong>Gemma 4 E4B</strong>runs on the device</p>
+      <p class="pin pin--search"><strong>51,836 passages</strong>searched offline</p>
+    </figure>
   </section>
 
   <section class="section" id="work">
@@ -70,21 +88,6 @@
         </div>
       </div>
       <p class="project__summary">A private AI study workspace for philosophy, history, and theology. Ask a question, check the primary sources behind the answer, and save the ideas worth keeping in a semantic map. Everything runs on the device: no model server, no account, works offline.</p>
-
-      <div class="media">
-        <figure class="phone">
-          <video muted playsinline loop preload="metadata" data-play-in-view poster="assets/media/user-question-and-insight-tree.jpg" width="588" height="1280" aria-label="iPhone recording: asking a question and growing an Insight Tree">
-            <source src="assets/media/user-question-and-insight-tree-inline.mp4" type="video/mp4">
-          </video>
-          <figcaption><strong>iPhone</strong>A grounded answer, contextual definitions, and a map that grows with the conversation. <a class="link" href="https://angrove.app/assets/app/demos/user-question-and-insight-tree.mp4">With sound · 1:49</a></figcaption>
-        </figure>
-        <figure class="desktop">
-          <video muted playsinline loop preload="metadata" data-play-in-view poster="assets/media/learn-easier-poster.jpg" aria-label="Mac recording: a conversation on a study Board">
-            <source src="assets/media/learn-easier.mp4" type="video/mp4">
-          </video>
-          <figcaption><strong>Mac</strong>Spatial study Boards: notes, images, saved Insights, and live conversations on one canvas.</figcaption>
-        </figure>
-      </div>
 
       <div class="facts">
         <div><strong>On-device LLM</strong><span>Gemma 4 E4B on LiteRT-LM. No model server, works offline.</span></div>
