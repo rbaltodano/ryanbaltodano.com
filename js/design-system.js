@@ -1,17 +1,18 @@
-// Fonts & colors: pressing a color chip copies its hex, and the chip's label reads "Copied" briefly.
+// Fonts & colors: pressing the deck moves the front color card to the back, and the rest step forward.
 (function () {
-  document.querySelectorAll('.ds-chip').forEach(function (chip) {
-    var hex = chip.querySelector('.ds-chip__hex'), timer = null;
-    chip.addEventListener('click', function () {
-      var value = chip.dataset.hex;
-      try {
-        navigator.clipboard.writeText(value).then(function () {
-          chip.classList.add('is-copied');
-          hex.textContent = 'Copied';
-          clearTimeout(timer);
-          timer = setTimeout(function () { chip.classList.remove('is-copied'); hex.textContent = value; }, 1400);
-        }, function () {});
-      } catch (e) {}
+  var stack = document.querySelector('[data-swatch-stack]');
+  if (!stack) return;
+  var cards = Array.prototype.slice.call(stack.querySelectorAll('[data-swatch]'));
+  function place() {
+    cards.forEach(function (card, i) {
+      card.style.setProperty('--i', i);
+      card.classList.toggle('is-front', i === 0);
     });
+  }
+  function next() { cards.push(cards.shift()); place(); }
+  place();
+  stack.addEventListener('click', next);
+  stack.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); }
   });
 })();

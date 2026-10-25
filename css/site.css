@@ -290,26 +290,33 @@ ul { list-style: none; }
 @media (max-width: 480px) { .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 /* ---------- Fonts & colors ---------- */
-/* A brief style card, the way award sites list a build's fonts and colors. A chip copies its hex. */
-.ds { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 24px clamp(28px, 5vw, 64px); padding: clamp(22px, 3vw, 32px) clamp(24px, 4vw, 40px); border-radius: 32px; background: var(--canvas-secondary); border: 1px solid var(--border); }
-.ds__fonts { display: flex; gap: clamp(20px, 3vw, 40px); }
-.ds-font { display: flex; align-items: baseline; gap: 12px; }
-.ds-font__glyph { font-size: 44px; line-height: 1; color: var(--heading); }
-.ds-font__glyph--serif { font-family: var(--serif); }
-.ds-font__glyph--sans { font-family: var(--sans); font-weight: 500; }
-.ds-font__name { font-size: 14px; color: var(--text-dim); }
-.ds__colors { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
-.ds-chip { display: grid; justify-items: center; gap: 6px; width: 76px; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: copy; }
-.ds-chip__dot { width: 40px; height: 40px; border-radius: 50%; background: var(--c); border: 1px solid var(--border); transition: transform 0.2s ease; }
-.ds-chip:hover .ds-chip__dot { transform: scale(1.08); }
-.ds-chip__name { font-size: 11px; line-height: 1.2; text-align: center; color: var(--text-dim); }
-.ds-chip__hex { font: 11px/1.2 var(--mono); color: var(--heading); }
-.ds-chip.is-copied .ds-chip__hex { color: var(--accent); }
-.ds-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 12px; }
-@media (max-width: 1000px) {
-  .ds { grid-template-columns: minmax(0, 1fr); }
-  .ds__colors { justify-content: flex-start; }
+/* The two typefaces beside a deck of Angrove's colors. Each card names its hex in Baskerville; pressing
+   the deck sends the front card to the back. */
+.ds { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 40px clamp(32px, 6vw, 96px); }
+.ds__fonts { display: grid; gap: 10px; }
+.ds__font { font-size: clamp(36px, 5vw, 64px); line-height: 1.1; letter-spacing: -0.03em; color: var(--heading); }
+.ds__font--serif { font-family: var(--serif); }
+.ds__font--sans { font-family: var(--sans); font-weight: 500; color: var(--text-dim); }
+.swatch-stack { --step: 34px; position: relative; width: calc(280px + 4 * var(--step)); height: 320px; padding: 0; border: 0; background: none; cursor: pointer; }
+.swatch-stack:hover { --step: 44px; }
+.swatch-stack:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; border-radius: 26px; }
+.swatch-card { position: absolute; top: 0; right: 0; width: 280px; height: 100%; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto; padding: 20px 22px; border-radius: 22px; background: var(--c); border: 1px solid var(--border); text-align: left; font-family: var(--serif); z-index: calc(10 - var(--i)); transform: translateX(calc(var(--i) * var(--step) * -1)); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease; box-shadow: -10px 0 30px -18px rgba(34, 15, 1, 0.35); }
+.swatch-card > * { opacity: 0; transition: opacity 0.25s ease; }
+.swatch-card.is-front > * { opacity: 1; transition-delay: 0.15s; }
+.swatch-card--light { color: #FFFAF0; }
+.swatch-card--dark { color: #614C40; }
+.swatch-card__hex { font-size: 18px; line-height: 1.2; }
+.swatch-card__hex b { font-weight: 700; }
+.swatch-card__name { font-size: 13px; line-height: 1.4; opacity: 0.7; text-align: right; }
+.swatch-card__glyph { grid-column: 1 / -1; grid-row: 3; justify-self: end; font-size: 112px; line-height: 0.8; letter-spacing: -0.03em; }
+@media (max-width: 860px) { .ds { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 480px) {
+  .swatch-stack { --step: 18px; width: calc(240px + 4 * var(--step)); height: 280px; }
+  .swatch-stack:hover { --step: 18px; }
+  .swatch-card { width: 240px; }
+  .swatch-card__glyph { font-size: 96px; }
 }
+@media (prefers-reduced-motion: reduce) { .swatch-card { transition: none; } }
 
 /* ---------- About: one large statement ---------- */
 .about-ed { display: grid; gap: 28px; }
