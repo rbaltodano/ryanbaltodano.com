@@ -1,23 +1,25 @@
-/* Hallmark · job: hire · shape: Marquee Hero (custom: the name resting on a plotted sine, then the product, the index, the practice beside its figure) · genre: editorial · theme: brand · redesign: full
- * paper: oklch(93.4% 0.003 286) · accent: oklch(40.4% 0.072 157) · display: Libre Baskerville · body: Libre Baskerville · hero: Ledge · nav: edge-aligned, the name and three links · footer: colophon · signature: y = sin x drawn edge to edge, the name resting on it
- * axes: grey paper/serif display/viridian · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · job: hire · shape: Marquee Hero (custom: the name and one line, then the product, the index, the practice beside a card of shapes) · genre: editorial · theme: brand · redesign: full
+ * paper: oklch(98.6% 0.012 85) · accent: oklch(52.3% 0.06 103) · display: Instrument Serif · body: Instrument Sans · hero: Banner · nav: edge-aligned, the name and four links · footer: colophon · signature: small plain polygons on the cards and work rows, three to seven sides
+ * axes: Angrove light cream/serif display/olive · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P, a personal site argues little; the practice section carries the one claim (an 80-case evaluation before a default) instead of adjectives */
-/* Hallmark · dropped the side rail and menu overlay, the "01 / 02" eyebrows, the four placeholder rows and the separate career list · gates 66, 54 and 8.3 name them; the career facts now live in the work index */
 /* Hallmark · dropped #journey, #menu · the career list merged into the work index, and the overlay menu went with the side rail */
 /* Hallmark · dropped journey, menu · the same two ids: the career list now lives in the work index, and no menu overlay remains */
-/* Hallmark · dismissed 40 · the 3.93:1 pair is the ink band's viridian under ink text, and no button or text sits on that fill; the one button is on paper at 7.4:1 */
-/* Hallmark · dismissed 41 · same pair: accent-ink on the ink band is never painted, the band carries links in paper with no filled control */
+/* Hallmark · dropped js/plots.js · the calculus figures were retired at the owner's request; plain SVG shapes in an inline sprite replace them, with no script */
+/* Hallmark · dismissed 40 · the card pair read as 1.11:1 is the dark band's cream ink resolved onto a light card; cards only sit on the cream page, where heading ink on the card is 14:1 and body 4.9:1 */
+/* Hallmark · waive 38ii · italic phrases in Instrument Serif heads, true italic from the font · the owner asked for italic emphasis on the site, set once per head */
+/* Owner override (2026-10-26): 38i and 38iii fire on the italic olive phrases in four heads. Ryan asked for italic emphasis and Angrove's dark palette, where olive italics are the house style; Hallmark's Floor cannot waive 38i, so it stays a deliberate exception. */
 @import url("./tokens.css");
 @import url("./base.css");
 
 html { scroll-behavior: smooth; scroll-padding-top: var(--space-lg); }
-body { line-height: 1.65; }
+body { color: var(--color-ink-2); font-size: 1.0625rem; line-height: 1.65; }
+h1, h2, h3 { color: var(--color-ink); }
 
 /* ---------- Shared ---------- */
 .section { padding-block: var(--section-gap); }
 .section--s { padding-block: var(--section-gap-s); }
 .section--l { padding-block: var(--section-gap-l); }
-[data-theme] { background: var(--color-paper); color: var(--color-ink); }
+[data-theme] { background: var(--color-paper); color: var(--color-ink-2); }
 
 .grid-12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); }
 
@@ -37,13 +39,13 @@ a:active { color: var(--color-ink-2); }
   align-items: center;
   height: 48px;
   padding-inline: var(--space-lg);
-  background: var(--color-accent);
-  color: var(--color-accent-ink);
+  background: var(--color-button);
+  color: var(--color-button-ink);
   text-decoration: none;
   white-space: nowrap;
   transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
 }
-.button:hover { color: var(--color-accent-ink); background: color-mix(in srgb, var(--color-accent) 86%, var(--color-ink)); }
+.button:hover { color: var(--color-button-ink); background: color-mix(in srgb, var(--color-button) 82%, var(--color-paper)); }
 .button:active { transform: translateY(1px); }
 .button:disabled, .button[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
 
@@ -53,23 +55,22 @@ a:active { color: var(--color-ink-2); }
 .nav__links { display: flex; gap: var(--space-lg); }
 .nav__links a { font-size: var(--text-sm); text-decoration: none; white-space: nowrap; }
 
-/* ---------- Hero (Ledge): the sine field above, the name resting at its base ---------- */
+/* ---------- Hero (Banner): the name, one sentence, two actions ---------- */
 .hero {
-  min-height: calc(100svh - var(--nav-height));
+  min-height: clamp(480px, 62svh, 680px);
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto auto;
+  align-content: end;
   row-gap: var(--space-xl);
-  padding-bottom: var(--space-2xl);
+  padding-block: var(--space-3xl) var(--space-2xl);
+  border-top: var(--rule-hair) solid var(--color-rule);
 }
-.hero__field { position: relative; min-height: 220px; margin: 0; border-top: var(--rule-hair) solid var(--color-ink); }
-.hero__field svg { position: absolute; inset: var(--space-xl) 0 var(--space-lg); width: 100%; height: calc(100% - var(--space-xl) - var(--space-lg)); overflow: visible; }
-.hero__field figcaption { position: absolute; right: 0; bottom: 0; }
 .hero__name {
   max-width: none;
   font-size: var(--text-poster);
   line-height: 0.94;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
 }
+h1 em, h2 em, h3 em, .lead em { font-style: italic; color: var(--color-emphasis); }
 .hero__foot { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap-columns); align-items: end; }
 .hero__foot .lead { max-width: 34ch; }
 .hero__actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-lg); }
@@ -107,68 +108,59 @@ a:active { color: var(--color-ink-2); }
 .practice { align-items: center; }
 .practice__copy { grid-column: 1 / 6; display: grid; gap: var(--space-lg); }
 .practice__copy p { max-width: 44ch; color: var(--color-ink-2); }
-.practice .fig { grid-column: 6 / 13; }
+.practice__card { grid-column: 7 / 13; margin: 0; display: grid; gap: var(--space-xl); }
+.shape-row { display: flex; justify-content: space-between; gap: var(--space-md); }
+.shape-row .art { width: 72px; height: 72px; }
+.practice__card figcaption { font-size: var(--text-sm); color: var(--color-muted); }
 
 /* ---------- Capabilities ---------- */
 .capabilities { border-top: var(--rule-hair) solid var(--color-rule); }
 .capabilities h2 { margin-bottom: var(--space-2xl); }
-.caps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--gap-columns); }
-.cap { display: grid; gap: var(--space-sm); align-content: start; }
-.cap .fig { margin-bottom: var(--space-sm); }
-.cap p { color: var(--color-ink-2); }
+.caps { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
+.cap { min-height: 260px; display: grid; align-content: end; gap: var(--space-sm); padding-right: var(--space-3xl); }
+.cap:nth-child(1), .cap:nth-child(4) { grid-column: span 7; }
+.cap:nth-child(2), .cap:nth-child(3) { grid-column: span 5; }
+.cap p { color: var(--color-ink-2); max-width: 40ch; }
 
 /* ---------- Close: contact ---------- */
 .close { align-items: center; }
 .close__photo { grid-column: 1 / 7; margin: 0; display: grid; gap: var(--space-sm); }
 .close__photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 62% 50%; filter: grayscale(1); }
-.close__copy { grid-column: 8 / 13; display: grid; gap: var(--space-lg); justify-items: start; }
+.close__copy { grid-column: 7 / 13; display: grid; gap: var(--space-lg); justify-items: start; padding: var(--space-2xl) var(--space-xl); }
 .close__email { font-size: var(--text-title); }
 
 /* ---------- Footer: colophon ---------- */
 .footer__inner { display: flex; justify-content: space-between; gap: var(--space-md); padding-block: var(--space-xl); border-top: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); color: var(--color-muted); }
 .footer a { text-decoration: none; }
 
-/* ---------- Figures (charts; DESIGN.md §5) ---------- */
-.fig { margin: 0; display: grid; gap: var(--space-sm); }
-.fig svg { width: 100%; height: auto; overflow: visible; }
-.fig figcaption, .figcap { font-size: var(--text-sm); color: var(--color-muted); }
-.fig figcaption b, .figcap b { font-weight: 400; color: var(--color-ink); margin-right: var(--space-xs); }
-.fig sub, .fig sup { font-size: 0.7em; line-height: 0; }
-.math { font-style: italic; }
-.fig__readout { display: flex; flex-wrap: wrap; gap: var(--space-lg); font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--color-muted); }
-.fig__readout output { color: var(--color-ink); }
-
-.p-grid { stroke: var(--color-grid); stroke-width: 1; }
-.p-axis, .p-tick { stroke: var(--color-faint); stroke-width: 1; }
-.p-curve { fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; }
-.p-curve--accent { stroke: var(--color-accent); stroke-width: 1.5; }
-.p-curve--faint { stroke: var(--color-faint); }
-.p-area { fill: var(--color-area); }
-.p-tangent { stroke: var(--color-accent); stroke-width: 1; stroke-dasharray: 4 4; }
-.p-guide { fill: none; stroke: var(--color-faint); stroke-width: 1; stroke-dasharray: 2 4; }
-.p-dot { fill: var(--color-accent); stroke: var(--color-paper); stroke-width: 2; }
-.p-text { font: italic 400 14px/1 var(--font-body); fill: currentColor; }
-.p-text--muted { fill: var(--color-muted); }
-.p-text--accent { fill: var(--color-accent); }
-.p-horizon-label { font: italic 400 15px/1 var(--font-body); fill: var(--color-accent); }
-
-/* The one reveal: curves draw once when their figure enters view; visible without script (gate 62). */
-.js .p-draw { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); }
-.js .is-drawn .p-draw { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dur-draw) var(--ease-out); }
+/* ---------- Cards and shapes (DESIGN.md §6) ---------- */
+.card {
+  position: relative;
+  background: var(--color-paper-3);
+  color: var(--color-ink);
+  border-radius: var(--radius-card);
+  padding: var(--space-xl);
+}
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.art { display: block; width: 56px; height: 56px; fill: none; stroke: var(--color-faint); stroke-width: 1.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.art use { vector-effect: non-scaling-stroke; }
+.art--accent { stroke: var(--color-accent); fill: var(--color-area); }
+.art--corner { position: absolute; top: var(--space-lg); right: var(--space-lg); }
+.glyph { display: inline-block; width: 0.7em; height: 0.7em; margin-right: var(--space-sm); vertical-align: -0.02em; fill: none; stroke: var(--color-accent); stroke-width: 1.25; }
+.glyph use { vector-effect: non-scaling-stroke; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 75rem) {
-  .caps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-2xl); }
   .index__head { grid-column: 1 / -1; }
   .index__list { grid-column: 1 / -1; }
 }
 @media (max-width: 60rem) {
   .nav__links { gap: var(--space-md); }
   .hero { min-height: 0; }
-  .hero__field { min-height: 240px; }
   .hero__foot { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-lg); }
   .hero__actions { justify-content: flex-start; }
-  .showcase__head h2, .showcase__head div, .practice__copy, .practice .fig, .close__photo, .close__copy { grid-column: 1 / -1; }
+  .showcase__head h2, .showcase__head div, .practice__copy, .practice__card, .close__photo, .close__copy { grid-column: 1 / -1; }
+  .cap:nth-child(n) { grid-column: span 6; }
   .showcase__head { row-gap: var(--space-md); margin-bottom: var(--space-xl); }
   .practice, .close { row-gap: var(--space-xl); }
   .index__row { grid-template-columns: minmax(0, 1fr) auto; }
@@ -178,10 +170,10 @@ a:active { color: var(--color-ink-2); }
   .nav__links a:not(:last-child) { display: none; }
   .showcase__pair { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-lg); }
   .showcase__pair .shot:last-child img { aspect-ratio: 4 / 5; }
-  .caps { grid-template-columns: minmax(0, 1fr); }
+  .cap:nth-child(n) { grid-column: 1 / -1; min-height: 200px; }
+  .shape-row .art { width: 52px; height: 52px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .js .p-draw { stroke-dashoffset: 0; }
   .button:active { transform: none; }
 }

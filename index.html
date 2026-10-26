@@ -5,15 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ryan Baltodano, product designer and developer</title>
   <meta name="description" content="Ryan Baltodano designs products and writes the code that ships them.">
-  <meta name="theme-color" content="#EAEAEC">
+  <meta name="theme-color" content="#FFFAF0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap">
   <link rel="stylesheet" href="css/site.css">
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-  <header class="nav" data-theme="paper">
+  <!-- Simple shapes, drawn once and reused (DESIGN.md §6) -->
+  <svg width="0" height="0" class="sprite" aria-hidden="true">
+    <symbol id="s-triangle" viewBox="0 0 100 100"><polygon points="50,18 84.64,78 15.36,78"/></symbol>
+    <symbol id="s-square" viewBox="0 0 100 100"><rect x="18" y="18" width="64" height="64"/></symbol>
+    <symbol id="s-pentagon" viewBox="0 0 100 100"><polygon points="50,14 88.04,41.64 73.51,86.36 26.49,86.36 11.96,41.64"/></symbol>
+    <symbol id="s-hexagon" viewBox="0 0 100 100"><polygon points="90,50 70,84.64 30,84.64 10,50 30,15.36 70,15.36"/></symbol>
+    <symbol id="s-heptagon" viewBox="0 0 100 100"><polygon points="50,10 81.27,25.06 89,58.9 67.36,86.04 32.64,86.04 11,58.9 18.73,25.06"/></symbol>
+  </svg>
+  <header class="nav" data-theme="canvas">
     <div class="container nav__inner">
       <a class="wordmark" href="#top" aria-label="Ryan Baltodano, home">Ryan Baltodano</a>
       <nav class="nav__links" aria-label="Sections">
@@ -26,15 +34,11 @@
   </header>
 
   <main id="top">
-    <!-- Hero, Ledge: the plotted sine is the field; the name rests at its base -->
-    <section class="container hero" data-theme="paper">
-      <figure class="hero__field" data-plot="horizon">
-        <svg class="chart" role="img" aria-label="Chart of y equals sine x from 0 to 4 pi, with the area of the first arch shaded"></svg>
-        <figcaption class="figcap"><b>Fig. 1</b><span class="math">y = sin x</span>, from 0 to 4π</figcaption>
-      </figure>
+    <!-- Hero, Banner: the name, one sentence, two actions; the work shows below the fold line -->
+    <section class="container hero" data-theme="canvas">
       <h1 class="hero__name">Ryan Baltodano</h1>
       <div class="hero__foot">
-        <p class="lead">I design products and write the code that ships them.</p>
+        <p class="lead">I design products and <em>write the code</em> that ships them.</p>
         <div class="hero__actions">
           <a class="text-link" href="#work">See the work</a>
           <a class="button" href="mailto:rbaltodano337@gmail.com">Email me</a>
@@ -43,10 +47,10 @@
     </section>
 
     <!-- Showcase: the product, in real captures -->
-    <section id="work" class="section" data-theme="paper">
+    <section id="work" class="section" data-theme="canvas">
       <div class="container">
         <div class="grid-12 showcase__head">
-          <h2>Angrove, a private study app</h2>
+          <h2>Angrove, a <em>private</em> study app</h2>
           <div>
             <p class="lead">Philosophy and theology, studied on an iPhone that never sends your questions away.</p>
             <a class="text-link" href="https://angrove.app">Visit angrove.app</a>
@@ -70,35 +74,35 @@
     </section>
 
     <!-- Index: the work, which also carries the career -->
-    <section id="index" class="section--s" data-theme="ink">
+    <section id="index" class="section--s" data-theme="panel">
       <div class="container grid-12 index">
         <div class="index__head">
-          <h2>Selected work, 2024 to now</h2>
+          <h2>Selected work, <em>2024 to now</em></h2>
           <p class="muted">What I have designed and built, and who it was for.</p>
         </div>
         <ol class="index__list">
           <li class="index__row index__row--lead">
-            <h3><a href="#work">Angrove</a></h3>
+            <h3><svg class="glyph" aria-hidden="true"><use href="#s-triangle"/></svg><a href="#work">Angrove</a></h3>
             <p class="index__what">Product design, SwiftUI direction, on-device search</p>
             <p class="index__when num">Now, open beta</p>
           </li>
           <li class="index__row">
-            <h3>Angrove design system</h3>
+            <h3><svg class="glyph" aria-hidden="true"><use href="#s-square"/></svg>Angrove design system</h3>
             <p class="index__what">Figma components, type and interaction patterns</p>
             <p class="index__when num">Now</p>
           </li>
           <li class="index__row">
-            <h3><a href="https://angrove.app">angrove.app</a></h3>
+            <h3><svg class="glyph" aria-hidden="true"><use href="#s-pentagon"/></svg><a href="https://angrove.app">angrove.app</a></h3>
             <p class="index__what">The product site, designed and built</p>
             <p class="index__when num">2026</p>
           </li>
           <li class="index__row">
-            <h3>Client websites</h3>
+            <h3><svg class="glyph" aria-hidden="true"><use href="#s-hexagon"/></svg>Client websites</h3>
             <p class="index__what">Web designer at PostcardMania</p>
             <p class="index__when num">2024 to now</p>
           </li>
           <li class="index__row">
-            <h3>Client sites and features</h3>
+            <h3><svg class="glyph" aria-hidden="true"><use href="#s-heptagon"/></svg>Client sites and features</h3>
             <p class="index__what">Front-end intern at Cloud Carpenter</p>
             <p class="index__when num">2024</p>
           </li>
@@ -107,44 +111,45 @@
     </section>
 
     <!-- Practice: the one claim, beside its figure -->
-    <section id="practice" class="section--l" data-theme="paper">
+    <section id="practice" class="section--l" data-theme="canvas">
       <div class="container grid-12 practice">
         <div class="practice__copy">
-          <h2>One person, design to code</h2>
+          <h2>One person, <em>design to code</em></h2>
           <p>I design the interface, write the code, and check that it holds up. For Angrove that meant an 80-case evaluation before choosing a default.</p>
         </div>
-        <figure class="fig" data-plot="tangent">
-          <svg class="chart" viewBox="0 0 640 400" role="img" aria-label="Chart of sine x and cosine x with a tangent line that follows the scroll position"></svg>
-          <div class="fig__readout" aria-hidden="true">
-            <span><span class="math">x</span> = <output data-out="x">1.05</output></span>
-            <span><span class="math">f′(x)</span> = cos <span class="math">x</span> = <output data-out="m">0.50</output></span>
+        <figure class="card practice__card">
+          <div class="shape-row" aria-hidden="true">
+            <svg class="art"><use href="#s-triangle"/></svg>
+            <svg class="art"><use href="#s-square"/></svg>
+            <svg class="art"><use href="#s-pentagon"/></svg>
+            <svg class="art art--accent"><use href="#s-hexagon"/></svg>
           </div>
-          <figcaption><b>Fig. 2</b><span class="math">f(x) = sin x</span>, its tangent, and the area <span class="math">∫<sub>0</sub><sup>π</sup> sin x dx = 2</span>.</figcaption>
+          <figcaption>Interface, code, test, ship. One more side each time.</figcaption>
         </figure>
       </div>
     </section>
 
     <!-- Capabilities: four functions -->
-    <section id="capabilities" class="container section capabilities" data-theme="paper">
+    <section id="capabilities" class="container section capabilities" data-theme="canvas">
       <h2>Design, front end, apps, systems</h2>
       <div class="caps">
-        <article class="cap">
-          <figure class="fig" data-plot="sine"><svg class="chart" viewBox="0 0 320 180" role="img" aria-label="Chart of sine x"></svg><figcaption><b>Fig. 3a</b><span class="math">f(x) = sin x</span></figcaption></figure>
+        <article class="card cap">
+          <svg class="art art--corner" aria-hidden="true"><use href="#s-triangle"/></svg>
           <h3>Design</h3>
           <p>Figma systems, interaction design, and the details between screens.</p>
         </article>
-        <article class="cap">
-          <figure class="fig" data-plot="cosine"><svg class="chart" viewBox="0 0 320 180" role="img" aria-label="Chart of cosine x, the derivative of sine x"></svg><figcaption><b>Fig. 3b</b><span class="math">f′(x) = cos x</span></figcaption></figure>
+        <article class="card cap">
+          <svg class="art art--corner" aria-hidden="true"><use href="#s-square"/></svg>
           <h3>Front end</h3>
           <p>HTML, CSS, JavaScript and PHP, built responsive for real clients.</p>
         </article>
-        <article class="cap">
-          <figure class="fig" data-plot="damped"><svg class="chart" viewBox="0 0 320 180" role="img" aria-label="Chart of a damped sine wave inside its envelope"></svg><figcaption><b>Fig. 3c</b><span class="math">g(x) = e<sup>−x/3</sup> sin 2x</span></figcaption></figure>
+        <article class="card cap">
+          <svg class="art art--corner" aria-hidden="true"><use href="#s-hexagon"/></svg>
           <h3>Apps</h3>
           <p>Swift and SwiftUI, tuned on device until it feels fast, then still.</p>
         </article>
-        <article class="cap">
-          <figure class="fig" data-plot="vectors"><svg class="chart" viewBox="0 0 320 180" role="img" aria-label="Diagram of two vectors and the angle between them"></svg><figcaption><b>Fig. 3d</b><span class="math">cos θ = a·b ⁄ ‖a‖‖b‖</span></figcaption></figure>
+        <article class="card cap">
+          <svg class="art art--corner" aria-hidden="true"><use href="#s-pentagon"/></svg>
           <h3>Systems</h3>
           <p>Embeddings, semantic search, and FastAPI with SQLite behind them.</p>
         </article>
@@ -152,14 +157,15 @@
     </section>
 
     <!-- Close: the action the page is for -->
-    <section id="contact" class="section" data-theme="paper">
+    <section id="contact" class="section" data-theme="canvas">
       <div class="container grid-12 close">
         <figure class="close__photo">
           <img src="assets/img/hero-skyline.jpg" alt="Two people at a railing, looking out at a city skyline at night." width="2400" height="1350" loading="lazy">
           <figcaption class="small">After hours.</figcaption>
         </figure>
-        <div class="close__copy">
-          <h2>Write to me</h2>
+        <div class="card close__copy">
+          <svg class="art art--corner" aria-hidden="true"><use href="#s-triangle"/></svg>
+          <h2>Write <em>to me</em></h2>
           <p class="muted">Open for collaborations.</p>
           <a class="text-link close__email" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com</a>
           <a class="text-link" href="https://github.com/rbaltodano">GitHub</a>
@@ -170,14 +176,13 @@
     </section>
   </main>
 
-  <footer class="container footer" data-theme="paper">
+  <footer class="container footer" data-theme="canvas">
     <div class="footer__inner">
       <span>Ryan Baltodano, <span data-year class="num">2026</span></span>
       <a href="#top">Back to top</a>
     </div>
   </footer>
 
-  <script src="js/plots.js" defer></script>
   <script src="js/site.js" defer></script>
 </body>
 </html>
