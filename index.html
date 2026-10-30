@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Martian+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=202610301658">
+  <link rel="stylesheet" href="css/site.css?v=202610301718">
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -131,7 +131,7 @@
     </section>
 
     <!-- Practice: the one claim, beside its figure -->
-    <!-- Practice: four steps, each with a stippled figure under its text that draws in on scroll (js/practice.js) -->
+    <!-- Practice: on desktop the steps scroll past a pinned figure that redraws for each; on phones each step has its figure under its text (js/practice.js) -->
     <section id="practice" class="section--l" data-theme="canvas">
       <div class="container grid-12 practice">
         <div class="practice__intro">
@@ -165,6 +165,12 @@
             <div class="stage step__figure" aria-hidden="true"><canvas class="stage__canvas" data-scene="3"></canvas></div>
           </li>
         </ol>
+        <figure class="practice__stage" aria-hidden="true">
+          <div class="stage">
+            <canvas class="stage__canvas" data-pinned></canvas>
+            <div class="stage__bar"><p class="eyebrow stage__label"><span class="code">01</span><span class="stage__name">Interface</span></p><span class="stage__ticks"><i class="is-on"></i><i></i><i></i><i></i></span></div>
+          </div>
+        </figure>
       </div>
     </section>
 
@@ -226,7 +232,7 @@
     </div>
   </footer>
 
-  <script src="js/site.js?v=202610301658" defer></script>
-  <script src="js/practice.js?v=202610301658" defer></script>
+  <script src="js/site.js?v=202610301718" defer></script>
+  <script src="js/practice.js?v=202610301718" defer></script>
 </body>
 </html>

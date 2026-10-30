@@ -1,8 +1,10 @@
-// Practice: each step has a figure under its text, a labelled hairline diagram that draws
-// itself in as it scrolls into view. Lines trace first, then small mono labels fade in.
-// Reduced motion renders the finished diagram.
+// Practice figures: labelled hairline diagrams that draw themselves in. Lines trace first,
+// then small mono labels fade in. Reduced motion renders the finished diagram.
+// Desktop: the steps scroll past one pinned figure that redraws for the step mid-screen.
+// Phones: each step has its own figure under its text, drawn once as it scrolls in.
 (() => {
   const canvases = document.querySelectorAll(".step__figure canvas");
+  const pinned = document.querySelector(".practice__stage canvas");
   if (!canvases.length) return;
 
   const W = 400, H = 300;                       // scene units; the stage is 4:3
@@ -195,11 +197,11 @@
   }
 
   // ---------- Drawing ----------
-  const DRAW_MS = 2000, END = 1.1;
+  const DRAW_MS = 2000, OUT_MS = 260, END = 1.1;
   const ease = (k) => 1 - Math.pow(1 - k, 3);
   function figure(cv) {
     const ctx = cv.getContext("2d");
-    let scale = 1, ox = 0, oy = 0, dpr = 1, current = -1, started = 0, raf = 0;
+    let scale = 1, ox = 0, oy = 0, dpr = 1, current = -1, started = 0, raf = 0, outgoing = null;
     const X = (x) => ox + x * scale, Y = (y) => oy + y * scale;
 
     function paintScene(items, p) {
@@ -236,9 +238,15 @@
     function paint(now = performance.now()) {
       ctx.clearRect(0, 0, cv.width, cv.height);
       if (current < 0) { raf = 0; return; }
-      const p = reduce ? END : ((now - started) / DRAW_MS) * END;
+      // The previous scene fades out while the next one starts drawing.
+      let fading = false;
+      if (outgoing) {
+        const k = (now - outgoing.at) / OUT_MS;
+        if (k < 1) { ctx.globalAlpha = 1 - k; paintScene(scene(outgoing.i), END); ctx.globalAlpha = 1; fading = true; } else outgoing = null;
+      }
+      const p = reduce ? END : Math.max(0, (now - started) / DRAW_MS) * END;
       paintScene(scene(current), p);
-      raf = p < END ? requestAnimationFrame(paint) : 0;
+      raf = p < END || fading ? requestAnimationFrame(paint) : 0;
     }
     new ResizeObserver(() => {
       const r = cv.getBoundingClientRect();
@@ -254,13 +262,39 @@
     return {
       show(i) {
         if (i === current) return;
-        current = i; started = performance.now();
+        const now = performance.now();
+        outgoing = current >= 0 && !reduce ? { i: current, at: now } : null;
+        current = i; started = outgoing ? now + OUT_MS * 0.5 : now;
         if (!raf) raf = requestAnimationFrame(paint);
       },
     };
   }
 
-  // Each figure draws once, as it scrolls into view.
+  // Desktop: the step crossing the middle of the screen is active, and the pinned figure follows it.
+  if (pinned) {
+    const stage = figure(pinned), steps = [...document.querySelectorAll(".step")];
+    const label = document.querySelector(".stage__label"), ticks = document.querySelectorAll(".stage__ticks i");
+    const activate = (i) => {
+      steps.forEach((el, k) => el.classList.toggle("is-active", k === i));
+      ticks.forEach((el, k) => el.classList.toggle("is-on", k === i));
+      label.querySelector(".code").textContent = String(i + 1).padStart(2, "0");
+      label.querySelector(".stage__name").textContent = steps[i].querySelector(".eyebrow").lastChild.textContent;
+      if (pinned.offsetParent) stage.show(i);
+    };
+    const mid = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) activate(steps.indexOf(e.target));
+    }), { rootMargin: "-50% 0px -50% 0px" });
+    steps.forEach((el) => mid.observe(el));
+    // The first step is active before any scrolling, so the figure has something to draw.
+    const first = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      if (!steps.some((el) => el.classList.contains("is-active"))) activate(0);
+      first.disconnect();
+    }, { rootMargin: "0px 0px -12% 0px" });
+    first.observe(pinned);
+  }
+
+  // Phones: each figure draws once, as it scrolls into view.
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (!e.isIntersecting) return;
     e.target.__figure.show(Number(e.target.dataset.scene));

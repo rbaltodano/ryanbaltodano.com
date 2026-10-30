@@ -50,7 +50,7 @@ The locked system for `personal-site/`. Since 2026-10-25 every build is also hel
 | Hero | Banner | The name, one sentence, "See the work" and "Email me". No background. |
 | Work | Showcase | "Angrove, a private study app". One wide Mac capture, then a pair below at 8 and 4 columns. |
 | Index | Rows on the dark band (`#24201C`) | "Selected work, 2024 to now". Five real items, each with a small olive polygon before its title (three to seven sides, in order). |
-| Practice | Steps, each with a figure | "One person, design to code". Four steps (Interface, Code, Test, Ship) in a 2×2 grid, one column on phones. Each step has its own figure under its text, drawn once as it scrolls in. Nothing pins. |
+| Practice | Steps beside a pinned figure | "One person, design to code". Desktop, like xAI's Grok page: four steps (Interface, Code, Test, Ship) scroll on the left, and the figure on the right stays pinned and redraws for the step crossing mid-screen. Under 60rem nothing pins: each step has its own figure under its text, drawn once as it scrolls in. Keep both; the owner wants the pinned version on desktop. |
 | Capabilities | Bento of 4 cards (7 and 5 over 5 and 7) | Design, Front end, Apps and Systems. Each card has one shape in its top-right corner (triangle, square, hexagon, pentagon) and its text at the bottom. |
 | Close | Split, 6 and 6 | The greyscale photo, beside a contact card with a small triangle: "Write to me", "Open for collaborations.", the email address, GitHub, the résumé and the case study. |
 | Footer | Colophon | Name and year, and "Back to top". |
