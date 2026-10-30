@@ -55,16 +55,17 @@ The locked system for `personal-site/`. Since 2026-10-25 every build is also hel
 | Close | Split, 6 and 6 | The greyscale photo, beside a contact card with a small triangle: "Write to me", "Open for collaborations.", the email address, GitHub, the résumé and the case study. |
 | Footer | Colophon | Name and year, and "Back to top". |
 
-## 6. Line art
+## 6. Line drawings
 
-- **Sprite:** five `<symbol>`s at the top of `index.html` (sphere, venn, rings, orbit, grid), copied from inVectus `src/LineArt.tsx`.
-- 1px `currentColor` strokes with `vector-effect: non-scaling-stroke`, at white 35%; one per screen may be mint.
-- Work rows use mono codes (`01` to `05`) instead of glyphs; the lead row's code is mint.
+- Inline SVGs in a 100×100 box, each stroke a `<path pathLength="1">`, drawn in `currentColor` at white 35%. Strokes use viewBox units (1.6 to 1.9), not `non-scaling-stroke`, so the draw-in dashes stay exact.
+- They show the thing named: capabilities have a vector curve with handles (Design), a browser with `</>` (Front end), a phone with an app grid (Apps) and a database (Systems). Practice has interface, terminal, check and paper plane (mint). Contact has an envelope.
+- Work rows use mono codes (`01` to `06`); the lead row's code is mint.
 
 ## 7. Motion
 
-- No reveal and no scroll effects. The page is still.
-- **Hovers and states:** hovers change colour only. The button moves 1px on `:active`. The focus ring is olive and appears instantly.
+- **Draw-in:** each line drawing traces stroke by stroke (900ms each, 110ms apart) once it is 12% up the screen, then stays.
+- **Footer name:** "Ryan Baltodano" spans the content width in Inter Light, fading to nothing toward the bottom, after angrove.app's footer. It rises in from a blur on first sight.
+- Both are skipped under reduced motion and without JavaScript. Hovers change colour only; the button moves 1px on `:active`.
 
 ## 8. Hallmark checks
 

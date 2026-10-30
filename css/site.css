@@ -152,6 +152,24 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
 /* ---------- Footer: colophon ---------- */
 .footer__inner { display: flex; justify-content: space-between; gap: var(--space-md); padding-block: var(--space-xl); border-top: var(--rule-hair) solid var(--color-rule); color: var(--color-muted); }
 .footer a { text-decoration: none; }
+/* Oversized name, after angrove.app's footer: spans the content width and fades out toward the bottom. */
+.footer__mark { container-type: inline-size; overflow: hidden; }
+.footer__wordmark {
+  max-width: none;
+  margin: 0 0 -0.16em;
+  font-size: calc(100cqi / 6.56);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ink) 70%, transparent) 0%, color-mix(in srgb, var(--ink) 22%, transparent) 50%, transparent 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  user-select: none;
+}
+.js .footer__wordmark { opacity: 0; filter: blur(8px); translate: 0 28px; scale: 0.96; transform-origin: left bottom; }
+.js .footer__wordmark.is-in { opacity: 1; filter: none; translate: none; scale: 1; transition: opacity 900ms ease, filter 900ms ease, translate 1100ms var(--ease-out), scale 1100ms var(--ease-out); }
 
 /* ---------- Cards and shapes (DESIGN.md §6) ---------- */
 .card {
@@ -163,10 +181,22 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
   padding: var(--space-xl);
 }
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
-.art { display: block; width: 56px; height: 56px; color: var(--color-faint); fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
-.art use, .art * { vector-effect: non-scaling-stroke; }
+/* Line drawings: strokes in viewBox units (no non-scaling-stroke, so pathLength dashes stay exact). */
+.art { display: block; width: 56px; height: 56px; color: var(--color-faint); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
 .art--accent { color: var(--color-accent); }
-.art--corner { position: absolute; top: var(--space-lg); right: var(--space-lg); }
+.art--corner { position: absolute; top: var(--space-lg); right: var(--space-lg); width: 64px; height: 64px; stroke-width: 1.6; }
+.shape-row .art { stroke-width: 1.15; }
+
+/* Draw-in: each stroke traces itself in turn once the drawing scrolls into view (js/site.js). */
+.js .draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.js .draw.is-in path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 900ms var(--ease-out);
+  transition-delay: calc(120ms + var(--i, 0) * 110ms);
+}
+.js .draw { opacity: 0; translate: 0 6px; }
+.js .draw.is-in { opacity: 1; translate: none; transition: opacity 400ms var(--ease-out), translate 700ms var(--ease-out); }
+.cap:hover .art, .close__copy:hover .art { color: var(--color-ink-2); transition: color var(--dur-short) var(--ease-out); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 75rem) {
@@ -194,7 +224,7 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
   .showcase__pair { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-lg); }
   .showcase__pair .shot:last-child img { aspect-ratio: 4 / 5; }
   .cap:nth-child(n) { grid-column: 1 / -1; min-height: 200px; }
-  .shape-row .art { width: 52px; height: 52px; }
+  .shape-row .art { width: 52px; height: 52px; stroke-width: 1.9; }
   .close__copy { padding: var(--space-xl) var(--space-lg); }
   .close__email { font-size: var(--text-lg); overflow-wrap: anywhere; }
 }
