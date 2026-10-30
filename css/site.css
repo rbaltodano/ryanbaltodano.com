@@ -1,8 +1,8 @@
 /* Hallmark · job: hire · shape: Marquee Hero (the name and one line, then the product, the index, the practice beside a card of line art) · genre: editorial · theme: brand · redesign: restyle
  * paper: #0e0f10 · accent: #6edcaa · display/body: Inter · labels: Martian Mono · hero: Banner · nav: edge-aligned, numbered like inVectus's tabs · footer: colophon · signature: thin line diagrams and mono section codes, after inVectus
  * axes: inVectus Instrument theme, near-black/hairlines/mint · posture: restrained · v2.0.0 */
-@import url("./tokens.css");
-@import url("./base.css");
+@import url("./tokens.css?v=202610301500");
+@import url("./base.css?v=202610301500");
 
 html { scroll-behavior: smooth; scroll-padding-top: var(--space-lg); }
 body { color: var(--color-ink-2); font-size: 1rem; line-height: 1.6; letter-spacing: 0.005em; }
