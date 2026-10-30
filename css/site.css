@@ -157,7 +157,7 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
 .footer__wordmark {
   max-width: none;
   margin: 0 0 -0.16em;
-  font-size: calc(100cqi / 6.56);
+  font-size: calc(100cqi / 4.22);
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.055em;

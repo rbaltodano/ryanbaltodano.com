@@ -64,7 +64,7 @@ The locked system for `personal-site/`. Since 2026-10-25 every build is also hel
 ## 7. Motion
 
 - **Draw-in:** each line drawing traces stroke by stroke (900ms each, 110ms apart) once it is 12% up the screen, then stays.
-- **Footer name:** "Ryan Baltodano" spans the content width in Inter Light, fading to nothing toward the bottom, after angrove.app's footer. It rises in from a blur on first sight.
+- **Footer name:** "Baltodano" spans the content width in Inter Light, fading to nothing toward the bottom, after angrove.app's footer. It rises in from a blur on first sight.
 - Both are skipped under reduced motion and without JavaScript. Hovers change colour only; the button moves 1px on `:active`.
 
 ## 8. Hallmark checks
