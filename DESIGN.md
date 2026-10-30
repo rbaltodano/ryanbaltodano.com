@@ -76,3 +76,12 @@ node ~/.claude/skills/hallmark/scripts/sloplint.mjs index.html --genre editorial
 
 - **Last result:** 4 FAIL, all on gate 38i: the deliberate italic phrases in the four section heads. There are 0 other failures or warnings, and 38ii is waived.
 - **Not yet run:** the render tier needs `puppeteer-core`. Layout was checked by hand at 1440×900 and 375px.
+
+
+## Practice illustration study: 2026-10-30
+
+The Interface scene now tests sparse editorial geometry: two thin offset ellipses,
+one solid and one dashed, meeting at a single mint point. Its frame and background
+are removed. The canvas fades in without orbiting or decorative particles and honors
+reduced motion. Code, Test and Ship remain unchanged for comparison. This owner-requested
+study supersedes the older polygon/particle guidance for this scene only.

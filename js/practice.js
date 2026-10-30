@@ -1,7 +1,6 @@
 // Practice: a pinned figure that redraws for each step as the steps scroll past.
-// Each scene is drawn in fine stippled dots, after the particle line work of studio Kloroform's
-// "Space 5": one object traced in dense dots, with sparser fanned arcs echoing around it.
-// Dots appear in drawing order, so a scene traces itself in like the line drawings elsewhere.
+// Interface tests sparse solid/dashed editorial curves. The other scenes retain their
+// stippled particle treatment for comparison. Reduced motion renders the finished scene.
 (() => {
   const stage = document.querySelector(".practice__stage");
   const canvas = stage && stage.querySelector(".stage__canvas");
@@ -53,31 +52,12 @@
 
   // ---------- Scenes ----------
   function interfaceScene() {
-    const s = [];
-    // Ripples: the phone's outline echoed outward, sparser and fainter each time.
-    for (let k = 1; k <= 8; k++) {
-      const e = k * 13;
-      stroke(s, rr(150 - e, 40 - e, 100 + 2 * e, 220 + 2 * e, 16 + e * 0.6), { gap: 2.4 + k * 0.7, a: 0.55 * (1 - k / 9), r: 0.65, s0: 0.42 + k * 0.05, span: 0.3 });
-    }
-    stroke(s, rr(150, 40, 100, 220, 16), { gap: 1.3, r: 0.85, span: 0.3 });          // phone
-    stroke(s, "M188 53h24", { s0: 0.12, span: 0.05 });                                  // notch
-    stroke(s, rr(162, 68, 76, 32, 5), { s0: 0.16, span: 0.12 });                        // header
-    stroke(s, circ(175, 118, 7), { s0: 0.22, span: 0.06 });                             // avatar
-    stroke(s, "M188 114h40", { s0: 0.24, span: 0.06 });
-    stroke(s, "M188 123h26", { s0: 0.25, span: 0.05, a: 0.6 });
-    stroke(s, rr(162, 140, 76, 52, 5), { s0: 0.27, span: 0.12 });                       // card
-    stroke(s, "M171 154h44", { s0: 0.31, span: 0.06 });
-    stroke(s, "M171 165h56", { s0: 0.32, span: 0.06, a: 0.6 });
-    stroke(s, "M171 176h34", { s0: 0.33, span: 0.05, a: 0.6 });
-    stroke(s, rr(162, 206, 76, 20, 10), { s0: 0.35, span: 0.1 });                       // button
-    stroke(s, "M188 248h24", { s0: 0.38, span: 0.04 });                                 // home bar
-    // The selection on the card, with its handles and a spacing redline.
-    stroke(s, "M157 135h86v62h-86z", { c: MINT, gap: 1.3, s0: 0.45, span: 0.18 });
-    [[157, 135], [243, 135], [157, 197], [243, 197]].forEach(([x, y], i) => stroke(s, `M${x - 3} ${y - 3}h6v6h-6z`, { c: MINT, gap: 0.9, s0: 0.6 + i * 0.03, span: 0.04 }));
-    stroke(s, "M150 166h12 M150 162v8 M162 162v8", { c: MINT, gap: 1.2, s0: 0.66, span: 0.06 });
-    stroke(s, "M228 214 l0 22 l6 -6 l4 9 l4 -2 l-4 -9 l9 0 z", { gap: 1, s0: 0.7, span: 0.08 }); // cursor
-    specks(s, 70, 0.7);
-    return s;
+    // Two ideas share an origin. Quiet editorial geometry, rather than a device mockup.
+    return [
+      { path: ell(174, 150, 64, 98, 240), a: 0.85, c: INK, dash: [], t: 0 },
+      { path: ell(210, 150, 100, 98, 240), a: 0.6, c: INK, dash: [3, 4], t: 0 },
+      { x: 110, y: 150, r: 3, a: 1, c: MINT, t: 0.2 },
+    ];
   }
 
   function codeScene() {
@@ -177,6 +157,19 @@
     function paintScene(dots, p, alpha) {
       for (const d of dots) {
         if (d.t > p) continue;
+        if (d.path) {
+          ctx.save();
+          ctx.strokeStyle = `rgba(${d.c}, ${d.a * alpha * Math.min(1, p / 0.18)})`;
+          ctx.lineWidth = 0.7 * scale;
+          ctx.setLineDash(d.dash.map((v) => v * scale));
+          ctx.beginPath();
+          d.path.forEach(([x, y], i) => {
+            const px = ox + x * scale, py = oy + y * scale;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          });
+          ctx.stroke(); ctx.restore();
+          continue;
+        }
         const a = d.a * Math.min(1, (p - d.t) / FADE) * alpha;
         ctx.fillStyle = `rgba(${d.c}, ${a})`;
         ctx.beginPath(); ctx.arc(ox + d.x * scale, oy + d.y * scale, d.r * scale * 0.9, 0, Math.PI * 2); ctx.fill();
@@ -211,6 +204,7 @@
         if (i === current) return;
         if (current >= 0 && !reduce) outgoing = { i: current, at: performance.now() };
         current = i; started = performance.now();
+        cv.parentElement.classList.toggle("stage--quiet", i === 0);
         if (!raf) raf = requestAnimationFrame(paint);
       },
     };

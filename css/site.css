@@ -250,3 +250,6 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
   html { scroll-behavior: auto; }
   .button:active { transform: none; }
 }
+
+/* The first practice study is open editorial linework, without a surrounding card. */
+.stage.stage--quiet { border-color: transparent; background: transparent; }
