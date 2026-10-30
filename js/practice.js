@@ -52,11 +52,10 @@
 
   // ---------- Scenes ----------
   function interfaceScene() {
-    // Two ideas share an origin. Quiet editorial geometry, rather than a device mockup.
+    // One quiet contour and one point.
     return [
-      { path: ell(174, 150, 64, 98, 240), a: 0.85, c: INK, dash: [], t: 0 },
-      { path: ell(210, 150, 100, 98, 240), a: 0.6, c: INK, dash: [3, 4], t: 0 },
-      { x: 110, y: 150, r: 3, a: 1, c: MINT, t: 0.2 },
+      { path: ell(200, 150, 66, 88, 180), a: 0.7, c: INK, dash: [], t: 0 },
+      { x: 266, y: 150, r: 2.6, a: 1, c: MINT, t: 0 },
     ];
   }
 
@@ -184,7 +183,7 @@
       }
       if (current >= 0) {
         const delay = outgoing ? OUT_MS * 0.6 : 0;
-        const p = reduce ? 1.2 : Math.max(0, (now - started - delay) / DRAW_MS) * 1.2;
+        const p = (reduce || current === 0) ? 1.2 : Math.max(0, (now - started - delay) / DRAW_MS) * 1.2;
         paintScene(scene(current), p, 1);
         if (p < 1.2) busy = true;
       }
@@ -202,7 +201,8 @@
       get current() { return current; },
       show(i) {
         if (i === current) return;
-        if (current >= 0 && !reduce) outgoing = { i: current, at: performance.now() };
+        if (current >= 0 && !reduce && i !== 0) outgoing = { i: current, at: performance.now() };
+        else outgoing = null;
         current = i; started = performance.now();
         cv.parentElement.classList.toggle("stage--quiet", i === 0);
         if (!raf) raf = requestAnimationFrame(paint);

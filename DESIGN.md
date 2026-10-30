@@ -85,3 +85,10 @@ one solid and one dashed, meeting at a single mint point. Its frame and backgrou
 are removed. The canvas fades in without orbiting or decorative particles and honors
 reduced motion. Code, Test and Ship remain unchanged for comparison. This owner-requested
 study supersedes the older polygon/particle guidance for this scene only.
+
+
+### Simpler Interface revision
+
+Reduced the first study to one cream ellipse and one small mint point on its edge.
+No overlap, dashed stroke, particles, frame or entrance animation. Other scenes remain
+unchanged until this simpler direction is approved.
