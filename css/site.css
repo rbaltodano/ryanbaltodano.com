@@ -124,13 +124,25 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
 .index__when { text-align: right; color: var(--color-muted); }
 
 /* ---------- Practice: statement beside Fig. 2 ---------- */
-.practice { align-items: center; }
-.practice__copy { grid-column: 1 / 6; display: grid; gap: var(--space-lg); }
-.practice__copy p { max-width: 44ch; color: var(--color-ink-2); }
-.practice__card { grid-column: 7 / 13; margin: 0; display: grid; gap: var(--space-xl); }
-.shape-row { display: flex; justify-content: space-between; gap: var(--space-md); }
-.shape-row .art { width: 88px; height: 88px; }
-.practice__card figcaption { margin: 0; }
+.practice { align-items: start; }
+.practice__intro { grid-column: 1 / 6; grid-row: 1; display: grid; gap: var(--space-lg); }
+.practice__intro p:not(.eyebrow) { max-width: 44ch; }
+.practice__steps { grid-column: 1 / 6; grid-row: 2; margin: 0; padding: 0; list-style: none; }
+.step { min-height: 72vh; display: grid; align-content: center; gap: var(--space-sm); opacity: 0.3; transition: opacity 500ms var(--ease-out); }
+.step:last-child { min-height: 56vh; }
+.step.is-active { opacity: 1; }
+.step .eyebrow { margin-bottom: 0; }
+.step h3 { font-size: var(--text-2xl); font-weight: 300; }
+.step p:not(.eyebrow) { max-width: 40ch; }
+/* The figure stays pinned, roughly centred in the viewport, while the steps scroll past it. */
+.practice__stage { grid-column: 7 / 13; grid-row: 1 / 3; align-self: start; position: sticky; top: max(calc(var(--nav-height) + 24px), calc(50svh + var(--nav-height) / 2 - 240px)); margin: 0; }
+.stage { position: relative; aspect-ratio: 4 / 3; background: var(--surface); border: 1px solid var(--color-rule); border-radius: var(--radius-card); overflow: hidden; }
+.stage__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.stage__bar { position: absolute; top: var(--space-md); left: var(--space-lg); right: var(--space-lg); display: flex; justify-content: space-between; align-items: center; }
+.stage__label { margin: 0; }
+.stage__ticks { display: flex; gap: 6px; }
+.stage__ticks i { width: 18px; height: 1px; background: var(--color-rule-2); transition: background var(--dur-short) var(--ease-out); }
+.stage__ticks i.is-on { background: var(--color-accent); }
 
 /* ---------- Capabilities ---------- */
 .capabilities { border-top: var(--rule-hair) solid var(--color-rule); }
@@ -185,7 +197,6 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
 .art { display: block; width: 56px; height: 56px; color: var(--color-faint); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
 .art--accent { color: var(--color-accent); }
 .art--corner { position: absolute; top: var(--space-lg); right: var(--space-lg); width: 64px; height: 64px; stroke-width: 1.6; }
-.shape-row .art { stroke-width: 1.15; }
 
 /* Draw-in: each stroke traces itself in turn once the drawing scrolls into view (js/site.js). */
 .js .draw path { stroke-dasharray: 1; stroke-dashoffset: 1; }
@@ -210,10 +221,15 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
   .hero__photo { grid-column: 1 / 7; }
   .hero__foot { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-lg); }
   .hero__actions { justify-content: flex-start; }
-  .showcase__title, .showcase__lede, .practice__copy, .practice__card, .close__photo, .close__copy { grid-column: 1 / -1; }
+  .showcase__title, .showcase__lede, .close__photo, .close__copy { grid-column: 1 / -1; }
   .cap:nth-child(n) { grid-column: span 6; }
   .showcase__head { row-gap: var(--space-md); margin-bottom: var(--space-xl); }
-  .practice, .close { row-gap: var(--space-xl); }
+  .close { row-gap: var(--space-xl); }
+  .practice__intro, .practice__steps { grid-column: 1 / -1; }
+  .practice__intro { padding-bottom: var(--space-xl); }
+  .practice__stage { grid-column: 1 / -1; grid-row: 2; top: calc(var(--nav-height) + 8px); z-index: var(--z-raised); }
+  .practice__steps { grid-row: 3; }
+  .step { min-height: 58vh; }
   .index__row { grid-template-columns: minmax(0, 1fr) auto; }
   .index__what { grid-column: 1 / -1; grid-row: 2; }
 }
@@ -224,7 +240,6 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
   .showcase__pair { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-lg); }
   .showcase__pair .shot:last-child img { aspect-ratio: 4 / 5; }
   .cap:nth-child(n) { grid-column: 1 / -1; min-height: 200px; }
-  .shape-row .art { width: 52px; height: 52px; stroke-width: 1.9; }
   .close__copy { padding: var(--space-xl) var(--space-lg); }
   .close__email { font-size: var(--text-lg); overflow-wrap: anywhere; }
 }

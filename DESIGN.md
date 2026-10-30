@@ -50,7 +50,7 @@ The locked system for `personal-site/`. Since 2026-10-25 every build is also hel
 | Hero | Banner | The name, one sentence, "See the work" and "Email me". No background. |
 | Work | Showcase | "Angrove, a private study app". One wide Mac capture, then a pair below at 8 and 4 columns. |
 | Index | Rows on the dark band (`#24201C`) | "Selected work, 2024 to now". Five real items, each with a small olive polygon before its title (three to seven sides, in order). |
-| Practice | Split, 6 and 6 | "One person, design to code". The 80-case evaluation fact, beside a card showing a triangle, square, pentagon and hexagon in a row, the last in olive. |
+| Practice | Steps beside a pinned figure | "One person, design to code". Four steps (Interface, Code, Test, Ship) scroll on the left; the figure on the right stays pinned and redraws for the step crossing mid-screen. On phones the figure pins under the nav and the steps scroll beneath it. |
 | Capabilities | Bento of 4 cards (7 and 5 over 5 and 7) | Design, Front end, Apps and Systems. Each card has one shape in its top-right corner (triangle, square, hexagon, pentagon) and its text at the bottom. |
 | Close | Split, 6 and 6 | The greyscale photo, beside a contact card with a small triangle: "Write to me", "Open for collaborations.", the email address, GitHub, the résumé and the case study. |
 | Footer | Colophon | Name and year, and "Back to top". |
@@ -65,7 +65,8 @@ The locked system for `personal-site/`. Since 2026-10-25 every build is also hel
 
 - **Draw-in:** each line drawing traces stroke by stroke (900ms each, 110ms apart) once it is 12% up the screen, then stays.
 - **Footer name:** "Baltodano" spans the content width in Inter Light, fading to nothing toward the bottom, after angrove.app's footer. It rises in from a blur on first sight.
-- Both are skipped under reduced motion and without JavaScript. Hovers change colour only; the button moves 1px on `:active`.
+- **Practice figure** (`js/practice.js`): canvas scenes in fine stippled dots, after studio Kloroform's "Space 5": one object traced densely (phone with a selection, code editor, 80-case grid beside candidate curves, globe with a flight path), with sparser fanned echoes around it. Dots appear in drawing order over 1.7s, so each scene traces itself in; the previous scene fades out first.
+- All are skipped under reduced motion and without JavaScript. Hovers change colour only; the button moves 1px on `:active`.
 
 ## 8. Hallmark checks
 
