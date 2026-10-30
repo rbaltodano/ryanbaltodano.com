@@ -1,43 +1,19 @@
-// Practice: a pinned figure that redraws for each step as the steps scroll past.
-// Interface tests sparse solid/dashed editorial curves. The other scenes retain their
-// stippled particle treatment for comparison. Reduced motion renders the finished scene.
+// Practice: each step has a figure under its text, a labelled hairline diagram that draws
+// itself in as it scrolls into view. Lines trace first, then small mono labels fade in.
+// Reduced motion renders the finished diagram.
 (() => {
-  const stage = document.querySelector(".practice__stage");
-  const canvas = stage && stage.querySelector(".stage__canvas");
-  const steps = [...document.querySelectorAll(".practice__steps .step")];
-  if (!canvas || !steps.length) return;
+  const canvases = document.querySelectorAll(".step__figure canvas");
+  if (!canvases.length) return;
 
   const W = 400, H = 300;                       // scene units; the stage is 4:3
   const INK = "247, 243, 235", MINT = "110, 220, 170";
-  const NAMES = ["Interface", "Code", "Test", "Ship"];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ---------- Sampling ----------
-  const NS = "http://www.w3.org/2000/svg";
-  const scratch = document.createElementNS(NS, "svg");
-  scratch.setAttribute("width", "0"); scratch.setAttribute("height", "0");
-  scratch.style.position = "absolute"; scratch.style.visibility = "hidden";
-  document.body.appendChild(scratch);
-
-  function sample(d, spacing) {
-    const p = document.createElementNS(NS, "path");
-    p.setAttribute("d", d); scratch.appendChild(p);
-    const L = p.getTotalLength(), n = Math.max(1, Math.round(L / spacing)), pts = [];
-    for (let i = 0; i <= n; i++) { const q = p.getPointAtLength((L * i) / n); pts.push([q.x, q.y]); }
-    p.remove();
-    return pts;
-  }
-
-  // A stroke: points plus how it looks and when it draws (s0 = start, span = how long it takes, both 0..1).
-  function stroke(scene, src, o = {}) {
-    const pts = typeof src === "string" ? sample(src, o.gap || 1.7) : src;
-    const s0 = o.s0 || 0, span = o.span == null ? 0.25 : o.span;
-    pts.forEach(([x, y], i) => scene.push({ x, y, r: o.r || 0.75, a: o.a == null ? 0.95 : o.a, c: o.c || INK, t: s0 + (span * i) / Math.max(1, pts.length - 1) }));
-  }
-
-  const rr = (x, y, w, h, r) => `M${x + r} ${y} h${w - 2 * r} a${r} ${r} 0 0 1 ${r} ${r} v${h - 2 * r} a${r} ${r} 0 0 1 ${-r} ${r} h${-(w - 2 * r)} a${r} ${r} 0 0 1 ${-r} ${-r} v${-(h - 2 * r)} a${r} ${r} 0 0 1 ${r} ${-r}z`;
-  const circ = (cx, cy, r) => `M${cx - r} ${cy} a${r} ${r} 0 1 0 ${2 * r} 0 a${r} ${r} 0 1 0 ${-2 * r} 0`;
-  const ell = (cx, cy, rx, ry, steps = 90, rot = 0, a0 = 0, a1 = Math.PI * 2) => {
+  // ---------- Shapes ----------
+  // Every shape is a polyline in scene units.
+  const seg = (x0, y0, x1, y1) => [[x0, y0], [x1, y1]];
+  const poly = (...p) => p;
+  const arc = (cx, cy, rx, ry, rot = 0, a0 = 0, a1 = Math.PI * 2, steps = 96) => {
     const pts = [], c = Math.cos(rot), s = Math.sin(rot);
     for (let i = 0; i <= steps; i++) {
       const t = a0 + ((a1 - a0) * i) / steps, x = rx * Math.cos(t), y = ry * Math.sin(t);
@@ -45,202 +21,253 @@
     }
     return pts;
   };
-  // Seeded random, so every visit draws the same scene.
-  let seed = 7;
-  const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
-  const specks = (scene, n, s0) => { for (let i = 0; i < n; i++) scene.push({ x: rnd() * W, y: rnd() * H, r: 0.6, a: 0.18 + rnd() * 0.25, c: INK, t: s0 + rnd() * 0.3 }); };
+  const at = (cx, cy, rx, ry, rot, t) => arc(cx, cy, rx, ry, rot, t, t, 1)[0];
+  const rect = (x, y, w, h, r = 0) => {
+    if (!r) return [[x, y], [x + w, y], [x + w, y + h], [x, y + h], [x, y]];
+    const q = Math.PI / 2;
+    return [...arc(x + w - r, y + r, r, r, 0, -q, 0, 6), ...arc(x + w - r, y + h - r, r, r, 0, 0, q, 6),
+      ...arc(x + r, y + h - r, r, r, 0, q, 2 * q, 6), ...arc(x + r, y + r, r, r, 0, 2 * q, 3 * q, 6), [x + w - r, y]];
+  };
+  const bez = (p0, p1, p2, p3, n = 60) => {
+    const pts = [];
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, u = 1 - t;
+      pts.push([0, 1].map((k) => u * u * u * p0[k] + 3 * u * u * t * p1[k] + 3 * u * t * t * p2[k] + t * t * t * p3[k]));
+    }
+    return pts;
+  };
+
+  // ---------- Scene builder ----------
+  // t = when an item starts drawing, d = how long it takes (both on a 0..1 timeline).
+  function builder() {
+    const items = [];
+    const api = {
+      items,
+      line(pts, o = {}) { items.push({ kind: "line", pts, t: o.t || 0, d: o.d == null ? 0.25 : o.d, c: o.c || INK, a: o.a == null ? 0.55 : o.a, w: o.w || 1, dash: o.dash || null, fill: o.fill || false }); return api; },
+      dot(x, y, r, o = {}) { items.push({ kind: "dot", x, y, r, t: o.t || 0, c: o.c || INK, a: o.a == null ? 1 : o.a, ring: o.ring || false }); return api; },
+      // A label, with an optional leader from an anchor point to the text.
+      label(text, x, y, o = {}) {
+        const t = o.t == null ? 0.7 : o.t;
+        if (o.from) {
+          const [ax, ay] = o.from, center = o.align === "center";
+          const ex = center ? x : o.align === "right" ? x + 4 : x - 4;
+          const ey = center ? y + (ay > y ? 5 : -10) : y - 2.5;
+          api.line(seg(ax, ay, ex, ey), { t: t - 0.12, d: 0.1, a: 0.3 });
+          api.dot(ax, ay, 1.3, { t: t - 0.12, a: 0.8 });
+        }
+        items.push({ kind: "label", text, x, y, align: o.align || "left", t, c: o.c || INK, a: o.a == null ? 0.62 : o.a });
+        return api;
+      },
+    };
+    return api;
+  }
 
   // ---------- Scenes ----------
   function interfaceScene() {
-    // One quiet contour and one point.
-    return [
-      { path: ell(200, 150, 66, 88, 180), a: 0.7, c: INK, dash: [], t: 0 },
-      { x: 266, y: 150, r: 2.6, a: 1, c: MINT, t: 0 },
-    ];
+    const s = builder();
+    // Alignment guides, like construction lines, then the phone.
+    s.line(seg(162, 22, 162, 282), { dash: [2, 3], a: 0.22, d: 0.3 });
+    s.line(seg(40, 90, 360, 90), { dash: [2, 3], a: 0.22, d: 0.3, t: 0.04 });
+    s.line(rect(150, 34, 100, 232, 14), { a: 0.7, d: 0.35, t: 0.08 });
+    s.line(seg(188, 44, 212, 44), { a: 0.5, t: 0.3, d: 0.05 });
+    // Type: a title and a subtitle.
+    s.line(seg(164, 62, 222, 62), { w: 2.4, a: 0.85, t: 0.3, d: 0.08 });
+    s.line(seg(164, 74, 200, 74), { w: 1.2, a: 0.55, t: 0.34, d: 0.06 });
+    // The component: a card with an image and two lines.
+    s.line(rect(164, 94, 72, 52, 4), { a: 0.6, t: 0.36, d: 0.12 });
+    s.line(arc(178, 110, 6, 6, 0, 0, Math.PI * 2, 24), { a: 0.5, t: 0.42, d: 0.05 });
+    s.line(seg(172, 130, 214, 130), { a: 0.5, t: 0.44, d: 0.05 });
+    s.line(seg(172, 137, 200, 137), { a: 0.35, t: 0.46, d: 0.04 });
+    // A repeated pattern: three list rows.
+    [168, 190, 212].forEach((y, i) => {
+      const t = 0.42 + i * 0.04;
+      s.line(arc(171, y, 4, 4, 0, 0, Math.PI * 2, 24), { a: 0.5, t, d: 0.04 });
+      s.line(seg(181, y - 2, 228, y - 2), { a: 0.55, t, d: 0.05 });
+      s.line(seg(181, y + 3, 208, y + 3), { a: 0.32, t, d: 0.04 });
+    });
+    s.line(seg(150, 240, 250, 240), { a: 0.35, t: 0.5, d: 0.08 });
+    [178, 200, 222].forEach((x, i) => s.dot(x, 252, 1.6, { t: 0.55 + i * 0.02, a: i ? 0.45 : 0.9 }));
+    // Selection on the component, with handles and a cursor.
+    s.line(rect(160, 90, 80, 60), { c: MINT, a: 0.95, t: 0.58, d: 0.12 });
+    [[160, 90], [240, 90], [160, 150], [240, 150]].forEach(([x, y]) => s.line(rect(x - 2.5, y - 2.5, 5, 5), { c: MINT, a: 1, t: 0.7, d: 0.02, fill: true }));
+    s.line(poly([246, 156], [246, 172], [250.5, 167.5], [254, 175], [256.5, 174], [253, 166.5], [259, 166.5], [246, 156]), { c: MINT, a: 1, t: 0.72, d: 0.06, fill: true });
+    s.label("Type scale", 120, 64, { align: "right", from: [162, 62] });
+    s.label("Component", 280, 122, { from: [240, 120], t: 0.8 });
+    s.label("Pattern", 120, 192, { align: "right", from: [165, 190], t: 0.85 });
+    return s.items;
   }
 
   function codeScene() {
-    const s = [];
-    stroke(s, rr(80, 46, 240, 208, 10), { gap: 1.3, r: 0.85, span: 0.3 });           // window
-    stroke(s, "M80 68h240", { s0: 0.1, span: 0.12 });
-    [96, 108, 120].forEach((x, i) => stroke(s, circ(x, 57, 3.2), { gap: 1, s0: 0.12 + i * 0.02, span: 0.03 }));
-    // Code: [indent, [length, mint?]...] per line, with line numbers beside.
-    const rows = [[0, [22, 1], [48, 0]], [1, [18, 1], [30, 0], [24, 0]], [2, [64, 0]], [2, [28, 1], [40, 0]], [1, [12, 0]], [0],
-      [0, [22, 1], [56, 0]], [1, [36, 0], [30, 0]], [2, [20, 1], [44, 0]], [1, [12, 0]]];
-    rows.forEach(([ind, ...segs], i) => {
-      const y = 86 + i * 12, t = 0.2 + i * 0.035;
-      stroke(s, `M94 ${y}h4`, { a: 0.4, gap: 1.2, s0: t, span: 0.01 });
-      let x = 108 + ind * 14;
-      segs.forEach(([len, k]) => { stroke(s, `M${x} ${y}h${len}`, { c: k ? MINT : INK, a: k ? 0.95 : 0.75, gap: 1.5, s0: t, span: 0.05 }); x += len + 6; });
+    const s = builder();
+    s.line(rect(54, 36, 226, 228, 8), { a: 0.7, d: 0.35 });
+    s.line(seg(54, 56, 280, 56), { a: 0.4, t: 0.12, d: 0.12 });
+    [66, 76, 86].forEach((x, i) => s.line(arc(x, 46, 2.8, 2.8, 0, 0, Math.PI * 2, 20), { a: 0.5, t: 0.14 + i * 0.02, d: 0.03 }));
+    s.line(seg(80, 56, 80, 264), { a: 0.18, t: 0.14, d: 0.2 });
+    // Three blocks of code: [indent, [length, mint?]...] per row; null is a blank row.
+    const rows = [
+      [0, [26, 1], [40, 0]], [1, [20, 0], [34, 0]], [2, [52, 1]], [0, [10, 0]], null,
+      [0, [30, 1], [24, 0], [30, 0]], [1, [44, 0]], [0, [12, 0]], null,
+      [0, [16, 1], [50, 0]], [1, [26, 0], [30, 1]], [0, [10, 0]],
+    ];
+    rows.forEach((row, i) => {
+      if (!row) return;
+      const y = 72 + i * 15.5, t = 0.22 + i * 0.03;
+      s.dot(70, y, 0.9, { a: 0.35, t });
+      let x = 92 + row[0] * 14;
+      row.slice(1).forEach(([len, k]) => { s.line(seg(x, y, x + len, y), { c: k ? MINT : INK, a: k ? 0.95 : 0.6, w: 1.4, t, d: 0.05 }); x += len + 6; });
     });
-    stroke(s, "M262 182v10", { c: MINT, gap: 1, s0: 0.6, span: 0.02 });               // cursor
-    stroke(s, "M80 214h240", { s0: 0.55, span: 0.1, a: 0.6 });                        // terminal
-    stroke(s, "M96 228 l6 5 l-6 5", { c: MINT, gap: 1, s0: 0.62, span: 0.03 });
-    stroke(s, "M110 238h70", { s0: 0.64, span: 0.06, a: 0.75 });
-    // Brackets either side, fanned outward like echoes.
-    for (let k = 0; k < 9; k++) {
-      const o = k * 5.5, a = 0.85 * (1 - k / 10), gap = 1.5 + k * 0.6, s0 = 0.3 + k * 0.05;
-      stroke(s, `M${62 - o} ${92 - k * 7} L${22 - o * 1.4} 150 L${62 - o} ${208 + k * 7}`, { gap, a, s0, span: 0.25, r: 0.7 });
-      stroke(s, `M${338 + o} ${92 - k * 7} L${378 + o * 1.4} 150 L${338 + o} ${208 + k * 7}`, { gap, a, s0, span: 0.25, r: 0.7 });
-    }
-    specks(s, 60, 0.7);
-    return s;
+    s.line(seg(118, 238, 118, 250), { c: MINT, a: 1, w: 1.2, t: 0.62, d: 0.02 });
+    // A bracket per block, each labelled with its stack.
+    [[0, 3, "SwiftUI"], [5, 7, "React, TS"], [9, 11, "Rust"]].forEach(([r0, r1, name], i) => {
+      const y0 = 72 + r0 * 15.5 - 5, y1 = 72 + r1 * 15.5 + 5, t = 0.6 + i * 0.06;
+      s.line(poly([288, y0], [292, y0], [292, y1], [288, y1]), { a: 0.5, t, d: 0.06 });
+      s.label(name, 308, (y0 + y1) / 2 + 2.5, { from: [292, (y0 + y1) / 2], t: t + 0.14 });
+    });
+    return s.items;
   }
 
   function testScene() {
-    const s = [];
-    // Eighty cases, ten by eight: a filled dot for a pass, an open ring otherwise.
-    seed = 11;
+    const s = builder();
+    // Eighty cases, ten by eight: a filled dot for a pass, an open ring otherwise. Seeded, so it never changes.
+    let seed = 11;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
     for (let r = 0; r < 8; r++) for (let c = 0; c < 10; c++) {
-      const x = 40 + c * 14, y = 82 + r * 14, t = 0.05 + (r * 10 + c) * 0.006;
-      if (rnd() < 0.86) s.push({ x, y, r: 1.9, a: 0.9, c: INK, t });
-      else stroke(s, circ(x, y, 3.4), { gap: 1.1, a: 0.6, s0: t, span: 0.02 });
+      const x = 36 + c * 13, y = 98 + r * 13, t = 0.04 + (r * 10 + c) * 0.005;
+      if (rnd() < 0.86) s.dot(x, y, 1.9, { a: 0.85, t });
+      else s.dot(x, y, 3, { ring: true, a: 0.6, t });
     }
-    stroke(s, "M33 200h140", { a: 0.35, gap: 2.2, s0: 0.5, span: 0.1 });
-    // Candidates as curves from a shared origin; the chosen one in mint.
-    stroke(s, "M212 236h160", { gap: 1.6, s0: 0.15, span: 0.15 });
-    stroke(s, "M212 236v-176", { gap: 1.6, s0: 0.15, span: 0.15 });
-    for (let x = 228; x <= 372; x += 16) s.push({ x, y: 240, r: 0.7, a: 0.5, c: INK, t: 0.3 });
-    for (let k = 8; k >= 1; k--) {
-      const y = 76 + k * 15;
-      stroke(s, `M212 236 C ${262 + k * 4} ${226 - k * 4}, ${300 - k * 3} ${y + 6}, 372 ${y}`, { gap: 2 + k * 0.45, a: 0.7 * (1 - k / 10), r: 0.65, s0: 0.35 + (8 - k) * 0.03, span: 0.3 });
+    s.line(poly([33, 88], [33, 84], [156, 84], [156, 88]), { a: 0.45, t: 0.45, d: 0.08 });
+    s.label("80 cases", 94, 72, { align: "center", t: 0.6 });
+    // Candidates rising from a shared origin; the chosen one in mint.
+    s.line(seg(196, 236, 372, 236), { a: 0.6, t: 0.1, d: 0.15 });
+    s.line(seg(196, 236, 196, 70), { a: 0.6, t: 0.1, d: 0.15 });
+    for (let x = 216; x <= 372; x += 20) s.line(seg(x, 236, x, 240), { a: 0.4, t: 0.25, d: 0.02 });
+    for (let k = 6; k >= 1; k--) {
+      const y = 92 + k * 18;
+      s.line(bez([196, 236], [236 + k * 6, 226 - k * 4], [300 - k * 4, y + 6], [366, y]), { a: 0.32, t: 0.3 + (6 - k) * 0.03, d: 0.25 });
     }
-    stroke(s, "M212 236 C 262 228, 300 82, 372 72", { c: MINT, gap: 1.2, r: 0.85, s0: 0.62, span: 0.25 });
-    stroke(s, circ(372, 72, 4.5), { c: MINT, gap: 0.9, s0: 0.86, span: 0.04 });
-    specks(s, 50, 0.7);
-    return s;
+    s.line(bez([196, 236], [236, 228], [290, 92], [366, 84]), { c: MINT, a: 1, w: 1.3, t: 0.55, d: 0.25 });
+    s.line(arc(366, 84, 4.5, 4.5, 0, 0, Math.PI * 2, 24), { c: MINT, a: 1, t: 0.8, d: 0.04 });
+    s.label("Default", 366, 62, { align: "center", from: [366, 79], t: 0.88 });
+    s.label("Candidates", 284, 258, { align: "center", t: 0.75, a: 0.45 });
+    return s.items;
   }
 
   function shipScene() {
-    const s = [];
-    const cx = 196, cy = 168, R = 84;
-    stroke(s, ell(cx, cy, R, R, 260), { r: 0.85, span: 0.3 });                       // globe
-    [-60, -30, 0, 30, 60].forEach((lat, i) => {
-      const rad = (lat * Math.PI) / 180, rx = R * Math.cos(rad);
-      stroke(s, ell(cx, cy - R * Math.sin(rad), rx, rx * 0.26, Math.round(rx * 1.6)), { a: 0.45, r: 0.65, s0: 0.15 + i * 0.03, span: 0.2 });
-    });
-    [25, 55, 80].forEach((lon, i) => {
-      const rx = R * Math.sin((lon * Math.PI) / 180);
-      stroke(s, ell(cx, cy, rx, R, Math.round(R * 1.6)), { a: 0.35, r: 0.65, s0: 0.2 + i * 0.03, span: 0.2 });
-    });
-    // Trails sweeping round the globe, the flight itself in mint, ending at the plane.
-    // The orbit runs behind the globe across the top, so dots there are hidden by it.
-    const rot = -0.3, a0 = Math.PI * 0.8, a1 = Math.PI * 1.93;
-    const orbit = (rx, ry, n, end) => ell(cx, cy, rx, ry, n, rot, a0, end).filter(([x, y], i, all) => {
-      const t = a0 + ((end - a0) * i) / (all.length - 1);
-      return !(Math.sin(t) < 0 && Math.hypot(x - cx, y - cy) < R + 2);
-    });
-    for (let k = 9; k >= 1; k--) stroke(s, orbit(150 + k * 5, 50 + k * 4, 120, a1 - k * 0.03), { a: 0.6 * (1 - k / 10), r: 0.6, s0: 0.35 + (9 - k) * 0.02, span: 0.35 });
-    const full = ell(cx, cy, 150, 50, 160, rot, a0, a1);
-    stroke(s, orbit(150, 50, 160, a1), { c: MINT, r: 0.85, s0: 0.45, span: 0.35 });
-    const path = full;
+    const s = builder();
+    const cx = 196, cy = 156;
+    // Plane of reference and a reference direction, then two orbits: iPhone now, Mac next.
+    s.line(arc(cx, cy, 158, 38), { a: 0.25, d: 0.35 });
+    s.line(seg(cx, cy, 352, cy), { dash: [2, 3], a: 0.4, t: 0.2, d: 0.15 });
+    s.line(poly([347, cy - 3], [353, cy], [347, cy + 3]), { a: 0.5, t: 0.34, d: 0.03 });
+    const rotA = -0.62, rotB = 0.42;
+    s.line(arc(cx, cy, 128, 58, rotA), { a: 0.6, t: 0.12, d: 0.4 });
+    s.line(arc(cx, cy, 92, 34, rotB), { a: 0.45, dash: [3, 3], t: 0.22, d: 0.35 });
+    s.dot(cx, cy, 5.5, { t: 0.05 });
+    // Angrove on iPhone: the flight in mint along its orbit, ending at the plane.
+    const tA = -1.25, path = arc(cx, cy, 128, 58, rotA, tA - 1.1, tA, 40);
+    s.line(path, { c: MINT, a: 1, w: 1.3, t: 0.5, d: 0.18 });
     const [ex, ey] = path[path.length - 1], [px, py] = path[path.length - 3];
     const ang = Math.atan2(ey - py, ex - px), c = Math.cos(ang), sn = Math.sin(ang);
-    const P = (x, y) => `${ex + x * c - y * sn} ${ey + x * sn + y * c}`;
-    stroke(s, `M${P(12, 0)} L${P(-9, -8)} L${P(-4, 0)} L${P(-9, 8)} Z M${P(12, 0)} L${P(-4, 0)}`, { c: MINT, gap: 0.9, r: 0.8, s0: 0.82, span: 0.08 });
-    specks(s, 90, 0.6);
-    return s;
+    const P = (x, y) => [ex + x * c - y * sn, ey + x * sn + y * c];
+    s.line(poly(P(9, 0), P(-7, -6), P(-3, 0), P(-7, 6), P(9, 0)), { c: MINT, a: 1, t: 0.68, d: 0.04, fill: true });
+    s.line(seg(cx, cy, ex, ey), { a: 0.4, t: 0.62, d: 0.08 });
+    // The angle between the reference direction and the plane.
+    s.line(arc(cx, cy, 24, 24, 0, Math.atan2(ey - cy, ex - cx), 0, 24), { a: 0.5, t: 0.66, d: 0.06 });
+    // Mac, still to launch: an open marker on its dashed orbit.
+    const [mx, my] = at(cx, cy, 92, 34, rotB, 0.3);
+    s.dot(mx, my, 3.4, { ring: true, a: 0.9, t: 0.6 });
+    s.label("TestFlight", ex - 14, ey - 4, { align: "right", t: 0.78 });
+    s.label("Mac, Dec 15", 318, 262, { align: "center", from: [mx, my], t: 0.84 });
+    return s.items;
   }
 
   const builders = [interfaceScene, codeScene, testScene, shipScene];
   const scenes = [];
-  const scene = (i) => scenes[i] || (scenes[i] = builders[i]());
+  const scene = (i) => scenes[i] || (scenes[i] = builders[i]().map(prep));
+  // Running lengths, so a line can be drawn partway.
+  function prep(it) {
+    if (it.kind !== "line") return it;
+    let L = 0; it.cum = [0];
+    for (let i = 1; i < it.pts.length; i++) { L += Math.hypot(it.pts[i][0] - it.pts[i - 1][0], it.pts[i][1] - it.pts[i - 1][1]); it.cum.push(L); }
+    it.len = L;
+    return it;
+  }
 
   // ---------- Drawing ----------
-  // One renderer per canvas: the pinned stage on desktop, and a figure under each step on phones.
-  const DRAW_MS = 1700, OUT_MS = 260, FADE = 0.04;
+  const DRAW_MS = 2000, END = 1.1;
+  const ease = (k) => 1 - Math.pow(1 - k, 3);
   function figure(cv) {
     const ctx = cv.getContext("2d");
-    let scale = 1, ox = 0, oy = 0, current = -1, started = 0, outgoing = null, raf = 0;
+    let scale = 1, ox = 0, oy = 0, dpr = 1, current = -1, started = 0, raf = 0;
+    const X = (x) => ox + x * scale, Y = (y) => oy + y * scale;
 
-    function paintScene(dots, p, alpha) {
-      for (const d of dots) {
-        if (d.t > p) continue;
-        if (d.path) {
-          ctx.save();
-          ctx.strokeStyle = `rgba(${d.c}, ${d.a * alpha * Math.min(1, p / 0.18)})`;
-          ctx.lineWidth = 0.7 * scale;
-          ctx.setLineDash(d.dash.map((v) => v * scale));
-          ctx.beginPath();
-          d.path.forEach(([x, y], i) => {
-            const px = ox + x * scale, py = oy + y * scale;
-            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-          });
-          ctx.stroke(); ctx.restore();
-          continue;
+    function paintScene(items, p) {
+      const hair = Math.max(0.75 * dpr, 0.6 * scale);
+      for (const it of items) {
+        if (it.t > p) continue;
+        if (it.kind === "line") {
+          const k = it.d ? ease(Math.min(1, (p - it.t) / it.d)) : 1, stop = it.len * k;
+          ctx.strokeStyle = ctx.fillStyle = `rgba(${it.c}, ${it.a})`;
+          ctx.lineWidth = hair * it.w;
+          ctx.setLineDash(it.dash ? it.dash.map((v) => v * scale) : []);
+          ctx.beginPath(); ctx.moveTo(X(it.pts[0][0]), Y(it.pts[0][1]));
+          for (let i = 1; i < it.pts.length; i++) {
+            if (it.cum[i] <= stop) { ctx.lineTo(X(it.pts[i][0]), Y(it.pts[i][1])); continue; }
+            const [ax, ay] = it.pts[i - 1], [bx, by] = it.pts[i], f = (stop - it.cum[i - 1]) / (it.cum[i] - it.cum[i - 1] || 1);
+            ctx.lineTo(X(ax + (bx - ax) * f), Y(ay + (by - ay) * f));
+            break;
+          }
+          if (it.fill && k >= 1) ctx.fill(); else ctx.stroke();
+        } else if (it.kind === "dot") {
+          const k = ease(Math.min(1, (p - it.t) / 0.05));
+          ctx.beginPath(); ctx.arc(X(it.x), Y(it.y), it.r * scale * (0.4 + 0.6 * k), 0, Math.PI * 2);
+          if (it.ring) { ctx.setLineDash([]); ctx.lineWidth = hair; ctx.strokeStyle = `rgba(${it.c}, ${it.a * k})`; ctx.stroke(); }
+          else { ctx.fillStyle = `rgba(${it.c}, ${it.a * k})`; ctx.fill(); }
+        } else {
+          const k = Math.min(1, (p - it.t) / 0.08);
+          ctx.font = `400 ${Math.max(7 * scale, 9 * dpr)}px "Martian Mono", ui-monospace, monospace`;
+          ctx.textAlign = it.align; ctx.textBaseline = "alphabetic";
+          ctx.fillStyle = `rgba(${it.c}, ${it.a * k})`;
+          ctx.fillText(it.text, X(it.x), Y(it.y) + (1 - k) * 3 * dpr);
         }
-        const a = d.a * Math.min(1, (p - d.t) / FADE) * alpha;
-        ctx.fillStyle = `rgba(${d.c}, ${a})`;
-        ctx.beginPath(); ctx.arc(ox + d.x * scale, oy + d.y * scale, d.r * scale * 0.9, 0, Math.PI * 2); ctx.fill();
       }
     }
     function paint(now = performance.now()) {
       ctx.clearRect(0, 0, cv.width, cv.height);
-      let busy = false;
-      if (outgoing) {
-        const k = (now - outgoing.at) / OUT_MS;
-        if (k < 1) { paintScene(scene(outgoing.i), 1.2, 1 - k); busy = true; } else outgoing = null;
-      }
-      if (current >= 0) {
-        const delay = outgoing ? OUT_MS * 0.6 : 0;
-        const p = (reduce || current === 0) ? 1.2 : Math.max(0, (now - started - delay) / DRAW_MS) * 1.2;
-        paintScene(scene(current), p, 1);
-        if (p < 1.2) busy = true;
-      }
-      raf = busy ? requestAnimationFrame(paint) : 0;
+      if (current < 0) { raf = 0; return; }
+      const p = reduce ? END : ((now - started) / DRAW_MS) * END;
+      paintScene(scene(current), p);
+      raf = p < END ? requestAnimationFrame(paint) : 0;
     }
     new ResizeObserver(() => {
-      const r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+      const r = cv.getBoundingClientRect();
+      dpr = Math.min(2, devicePixelRatio || 1);
       cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
       scale = Math.min(r.width / W, r.height / H) * dpr;
-      ox = (cv.width - W * scale) / 2; oy = (cv.height - H * scale) / 2 + 8 * dpr;
+      ox = (cv.width - W * scale) / 2; oy = (cv.height - H * scale) / 2;
       if (!raf) paint();
     }).observe(cv);
+    // Labels use the web font; repaint once it has loaded.
+    if (document.fonts) document.fonts.ready.then(() => { if (!raf) paint(); });
 
     return {
-      get current() { return current; },
       show(i) {
         if (i === current) return;
-        if (current >= 0 && !reduce && i !== 0) outgoing = { i: current, at: performance.now() };
-        else outgoing = null;
         current = i; started = performance.now();
-        cv.parentElement.classList.toggle("stage--quiet", i === 0);
         if (!raf) raf = requestAnimationFrame(paint);
       },
     };
   }
 
-  // Desktop: the pinned stage redraws for the step crossing the middle of the screen.
-  const main = figure(canvas);
-  const label = stage.querySelector("[data-stage-name]"), code = stage.querySelector(".stage__label .code"), ticks = stage.querySelectorAll(".stage__ticks i");
-  function show(i) {
-    if (i === main.current) return;
-    main.show(i);
-    label.textContent = NAMES[i]; code.textContent = `0${i + 1}`;
-    ticks.forEach((t, k) => t.classList.toggle("is-on", k === i));
-    steps.forEach((s, k) => s.classList.toggle("is-active", k === i));
-  }
-
-  let seen = false;
-  new IntersectionObserver((entries, io) => {
-    if (!entries.some((e) => e.isIntersecting)) return;
-    seen = true; io.disconnect();
-    if (main.current < 0) show(0);
-  }, { rootMargin: "0px 0px -15% 0px" }).observe(stage);
-
-  const band = new IntersectionObserver((entries) => entries.forEach((e) => {
-    if (e.isIntersecting && seen) show(Number(e.target.dataset.step));
-  }), { rootMargin: "-50% 0px -50% 0px" });
-  steps.forEach((s) => band.observe(s));
-
-  // Phones: each step has its own figure under its text, drawn once as it scrolls into view.
-  const inline = new IntersectionObserver((entries) => entries.forEach((e) => {
+  // Each figure draws once, as it scrolls into view.
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (!e.isIntersecting) return;
     e.target.__figure.show(Number(e.target.dataset.scene));
-    inline.unobserve(e.target);
+    io.unobserve(e.target);
   }), { rootMargin: "0px 0px -12% 0px" });
-  document.querySelectorAll(".step__figure canvas").forEach((cv) => {
+  canvases.forEach((cv) => {
     cv.__figure = figure(cv);
-    inline.observe(cv);
+    io.observe(cv);
   });
 })();

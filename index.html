@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Martian+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=202610301500">
+  <link rel="stylesheet" href="css/site.css?v=202610301658">
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -131,7 +131,7 @@
     </section>
 
     <!-- Practice: the one claim, beside its figure -->
-    <!-- Practice: four steps scroll on the left while the pinned figure on the right redraws for each (js/practice.js) -->
+    <!-- Practice: four steps, each with a stippled figure under its text that draws in on scroll (js/practice.js) -->
     <section id="practice" class="section--l" data-theme="canvas">
       <div class="container grid-12 practice">
         <div class="practice__intro">
@@ -139,17 +139,8 @@
           <h2>One person, <em>design to code</em></h2>
           <p>I design the interface, write the code, and check that it holds up before it ships.</p>
         </div>
-        <figure class="practice__stage" aria-hidden="true">
-          <div class="stage">
-            <canvas class="stage__canvas"></canvas>
-            <div class="stage__bar">
-              <span class="eyebrow stage__label"><span class="code">01</span><span data-stage-name>Interface</span></span>
-              <span class="stage__ticks"><i class="is-on"></i><i></i><i></i><i></i></span>
-            </div>
-          </div>
-        </figure>
         <ol class="practice__steps">
-          <li class="step is-active" data-step="0">
+          <li class="step" data-step="0">
             <p class="eyebrow"><span class="code">01</span>Interface</p>
             <h3>Design it first</h3>
             <p>Every screen starts in Figma: components, type, and the interaction patterns between screens.</p>
@@ -235,7 +226,7 @@
     </div>
   </footer>
 
-  <script src="js/site.js?v=202610301500" defer></script>
-  <script src="js/practice.js?v=202610301500" defer></script>
+  <script src="js/site.js?v=202610301658" defer></script>
+  <script src="js/practice.js?v=202610301658" defer></script>
 </body>
 </html>
