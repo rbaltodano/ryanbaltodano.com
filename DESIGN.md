@@ -15,18 +15,20 @@ The locked system for `personal-site/`. Since 2026-10-25 every build is also hel
 3. **Shapes as accents, never backgrounds.** Only plain polygons (triangle, square, pentagon, hexagon, heptagon), small, on a card corner or beside a row title. No lattices, nesting, spirals or fractals. They come from one inline SVG sprite with no script.
 4. **Show the real thing.** Project sections use real captures of the product. Missing facts are left out, never invented.
 
-## 2. Colour: inVectus Instrument theme
+## 2. Colour: shared with inVectus
+
+Source of truth: Figma "ESB Stuff 3", node 1227:166. inVectus (`src/App.css`) uses the same values.
 
 | Token | Value | Role |
 |---|---|---|
-| `--bg` | `#0e0f10` | Page |
-| `--surface` | `#151618` | Cards and the index band |
-| `--surface-2` | `#1c1d20` | Row hover |
-| `--ink` | `#f7f3eb` | Headings and links |
-| `--dim` | `#8f8f8a` | Muted text, the second phrase in heads, labels |
+| `--bg` | `#141414` | Page |
+| `--surface` | `#202020` | Cards and the index band |
+| `--surface-2` | `#292929` | Row hover, selected tab |
+| `--ink` | `#d1cbc2` | Headings, body and links |
+| `--dim` | `rgba(209, 203, 194, 0.5)` | Muted text, the second phrase in heads, labels |
 | `--mint` | `#6edcaa` | The one signal: focus, the lead work code, the status dot, one accent diagram. Under 2% of any screen. |
 
-- Rules are white at 10%; stronger rules (buttons, pills) at 20%.
+- Rules are `#333333`; stronger rules (buttons, pills) are `#48453f`.
 - Colour literals only ever appear in `css/tokens.css`.
 
 ## 3. Type

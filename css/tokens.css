@@ -12,12 +12,12 @@
   --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 
-  /* inVectus Instrument theme (inVectus/src/App.css): near-black, white line work at four strengths, mint as the one signal */
-  --bg: #0e0f10;
-  --surface: #151618;
-  --surface-2: #1c1d20;
-  --ink: #f7f3eb;
-  --dim: #8f8f8a;
+  /* Shared with inVectus (Figma "ESB Stuff 3", node 1227:166): neutral near-black, warm stone ink, #333 hairlines, mint as the one signal */
+  --bg: #141414;
+  --surface: #202020;
+  --surface-2: #292929;
+  --ink: #d1cbc2;
+  --dim: rgba(209, 203, 194, 0.5);
   --mint: #6edcaa;
 
   --color-paper: var(--bg);
@@ -26,9 +26,9 @@
   --color-ink: var(--ink);
   --color-ink-2: color-mix(in srgb, var(--ink) 86%, var(--bg));
   --color-muted: var(--dim);
-  --color-faint: rgba(255, 255, 255, 0.35);
-  --color-rule: rgba(255, 255, 255, 0.1);
-  --color-rule-2: rgba(255, 255, 255, 0.2);
+  --color-faint: rgba(209, 203, 194, 0.35);
+  --color-rule: #333333;
+  --color-rule-2: #48453f;
   --color-accent: var(--mint);
   --color-emphasis: var(--dim);
   --color-accent-ink: var(--bg);
@@ -36,7 +36,7 @@
   --color-button-ink: var(--ink);
   --color-area: color-mix(in srgb, var(--mint) 12%, transparent);
   --color-focus: var(--mint);
-  --color-grid: rgba(255, 255, 255, 0.06);
+  --color-grid: #202020;
 
   --font-display: "Inter", -apple-system, "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
   --font-body: var(--font-display);

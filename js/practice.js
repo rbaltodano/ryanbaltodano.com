@@ -8,7 +8,7 @@
   if (!canvases.length) return;
 
   const W = 400, H = 300;                       // scene units; the stage is 4:3
-  const INK = "247, 243, 235", MINT = "110, 220, 170";
+  const INK = "209, 203, 194", MINT = "110, 220, 170";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---------- Shapes ----------
