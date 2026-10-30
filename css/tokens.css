@@ -1,6 +1,6 @@
-/* Tokens: the Hallmark shared scale, filled from Angrove's palette (AngroveTheme.swift) and DESIGN.md. */
+/* Tokens: the Hallmark shared scale, filled from inVectus's Instrument theme and DESIGN.md. */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
   --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
   --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
@@ -12,52 +12,43 @@
   --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 
-  /* Angrove light mode (AngroveTheme.Colors, light values), headings in dark-mode canvasSecondary */
-  --cream: #FFFAF0;             /* canvasSecondary (light): the page */
-  --cream-2: #F3EEE2;           /* canvas (light): cards */
-  --heading: #24201C;           /* canvasSecondary (dark): headings */
-  --brown: #4A321C;             /* primaryBrown / paragraphText (light) */
-  --rule-brown: #220F01;        /* brownBorder (light) */
-  --olive: #86803E;             /* lightGreen (light): large italic emphasis only, 3.9:1 */
-  --olive-deep: #6F6844;        /* darkGreen (light): links and small accents, 5.4:1 */
-  --olive-dark-mode: #B7AE78;   /* lightGreen (dark): accents on the dark band */
-  --ink-button: #2A2520;        /* canvasTertiary (light): the filled button */
+  /* inVectus Instrument theme (inVectus/src/App.css): near-black, white line work at four strengths, mint as the one signal */
+  --bg: #0e0f10;
+  --surface: #151618;
+  --surface-2: #1c1d20;
+  --ink: #f7f3eb;
+  --dim: #8f8f8a;
+  --mint: #6edcaa;
 
-  --color-paper: var(--cream);
-  --color-paper-2: var(--cream-2);
-  --color-paper-3: var(--cream-2);
-  --color-ink: var(--heading);
-  --color-ink-2: color-mix(in srgb, var(--brown) 85%, var(--cream));
-  --color-muted: color-mix(in srgb, var(--brown) 74%, var(--cream));
-  --color-faint: color-mix(in srgb, var(--brown) 32%, var(--cream));
-  --color-rule: color-mix(in srgb, var(--rule-brown) 10%, var(--cream));
-  --color-accent: var(--olive-deep);
-  --color-emphasis: var(--olive);
-  --color-accent-ink: var(--cream);
-  --color-button: var(--ink-button);
-  --color-button-ink: var(--cream);
-  --color-area: color-mix(in srgb, var(--olive) 18%, transparent);
-  --color-focus: var(--olive-deep);
-  --color-grid: color-mix(in srgb, var(--rule-brown) 6%, transparent);
+  --color-paper: var(--bg);
+  --color-paper-2: var(--surface);
+  --color-paper-3: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: color-mix(in srgb, var(--ink) 86%, var(--bg));
+  --color-muted: var(--dim);
+  --color-faint: rgba(255, 255, 255, 0.35);
+  --color-rule: rgba(255, 255, 255, 0.1);
+  --color-rule-2: rgba(255, 255, 255, 0.2);
+  --color-accent: var(--mint);
+  --color-emphasis: var(--dim);
+  --color-accent-ink: var(--bg);
+  --color-button: transparent;
+  --color-button-ink: var(--ink);
+  --color-area: color-mix(in srgb, var(--mint) 12%, transparent);
+  --color-focus: var(--mint);
+  --color-grid: rgba(255, 255, 255, 0.06);
 
-  --font-display: "Instrument Serif", "Libre Baskerville", Georgia, ui-serif, serif;
-  --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: var(--font-body);
-  --display-weight: 400;
-  --radius-card: 16px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
-  --tracking-display: -0.01em;
+  --font-display: "Inter", -apple-system, "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  --font-body: var(--font-display);
+  --font-mono: "Martian Mono", ui-monospace, Menlo, monospace;
+  --font-outlier: var(--font-mono);
+  --display-weight: 300;
+  --radius-card: 2px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
+  --tracking-display: -0.025em;
   --nav-height: 72px;
 }
 
-/* The panel band: Angrove's dark-mode canvasSecondary, with its dark-mode text and olive. */
+/* The panel band: one surface step up from the page, same line work. */
 [data-theme="panel"] {
-  --color-paper: var(--heading);
-  --color-ink: var(--cream);
-  --color-ink-2: color-mix(in srgb, var(--cream) 80%, var(--heading));
-  --color-muted: color-mix(in srgb, var(--cream) 62%, var(--heading));
-  --color-faint: color-mix(in srgb, var(--cream) 30%, var(--heading));
-  --color-rule: color-mix(in srgb, var(--cream) 14%, var(--heading));
-  --color-accent: var(--olive-dark-mode);
-  --color-emphasis: var(--olive-dark-mode);
-  --color-accent-ink: var(--heading);
+  --color-paper: var(--surface);
 }

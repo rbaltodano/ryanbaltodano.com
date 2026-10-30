@@ -3,7 +3,7 @@
 The locked system for `personal-site/`. Since 2026-10-25 every build is also held to the **Hallmark** anti-slop gates (github.com/Nutlope/hallmark, v2.0.0). The stamp at the top of `css/site.css` records the run.
 
 **Brand:** a personal site for Ryan Baltodano only. Don't mention Sine Viridian, which isn't public yet.
-**Direction (since 2026-10-26):** scholarly, on Angrove's light cream, with small plain shapes. Instrument Serif headings in Angrove's dark brown, with olive italic emphasis, and Instrument Sans body text on Angrove's light cream, and simple polygons used only as accents on cards and rows. No background patterns, no fractals, and no calculus imagery.
+**Direction (since 2026-10-30):** the inVectus Instrument theme (`~/Developer/inVectus/src/App.css`): near-black ground, Inter Light headings with a dim second phrase, Martian Mono only for tracked uppercase labels and numbers, hairlines instead of boxes, and mint as the one signal. Thin line diagrams (inVectus `LineArt`) replace the polygons.
 **Job:** hire. Contact sits in the nav, once in the hero, and again at the close.
 
 ---
@@ -15,38 +15,32 @@ The locked system for `personal-site/`. Since 2026-10-25 every build is also hel
 3. **Shapes as accents, never backgrounds.** Only plain polygons (triangle, square, pentagon, hexagon, heptagon), small, on a card corner or beside a row title. No lattices, nesting, spirals or fractals. They come from one inline SVG sprite with no script.
 4. **Show the real thing.** Project sections use real captures of the product. Missing facts are left out, never invented.
 
-## 2. Colour: Angrove light cream, dark headings
+## 2. Colour: inVectus Instrument theme
 
-Taken from `AngroveTheme.swift`. The page uses light-mode values, except that headings use the dark-mode canvasSecondary.
+| Token | Value | Role |
+|---|---|---|
+| `--bg` | `#0e0f10` | Page |
+| `--surface` | `#151618` | Cards and the index band |
+| `--surface-2` | `#1c1d20` | Row hover |
+| `--ink` | `#f7f3eb` | Headings and links |
+| `--dim` | `#8f8f8a` | Muted text, the second phrase in heads, labels |
+| `--mint` | `#6edcaa` | The one signal: focus, the lead work code, the status dot, one accent diagram. Under 2% of any screen. |
 
-| Token | Value | Angrove name | Role |
-|---|---|---|---|
-| `--cream` | `#FFFAF0` | canvasSecondary (light) | Page background |
-| `--cream-2` | `#F3EEE2` | canvas (light) | Cards |
-| `--heading` | `#24201C` | canvasSecondary (dark) | Headings (15.5 : 1); also the dark band behind the work index |
-| `--brown` | `#4A321C` | primaryBrown / paragraphText | Body text at 85% (about 7 : 1), captions and meta at 74% (4.9 : 1) |
-| `--olive` | `#86803E` | lightGreen (light) | Italic emphasis in heads only (3.9 : 1, large text) |
-| `--olive-deep` | `#6F6844` | darkGreen (light) | Links, glyphs and accent shapes (5.4 : 1) |
-| `--olive-dark-mode` | `#B7AE78` | lightGreen (dark) | Accents and emphasis on the dark band |
-| `--ink-button` | `#2A2520` | canvasTertiary (light) | The one filled button, with cream text |
-
-- Rules use brownBorder (`#220F01`) at 10%.
-- The dark band (`[data-theme="panel"]`) swaps to cream text and the dark-mode olive.
+- Rules are white at 10%; stronger rules (buttons, pills) at 20%.
 - Colour literals only ever appear in `css/tokens.css`.
 
 ## 3. Type
 
-- **Instrument Serif** for display: the hero name, section heads and item titles, in regular and italic. Tracking is −0.01em (−0.02em on the name).
-- **Instrument Sans** for everything else: body text at 17px with a 1.65 line height, captions, nav and labels. Regular and medium weights only.
-- **Italic emphasis (owner's choice):** one phrase per head may be set in olive italic, such as "Angrove, a *private* study app", plus one phrase in the hero sentence. This matches Angrove's own olive italics. It breaks Hallmark gates 38i and 38iii on purpose, and the reason is recorded in the stamp.
-- **Labels, captions and nav links** are set a step smaller, in sentence case, with no letter-spacing. No eyebrow lines.
-- **Copy:** no em or en dashes, and no strings joined by middle dots. Section heads are six words or fewer.
+- **Inter** for display and body. Headings at weight 300, tracked −0.025em (−0.05em on the name). Body 16px, line height 1.6.
+- **Emphasis:** one phrase per head in `--dim`, upright (no italics).
+- **Martian Mono** only for small tracked uppercase labels: section codes (`01 Work`), captions, dates, the footer, the status pill.
+- **Copy:** no em or en dashes. Section heads are six words or fewer.
 
 ## 4. Layout
 
 - `.container` is capped at 1440px with 64px gutters (24px under 60rem, 16px under 40rem), on a 12-column grid with a 32px gap.
 - Gaps between sections vary: 120, 144 or 176px. Seams use whitespace, one canvasSecondary band, and a hairline.
-- **Cards:** light canvas (`#F3EEE2`) with a 16px radius, no border and no shadow. They hold the capabilities, the practice shapes and the contact block. Never a card inside a card.
+- **Cards:** `--surface` with a 1px hairline and a 2px radius, no shadow. They hold the capabilities, the practice shapes and the contact block. Never a card inside a card.
 - **Chrome:** the nav is one edge-aligned line (the name, then Work, Practice, Capabilities and Contact; under 40rem only Contact shows). The footer is a one-line colophon.
 
 ## 5. The page
@@ -61,13 +55,11 @@ Taken from `AngroveTheme.swift`. The page uses light-mode values, except that he
 | Close | Split, 6 and 6 | The greyscale photo, beside a contact card with a small triangle: "Write to me", "Open for collaborations.", the email address, GitHub, the résumé and the case study. |
 | Footer | Colophon | Name and year, and "Back to top". |
 
-## 6. Shapes
+## 6. Line art
 
-- **Sprite:** five `<symbol>`s at the top of `index.html`: triangle, square, pentagon, hexagon and heptagon, each a regular polygon in a 100×100 box.
-- **Card corner:** 56px, a 1.5px stroke at the faint brown step, with no fill.
-- **Practice row:** 72px each, and the last shape is olive with a 16% olive fill.
-- **Row glyph:** 0.7em, a 1.25px olive stroke, placed before the work title.
-- Strokes use `vector-effect: non-scaling-stroke`, so lines stay the same weight at every size.
+- **Sprite:** five `<symbol>`s at the top of `index.html` (sphere, venn, rings, orbit, grid), copied from inVectus `src/LineArt.tsx`.
+- 1px `currentColor` strokes with `vector-effect: non-scaling-stroke`, at white 35%; one per screen may be mint.
+- Work rows use mono codes (`01` to `05`) instead of glyphs; the lead row's code is mint.
 
 ## 7. Motion
 

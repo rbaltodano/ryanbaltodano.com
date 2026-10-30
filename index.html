@@ -5,53 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ryan Baltodano, design engineer and product designer</title>
   <meta name="description" content="Ryan Baltodano designs and builds Angrove and inVectus, native study tools and local-first research software.">
-  <meta name="theme-color" content="#FFFAF0">
+  <meta name="theme-color" content="#0e0f10">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Martian+Mono:wght@400&display=swap">
   <link rel="stylesheet" href="css/site.css">
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-  <!-- Simple shapes, drawn once and reused (DESIGN.md §6) -->
+  <!-- Thin line diagrams, drawn once and reused (DESIGN.md §6), after inVectus's LineArt -->
   <svg width="0" height="0" class="sprite" aria-hidden="true">
-    <symbol id="s-triangle" viewBox="0 0 100 100"><polygon points="50,18 84.64,78 15.36,78"/></symbol>
-    <symbol id="s-square" viewBox="0 0 100 100"><rect x="18" y="18" width="64" height="64"/></symbol>
-    <symbol id="s-pentagon" viewBox="0 0 100 100"><polygon points="50,14 88.04,41.64 73.51,86.36 26.49,86.36 11.96,41.64"/></symbol>
-    <symbol id="s-hexagon" viewBox="0 0 100 100"><polygon points="90,50 70,84.64 30,84.64 10,50 30,15.36 70,15.36"/></symbol>
-    <symbol id="s-heptagon" viewBox="0 0 100 100"><polygon points="50,10 81.27,25.06 89,58.9 67.36,86.04 32.64,86.04 11,58.9 18.73,25.06"/></symbol>
+    <symbol id="l-sphere" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40"/><ellipse cx="50" cy="50" rx="40" ry="13"/><ellipse cx="50" cy="50" rx="15" ry="40" opacity="0.6"/><ellipse cx="50" cy="50" rx="30" ry="40" opacity="0.35"/><ellipse cx="50" cy="50" rx="40" ry="27" opacity="0.35" stroke-dasharray="2 3"/></symbol>
+    <symbol id="l-venn" viewBox="0 0 100 100"><circle cx="38" cy="50" r="26"/><circle cx="62" cy="50" r="26"/><path d="M50 27 L50 73" stroke-dasharray="2 3" opacity="0.6"/></symbol>
+    <symbol id="l-rings" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="30" opacity="0.8"/><circle cx="50" cy="50" r="20" opacity="0.6"/><circle cx="50" cy="50" r="10" opacity="0.4"/><path d="M50 4 L50 96 M4 50 L96 50" stroke-dasharray="2 4" opacity="0.4"/></symbol>
+    <symbol id="l-orbit" viewBox="0 0 100 100"><circle cx="50" cy="50" r="7"/><ellipse cx="50" cy="50" rx="40" ry="16" transform="rotate(-20 50 50)"/><ellipse cx="50" cy="50" rx="28" ry="10" transform="rotate(25 50 50)" opacity="0.6"/><circle cx="86" cy="36" r="2.5" fill="currentColor"/><circle cx="27" cy="57" r="2" fill="currentColor" opacity="0.6"/></symbol>
+    <symbol id="l-grid" viewBox="0 0 100 100"><path d="M14 86 L14 14 M14 86 L86 86"/><path d="M26 18 L26 86 M38 18 L38 86 M50 18 L50 86 M62 18 L62 86 M74 18 L74 86 M14 26 L82 26 M14 38 L82 38 M14 50 L82 50 M14 62 L82 62 M14 74 L82 74" opacity="0.35"/></symbol>
   </svg>
   <header class="nav" data-theme="canvas">
     <div class="container nav__inner">
       <a class="wordmark" href="#top" aria-label="Ryan Baltodano, home">Ryan Baltodano</a>
       <nav class="nav__links" aria-label="Sections">
-        <a href="#work">Work</a>
-        <a href="#practice">Practice</a>
-        <a href="#capabilities">Capabilities</a>
-        <a href="#contact">Contact</a>
+        <a href="#work"><span class="code">01</span>Work</a>
+        <a href="#practice"><span class="code">02</span>Practice</a>
+        <a href="#capabilities"><span class="code">03</span>Capabilities</a>
+        <a class="nav__cta" href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
   <main id="top">
     <!-- Hero, Banner: the name, one sentence, two actions; the work shows below the fold line -->
-    <section class="container hero" data-theme="canvas">
+    <section class="container grid-12 hero" data-theme="canvas">
+      <div class="hero__text">
+      <p class="eyebrow">Design engineer and product designer</p>
       <h1 class="hero__name">Ryan Baltodano</h1>
       <div class="hero__foot">
         <p class="lead">I design products and <em>write the code</em> that ships them.</p>
         <div class="hero__actions">
           <a class="text-link" href="#work">See the work</a>
-          <a class="button" href="mailto:rbaltodano337@gmail.com">Email me</a>
+          <a class="button" href="mailto:rbaltodano337@gmail.com"><span aria-hidden="true">+</span> Email me</a>
         </div>
       </div>
+      </div>
+      <figure class="hero__photo">
+        <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125">
+      </figure>
     </section>
 
     <!-- Showcase: the product, in real captures -->
     <section id="work" class="section" data-theme="canvas">
       <div class="container">
         <div class="grid-12 showcase__head">
-          <h2>Angrove, a <em>private</em> study app</h2>
-          <div>
+          <div class="showcase__title"><p class="eyebrow"><span class="code">01</span>Work</p><h2>Angrove, a <em>private</em> study app</h2></div>
+          <div class="showcase__lede">
             <p class="lead">Philosophy and theology, studied on an iPhone that never sends your questions away.</p>
             <a class="text-link" href="https://angrove.app">Visit angrove.app</a>
           </div>
@@ -77,37 +83,38 @@
     <section id="index" class="section--s" data-theme="panel">
       <div class="container grid-12 index">
         <div class="index__head">
+          <p class="eyebrow"><span class="code">01.1</span>Index</p>
           <h2>Selected work, <em>2024 to now</em></h2>
           <p class="muted">What I have designed and built, and who it was for.</p>
         </div>
         <ol class="index__list">
           <li class="index__row index__row--lead">
-            <h3><svg class="glyph" aria-hidden="true"><use href="#s-triangle"/></svg><a href="#work">Angrove</a></h3>
+            <h3><span class="code">01</span><a href="#work">Angrove</a></h3>
             <p class="index__what">Product design, SwiftUI direction, on-device search</p>
             <p class="index__when num">Now, open beta</p>
           </li>
           <li class="index__row">
-            <h3><svg class="glyph" aria-hidden="true"><use href="#s-square"/></svg>Angrove design system</h3>
+            <h3><span class="code">02</span>Angrove design system</h3>
             <p class="index__what">Figma components, type and interaction patterns</p>
             <p class="index__when num">Now</p>
           </li>
           <li class="index__row">
-            <h3><svg class="glyph" aria-hidden="true"><use href="#s-pentagon"/></svg><a href="https://angrove.app">angrove.app</a></h3>
+            <h3><span class="code">03</span><a href="https://angrove.app">angrove.app</a></h3>
             <p class="index__what">The product site, designed and built</p>
             <p class="index__when num">2026</p>
           </li>
           <li class="index__row">
-            <h3><svg class="glyph" aria-hidden="true"><use href="#s-hexagon"/></svg>Client websites</h3>
+            <h3><span class="code">04</span>Client websites</h3>
             <p class="index__what">Web designer at PostcardMania</p>
             <p class="index__when num">2024 to now</p>
           </li>
           <li class="index__row">
-            <h3><svg class="glyph" aria-hidden="true"><use href="#s-heptagon"/></svg>Client sites and features</h3>
+            <h3><span class="code">05</span>Client sites and features</h3>
             <p class="index__what">Front-end intern at Cloud Carpenter</p>
             <p class="index__when num">2024</p>
           </li>
           <li class="index__row">
-            <h3><svg class="glyph" aria-hidden="true"><use href="#s-square"/></svg><a href="#invectus">inVectus</a></h3>
+            <h3><span class="code">06</span><a href="#invectus">inVectus</a></h3>
             <p class="index__what">Interaction design, React, TypeScript and Rust</p>
             <p class="index__when num">In development</p>
           </li>
@@ -116,14 +123,18 @@
     </section>
 
     <section id="invectus" class="section" data-theme="canvas" aria-labelledby="invectus-title">
-      <div class="container grid-12 practice">
-        <div class="practice__copy">
-          <h2 id="invectus-title">inVectus, <em>research in context</em></h2>
-          <p>A local-first research desktop app in development, validated locally on macOS. I design and build its React/TypeScript interface and shared Rust engine.</p>
+      <div class="container">
+        <div class="grid-12 showcase__head">
+          <div class="showcase__title"><p class="eyebrow"><span class="code">01.2</span>Work</p><h2 id="invectus-title">inVectus, <em>research in context</em></h2></div>
+          <div class="showcase__lede">
+            <p>A local-first research desktop app in development, validated locally on macOS. I design and build its React/TypeScript interface and shared Rust engine.</p>
+            <p class="muted">Explore possible gaps on an interactive map, inspect supporting evidence, and save review decisions. Bookmarks and decisions stay separate, with saved records retained across rescans. Indexing is resumable and cancellable; assessments make their collection scope and uncertainty explicit.</p>
+          </div>
         </div>
-        <div>
-          <p>Explore possible gaps on an interactive map, inspect supporting evidence, and save review decisions. Bookmarks and decisions stay separate, with saved records retained across rescans. Indexing is resumable and cancellable; assessments make their collection scope and uncertainty explicit.</p>
-        </div>
+        <figure class="shot shot--wide">
+          <img src="assets/img/invectus-gap.jpg" alt="inVectus for Mac: a flagged coverage gap with its demand, coverage and score breakdown, beside a circular map of the collection." width="2000" height="1300" loading="lazy">
+          <figcaption class="small">A flagged gap in a 5,000-paper ophthalmology collection.</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -131,42 +142,44 @@
     <section id="practice" class="section--l" data-theme="canvas">
       <div class="container grid-12 practice">
         <div class="practice__copy">
+          <p class="eyebrow"><span class="code">02</span>Practice</p>
           <h2>One person, <em>design to code</em></h2>
           <p>I design the interface, write the code, and check that it holds up. For Angrove that meant an 80-case evaluation before choosing a default.</p>
         </div>
         <figure class="card practice__card">
           <div class="shape-row" aria-hidden="true">
-            <svg class="art"><use href="#s-triangle"/></svg>
-            <svg class="art"><use href="#s-square"/></svg>
-            <svg class="art"><use href="#s-pentagon"/></svg>
-            <svg class="art art--accent"><use href="#s-hexagon"/></svg>
+            <svg class="art"><use href="#l-grid"/></svg>
+            <svg class="art"><use href="#l-venn"/></svg>
+            <svg class="art"><use href="#l-rings"/></svg>
+            <svg class="art art--accent"><use href="#l-orbit"/></svg>
           </div>
-          <figcaption>Interface, code, test, ship. One more side each time.</figcaption>
+          <figcaption class="eyebrow">Interface / code / test / ship</figcaption>
         </figure>
       </div>
     </section>
 
     <!-- Capabilities: four functions -->
     <section id="capabilities" class="container section capabilities" data-theme="canvas">
-      <h2>Design, front end, apps, systems</h2>
+      <p class="eyebrow"><span class="code">03</span>Capabilities</p>
+      <h2>Design, front end, apps, <em>systems</em></h2>
       <div class="caps">
         <article class="card cap">
-          <svg class="art art--corner" aria-hidden="true"><use href="#s-triangle"/></svg>
+          <svg class="art art--corner" aria-hidden="true"><use href="#l-venn"/></svg>
           <h3>Design</h3>
           <p>Figma systems, interaction design, and the details between screens.</p>
         </article>
         <article class="card cap">
-          <svg class="art art--corner" aria-hidden="true"><use href="#s-square"/></svg>
+          <svg class="art art--corner" aria-hidden="true"><use href="#l-grid"/></svg>
           <h3>Front end</h3>
           <p>HTML, CSS, JavaScript and PHP, built responsive for real clients.</p>
         </article>
         <article class="card cap">
-          <svg class="art art--corner" aria-hidden="true"><use href="#s-hexagon"/></svg>
+          <svg class="art art--corner" aria-hidden="true"><use href="#l-sphere"/></svg>
           <h3>Apps</h3>
           <p>Swift and SwiftUI, tuned on device until it feels fast, then still.</p>
         </article>
         <article class="card cap">
-          <svg class="art art--corner" aria-hidden="true"><use href="#s-pentagon"/></svg>
+          <svg class="art art--corner" aria-hidden="true"><use href="#l-orbit"/></svg>
           <h3>Systems</h3>
           <p>Embeddings, semantic search, and FastAPI with SQLite behind them.</p>
         </article>
@@ -177,13 +190,13 @@
     <section id="contact" class="section" data-theme="canvas">
       <div class="container grid-12 close">
         <figure class="close__photo">
-          <img src="assets/img/hero-skyline.jpg" alt="Two people at a railing, looking out at a city skyline at night." width="2400" height="1350" loading="lazy">
-          <figcaption class="small">After hours.</figcaption>
+          <img src="assets/img/headshot.jpg" alt="Ryan Baltodano in a dark suit and white shirt, standing in front of a fountain and palm trees." width="1200" height="1600" loading="lazy">
         </figure>
         <div class="card close__copy">
-          <svg class="art art--corner" aria-hidden="true"><use href="#s-triangle"/></svg>
+          <svg class="art art--corner" aria-hidden="true"><use href="#l-rings"/></svg>
+          <p class="eyebrow"><span class="code">04</span>Contact</p>
           <h2>Write <em>to me</em></h2>
-          <p class="muted">Open for collaborations.</p>
+          <span class="status">Open for collaborations</span>
           <a class="text-link close__email" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com</a>
           <a class="text-link" href="https://github.com/rbaltodano">GitHub</a>
           <a class="text-link" href="assets/Ryan-Baltodano-Resume.pdf?v=20261030b" target="_blank" rel="noopener">Résumé (PDF)</a>
