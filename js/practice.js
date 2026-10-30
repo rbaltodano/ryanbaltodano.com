@@ -168,68 +168,85 @@
   const scene = (i) => scenes[i] || (scenes[i] = builders[i]());
 
   // ---------- Drawing ----------
-  const ctx = canvas.getContext("2d");
-  let scale = 1, ox = 0, oy = 0;
-  function fit() {
-    const r = canvas.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
-    canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
-    scale = Math.min(r.width / W, r.height / H) * dpr;
-    ox = (canvas.width - W * scale) / 2; oy = (canvas.height - H * scale) / 2 + 8 * dpr;
-    paint();
-  }
-
+  // One renderer per canvas: the pinned stage on desktop, and a figure under each step on phones.
   const DRAW_MS = 1700, OUT_MS = 260, FADE = 0.04;
-  let current = -1, started = 0, outgoing = null, raf = 0;
+  function figure(cv) {
+    const ctx = cv.getContext("2d");
+    let scale = 1, ox = 0, oy = 0, current = -1, started = 0, outgoing = null, raf = 0;
 
-  function paintScene(dots, p, alpha) {
-    for (const d of dots) {
-      if (d.t > p) continue;
-      const a = d.a * Math.min(1, (p - d.t) / FADE) * alpha;
-      ctx.fillStyle = `rgba(${d.c}, ${a})`;
-      ctx.beginPath(); ctx.arc(ox + d.x * scale, oy + d.y * scale, d.r * scale * 0.9, 0, Math.PI * 2); ctx.fill();
+    function paintScene(dots, p, alpha) {
+      for (const d of dots) {
+        if (d.t > p) continue;
+        const a = d.a * Math.min(1, (p - d.t) / FADE) * alpha;
+        ctx.fillStyle = `rgba(${d.c}, ${a})`;
+        ctx.beginPath(); ctx.arc(ox + d.x * scale, oy + d.y * scale, d.r * scale * 0.9, 0, Math.PI * 2); ctx.fill();
+      }
     }
+    function paint(now = performance.now()) {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      let busy = false;
+      if (outgoing) {
+        const k = (now - outgoing.at) / OUT_MS;
+        if (k < 1) { paintScene(scene(outgoing.i), 1.2, 1 - k); busy = true; } else outgoing = null;
+      }
+      if (current >= 0) {
+        const delay = outgoing ? OUT_MS * 0.6 : 0;
+        const p = reduce ? 1.2 : Math.max(0, (now - started - delay) / DRAW_MS) * 1.2;
+        paintScene(scene(current), p, 1);
+        if (p < 1.2) busy = true;
+      }
+      raf = busy ? requestAnimationFrame(paint) : 0;
+    }
+    new ResizeObserver(() => {
+      const r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+      cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+      scale = Math.min(r.width / W, r.height / H) * dpr;
+      ox = (cv.width - W * scale) / 2; oy = (cv.height - H * scale) / 2 + 8 * dpr;
+      if (!raf) paint();
+    }).observe(cv);
+
+    return {
+      get current() { return current; },
+      show(i) {
+        if (i === current) return;
+        if (current >= 0 && !reduce) outgoing = { i: current, at: performance.now() };
+        current = i; started = performance.now();
+        if (!raf) raf = requestAnimationFrame(paint);
+      },
+    };
   }
 
-  function paint(now = performance.now()) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let busy = false;
-    if (outgoing) {
-      const k = (now - outgoing.at) / OUT_MS;
-      if (k < 1) { paintScene(scene(outgoing.i), 1.2, 1 - k); busy = true; } else outgoing = null;
-    }
-    if (current >= 0) {
-      const delay = outgoing ? OUT_MS * 0.6 : 0;
-      const p = reduce ? 1.2 : Math.max(0, (now - started - delay) / DRAW_MS) * 1.2;
-      paintScene(scene(current), p, 1);
-      if (p < 1.2) busy = true;
-    }
-    raf = busy ? requestAnimationFrame(paint) : 0;
-  }
-
+  // Desktop: the pinned stage redraws for the step crossing the middle of the screen.
+  const main = figure(canvas);
   const label = stage.querySelector("[data-stage-name]"), code = stage.querySelector(".stage__label .code"), ticks = stage.querySelectorAll(".stage__ticks i");
   function show(i) {
-    if (i === current) return;
-    if (current >= 0 && !reduce) outgoing = { i: current, at: performance.now() };
-    current = i; started = performance.now();
+    if (i === main.current) return;
+    main.show(i);
     label.textContent = NAMES[i]; code.textContent = `0${i + 1}`;
     ticks.forEach((t, k) => t.classList.toggle("is-on", k === i));
     steps.forEach((s, k) => s.classList.toggle("is-active", k === i));
-    if (!raf) raf = requestAnimationFrame(paint);
   }
 
-  new ResizeObserver(fit).observe(canvas);
-
-  // Start drawing when the figure first comes into view; after that, the step crossing the
-  // middle of the screen picks the scene.
   let seen = false;
   new IntersectionObserver((entries, io) => {
     if (!entries.some((e) => e.isIntersecting)) return;
     seen = true; io.disconnect();
-    if (current < 0) show(0);
+    if (main.current < 0) show(0);
   }, { rootMargin: "0px 0px -15% 0px" }).observe(stage);
 
   const band = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (e.isIntersecting && seen) show(Number(e.target.dataset.step));
   }), { rootMargin: "-50% 0px -50% 0px" });
   steps.forEach((s) => band.observe(s));
+
+  // Phones: each step has its own figure under its text, drawn once as it scrolls into view.
+  const inline = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.__figure.show(Number(e.target.dataset.scene));
+    inline.unobserve(e.target);
+  }), { rootMargin: "0px 0px -12% 0px" });
+  document.querySelectorAll(".step__figure canvas").forEach((cv) => {
+    cv.__figure = figure(cv);
+    inline.observe(cv);
+  });
 })();
