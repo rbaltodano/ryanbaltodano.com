@@ -1,8 +1,8 @@
 /* Hallmark · job: hire · shape: Marquee Hero (the name and one line, then the product, the index, the practice beside a card of line art) · genre: editorial · theme: brand · redesign: restyle
  * paper: #141414 · accent: #6edcaa · display/body: Inter · labels: Martian Mono · hero: Banner · nav: edge-aligned, numbered like inVectus's tabs · footer: colophon · signature: thin line diagrams and mono section codes, after inVectus
  * axes: inVectus Instrument theme, near-black/hairlines/mint · posture: restrained · v2.0.0 */
-@import url("./tokens.css?v=202610301730");
-@import url("./base.css?v=202610301730");
+@import url("./tokens.css?v=202611011950");
+@import url("./base.css?v=202611011950");
 
 html { scroll-behavior: smooth; scroll-padding-top: var(--space-lg); }
 body { color: var(--color-ink-2); font-size: 1rem; line-height: 1.6; letter-spacing: 0.005em; }
@@ -251,3 +251,32 @@ h2 { font-size: clamp(2rem, 2.4vw + 1rem, 3.5rem); line-height: 1.08; }
   .button:active { transform: none; }
 }
 
+
+/* Stageshow edition: real products, composed at the size they are seen. */
+.hero { min-height: 650px; padding-block: 100px 80px; align-items: center; }
+.hero__text { grid-column: 1 / 10; row-gap: 34px; }
+.hero__name { font-size: clamp(3rem, 5.9vw, 5.75rem); line-height: 1.06; letter-spacing: -.055em; }
+.hero__name em { color: var(--color-muted); }
+.hero__photo { grid-column: 11 / 13; align-self: start; padding-top: 12px; }
+.hero__photo img { aspect-ratio: 1; object-position: 50% 30%; filter: grayscale(1); border-radius: 50%; }
+.hero__foot { grid-template-columns: 1fr; gap: 28px; }
+.hero__foot .lead { max-width: 45ch; font-size: clamp(1.05rem, 1.4vw, 1.3rem); line-height: 1.65; }
+.hero__actions { justify-content: start; }
+.hero__signal { width: 6px; height: 6px; background: var(--mint); border-radius: 50%; align-self: center; }
+.project-jump { display: flex; gap: 40px; align-items: center; padding-block: 22px; border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); }
+.project-jump > .small { margin-right: auto; }
+.project-jump a { display: flex; gap: 32px; text-decoration: none; font-size: 13px; }
+.project-jump a span { color: var(--mint); }
+#work { padding-top: 96px; }
+.product-meta { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 18px; border-top: 1px solid var(--color-rule); }
+.product-meta > :first-child { color: var(--color-ink); }
+.product-meta .status { font-size: 9px; padding: 5px 9px; }
+.showcase__head { margin-bottom: 40px; }
+.showcase__pair { grid-template-columns: minmax(0, 1fr) minmax(0, .45fr); gap: 48px; margin-top: 48px; align-items: start; }
+.showcase__pair .shot:first-child { margin-top: 72px; }
+.showcase__pair .shot:last-child img { aspect-ratio: 588 / 1000; object-position: top; }
+.shot figcaption { font-size: 10px; margin-top: 8px; }
+.product-scene { min-width: 0; }
+@media (min-width: 60rem) { .caps { gap: 0; border-top: 1px solid var(--color-rule); } .cap:nth-child(n) { grid-column: span 6; border: 0; border-bottom: 1px solid var(--color-rule); background: transparent; border-radius: 0; padding: 48px 100px 48px 0; } .cap:nth-child(even) { border-left: 1px solid var(--color-rule); padding-left: 40px; } }
+@media (max-width: 60rem) { .hero { min-height: 0; padding-block: 72px; } .hero__text { grid-column: 1 / 11; } .hero__photo { grid-column: 11 / 13; grid-row: 1; } .hero__name { font-size: clamp(2.8rem, 6.4vw, 5rem); } .hero .eyebrow { font-size: 9px; } .product-meta { flex-wrap: wrap; gap: 12px; } .product-meta .small { font-size: 9px; } }
+@media (max-width: 40rem) { .hero { padding-block: 58px 48px; } .hero__text { grid-column: 1 / -1; gap: 30px; } .hero__photo { display: none; } .hero__name { font-size: clamp(2.35rem, 9.9vw, 4rem); } .hero__foot .lead { max-width: 33ch; } .project-jump { flex-wrap: wrap; gap: 18px 28px; } .project-jump > .small { width: 100%; font-size: 9px; } .project-jump a { gap: 20px; } #work { padding-top: 64px; } .product-meta > :nth-child(2) { display: none; } .showcase__pair { grid-template-columns: 1fr; gap: 32px; margin-top: 32px; } .showcase__pair .shot:first-child { margin-top: 0; } .showcase__pair .shot:last-child { width: 78%; justify-self: end; } }

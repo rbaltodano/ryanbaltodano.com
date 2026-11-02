@@ -1,0 +1,13 @@
+.portfolio-scene { width: 100%; }
+.portfolio-scene .ss-stage { background: var(--bg); overflow: hidden; }
+.portfolio-capture { position: absolute; width: 1280px; max-width: none; height: auto; top: -22px; left: -40px; }
+.portfolio-scene .ss-stage[data-layout='compact'] .portfolio-capture { width: 1100px; top: -160px; left: -280px; }
+.portfolio-scene--invectus .ss-stage[data-layout='compact'] .portfolio-capture { width: 840px; top: -137px; left: -154px; }
+.scene-caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; border-top: 1px solid var(--color-rule); }
+.scene-caption .small { letter-spacing: .06em; }
+.scene-replay { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 0; color: var(--color-muted); font-family: var(--font-body); font-size: 12px; padding: 8px 0 8px 12px; cursor: pointer; white-space: nowrap; }
+.scene-replay:hover { color: var(--color-accent); }
+@media (max-width: 40rem) { .scene-caption { align-items: start; } .scene-caption .small { max-width: 24ch; font-size: 10px; line-height: 1.8; } .scene-replay { padding-top: 0; } }
+@media (prefers-reduced-motion: reduce) { .scene-replay { display: none; } }
+
+@media (max-width: 639px) { .scene-replay { display: none; } }

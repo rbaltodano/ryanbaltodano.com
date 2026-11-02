@@ -2,3 +2,5 @@
 node_modules/
 *.mov
 .hallmark/
+assets/stageshow/gold.js
+assets/stageshow/gold.css

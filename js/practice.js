@@ -292,6 +292,7 @@
       first.disconnect();
     }, { rootMargin: "0px 0px -12% 0px" });
     first.observe(pinned);
+    if (reduce) activate(0);
   }
 
   // Phones: each figure draws once, as it scrolls into view.
@@ -302,6 +303,7 @@
   }), { rootMargin: "0px 0px -12% 0px" });
   canvases.forEach((cv) => {
     cv.__figure = figure(cv);
-    io.observe(cv);
+    if (reduce) cv.__figure.show(Number(cv.dataset.scene));
+    else io.observe(cv);
   });
 })();

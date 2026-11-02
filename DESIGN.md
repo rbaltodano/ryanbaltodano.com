@@ -79,3 +79,19 @@ node ~/.claude/skills/hallmark/scripts/sloplint.mjs index.html --genre editorial
 - **Last result:** 4 FAIL, all on gate 38i: the deliberate italic phrases in the four section heads. There are 0 other failures or warnings, and 38ii is waived.
 - **Not yet run:** the render tier needs `puppeteer-core`. Layout was checked by hand at 1440×900 and 375px.
 
+
+## Stageshow revision, 2026-11-01
+
+This revision supersedes the old hero and capability card composition above.
+The neutral inVectus palette, type, contact links, and pinned desktop Practice
+section remain. The hero leads with “Thoughtfully designed. Personally built.”,
+with Ryan named in its introduction and navigation. A small grayscale portrait
+sits at the right on desktop; project jump links close the opening.
+
+Angrove and inVectus use their real captures inside Stageshow Stage/Camera.
+Each desktop scene opens on the product, moves into the meaningful detail,
+then returns once and rests. Replay is explicit. Reduced motion shows a complete
+still. Phones get a dedicated crop and a still, with no redundant replay control.
+These are animated presentations of screenshots, not recordings of app behavior.
+The supporting Angrove captures use an asymmetric composition; capabilities
+use shared hairlines on desktop. Color literals remain in the tokens file.

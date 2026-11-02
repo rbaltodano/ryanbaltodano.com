@@ -1,0 +1,1 @@
+Reference source copied from the Stageshow dark-hero and fade-crop examples. These files document the composition starting points and are not production entry points. The original complete kit is available in the installed Stageshow skill. The production vendor directory retains only modules used by main.tsx.
