@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Newsreader light for heads and body, Courier Prime for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=202611012150");
-@import url("./base.css?v=202611012150");
+@import url("./tokens.css?v=202611012210");
+@import url("./base.css?v=202611012210");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -187,7 +187,7 @@ p.label { margin-bottom: var(--space-md); }
 
 /* ---------- Films: product video set straight on the page, no mount ---------- */
 .film { margin: 0; }
-.film__video { display: block; width: 100%; height: auto; border-radius: 1.4% / 2.25%; background: #141210; box-shadow: 0 30px 60px -28px rgba(18, 15, 12, 0.55), 0 0 0 1px rgba(18, 15, 12, 0.08); }
+.film__video { display: block; width: 100%; height: auto; border-radius: 10px; background: #141210; box-shadow: 0 30px 60px -28px rgba(18, 15, 12, 0.55), 0 0 0 1px rgba(18, 15, 12, 0.08); }
 .film figcaption { margin-top: 18px; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
 .film figcaption .label { margin-right: 0.6em; color: var(--accent); }
 
@@ -288,7 +288,7 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 .journal li { border-bottom: 0; }
 .journal { border-bottom: 1px solid var(--rule); }
 .journal details[open] .notes__no::after { content: "✓"; position: absolute; left: -26px; top: -8px; font-size: 1.5rem; letter-spacing: 0; color: var(--accent); }
-.journal details p { font-size: 1.0625rem; line-height: 2rem; }
+.journal details p { font-size: 1rem; line-height: 2rem; }
 
 /* 10. Contents with dotted leaders and page numbers */
 .contents__title { flex: none; }
