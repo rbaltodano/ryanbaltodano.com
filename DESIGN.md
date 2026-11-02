@@ -93,3 +93,7 @@ ink; all skipped under reduced motion.
 - Contact closes the page with a statement ("Let's compare notes."), the email set
   large with an ink underline on hover, four facts, and an "Available for work"
   stamp.
+
+### Trails, revised
+
+Each dotted trail draws in once, right to left, the first time it enters the viewport (a 1.6s clip-path wipe), then stays static. No idle marching. Reduced motion shows them fully drawn.

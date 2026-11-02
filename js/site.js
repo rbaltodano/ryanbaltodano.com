@@ -32,11 +32,11 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   films.forEach((film) => io.observe(film));
 })();
 
-// Hero lines rise on load; wordmarks, figures and stamps settle as they arrive; the trail draws with scroll.
+// Hero lines rise on load; wordmarks, figures and stamps settle as they arrive; trails draw in when they arrive.
 (() => {
   const root = document.documentElement;
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("is-ready")));
-  const items = document.querySelectorAll("[data-reveal], [data-settle], [data-stamp]");
+  const items = document.querySelectorAll("[data-reveal], [data-settle], [data-stamp], .trail");
   if (!("IntersectionObserver" in window)) { items.forEach((el) => el.classList.add("is-in")); return; }
   const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
@@ -45,18 +45,4 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   }), { rootMargin: "0px 0px -12% 0px" });
   items.forEach((el) => io.observe(el));
 
-  const trails = [...document.querySelectorAll(".trail")];
-  if (!trails.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  let queued = false;
-  const draw = () => {
-    queued = false;
-    trails.forEach((trail) => {
-      const box = trail.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (innerHeight * 0.85 - box.top) / (box.height + innerHeight * 0.3)));
-      trail.style.setProperty("--p", p.toFixed(3));
-    });
-  };
-  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(draw); } }, { passive: true });
-  addEventListener("resize", draw);
-  draw();
 })();

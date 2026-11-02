@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102144256");
-@import url("./base.css?v=20261102144256");
+@import url("./tokens.css?v=20261102163347");
+@import url("./base.css?v=20261102163347");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -188,7 +188,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 
 /* The trail: a dashed ink route between sections, revealed as you scroll */
 .trail { position: relative; height: 220px; pointer-events: none; }
-.trail svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; clip-path: inset(0 0 calc((1 - var(--p, 1)) * 100%) 0); }
+.trail svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .trail path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 7 8; stroke-linecap: round; opacity: 0.85; }
 .trail--down { margin-top: -40px; }
 
@@ -293,11 +293,11 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 }
 
 
-/* Trails march slowly, like ink being followed */
+/* Trails draw in once, right to left, when they reach the viewport; then they stay still */
 @media (prefers-reduced-motion: no-preference) {
-  .trail path { animation: trail-march 1.6s linear infinite; }
+  .js .trail svg { clip-path: inset(-10px -10px -10px 100%); transition: clip-path 1.6s var(--ease-in-out); }
+  .js .trail.is-in svg { clip-path: inset(-10px); }
 }
-@keyframes trail-march { to { stroke-dashoffset: -30; } }
 .trail--to-contact { margin-top: 40px; }
 
 /* Lightbox, after angrove.app: hover tilts toward the cursor, click grows the media to fill the screen */
