@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Newsreader light for heads and body, IBM Plex Mono for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=202611012245");
-@import url("./base.css?v=202611012245");
+@import url("./tokens.css?v=202611012117");
+@import url("./base.css?v=202611012117");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -198,7 +198,6 @@ body::after { content: ""; position: fixed; top: 0; bottom: 0; left: max(calc(va
 
 /* 3. Exhibits as an open notebook: two pages, a fold, stacked page edges, folios */
 .spread { position: relative; isolation: isolate; gap: 72px; padding: 48px; background: var(--page); border: 1px solid var(--rule); box-shadow: 3px 3px 0 -1px var(--page), 3px 3px 0 0 var(--rule), 6px 6px 0 -1px var(--page), 6px 6px 0 0 var(--rule); }
-.spread::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(48px + (100% - 168px) / 3 + 36px); width: 64px; translate: -50% 0; background: linear-gradient(90deg, transparent, var(--fold) 48%, var(--fold) 50%, transparent); z-index: -1; pointer-events: none; }
 /* 1. The right-hand page is dot-grid paper */
 .spread::after { content: ""; position: absolute; top: 0; bottom: 0; right: 0; left: calc(48px + (100% - 168px) / 3 + 68px); background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.4px); background-size: 22px 22px; background-position: 11px 11px; z-index: -2; pointer-events: none; }
 .spread .exhibit__label { border-top: 0; padding-top: 0; position: relative; }
@@ -286,7 +285,6 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 .contents ol { columns: 1; }
   .exhibit, .observations, .record, .correspondence, .plate--interlude { grid-template-columns: 1fr; gap: 36px; }
   .spread { padding: 28px 22px 48px; gap: 36px; }
-  .spread::before { display: none; }
   .spread::after { left: 0; top: auto; height: 0; }
   .folio--left { left: 22px; } .folio--right { right: 22px; }
   .marginal.marginal--box { display: none; }
