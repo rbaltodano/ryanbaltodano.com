@@ -170,7 +170,8 @@ dates from the owner before any are shown; none are invented.
 ## Films and postcard, 2026-11-01
 
 Angrove Fig. 1 and Fig. 2 are the two Mac-page films from angrove.app
-(`assets/video/`), set straight on the page with no mount; they loop while on
+(`assets/video/`): “Learn easier” is the primary Fig. 1, and “Lay your ideas out”
+is Fig. 2 under Further specimens. Both are set straight on the page with no mount; they loop while on
 screen and pause off it, and rest on the poster under reduced motion. Screenshot
 markers are removed for now; the notes remain as an accordion. Correspondence is
 a taped snapshot beside a postcard: message on the left, the address side with an
