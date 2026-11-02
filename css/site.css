@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Libre Baskerville regular for heads and body, Courier Prime for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=20261102115355");
-@import url("./base.css?v=20261102115355");
+@import url("./tokens.css?v=20261102120005");
+@import url("./base.css?v=20261102120005");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -254,7 +254,7 @@ p.label { margin-bottom: var(--space-md); }
 .scribble, .pin-tag, .marginal, .journal .notes__no::after { font-family: "Caveat", "Bradley Hand", cursive; font-weight: 500; }
 
 /* 2. A red double margin line down the left edge of the page, with section numbers in the margin */
-body::after { content: ""; position: fixed; top: 0; bottom: 0; left: max(calc(var(--gutter) - 14px), calc((100vw - var(--container)) / 2 + var(--gutter) - 32px)); width: 4px; border-inline: 1px solid var(--margin-line); pointer-events: none; z-index: 5; }
+body::after { content: ""; position: fixed; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(--container)) / 2) + var(--gutter) - 24px); width: 4px; border-inline: 1px solid var(--margin-line); pointer-events: none; z-index: 7; }
 .section-head, .correspondence__body, .observations, .correspondence { position: relative; }
 .marginal.marginal--box { top: 104px; }
 .marginal { position: absolute; top: -10px; left: 12px; font-size: 1.5rem; line-height: 1; color: var(--accent); white-space: nowrap; transform: rotate(-4deg); }
@@ -349,6 +349,7 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 60rem) {
+  body::after { left: calc(var(--gutter) - 14px); }
   .nav__links a:not(.nav__keep) { display: none; }
   .title { grid-template-columns: 1fr; padding-block: 56px; }
   .title__plate { justify-self: start; max-width: 240px; }

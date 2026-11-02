@@ -7,7 +7,7 @@
   --text-section: clamp(2.25rem, 2.6vw + 1rem, 3.75rem); --text-title: clamp(1.5rem, 0.9vw + 1rem, 2rem); --text-lead: clamp(1.1875rem, 0.4vw + 1rem, 1.4375rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
-  --container: 1320px; --gutter: 56px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 128px; --section-gap-l: 160px;
+  --container: 1320px; --gutter: 88px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 128px; --section-gap-l: 160px;
   --z-sticky-nav: 300;
 
   --paper: #ece5d6;
