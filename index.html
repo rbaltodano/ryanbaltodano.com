@@ -6,232 +6,286 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ryan Baltodano, Design Engineer</title>
   <meta name="description" content="Ryan Baltodano designs and builds software end to end: Angrove, a private on-device AI study app for iPhone and Mac, and inVectus, a local-first research tool.">
-  <meta name="theme-color" content="#141414">
+  <meta name="theme-color" content="#ece5d6">
+  <script>
+    (() => {
+      let theme = "day";
+      try { theme = localStorage.getItem("theme") === "night" ? "night" : "day"; } catch (e) {}
+      const root = document.documentElement;
+      root.classList.add("js");
+      root.dataset.theme = theme;
+      document.querySelector('meta[name="theme-color"]').content = theme === "night" ? "#151311" : "#ece5d6";
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Martian+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=202611012110">
-  <script>document.documentElement.classList.add("js");</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="css/site.css?v=202611012200">
 </head>
 <body>
-<div class="site-shell">
-  <header class="nav" data-theme="canvas">
+  <a class="skip" href="#exhibits">Skip to the exhibits</a>
+  <header class="nav">
     <div class="container nav__inner">
       <a class="wordmark" href="#top" aria-label="Ryan Baltodano, home">Ryan Baltodano</a>
       <nav class="nav__links" aria-label="Sections">
-        <a href="#work"><span class="code">01</span>Work</a>
-        <a href="#practice"><span class="code">02</span>Practice</a>
-        <a href="#index">Experience</a>
-        <a class="nav__cta" href="#contact">Contact</a>
+        <a href="#exhibits">Exhibits</a>
+        <a href="#observations">Observations</a>
+        <a href="#record">Record</a>
+        <a class="nav__keep" href="#correspondence">Correspondence</a>
       </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false" hidden>
+        <span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Night</span>
+      </button>
     </div>
   </header>
-  <div class="frame-rule" aria-hidden="true"></div>
 
   <main id="top">
-    <!-- Hero, Banner: the name, one sentence, two actions; the work shows below the fold line -->
-    <section class="container grid-12 hero" data-theme="canvas">
-      <div class="hero__text">
-      <p class="eyebrow">Designer / Developer</p>
-      <h1 class="hero__name">Ryan Baltodano</h1>
-      <div class="hero__foot">
-        <p class="lead">I’m a designer who codes. Currently building Angrove, a private study app, and inVectus, a research tool for Mac.</p>
-        <div class="hero__actions">
-          <a class="text-link" href="#work">See the work</a>
-          <a class="button" href="mailto:rbaltodano337@gmail.com">Email me</a>
+    <!-- Title page: the name, the line, one plate, then the contents -->
+    <section class="container title">
+      <div class="title__text">
+        <p class="label">A field guide <span>·</span> Volume I <span>·</span> <span data-year>2026</span></p>
+        <h1>Ryan Baltodano</h1>
+        <p class="title__line">Interfaces, software, and other observations.</p>
+        <p class="lead">I’m a designer who codes. This is a small collection of what I’ve built, and what I noticed while building it: Angrove, a private study app, and inVectus, a research tool for Mac.</p>
+        <div class="title__actions">
+          <a class="button" href="#exhibits">Enter the collection</a>
+          <a class="text-link" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com</a>
         </div>
       </div>
-      </div>
-      <figure class="hero__photo">
-        <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125">
+      <figure class="plate title__plate">
+        <div class="plate__frame"><img src="assets/plates/optical.svg" alt="An engraved optical apparatus: three lenses in brass rings on an articulated stand." width="400" height="500"></div>
+        <figcaption><span class="label">Plate I</span> An optical study. <em>On perception, and what the eye finds first.</em></figcaption>
       </figure>
     </section>
 
-    <section id="work" class="workspace" aria-label="Selected projects">
-      <div class="workspace__toolbar">
-        <span class="workspace__label">Selected projects</span>
-        <span class="workspace__hint">Explore the interface</span>
-      </div>
-      <section id="project-angrove" class="workspace__project" data-project="angrove" aria-labelledby="title-angrove">
-        <header class="workspace__intro">
-          <div><p class="eyebrow">01 / Study software</p><h2 id="title-angrove">Angrove</h2></div>
-          <div><p>A private study app for philosophy and theology. Conversations, notes, and related ideas stay together on your iPhone or Mac.</p><div class="links"><a class="text-link" href="https://angrove.app">Product site ↗</a><a class="text-link" href="https://angrove.app/case-study.html">Case study ↗</a><a class="text-link" href="https://github.com/rbaltodano/Angrove-iOS">Source ↗</a></div></div>
-        </header>
-        <div class="workspace__meta"><span>iPhone & Mac</span><span>SwiftUI</span><span>Public beta on iPhone</span></div>
-        <div class="workspace__body">
-          <figure class="workspace__capture">
-            <img src="assets/img/mac-boards-1.webp" alt="Angrove for Mac: a Common Good study board with navigation, a still life, and two columns of notes." width="2400" height="1560" loading="lazy">
-            <div class="workspace__markers" hidden>
-              <button type="button" disabled class="workspace__marker" data-note="1" style="--x:59%;--y:74%" aria-label="01: A board for your notes" aria-controls="note-angrove-1" aria-pressed="false">01</button>
-              <button type="button" disabled class="workspace__marker" data-note="2" style="--x:64%;--y:38%" aria-label="02: Room for a visual reference" aria-controls="note-angrove-2" aria-pressed="false">02</button>
-              <button type="button" disabled class="workspace__marker" data-note="3" style="--x:13%;--y:50%" aria-label="03: Navigation stays close" aria-controls="note-angrove-3" aria-pressed="false">03</button>
-            </div>
-          </figure>
-          <aside class="workspace__inspector" aria-label="Interface notes">
-            <p class="eyebrow">Interface notes</p>
-            <p class="workspace__instructions">Select a number on the image or a note below.</p>
+    <nav class="container contents" aria-label="Contents">
+      <p class="label contents__head">Contents</p>
+      <ol>
+        <li><a href="#project-angrove"><span class="contents__no">I</span><span class="contents__title">Angrove</span><span class="contents__kind">Exhibit</span></a></li>
+        <li><a href="#invectus"><span class="contents__no">II</span><span class="contents__title">inVectus</span><span class="contents__kind">Exhibit</span></a></li>
+        <li><a href="#observations"><span class="contents__no">III</span><span class="contents__title">Observations</span><span class="contents__kind">Field notes</span></a></li>
+        <li><a href="#record"><span class="contents__no">IV</span><span class="contents__title">Record</span><span class="contents__kind">Client work</span></a></li>
+        <li><a href="#correspondence"><span class="contents__no">V</span><span class="contents__title">Correspondence</span><span class="contents__kind">Contact</span></a></li>
+      </ol>
+    </nav>
+
+    <!-- Exhibits: each product is a wall label beside a mounted figure with numbered callouts (js/workspace.js) -->
+    <section id="exhibits" class="workspace" aria-label="Exhibits">
+      <header class="container section-head">
+        <p class="label">The exhibits</p>
+        <h2>Two works, <em>in use and in progress</em></h2>
+      </header>
+
+      <section id="project-angrove" class="container exhibit workspace__project" data-project="angrove" aria-labelledby="title-angrove">
+        <div class="exhibit__label">
+          <p class="label">Exhibit I <span>·</span> Study software</p>
+          <h3 id="title-angrove">Angrove</h3>
+          <p class="exhibit__line">A private study app for philosophy and theology.</p>
+          <p>Conversations, notes, and related ideas stay together on your iPhone or Mac.</p>
+          <dl class="specimen">
+            <div><dt>Habitat</dt><dd>iPhone &amp; Mac</dd></div>
+            <div><dt>Medium</dt><dd>SwiftUI</dd></div>
+            <div><dt>Status</dt><dd>Public beta on iPhone</dd></div>
+          </dl>
+          <p class="exhibit__links"><a class="text-link" href="https://angrove.app">Product site ↗</a><a class="text-link" href="https://angrove.app/case-study.html">Case study ↗</a><a class="text-link" href="https://github.com/rbaltodano/Angrove-iOS">Source ↗</a></p>
+
+          <aside class="workspace__inspector" aria-label="Notes on the specimen">
+            <p class="label">Notes on the specimen</p>
+            <p class="workspace__instructions">Select a numeral on the figure, or a note below.</p>
             <div class="workspace__note">
-              <button type="button" disabled data-note="1" aria-controls="note-angrove-1" aria-expanded="true"><span>01</span>A board for your notes<span class="workspace__note-sign" aria-hidden="true">+</span></button>
+              <button type="button" disabled data-note="1" aria-controls="note-angrove-1" aria-expanded="true"><span>i</span>A board for your notes<span class="workspace__note-sign" aria-hidden="true">+</span></button>
               <div id="note-angrove-1" class="workspace__note-copy"><p>Notes live together on a named board. Here, two columns of writing sit beneath a shared visual reference.</p></div>
             </div>
             <div class="workspace__note">
-              <button type="button" disabled data-note="2" aria-controls="note-angrove-2" aria-expanded="true"><span>02</span>Room for a visual reference<span class="workspace__note-sign" aria-hidden="true">+</span></button>
+              <button type="button" disabled data-note="2" aria-controls="note-angrove-2" aria-expanded="true"><span>ii</span>Room for a visual reference<span class="workspace__note-sign" aria-hidden="true">+</span></button>
               <div id="note-angrove-2" class="workspace__note-copy"><p>An image shares the workspace with the writing. The board can hold more than a sequence of chat messages.</p></div>
             </div>
             <div class="workspace__note">
-              <button type="button" disabled data-note="3" aria-controls="note-angrove-3" aria-expanded="true"><span>03</span>Navigation stays close<span class="workspace__note-sign" aria-hidden="true">+</span></button>
+              <button type="button" disabled data-note="3" aria-controls="note-angrove-3" aria-expanded="true"><span>iii</span>Navigation stays close<span class="workspace__note-sign" aria-hidden="true">+</span></button>
               <div id="note-angrove-3" class="workspace__note-copy"><p>Boards sit alongside conversations, the library, and study topics in the same sidebar.</p></div>
             </div>
           </aside>
         </div>
-        <details class="workspace__more"><summary>More Angrove screens <span aria-hidden="true">+</span></summary>
-          <div class="workspace__gallery">
-            <figure class="shot"><img src="assets/img/mac-split-view.webp" alt="Angrove: a conversation alongside its map of related topics." width="2400" height="1560" loading="lazy"><figcaption>A conversation alongside its map of related topics.</figcaption></figure>
-            <figure class="shot"><img src="assets/img/insight-map.jpg" alt="Angrove insight map on iPhone." width="588" height="1280" loading="lazy"><figcaption>The insight map on iPhone.</figcaption></figure>
-          </div>
-        </details>
-      </section>
-      <section id="invectus" class="workspace__project" data-project="invectus" aria-labelledby="title-invectus">
-        <header class="workspace__intro">
-          <div><p class="eyebrow">02 / Research software</p><h2 id="title-invectus">inVectus</h2></div>
-          <div><p>A local-first research tool for Mac. Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p><div class="links"><a class="text-link" href="https://github.com/rbaltodano/inVectus">Source & project notes ↗</a></div></div>
-        </header>
-        <div class="workspace__meta"><span>Mac</span><span>React · TypeScript · Rust</span><span>In development</span></div>
-        <div class="workspace__body">
-          <figure class="workspace__capture">
-            <img src="assets/img/invectus-gap.jpg" alt="inVectus: coverage-gap evidence and score breakdown beside a circular research collection map." width="2400" height="1560" loading="lazy">
-            <div class="workspace__markers" hidden>
-              <button type="button" disabled class="workspace__marker" data-note="1" style="--x:39%;--y:58%" aria-label="01: A score you can inspect" aria-controls="note-invectus-1" aria-pressed="false">01</button>
-              <button type="button" disabled class="workspace__marker" data-note="2" style="--x:79%;--y:56%" aria-label="02: The gap has a place" aria-controls="note-invectus-2" aria-pressed="false">02</button>
-              <button type="button" disabled class="workspace__marker" data-note="3" style="--x:38%;--y:36%" aria-label="03: A collection, not a universal claim" aria-controls="note-invectus-3" aria-pressed="false">03</button>
+
+        <div class="exhibit__figures">
+          <figure class="mount">
+            <div class="workspace__capture">
+              <img src="assets/img/mac-boards-1.webp" alt="Angrove for Mac: a Common Good study board with navigation, a still life, and two columns of notes." width="2400" height="1560" loading="lazy">
+              <div class="workspace__markers" hidden>
+                <button type="button" disabled class="workspace__marker" data-note="1" style="--x:59%;--y:74%" aria-label="i: A board for your notes" aria-controls="note-angrove-1" aria-pressed="false">i</button>
+                <button type="button" disabled class="workspace__marker" data-note="2" style="--x:64%;--y:38%" aria-label="ii: Room for a visual reference" aria-controls="note-angrove-2" aria-pressed="false">ii</button>
+                <button type="button" disabled class="workspace__marker" data-note="3" style="--x:13%;--y:50%" aria-label="iii: Navigation stays close" aria-controls="note-angrove-3" aria-pressed="false">iii</button>
+              </div>
             </div>
+            <figcaption><span class="label">Fig. 1</span> Angrove for Mac, a study board on the common good.</figcaption>
           </figure>
-          <aside class="workspace__inspector" aria-label="Interface notes">
-            <p class="eyebrow">Interface notes</p>
-            <p class="workspace__instructions">Select a number on the image or a note below.</p>
+          <details class="more">
+            <summary><span class="label">Fig. 2–3</span> Further specimens <span class="more__sign" aria-hidden="true">+</span></summary>
+            <div class="more__gallery">
+              <figure class="mount"><img src="assets/img/mac-split-view.webp" alt="Angrove: a conversation alongside its map of related topics." width="2400" height="1560" loading="lazy"><figcaption><span class="label">Fig. 2</span> A conversation beside its map of related topics.</figcaption></figure>
+              <figure class="mount mount--phone"><img src="assets/img/insight-map.jpg" alt="Angrove insight map on iPhone." width="588" height="1280" loading="lazy"><figcaption><span class="label">Fig. 3</span> The insight map on iPhone.</figcaption></figure>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- Interlude plate between the two exhibits -->
+      <figure class="container plate plate--interlude">
+        <div class="plate__frame"><img src="assets/plates/mechanical.svg" alt="An engraved watch movement, disassembled into an exploded stack of plates and gears on one axis." width="400" height="520" loading="lazy"></div>
+        <figcaption><span class="label">Plate II</span> A mechanical study. <em>On construction, and how the pieces fit.</em></figcaption>
+      </figure>
+
+      <section id="invectus" class="container exhibit workspace__project" data-project="invectus" aria-labelledby="title-invectus">
+        <div class="exhibit__label">
+          <p class="label">Exhibit II <span>·</span> Research software</p>
+          <h3 id="title-invectus">inVectus</h3>
+          <p class="exhibit__line">A local-first research tool for Mac.</p>
+          <p>Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p>
+          <dl class="specimen">
+            <div><dt>Habitat</dt><dd>Mac</dd></div>
+            <div><dt>Medium</dt><dd>React, TypeScript, Rust</dd></div>
+            <div><dt>Status</dt><dd>In development</dd></div>
+          </dl>
+          <p class="exhibit__links"><a class="text-link" href="https://github.com/rbaltodano/inVectus">Source &amp; project notes ↗</a></p>
+
+          <aside class="workspace__inspector" aria-label="Notes on the specimen">
+            <p class="label">Notes on the specimen</p>
+            <p class="workspace__instructions">Select a numeral on the figure, or a note below.</p>
             <div class="workspace__note">
-              <button type="button" disabled data-note="1" aria-controls="note-invectus-1" aria-expanded="true"><span>01</span>A score you can inspect<span class="workspace__note-sign" aria-hidden="true">+</span></button>
+              <button type="button" disabled data-note="1" aria-controls="note-invectus-1" aria-expanded="true"><span>i</span>A score you can inspect<span class="workspace__note-sign" aria-hidden="true">+</span></button>
               <div id="note-invectus-1" class="workspace__note-copy"><p>Demand, coverage, and activity appear above the score breakdown. The numbers behind a flagged gap remain visible.</p></div>
             </div>
             <div class="workspace__note">
-              <button type="button" disabled data-note="2" aria-controls="note-invectus-2" aria-expanded="true"><span>02</span>The gap has a place<span class="workspace__note-sign" aria-hidden="true">+</span></button>
+              <button type="button" disabled data-note="2" aria-controls="note-invectus-2" aria-expanded="true"><span>ii</span>The gap has a place<span class="workspace__note-sign" aria-hidden="true">+</span></button>
               <div id="note-invectus-2" class="workspace__note-copy"><p>The selected gap stays marked on the collection map beside its evidence. Its position can be read in the context of the other papers.</p></div>
             </div>
             <div class="workspace__note">
-              <button type="button" disabled data-note="3" aria-controls="note-invectus-3" aria-expanded="true"><span>03</span>A collection, not a universal claim<span class="workspace__note-sign" aria-hidden="true">+</span></button>
+              <button type="button" disabled data-note="3" aria-controls="note-invectus-3" aria-expanded="true"><span>iii</span>A collection, not a universal claim<span class="workspace__note-sign" aria-hidden="true">+</span></button>
               <div id="note-invectus-3" class="workspace__note-copy"><p>The flag describes coverage within this collection. It does not establish that an idea is globally novel.</p></div>
             </div>
           </aside>
         </div>
+
+        <div class="exhibit__figures">
+          <figure class="mount">
+            <div class="workspace__capture">
+              <img src="assets/img/invectus-gap.jpg" alt="inVectus: coverage-gap evidence and score breakdown beside a circular research collection map." width="2400" height="1560" loading="lazy">
+              <div class="workspace__markers" hidden>
+                <button type="button" disabled class="workspace__marker" data-note="1" style="--x:39%;--y:58%" aria-label="i: A score you can inspect" aria-controls="note-invectus-1" aria-pressed="false">i</button>
+                <button type="button" disabled class="workspace__marker" data-note="2" style="--x:79%;--y:56%" aria-label="ii: The gap has a place" aria-controls="note-invectus-2" aria-pressed="false">ii</button>
+                <button type="button" disabled class="workspace__marker" data-note="3" style="--x:38%;--y:36%" aria-label="iii: A collection, not a universal claim" aria-controls="note-invectus-3" aria-pressed="false">iii</button>
+              </div>
+            </div>
+            <figcaption><span class="label">Fig. 4</span> inVectus, a coverage gap beside its evidence and the collection map.</figcaption>
+          </figure>
+        </div>
       </section>
     </section>
 
-    <div class="frame-rule" aria-hidden="true"></div>
-    <!-- Professional experience -->
-    <section id="index" class="section--s" data-theme="panel">
-      <div class="container grid-12 index">
-        <div class="index__head">
-          <p class="eyebrow">03 / Experience</p>
-          <h2>Client work</h2>
-          <p class="muted">Web design and front-end development, alongside my own software.</p>
+    <!-- Observations: field notes drawn from the two exhibits, beside Plate III -->
+    <section id="observations" class="band">
+      <div class="container observations">
+        <figure class="plate observations__plate">
+          <div class="plate__frame"><img src="assets/plates/botanical.svg" alt="An engraved botanical specimen with its branching stem, leaves, and full root system." width="400" height="540" loading="lazy"></div>
+          <figcaption><span class="label">Plate III</span> A botanical study. <em>On structure, and what lies beneath the surface.</em></figcaption>
+        </figure>
+        <div class="observations__body">
+          <header class="section-head section-head--flush">
+            <p class="label">Observations</p>
+            <h2>Field notes <em>on interfaces</em></h2>
+            <p class="section-head__dek">Small things I noticed while building the exhibits, kept so I remember why they matter.</p>
+          </header>
+          <ol class="notes">
+            <li>
+              <details>
+                <summary><span class="notes__no">No. 01</span><span class="notes__title">Show the numbers behind a judgment</span><span class="notes__src">inVectus</span></summary>
+                <p>When software makes a call for you, its reasoning belongs on the same screen. A flagged gap in inVectus shows demand, coverage, and activity above the score, so the verdict can be checked rather than trusted.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary><span class="notes__no">No. 02</span><span class="notes__title">A claim should name its scope</span><span class="notes__src">inVectus</span></summary>
+                <p>Wording is interface. “A gap in this collection” and “a novel idea” look alike in a label and mean very different things. The copy has to say which one the software can actually support.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary><span class="notes__no">No. 03</span><span class="notes__title">Notes want a place, not a scroll</span><span class="notes__src">Angrove</span></summary>
+                <p>A chat is a sequence; study is spatial. Giving notes a named board, with room for an image beside the writing, lets ideas sit next to each other instead of scrolling away.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary><span class="notes__no">No. 04</span><span class="notes__title">Test the default before choosing it</span><span class="notes__src">Angrove</span></summary>
+                <p>Most people never change a default, so the default is the product. Before choosing Angrove’s, I ran it through an 80-case evaluation.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary><span class="notes__no">No. 05</span><span class="notes__title">Keep the way back within reach</span><span class="notes__src">Angrove</span></summary>
+                <p>Boards, conversations, the library, and study topics share one sidebar. Moving between kinds of work should never feel like leaving the room.</p>
+              </details>
+            </li>
+          </ol>
         </div>
-        <ol class="index__list">
-          <li class="index__row">
-            <h3>PostcardMania</h3>
-            <p class="index__what">Web designer</p>
-            <p class="index__when num">2024 to now</p>
-          </li>
-          <li class="index__row">
-            <h3>Cloud Carpenter</h3>
-            <p class="index__what">Front-end intern</p>
-            <p class="index__when num">2024</p>
-          </li>
-        </ol>
       </div>
     </section>
 
-
-    <!-- Practice: the one claim, beside its figure -->
-    <!-- Practice: on desktop the steps scroll past a pinned figure that redraws for each; on phones each step has its figure under its text (js/practice.js) -->
-    <section id="practice" class="section--l" data-theme="canvas">
-      <div class="container grid-12 practice">
-        <div class="practice__intro">
-          <p class="eyebrow">04 / Practice</p>
-          <h2>How I work</h2>
-          <p>I design the interface, write the code, and check that it holds up before it ships.</p>
+    <!-- Record: client work as a catalogue, and the instruments -->
+    <section id="record" class="container record">
+      <div class="record__body">
+        <header class="section-head section-head--flush">
+          <p class="label">Record</p>
+          <h2>Client work <em>and instruments</em></h2>
+          <p class="section-head__dek">Web design and front-end development, alongside my own software.</p>
+        </header>
+        <table class="catalogue">
+          <caption class="visually-hidden">Client work</caption>
+          <thead><tr><th scope="col">Years</th><th scope="col">Institution</th><th scope="col">Role</th></tr></thead>
+          <tbody>
+            <tr><td class="num">2024 to now</td><th scope="row">PostcardMania</th><td>Web designer</td></tr>
+            <tr><td class="num">2024</td><th scope="row">Cloud Carpenter</th><td>Front-end intern</td></tr>
+          </tbody>
+        </table>
+        <div class="instruments">
+          <p class="label">Instruments</p>
+          <p>Figma, SwiftUI, React, TypeScript, Rust, HTML &amp; CSS, Python, SQLite.</p>
         </div>
-        <ol class="practice__steps">
-          <li class="step" data-step="0">
-            <p class="eyebrow"><span class="code">01</span>Interface</p>
-            <h3>Design it first</h3>
-            <p>Every screen starts in Figma: components, type, and the interaction patterns between screens.</p>
-            <div class="stage step__figure" aria-hidden="true"><canvas class="stage__canvas" data-scene="0"></canvas></div>
-          </li>
-          <li class="step" data-step="1">
-            <p class="eyebrow"><span class="code">02</span>Code</p>
-            <h3>Then build it myself</h3>
-            <p>SwiftUI for Angrove on iPhone and Mac. React, TypeScript and Rust for inVectus.</p>
-            <div class="stage step__figure" aria-hidden="true"><canvas class="stage__canvas" data-scene="1"></canvas></div>
-          </li>
-          <li class="step" data-step="2">
-            <p class="eyebrow"><span class="code">03</span>Test</p>
-            <h3>Check that it holds up</h3>
-            <p>Before choosing Angrove's default, I ran it through an 80-case evaluation.</p>
-            <div class="stage step__figure" aria-hidden="true"><canvas class="stage__canvas" data-scene="2"></canvas></div>
-          </li>
-          <li class="step" data-step="3">
-            <p class="eyebrow"><span class="code">04</span>Ship</p>
-            <h3>Put it in people's hands</h3>
-            <p>Angrove is in public beta on iPhone through TestFlight, and the Mac app arrives December 15.</p>
-            <div class="stage step__figure" aria-hidden="true"><canvas class="stage__canvas" data-scene="3"></canvas></div>
-          </li>
-        </ol>
-        <figure class="practice__stage" aria-hidden="true">
-          <div class="stage">
-            <canvas class="stage__canvas" data-pinned></canvas>
-            <div class="stage__bar"><p class="eyebrow stage__label"><span class="code">01</span><span class="stage__name">Interface</span></p><span class="stage__ticks"><i class="is-on"></i><i></i><i></i><i></i></span></div>
-          </div>
-        </figure>
       </div>
+      <figure class="plate record__plate">
+        <div class="plate__frame"><img src="assets/plates/shells.svg" alt="Engraved shells: a chambered nautilus cutaway, a ribbed bivalve, and a spiral gastropod." width="460" height="420" loading="lazy"></div>
+        <figcaption><span class="label">Plate IV</span> A study of shells. <em>On variation: many answers to one problem.</em></figcaption>
+      </figure>
     </section>
 
-    <section id="capabilities" class="container tool-list" aria-label="Tools and technologies">
-      <p class="eyebrow">Tools & technologies</p>
-      <p>Figma / SwiftUI / React / TypeScript / Rust / HTML & CSS / Python / SQLite</p>
-    </section>
-
-    <!-- Close: the action the page is for -->
-    <section id="contact" class="section" data-theme="canvas">
-      <div class="container grid-12 close">
-        <figure class="close__photo">
-          <img src="assets/img/hero-skyline.jpg" alt="Ryan and his brother at a rooftop railing, talking, with a city skyline at night behind them." width="2400" height="1350" loading="lazy">
+    <!-- Correspondence: the action the page is for -->
+    <section id="correspondence" class="band">
+      <div class="container correspondence">
+        <figure class="mount correspondence__photo">
+          <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125" loading="lazy">
+          <figcaption><span class="label">Fig. 5</span> The collector.</figcaption>
         </figure>
-        <div class="close__copy">
-          <p class="eyebrow">05 / Contact</p>
-          <h2>Get in touch</h2>
-          <span class="status">Available for work</span>
-          <a class="text-link close__email" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com</a>
-          <a class="text-link" href="https://github.com/rbaltodano">GitHub</a>
-          <a class="text-link" href="assets/Ryan-Baltodano-Resume.pdf?v=20261030b" target="_blank" rel="noopener">Résumé (PDF)</a>
-          <a class="text-link" href="https://angrove.app/case-study.html">The Angrove case study</a>
+        <div class="correspondence__body">
+          <p class="label">Correspondence</p>
+          <h2>Write to me</h2>
+          <p class="lead">I’m available for work, and always glad to compare notes on interfaces and software.</p>
+          <ul class="ledger">
+            <li><a href="mailto:rbaltodano337@gmail.com"><span>Email</span><span>rbaltodano337@gmail.com</span></a></li>
+            <li><a href="https://github.com/rbaltodano"><span>GitHub</span><span>rbaltodano ↗</span></a></li>
+            <li><a href="assets/Ryan-Baltodano-Resume.pdf?v=20261030b" target="_blank" rel="noopener"><span>Résumé</span><span>PDF ↗</span></a></li>
+            <li><a href="https://angrove.app/case-study.html"><span>Case study</span><span>Angrove ↗</span></a></li>
+          </ul>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer" data-theme="canvas">
-    <div class="container">
-      <div class="footer__inner">
-        <span>Ryan Baltodano, <span data-year class="num">2026</span></span>
-        <a href="#top">Back to top</a>
-      </div>
-      <div class="footer__mark"><p class="footer__wordmark" aria-hidden="true">Baltodano</p></div>
-    </div>
+  <footer class="container footer">
+    <p>Ryan Baltodano, <span data-year class="num">2026</span>. Set in Newsreader and IBM Plex Mono. Plates after nineteenth-century engraving.</p>
+    <a href="#top">Back to the title page ↑</a>
   </footer>
 
-  <script src="js/workspace.js?v=202611012110" defer></script>
-  <script src="js/site.js?v=202611012110" defer></script>
-  <script src="js/practice.js?v=202611012110" defer></script>
-</div>
+  <script src="js/workspace.js?v=202611012200" defer></script>
+  <script src="js/site.js?v=202611012200" defer></script>
 </body>
 </html>
