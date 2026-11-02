@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102163347");
-@import url("./base.css?v=20261102163347");
+@import url("./tokens.css?v=20261102163620");
+@import url("./base.css?v=20261102163620");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -296,6 +296,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 /* Trails draw in once, right to left, when they reach the viewport; then they stay still */
 @media (prefers-reduced-motion: no-preference) {
   .js .trail svg { clip-path: inset(-10px -10px -10px 100%); transition: clip-path 1.6s var(--ease-in-out); }
+  .js .trail--ltr svg { clip-path: inset(-10px 100% -10px -10px); }
   .js .trail.is-in svg { clip-path: inset(-10px); }
 }
 .trail--to-contact { margin-top: 40px; }
