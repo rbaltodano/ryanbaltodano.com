@@ -79,3 +79,17 @@ the project story with a specimen table and a pull quote, a four-step walkthroug
 with real screenshots, a second feature, and visible design notes. Motion: hero
 lines rise, wordmarks reveal, figures settle, stamps press in, links underline in
 ink; all skipped under reduced motion.
+
+## Contact, lightbox, and moving trails, 2026-11-02
+
+- Paragraph text (`--ink-2`) is the heading ink at 75% opacity in both themes.
+- Videos and window captures have no outline ring, only a soft shadow.
+- `js/lightbox.js` is ported from angrove.app: media tilts toward the cursor and
+  grows 3% on hover; a click or Return opens it full screen with its figure
+  caption; a click, Esc, or scroll returns it. Decorative images (empty alt) and
+  the nav are excluded.
+- Trails march slowly (stroke-dashoffset) and also draw in with scroll; trails now
+  lead into Experience and Contact. Reduced motion stops both.
+- Contact closes the page with a statement ("Let's compare notes."), the email set
+  large with an ink underline on hover, four facts, and an "Available for work"
+  stamp.

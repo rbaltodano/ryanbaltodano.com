@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261102132133">
+  <link rel="stylesheet" href="css/site.css?v=20261102132715">
 </head>
 <body>
   <a class="skip" href="#exhibits">Skip to the work</a>
@@ -192,6 +192,8 @@
       </article>
     </section>
 
+    <div class="trail trail--down" aria-hidden="true"><svg viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M930 0 C950 90 760 120 520 140 S120 180 100 300" vector-effect="non-scaling-stroke"/></svg></div>
+
     <section id="record" class="container record">
       <div class="record__body">
         <header class="section-head section-head--flush">
@@ -225,17 +227,23 @@
     </section>
 
 
-    <section id="correspondence" class="band">
-      <div class="container correspondence">
-        <div class="correspondence__body">
-            <h2>Contact</h2>
-            <p class="lead">I’m open to product design, design engineering, and web design opportunities. If you’re building a tool for learning, research, or working with complex information, I’d like to hear about it.</p>
-          <ul class="ledger">
-              <li><a href="mailto:rbaltodano337@gmail.com"><span>rbaltodano337@gmail.com</span></a></li>
-              <li><a href="https://github.com/rbaltodano"><span>GitHub ↗</span></a></li>
-              <li><a href="assets/Ryan-Baltodano-Resume.pdf?v=20261102132133b" target="_blank" rel="noopener"><span>Résumé ↗</span></a></li>
-          </ul>
+    <div class="trail trail--across trail--to-contact" aria-hidden="true"><svg viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M120 0 C100 110 300 130 540 150 S900 200 880 300" vector-effect="non-scaling-stroke"/></svg></div>
+
+    <section id="correspondence" class="contact">
+      <div class="container contact__inner">
+        <p class="label">Correspondence</p>
+        <h2 class="contact__statement" data-settle>Let’s compare <em class="scrawl">notes</em>.</h2>
+        <div class="contact__body">
+          <p class="contact__lead">I’m open to product design, design engineering, and web design opportunities. If you’re building a tool for learning, research, or working with complex information, I’d like to hear about it.</p>
+          <a class="contact__email" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com <span aria-hidden="true">↗</span></a>
         </div>
+        <dl class="contact__facts">
+          <div><dt>Status</dt><dd><span class="contact__dot" aria-hidden="true"></span>Open to new roles</dd></div>
+          <div><dt>Based in</dt><dd>Tampa, Florida</dd></div>
+          <div><dt>Elsewhere</dt><dd><a class="text-link" href="https://github.com/rbaltodano">GitHub ↗</a></dd></div>
+          <div><dt>Résumé</dt><dd><a class="text-link" href="assets/Ryan-Baltodano-Resume.pdf" target="_blank" rel="noopener">Download PDF ↗</a></dd></div>
+        </dl>
+        <p class="stamp contact__stamp" data-stamp aria-hidden="true">Available<small>for work</small></p>
       </div>
     </section>
   </main>
@@ -245,6 +253,7 @@
     <a href="#top">Back to top ↑</a>
   </footer>
 
-  <script src="js/site.js?v=20261102132133" defer></script>
+  <script src="js/site.js?v=20261102132715" defer></script>
+  <script src="js/lightbox.js?v=20261102132715" defer></script>
 </body>
 </html>

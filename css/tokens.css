@@ -18,7 +18,7 @@
   --paper: #ece5d6;
   --paper-2: #e4dbc8;
   --ink: #2e2117;
-  --ink-2: #47382b;
+  --ink-2: rgba(46, 33, 23, 0.75);
   --muted: #6b5b48;
   --rule: rgba(46, 33, 23, 0.18);
   --rule-2: rgba(46, 33, 23, 0.4);
@@ -54,7 +54,7 @@
   --paper: #151311;
   --paper-2: #1d1a16;
   --ink: #e4dccb;
-  --ink-2: #cfc6b4;
+  --ink-2: rgba(228, 220, 203, 0.75);
   --muted: #958a77;
   --rule: rgba(228, 220, 203, 0.13);
   --rule-2: rgba(228, 220, 203, 0.32);
