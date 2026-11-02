@@ -35,3 +35,14 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   }), { rootMargin: "0px 0px -15% 0px" });
   marks.forEach((el) => io.observe(el));
 })();
+
+// Product films loop while on screen and pause off it. With reduced motion they rest on their poster.
+(() => {
+  const films = document.querySelectorAll("video[data-play-in-view]");
+  if (!films.length || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (entry.isIntersecting) entry.target.play().catch(() => {});
+    else entry.target.pause();
+  }), { threshold: 0.5 });
+  films.forEach((film) => io.observe(film));
+})();

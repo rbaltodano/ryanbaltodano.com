@@ -6,7 +6,7 @@
 
   panels.forEach(panel => {
     const markers = panel.querySelector('.workspace__markers');
-    markers.hidden = false;
+    if (markers) markers.hidden = false;
     const controls = [...panel.querySelectorAll('[data-note]')];
     function selectNote(number) {
       const current = panel.dataset.selectedNote;
@@ -27,7 +27,7 @@
     });
     panel.addEventListener('keydown', event => {
       if (event.key !== 'Escape' || !panel.dataset.selectedNote) return;
-      const selectedMarker = markers.querySelector(`[data-note="${panel.dataset.selectedNote}"]`);
+      const selectedMarker = (markers || panel).querySelector(`[data-note="${panel.dataset.selectedNote}"]`);
       const focusInCopy = document.activeElement.closest('.workspace__note-copy');
       selectNote(panel.dataset.selectedNote);
       if (focusInCopy) selectedMarker.focus({ preventScroll: true });

@@ -166,3 +166,12 @@ drawn arrows, plus hand underlines and a circle on the selected numeral (drawn i
 on scroll); Observations on ruled paper as journal entries, with a tick on read
 entries; plate captions as tags overlapping their frames. Journal entries need real
 dates from the owner before any are shown; none are invented.
+
+## Films and postcard, 2026-11-01
+
+Angrove Fig. 1 and Fig. 2 are the two Mac-page films from angrove.app
+(`assets/video/`), set straight on the page with no mount; they loop while on
+screen and pause off it, and rest on the poster under reduced motion. Screenshot
+markers are removed for now; the notes remain as an accordion. Correspondence is
+a taped snapshot beside a postcard: message on the left, the address side with an
+acorn postage stamp, a postmark, and the contact links as address lines.

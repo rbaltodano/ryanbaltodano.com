@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Newsreader light for heads and body, Courier Prime for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=202611012141");
-@import url("./base.css?v=202611012141");
+@import url("./tokens.css?v=202611012150");
+@import url("./base.css?v=202611012150");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -133,7 +133,7 @@ p.label { margin-bottom: var(--space-md); }
 .more > summary .label { color: var(--accent); }
 .more__sign { margin-left: auto; font-family: var(--font-mono); color: var(--muted); transition: rotate var(--dur-short) var(--ease-out); }
 .more[open] .more__sign { rotate: 45deg; }
-.more__gallery { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.34fr); gap: 24px; align-items: start; padding-block: 8px 12px; }
+.more__gallery { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.34fr); gap: 32px; align-items: start; padding-block: 8px 12px; }
 
 .plate--interlude { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; align-items: center; padding-bottom: 96px; }
 .plate--interlude .plate__frame { grid-column: 2; grid-row: 1; justify-self: center; width: min(100%, 300px); }
@@ -170,11 +170,9 @@ p.label { margin-bottom: var(--space-md); }
 .record__plate { padding-top: 8px; }
 
 /* ---------- Correspondence ---------- */
-.correspondence { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 72px; align-items: center; padding-block: 112px; }
-.correspondence__photo { max-width: 360px; }
-.correspondence__photo img { filter: var(--photo-filter); }
+.correspondence { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 56px; align-items: center; padding-block: 112px; }
 .correspondence .lead { margin-top: 18px; max-width: 40ch; }
-.ledger { list-style: none; margin: 36px 0 0; padding: 0; border-top: 1px solid var(--ink); max-width: 620px; }
+.ledger { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); max-width: 620px; }
 .ledger li { border-bottom: 1px solid var(--rule); }
 .ledger a { display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; text-decoration: none; color: var(--ink); }
 .ledger a span:first-child { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
@@ -185,6 +183,36 @@ p.label { margin-bottom: var(--space-md); }
 .footer { display: flex; justify-content: space-between; gap: 24px; padding-block: 36px 48px; font-size: 0.875rem; font-style: italic; color: var(--muted); }
 .footer a { text-decoration: none; font-style: normal; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
+
+
+/* ---------- Films: product video set straight on the page, no mount ---------- */
+.film { margin: 0; }
+.film__video { display: block; width: 100%; height: auto; border-radius: 1.4% / 2.25%; background: #141210; box-shadow: 0 30px 60px -28px rgba(18, 15, 12, 0.55), 0 0 0 1px rgba(18, 15, 12, 0.08); }
+.film figcaption { margin-top: 18px; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
+.film figcaption .label { margin-right: 0.6em; color: var(--accent); }
+
+/* ---------- Correspondence: a taped snapshot beside a postcard ---------- */
+.snapshot { position: relative; margin: 0; padding: 12px 12px 0; background: var(--page); border: 1px solid var(--rule); box-shadow: 0 10px 24px -14px rgba(46, 33, 23, 0.45); rotate: -3deg; max-width: 300px; justify-self: end; }
+.snapshot img { display: block; width: 100%; height: auto; filter: var(--photo-filter); }
+.snapshot figcaption { padding: 10px 4px 14px; text-align: center; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--ink-2); }
+.snapshot::before { content: ""; position: absolute; z-index: 2; top: -13px; left: 50%; translate: -50% 0; rotate: 4deg; width: 110px; height: 26px; background: var(--tape); }
+
+.postcard { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--page); border: 1px solid var(--rule-2); box-shadow: 3px 3px 0 -1px var(--page), 3px 3px 0 0 var(--rule), 0 24px 40px -30px rgba(46, 33, 23, 0.5); rotate: 0.6deg; }
+.postcard__message { padding: 44px 40px 40px; border-right: 1px solid var(--rule-2); }
+.postcard__message .lead { margin-top: 18px; max-width: 30ch; }
+.postcard__sign { margin-top: 26px; font-family: "Caveat", cursive; font-size: 2rem; line-height: 1; color: var(--accent); rotate: -3deg; }
+.postcard__address { display: flex; flex-direction: column; padding: 28px 36px 40px; }
+.postcard__corner { display: flex; justify-content: flex-end; align-items: center; gap: 10px; min-height: 120px; margin-bottom: 18px; }
+.postage { width: 92px; padding: 7px; background: var(--paper); rotate: 3deg; box-shadow: 0 1px 3px rgba(46, 33, 23, 0.25); -webkit-mask: radial-gradient(circle 3.4px at 3.4px 3.4px, transparent 98%, #000) -3.4px -3.4px / 11px 11px, linear-gradient(#000 0 0) center / calc(100% - 12px) calc(100% - 12px) no-repeat; mask: radial-gradient(circle 3.4px at 3.4px 3.4px, transparent 98%, #000) -3.4px -3.4px / 11px 11px, linear-gradient(#000 0 0) center / calc(100% - 12px) calc(100% - 12px) no-repeat; }
+.postage img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
+.postmark { position: relative; display: block; width: 112px; height: 112px; margin-right: -46px; z-index: 2; color: var(--accent); opacity: 0.75; rotate: -12deg; }
+.postmark svg { width: 100%; height: 100%; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.postmark text { fill: currentColor; stroke: none; font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.06em; }
+.postmark .postmark__big { font-size: 13px; letter-spacing: 0.14em; font-weight: 700; }
+.postmark__waves { position: absolute; top: 26px; left: 70px; width: 120px !important; height: 52px !important; stroke-width: 1.3 !important; }
+.postcard__lines { margin-top: auto; border-top: 0; }
+.postcard__lines li { border-bottom: 1px solid var(--rule-2); }
+.postcard__lines a { padding: 14px 0 8px; align-items: baseline; }
 
 /* ==========================================================================
    Notebook layer: paper, margin, spreads, things taped and pinned, the hand
@@ -216,11 +244,10 @@ body::after { content: ""; position: fixed; top: 0; bottom: 0; left: max(calc(va
 .mount::before, .mount::after { content: ""; position: absolute; top: -12px; z-index: 3; width: 92px; height: 26px; background: var(--tape); border-inline: 1px dashed rgba(0, 0, 0, 0.06); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); pointer-events: none; }
 .mount::before { left: -22px; rotate: -32deg; }
 .mount::after { right: -22px; rotate: 32deg; }
-.mount--phone::before, .mount--phone::after, .correspondence__photo::after { display: none; }
+.mount--phone::before, .mount--phone::after { display: none; }
 .mount--phone::before { display: block; left: 50%; translate: -50% 0; rotate: -3deg; }
 .mount--tilt-l { rotate: -0.7deg; }
 .mount--tilt-r { rotate: 1.1deg; }
-.correspondence__photo { rotate: -1.2deg; }
 
 /* 5. The moth, pinned to the contents rule with a tag */
 .specimen-pin { position: relative; display: inline-block; text-transform: none; letter-spacing: 0; }
@@ -285,6 +312,8 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
   .contents__moth { width: 120px; height: auto; margin-bottom: -4px; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
 .contents ol { columns: 1; }
   .exhibit, .observations, .record, .correspondence, .plate--interlude { grid-template-columns: 1fr; gap: 36px; }
+  .snapshot { justify-self: start; max-width: 220px; }
+  .postcard { rotate: 0deg; }
   .spread { padding: 28px 22px 48px; gap: 36px; }
   .spread::after { left: 0; top: auto; height: 0; }
   .folio--left { left: 22px; } .folio--right { right: 22px; }
@@ -315,6 +344,12 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
   .more__gallery .mount--phone { max-width: 220px; }
   .workspace__marker { width: 30px; height: 30px; font-size: 0.8125rem; }
   .footer { flex-direction: column; }
+  .postcard { grid-template-columns: 1fr; }
+  .postcard__message { border-right: 0; border-bottom: 1px solid var(--rule-2); padding: 32px 24px 28px; }
+  .postcard__address { padding: 20px 24px 28px; }
+  .postcard__lines a { flex-direction: column; gap: 2px; }
+  .postmark__waves { display: none; }
+  .postmark { margin-right: -30px; }
   .scribble--fig { font-size: 1.25rem; left: 4px; }
   .stamp { position: relative; top: 0; right: 0; margin-bottom: 18px; }
   .pin-tag { display: none; }
