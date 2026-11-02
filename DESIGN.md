@@ -175,3 +175,11 @@ screen and pause off it, and rest on the poster under reduced motion. Screenshot
 markers are removed for now; the notes remain as an accordion. Correspondence is
 a taped snapshot beside a postcard: message on the left, the address side with an
 acorn postage stamp, a postmark, and the contact links as address lines.
+
+## Horizontal exhibits, 2026-11-02
+
+Exhibits share Observations’ ruled-paper background. The two notebook spreads
+sit side by side in a native horizontal scroller, with a glimpse of the next
+spread, previous/next buttons and a Roman-numeral position indicator. Touch,
+trackpad, keyboard and project anchor links work; reduced motion skips smooth
+scrolling. The mechanical plate now lives in Angrove’s Further specimens.

@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=202611012210">
+  <link rel="stylesheet" href="css/site.css?v=202611020001">
 </head>
 <body>
   <a class="skip" href="#exhibits">Skip to the exhibits</a>
@@ -82,6 +82,15 @@
         <h2><span class="scrawl draw-in">Two works</span>, <em>in use and in progress</em></h2>
       </header>
 
+      <div class="container exhibit-navigation" hidden>
+        <p class="exhibit-navigation__hint">Browse the collection <span aria-hidden="true">→</span></p>
+        <div class="exhibit-navigation__controls">
+          <button class="exhibit-navigation__button" type="button" data-exhibit-prev aria-label="Previous exhibit" aria-controls="exhibit-gallery">←</button>
+          <span class="label" data-exhibit-position aria-live="polite" aria-atomic="true">I / II</span>
+          <button class="exhibit-navigation__button" type="button" data-exhibit-next aria-label="Next exhibit" aria-controls="exhibit-gallery">→</button>
+        </div>
+      </div>
+      <div id="exhibit-gallery" class="exhibit-gallery" role="region" aria-label="Exhibit gallery" tabindex="0">
       <section id="project-angrove" class="container exhibit-wrap workspace__project" data-project="angrove" aria-labelledby="title-angrove">
         <div class="exhibit spread">
         <div class="exhibit__label">
@@ -126,17 +135,15 @@
               <figure class="film"><video class="film__video" src="assets/video/learn-easier.mp4" poster="assets/video/learn-easier-poster.jpg" width="2400" height="1496" muted loop playsinline preload="none" data-play-in-view aria-label="Angrove for Mac: a Right to Self Defense conversation dragged from Recents onto a Board, then the Insight Infralapsarianism found with search and placed beside it."></video><figcaption><span class="label">Fig. 2</span> A conversation dragged from Recents onto a Board, then a saved Insight found with search and set beside it.</figcaption></figure>
               <figure class="mount mount--phone mount--tilt-r"><img src="assets/img/insight-map.jpg" alt="Angrove insight map on iPhone." width="588" height="1280" loading="lazy"><figcaption><span class="label">Fig. 3</span> The insight map on iPhone.</figcaption></figure>
             </div>
+            <figure class="plate plate--interlude exhibit__study">
+              <div class="plate__frame"><img src="assets/plates/plate-2-mechanical.png" alt="An engraved watch movement, disassembled into an exploded stack of wheels, plates and gears on one axis." width="262" height="721" loading="lazy"></div>
+              <figcaption><span class="label">Plate II</span> A mechanical study. <em>On construction, and how the pieces fit.</em></figcaption>
+            </figure>
           </details>
         </div>
           <span class="folio folio--left" aria-hidden="true">4</span><span class="folio folio--right" aria-hidden="true">5</span>
         </div>
       </section>
-
-      <!-- Interlude plate between the two exhibits -->
-      <figure class="container plate plate--interlude">
-        <div class="plate__frame"><img src="assets/plates/plate-2-mechanical.png" alt="An engraved watch movement, disassembled into an exploded stack of wheels, plates and gears on one axis." width="262" height="721" loading="lazy"></div>
-        <figcaption><span class="label">Plate II</span> A mechanical study. <em>On construction, and how the pieces fit.</em></figcaption>
-      </figure>
 
       <section id="invectus" class="container exhibit-wrap workspace__project" data-project="invectus" aria-labelledby="title-invectus">
         <div class="exhibit spread">
@@ -180,6 +187,7 @@
           <span class="folio folio--left" aria-hidden="true">6</span><span class="folio folio--right" aria-hidden="true">7</span>
         </div>
       </section>
+      </div>
     </section>
 
     <!-- Observations: field notes drawn from the two exhibits, beside Plate III -->
@@ -303,7 +311,7 @@
     <a href="#top">Back to the title page ↑</a>
   </footer>
 
-  <script src="js/workspace.js?v=202611012210" defer></script>
-  <script src="js/site.js?v=202611012210" defer></script>
+  <script src="js/workspace.js?v=202611020001" defer></script>
+  <script src="js/site.js?v=202611020001" defer></script>
 </body>
 </html>
