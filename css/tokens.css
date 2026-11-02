@@ -38,7 +38,7 @@
 
   --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-body: var(--font-display);
-  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --font-mono: "Courier Prime", "Courier New", ui-monospace, monospace;
   --display-weight: 300;
   --tracking-display: -0.015em;
 }
