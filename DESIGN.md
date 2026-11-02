@@ -146,10 +146,10 @@ direction: Ryan as a naturalist documenting interfaces and software.
   and catalogue labels. Oxblood (`#8a3b22`, night `#d08a62`) is the one accent.
 - **Framing (full museum):** a title page, a contents list, Exhibits I and II,
   Observations (field notes), Record (client work and instruments), Correspondence.
-- **Plates:** four engravings (optical, mechanical, botanical, shells) in
-  double-ruled frames with numbered captions. `assets/plates/*.svg` are drawn
-  placeholders; replace them with the Midjourney renders (dark ink on ivory). The
-  night theme inverts plates via `--plate-filter`, so ivory PNGs work in both themes.
+- **Plates:** five Midjourney engravings with transparent backgrounds in
+  double-ruled frames with numbered captions (I optical, II mechanical, III
+  botanical, IV shells, V insect collection), plus a moth vignette on the Contents
+  rule. The night theme inverts them via `--plate-filter`.
 - **Exhibits:** a wall label (specimen table, links, numbered notes) beside a
   mounted capture with roman-numeral callouts (`js/workspace.js`, unchanged logic).
 - **Observations:** five field notes drawn only from documented project behaviour.

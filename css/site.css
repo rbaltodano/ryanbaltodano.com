@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Newsreader light for heads and body, IBM Plex Mono for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=202611012200");
-@import url("./base.css?v=202611012200");
+@import url("./tokens.css?v=202611012215");
+@import url("./base.css?v=202611012215");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -51,7 +51,7 @@ p.label { margin-bottom: var(--space-md); }
 /* ---------- Plates: engravings in a double-ruled frame with a numbered caption ---------- */
 .plate { margin: 0; }
 .plate__frame { position: relative; display: grid; place-items: center; padding: clamp(20px, 3vw, 40px); border: 1px solid var(--rule-2); outline: 1px solid var(--rule); outline-offset: 5px; }
-.plate__frame img { width: 100%; height: auto; max-height: 100%; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
+.plate__frame img { width: auto; max-width: 100%; height: auto; max-height: min(520px, 70vh); filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
 .plate figcaption, .mount figcaption { margin-top: 18px; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
 .plate figcaption .label, .mount figcaption .label { display: inline; margin-right: 0.6em; color: var(--accent); }
 .plate figcaption em { color: var(--muted); }
@@ -71,7 +71,8 @@ p.label { margin-bottom: var(--space-md); }
 
 /* ---------- Contents ---------- */
 .contents { padding-bottom: 96px; }
-.contents__head { padding-bottom: 12px; border-bottom: 1px solid var(--ink); margin-bottom: 0; }
+.contents__head { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--ink); margin-bottom: 0; }
+.contents__moth { width: 120px; height: auto; margin-bottom: -4px; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
 .contents ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 64px; }
 .contents li { break-inside: avoid; border-bottom: 1px solid var(--rule); }
 .contents a { display: flex; align-items: baseline; gap: 18px; padding: 14px 0; text-decoration: none; color: var(--ink); }
@@ -136,6 +137,8 @@ p.label { margin-bottom: var(--space-md); }
 .plate--interlude .plate__frame { grid-column: 2; grid-row: 1; justify-self: center; width: min(100%, 300px); }
 .plate--interlude figcaption { grid-column: 1; grid-row: 1; margin: 0; font-size: 1.125rem; }
 .plate--interlude figcaption .label { display: block; margin-bottom: 8px; }
+.plate--wide .plate__frame { width: min(100%, 520px); }
+.plate--wide + .band { border-top: 1px solid var(--rule); }
 
 /* ---------- Observations ---------- */
 .observations { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; align-items: start; padding-block: 112px; }
@@ -185,7 +188,8 @@ p.label { margin-bottom: var(--space-md); }
   .nav__links a:not(.nav__keep) { display: none; }
   .title { grid-template-columns: 1fr; padding-block: 56px; }
   .title__plate { justify-self: start; max-width: 240px; }
-  .contents ol { columns: 1; }
+  .contents__moth { width: 120px; height: auto; margin-bottom: -4px; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
+.contents ol { columns: 1; }
   .exhibit, .observations, .record, .correspondence, .plate--interlude { grid-template-columns: 1fr; gap: 36px; }
   .exhibit__figures { grid-row: 2; }
   .exhibit__label { grid-row: 1; }
