@@ -29,7 +29,8 @@ not loaded on the portfolio. See `stageshow/REHEARSAL.md` for verification.
 The live project workspace is plain HTML/CSS with progressive enhancement in
 `js/workspace.js`. Add projects and interface notes in `index.html`; screenshot
 markers use percentage coordinates so they stay attached to each capture.
-Without JavaScript, both projects and all notes remain visible. Each project has its own section and direct link in a horizontal gallery. Touch,
+Without JavaScript, both projects and all notes remain visible. Each project has its own section and direct link in a horizontal gallery. On roomy
+desktop screens normal page scrolling drives a pinned horizontal gallery. Touch,
 trackpad and native keyboard scrolling work without JavaScript; enhancement adds
 previous/next controls, a position indicator and arrow/Home/End shortcuts when
 the gallery is focused. Escape closes the selected note.

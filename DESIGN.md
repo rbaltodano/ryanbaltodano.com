@@ -183,3 +183,14 @@ sit side by side in a native horizontal scroller, with a glimpse of the next
 spread, previous/next buttons and a Roman-numeral position indicator. Touch,
 trackpad, keyboard and project anchor links work; reduced motion skips smooth
 scrolling. The mechanical plate now lives in Angrove’s Further specimens.
+
+## Scroll-driven exhibits, 2026-11-02
+
+Exhibits alone use ruled paper; Observations returns to the standard site ground.
+On desktop, the gallery pins below the navigation and normal page scrolling
+moves it horizontally, following Angrove’s Map of Your Own Thinking pattern.
+At the end it releases into the rest of the page. Buttons and project links map
+to the corresponding page-scroll position. Notes on the specimen expand on
+request. Expanding notes or supporting specimens releases the pin so all content
+remains readable. Small or short viewports and reduced motion use native
+horizontal browsing. No wheel interception or scroll lock.

@@ -36,10 +36,10 @@
   --color-accent: var(--accent);
   --color-focus: var(--accent);
 
-  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-display: "Libre Baskerville", "Iowan Old Style", Georgia, serif;
   --font-body: var(--font-display);
   --font-mono: "Courier Prime", "Courier New", ui-monospace, monospace;
-  --display-weight: 300;
+  --display-weight: 400;
   --tracking-display: -0.015em;
 }
 
