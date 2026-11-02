@@ -66,3 +66,16 @@ Libre Baskerville remains the content face; Courier Prime marks metadata.
 
 Content is grounded in the current résumé, Angrove case study, and inVectus README.
 Do not add unverified outcomes, user counts, or performance claims.
+
+## Statements and roomy exhibits, 2026-11-02
+
+Influenced by dakshgajjar.com, kept in the field-guide voice. The hero is one
+large serif statement ("I design software, and keep notes along the way.") with
+a taped portrait. Two large type roles join the scale: `--text-statement` and
+`--text-poster` (project wordmarks). A dashed ink trail draws with scroll between
+the hero and each exhibit. Exhibits are stacked vertical sections again (no pinned
+horizontal scroll, no paper background): wordmark and stamp, a lead capture,
+the project story with a specimen table and a pull quote, a four-step walkthrough
+with real screenshots, a second feature, and visible design notes. Motion: hero
+lines rise, wordmarks reveal, figures settle, stamps press in, links underline in
+ink; all skipped under reduced motion.

@@ -4,6 +4,9 @@
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
   /* Four text roles; only display and heading sizes change on phones. */
   --text-display: 3.5rem;
+  /* Two large roles for statements: the hero line and project wordmarks. */
+  --text-statement: clamp(3rem, 7.2vw, 7.25rem);
+  --text-poster: clamp(4.5rem, 19vw, 19rem);
   --text-heading: 2rem;
   --text-body: 1rem;
   --text-meta: 0.75rem;

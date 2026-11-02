@@ -15,16 +15,17 @@
       try { theme = localStorage.getItem("theme") === "night" ? "night" : "day"; } catch (e) {}
       const root = document.documentElement;
       root.dataset.theme = theme;
+      root.classList.add("js");
       document.querySelector('meta[name="theme-color"]').content = theme === "night" ? "#151311" : "#ece5d6";
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261102130238">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
+  <link rel="stylesheet" href="css/site.css?v=20261102132133">
 </head>
 <body>
-  <a class="skip" href="#exhibits">Skip to the exhibits</a>
+  <a class="skip" href="#exhibits">Skip to the work</a>
   <header class="nav">
     <div class="container nav__inner">
       <a class="wordmark" href="#top"><img src="assets/brand/logo-lockup.png" alt="Ryan Baltodano, home" width="2501" height="597"></a>
@@ -40,114 +41,155 @@
   </header>
 
   <main id="top">
-    <section class="container title">
-      <div class="title__text">
-        <h1>Ryan Baltodano</h1>
-        <p class="lead">I design and build apps and websites.</p>
-        <div class="title__intro">
-          <p>Based in Tampa, Florida, I work across client websites, native study software, and tools for exploring research.</p>
-          <p>I’m interested in how AI can work alongside familiar interfaces while keeping sources, saved ideas, and decisions within reach. I take projects from early flows and visual design into working software.</p>
+    <section class="container hero">
+      <p class="label hero__kicker" data-rise>Designer &amp; developer <span>·</span> Tampa, Florida</p>
+      <h1 class="statement" aria-label="I design software, and keep notes along the way.">
+        <span class="statement__line" aria-hidden="true"><span data-rise>I design software,</span></span>
+        <span class="statement__line" aria-hidden="true"><span data-rise>and keep <em class="scrawl">notes</em></span></span>
+        <span class="statement__line" aria-hidden="true"><span data-rise>along the way.</span></span>
+      </h1>
+      <figure class="snapshot hero__portrait" data-settle>
+        <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125" fetchpriority="high">
+        <figcaption>Ryan Baltodano</figcaption>
+      </figure>
+      <div class="hero__foot">
+        <div class="hero__intro">
+          <p>I take projects from early flows and visual design into working software: client websites, native study software, and tools for exploring research.</p>
+          <p>I’m interested in how AI can work alongside familiar interfaces while keeping sources, saved ideas, and decisions within reach.</p>
         </div>
-        <div class="title__actions">
+        <div class="hero__actions">
           <a class="button" href="#exhibits">View work</a>
           <a class="text-link" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com</a>
         </div>
+        <a class="label hero__trail" href="#project-angrove">Follow the trail <span aria-hidden="true">↓</span></a>
       </div>
-      <figure class="snapshot title__portrait">
-          <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125" fetchpriority="high">
-          <img class="title__moth" src="assets/plates/vignette-moth.png" alt="" aria-hidden="true" width="927" height="514">
-      </figure>
     </section>
 
+    <section id="exhibits" aria-label="Exhibits">
+      <div class="trail trail--down" aria-hidden="true"><svg viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M940 0 C950 70 820 110 600 130 S180 170 90 300" vector-effect="non-scaling-stroke"/></svg></div>
 
-    <section id="exhibits" class="workspace" aria-label="Exhibits">
-      <header class="container section-head">
-        <h2>Exhibits</h2>
-      </header>
-
-      <div class="exhibit-flow">
-      <div class="exhibit-flow__sticky">
-      <div class="container exhibit-navigation" hidden>
-        <div class="exhibit-navigation__controls">
-          <button class="exhibit-navigation__button" type="button" data-exhibit-prev aria-label="Previous exhibit" aria-controls="exhibit-gallery">←</button>
-          <span class="visually-hidden" data-exhibit-position aria-live="polite" aria-atomic="true">Angrove</span>
-          <button class="exhibit-navigation__button" type="button" data-exhibit-next aria-label="Next exhibit" aria-controls="exhibit-gallery">→</button>
+      <!-- Exhibit I: Angrove -->
+      <article id="project-angrove" class="project" aria-labelledby="title-angrove">
+        <header class="container project__head">
+          <p class="label">Exhibit I <span>·</span> Study software</p>
+          <p class="project__dek">A private study app for philosophy and theology. Conversations, notes, and saved ideas stay together on iPhone and Mac.</p>
+        </header>
+        <div class="container project__title">
+          <h2 id="title-angrove" class="poster" data-reveal>Angrove</h2>
+          <p class="stamp" data-stamp aria-label="Status: public beta on iPhone">Public beta<small>on iPhone</small></p>
         </div>
-      </div>
-      <div id="exhibit-gallery" class="exhibit-gallery" role="region" aria-label="Exhibit gallery" tabindex="0">
-      <section id="project-angrove" class="container exhibit-wrap workspace__project" data-project="angrove" aria-labelledby="title-angrove">
-        <div class="exhibit spread">
-        <div class="exhibit__label">
-          <p class="stamp" aria-label="Status: public beta on iPhone">Public beta<small>on iPhone</small></p>
-          <h3 id="title-angrove">Angrove</h3>
-          <p class="exhibit__line">A private study app for philosophy and theology.</p>
-          <p>I design and build Angrove to give a study session somewhere to continue after the conversation ends. Source-backed answers lead to definitions you can save as Insights and revisit in a map. On Mac, Boards bring conversations, writing, and images into one workspace.</p>
-          <dl class="specimen">
-            <div><dt>Platform</dt><dd>iPhone &amp; Mac</dd></div>
-            <div><dt>Built with</dt><dd>SwiftUI</dd></div>
-          </dl>
-          <p class="exhibit__links"><a class="text-link" href="https://angrove.app">Product site ↗</a><a class="text-link" href="https://angrove.app/case-study.html">Case study ↗</a><a class="text-link" href="https://github.com/rbaltodano/Angrove-iOS">Source ↗</a></p>
 
-          <details class="workspace__inspector">
-            <summary class="label">Design notes</summary>
+        <figure class="container film film--lead" data-settle>
+          <span class="scribble" aria-hidden="true">more than a chat log<svg viewBox="0 0 80 60"><path d="M8 6 C30 4 58 14 64 50"/><path d="M54 42 L64 52 L72 40"/></svg></span>
+          <video class="film__video" src="assets/video/learn-easier.mp4" poster="assets/video/learn-easier-poster.jpg" width="2400" height="1496" muted loop playsinline preload="metadata" data-play-in-view aria-label="Angrove for Mac: a Right to Self Defense conversation dragged from Recents onto a Board, then the Insight Infralapsarianism found with search and placed beside it."></video>
+          <figcaption><span class="label">Fig. 1</span> On Mac, a conversation dragged from Recents onto a Board, then a saved Insight found with search and set beside it.</figcaption>
+        </figure>
+
+        <div class="container project__story">
+          <div class="project__about">
+            <h3 class="project__kicker">The project</h3>
+            <p>I design and build Angrove to give a study session somewhere to continue after the conversation ends. Source-backed answers lead to definitions you can save as Insights and revisit in a map. On Mac, Boards bring conversations, writing, and images into one workspace.</p>
+            <dl class="specimen">
+              <div><dt>Platform</dt><dd>iPhone &amp; Mac</dd></div>
+              <div><dt>Built with</dt><dd>SwiftUI, on-device AI</dd></div>
+              <div><dt>My role</dt><dd>Product direction, visual and interaction design, SwiftUI implementation</dd></div>
+              <div><dt>Status</dt><dd>Public beta on iPhone; Mac app coming December 15</dd></div>
+            </dl>
+            <p class="project__links"><a class="text-link" href="https://angrove.app">Product site ↗</a><a class="text-link" href="https://angrove.app/case-study.html">Case study ↗</a><a class="text-link" href="https://github.com/rbaltodano/Angrove-iOS">Source ↗</a></p>
+          </div>
+          <blockquote class="project__pull">
+            <p>Notes want a place, not a scroll.</p>
+            <footer>A named Board gives conversations, writing, and visual references a shared place. Ideas stay beside each other instead of disappearing into a chat history.</footer>
+          </blockquote>
+        </div>
+
+        <section class="container project__steps" aria-labelledby="steps-angrove">
+          <h3 id="steps-angrove" class="project__kicker">How a study session works</h3>
+          <ol class="steps steps--phone">
+            <li data-settle><figure><img src="assets/img/angrove/home.jpg" alt="Angrove Home with activity, saved Insights, and a Question of the Day." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">01</span><b>Start from Home.</b> Recent activity, saved Insights, and a Question of the Day.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/angrove/conversation-nature-of-evil.jpg" alt="Nature of Evil conversation with expanded Corpus Grounded details and Summa Theologica source links." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">02</span><b>Ask with sources.</b> Answers show the passages they draw on, such as the Summa Theologica.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/angrove/conversation-homoousios.jpg" alt="Homoousios conversation with consubstantial highlighted as a contextual concept." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">03</span><b>Open a concept.</b> Underlined terms open a definition in the context of the answer.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/angrove/insight-map.jpg" alt="Ancient Greek Politics map with related concepts and a saved Insight card." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">04</span><b>Keep it.</b> Saved Insights return on a map of related ideas.</figcaption></figure></li>
+          </ol>
+        </section>
+
+        <div class="container project__feature">
+          <figure class="film" data-settle>
+            <video class="film__video" src="assets/video/lay-your-ideas-out.mp4" poster="assets/video/lay-your-ideas-out-poster.jpg" width="2400" height="1496" muted loop playsinline preload="none" data-play-in-view aria-label="Angrove for Mac: notes on just war theory in a Board, where typing /heading adds the Common Good heading above them."></video>
+            <figcaption><span class="label">Fig. 2</span> Typing /heading in a Board’s notes adds a heading above them.</figcaption>
+          </figure>
+          <div class="project__aside">
+            <h3 class="project__kicker">Room for a visual reference</h3>
+            <p>An image shares the workspace with the writing. A Board can hold more than a sequence of chat messages, so an argument can take a shape on the page.</p>
+          </div>
+        </div>
+
+        <section class="container project__notes" aria-labelledby="notes-angrove">
+          <h3 id="notes-angrove" class="project__kicker">Design notes</h3>
+          <div class="notes-grid">
             <div class="project-note"><h4>From design to implementation</h4><p>I own the product direction, visual and interaction design, and SwiftUI implementation, including the connections between the interface, local AI, and saved work.</p></div>
-            <div class="project-note" id="note-angrove-2"><h4>Room for a visual reference</h4><p>An image shares the workspace with the writing. The board can hold more than a sequence of chat messages.</p></div>
-            <div class="project-note" id="note-angrove-3"><h4>Keep the way back within reach</h4><p>Boards, conversations, the library, and study topics share one sidebar. Moving between kinds of work should never feel like leaving the room.</p></div>
-            <div class="project-note" id="note-angrove-4"><h4>Test the default before choosing it</h4><p>Before choosing Angrove’s reasoning default, I ran an 80-case evaluation. Both settings passed 74 of 80 cases, while reasoning roughly doubled latency, so I kept it off by default. This was a development configuration test, not a general accuracy claim.</p></div>
-          </details>
+            <div class="project-note"><h4>Keep the way back within reach</h4><p>Boards, conversations, the library, and study topics share one sidebar. Moving between kinds of work should never feel like leaving the room.</p></div>
+            <div class="project-note"><h4>Test the default before choosing it</h4><p>Before choosing Angrove’s reasoning default, I ran an 80-case evaluation. Both settings passed 74 of 80 cases, while reasoning roughly doubled latency, so I kept it off by default. This was a development configuration test, not a general accuracy claim.</p></div>
+          </div>
+        </section>
+      </article>
+
+      <div class="trail trail--across" aria-hidden="true"><svg viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M90 0 C80 90 260 120 520 140 S920 190 930 300" vector-effect="non-scaling-stroke"/></svg></div>
+
+      <!-- Exhibit II: inVectus -->
+      <article id="invectus" class="project" aria-labelledby="title-invectus">
+        <header class="container project__head">
+          <p class="label">Exhibit II <span>·</span> Research software</p>
+          <p class="project__dek">A local-first research tool for Mac. Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p>
+        </header>
+        <div class="container project__title">
+          <h2 id="title-invectus" class="poster" data-reveal>inVectus</h2>
+          <p class="stamp" data-stamp aria-label="Status: in development">In development</p>
         </div>
 
-        <div class="exhibit__figures">
-          <figure class="film">
-            <video class="film__video" src="assets/video/learn-easier.mp4" poster="assets/video/learn-easier-poster.jpg" width="2400" height="1496" muted loop playsinline preload="metadata" data-play-in-view aria-label="Angrove for Mac: a Right to Self Defense conversation dragged from Recents onto a Board, then the Insight Infralapsarianism found with search and placed beside it."></video>
-            <figcaption>Conversations and saved insights on a Board.</figcaption>
-          </figure>
-          <div class="project-note project-note--featured" id="note-angrove-1"><h4>Notes want a place, not a scroll</h4><p>A named board gives conversations, writing, and visual references a shared place. Ideas stay beside each other instead of disappearing into a chat history.</p></div>
-          <details class="more">
-            <summary>More screens <span class="more__sign" aria-hidden="true">+</span></summary>
-            <div class="more__gallery">
-              <figure class="film"><video class="film__video" src="assets/video/lay-your-ideas-out.mp4" poster="assets/video/lay-your-ideas-out-poster.jpg" width="2400" height="1496" muted loop playsinline preload="none" data-play-in-view aria-label="Angrove for Mac: notes on just war theory in a Board, where typing /heading adds the Common Good heading above them."></video><figcaption>Writing and visual references on a Board.</figcaption></figure>
-              <figure class="mount mount--phone mount--tilt-r"><img src="assets/img/insight-map.jpg" alt="Angrove insight map on iPhone." width="588" height="1280" loading="lazy"><figcaption>The insight map on iPhone.</figcaption></figure>
-            </div>
-          </details>
-        </div>
-        </div>
-      </section>
+        <figure class="container film film--lead" data-settle>
+          <span class="scribble scribble--left" aria-hidden="true">it shows its work<svg viewBox="0 0 80 60"><path d="M8 6 C30 4 58 14 64 50"/><path d="M54 42 L64 52 L72 40"/></svg></span>
+          <img class="film__video" src="assets/img/invectus/gap.jpg" alt="inVectus showing a ranked coverage gap, its evidence and score breakdown, beside an interactive collection map." width="2000" height="1247" loading="lazy">
+          <figcaption><span class="label">Fig. 3</span> A flagged gap in a 5,000-paper ophthalmology collection, with its evidence and score breakdown beside the collection map.</figcaption>
+        </figure>
 
-      <section id="invectus" class="container exhibit-wrap workspace__project" data-project="invectus" aria-labelledby="title-invectus">
-        <div class="exhibit spread">
-        <div class="exhibit__label">
-          <p class="stamp" aria-label="Status: in development">In development</p>
-          <h3 id="title-invectus">inVectus</h3>
-          <p class="exhibit__line">A local-first research tool for Mac.</p>
-          <p>I’m building inVectus to help researchers explore a document collection and decide what to investigate next. Import a collection, search by meaning, or browse potential gaps on a map. Each candidate opens beside its supporting papers and score breakdown.</p>
-          <dl class="specimen">
-            <div><dt>Platform</dt><dd>Mac</dd></div>
-            <div><dt>Built with</dt><dd>React, TypeScript, Rust</dd></div>
-          </dl>
-          <p class="exhibit__links"><a class="text-link" href="https://github.com/rbaltodano/inVectus">Source &amp; project notes ↗</a></p>
+        <div class="container project__story">
+          <div class="project__about">
+            <h3 class="project__kicker">The project</h3>
+            <p>I’m building inVectus to help researchers explore a document collection and decide what to investigate next. Import a collection, search by meaning, or browse potential gaps on a map. Each candidate opens beside its supporting papers and score breakdown.</p>
+            <dl class="specimen">
+              <div><dt>Platform</dt><dd>Mac</dd></div>
+              <div><dt>Built with</dt><dd>React, TypeScript, Rust</dd></div>
+              <div><dt>My role</dt><dd>Interface design and build, and its connection to a shared Rust engine</dd></div>
+              <div><dt>Status</dt><dd>Working prototype, MIT licensed</dd></div>
+            </dl>
+            <p class="project__links"><a class="text-link" href="https://github.com/rbaltodano/inVectus">Source &amp; project notes ↗</a></p>
+          </div>
+          <blockquote class="project__pull">
+            <p>Show the numbers behind a judgment.</p>
+            <footer>Demand, coverage, and activity stay visible beside a flagged gap. The score is something to inspect, with the supporting papers close at hand.</footer>
+          </blockquote>
+        </div>
 
-          <details class="workspace__inspector">
-            <summary class="label">Design notes</summary>
+        <section class="container project__steps" aria-labelledby="steps-invectus">
+          <h3 id="steps-invectus" class="project__kicker">A typical workflow</h3>
+          <ol class="steps steps--desktop">
+            <li data-settle><figure><img src="assets/img/invectus/collections.jpg" alt="The indexed medical collection, with role counts and calibration details." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">01</span><b>Import a collection.</b> Check that it’s indexed, with role counts and calibration details.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/invectus/search.jpg" alt="Semantic search with supporting medical-paper matches." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">02</span><b>Search by meaning.</b> Compare an idea with the collection and inspect the nearest papers.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/invectus/item.jpg" alt="A source paper and its position in the collection map." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">03</span><b>Inspect the evidence.</b> Open a source paper and see where it sits on the map.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/invectus/saved.jpg" alt="Saved gaps and a human-authored decision in the native app." width="2000" height="1255" loading="lazy"><figcaption><span class="steps__no">04</span><b>Keep a decision.</b> Save a gap for review and record what you decided, shown here with a fictional demo collection.</figcaption></figure></li>
+          </ol>
+        </section>
+
+        <section class="container project__notes" aria-labelledby="notes-invectus">
+          <h3 id="notes-invectus" class="project__kicker">Design notes</h3>
+          <div class="notes-grid">
             <div class="project-note"><h4>One local workspace</h4><p>I design and build the desktop interface and its connection to a shared Rust engine. Search and indexing run locally, with resumable jobs and cancellation.</p></div>
-            <div class="project-note" id="note-invectus-2"><h4>The gap has a place</h4><p>The selected gap stays marked on the collection map beside its evidence. Its position can be read in the context of the other papers, while the score and supporting items remain available for inspection.</p></div>
-            <div class="project-note" id="note-invectus-4"><h4>Keep a decision, not just a bookmark</h4><p>Saving a gap and reviewing it are different actions. A persistent decision log keeps the evidence, notes, and review decisions available after rescanning the collection, so an earlier judgment can be revisited.</p></div>
-            <div class="project-note" id="note-invectus-3"><h4>A claim should name its scope</h4><p>“A gap in this collection” and “a novel idea” mean different things. The flag describes coverage within this collection; it does not establish that an idea is globally novel. The copy has to say which claim the software can support.</p></div>
-          </details>
-        </div>
-
-        <div class="exhibit__figures">
-          <figure class="film">
-            <img class="film__video" src="assets/img/invectus-window.jpg" alt="inVectus: coverage-gap evidence and score breakdown beside a circular research collection map." width="1882" height="1194" loading="lazy">
-            <figcaption>Coverage gaps, evidence, and the collection map.</figcaption>
-          </figure>
-          <div class="project-note project-note--featured" id="note-invectus-1"><h4>Show the numbers behind a judgment</h4><p>Demand, coverage, and activity stay visible beside a flagged gap. The score is something to inspect, with the supporting papers close at hand.</p></div>
-        </div>
-        </div>
-      </section>
-      </div>
-      </div>
-      </div>
+            <div class="project-note"><h4>Keep a decision, not just a bookmark</h4><p>Saving a gap and reviewing it are different actions. A persistent decision log keeps the evidence, notes, and review decisions available after rescanning the collection.</p></div>
+            <div class="project-note"><h4>A claim should name its scope</h4><p>“A gap in this collection” and “a novel idea” mean different things. The flag describes coverage within this collection; it does not establish that an idea is globally novel.</p></div>
+          </div>
+        </section>
+      </article>
     </section>
 
     <section id="record" class="container record">
@@ -191,7 +233,7 @@
           <ul class="ledger">
               <li><a href="mailto:rbaltodano337@gmail.com"><span>rbaltodano337@gmail.com</span></a></li>
               <li><a href="https://github.com/rbaltodano"><span>GitHub ↗</span></a></li>
-              <li><a href="assets/Ryan-Baltodano-Resume.pdf?v=20261102130238b" target="_blank" rel="noopener"><span>Résumé ↗</span></a></li>
+              <li><a href="assets/Ryan-Baltodano-Resume.pdf?v=20261102132133b" target="_blank" rel="noopener"><span>Résumé ↗</span></a></li>
           </ul>
         </div>
       </div>
@@ -203,7 +245,6 @@
     <a href="#top">Back to top ↑</a>
   </footer>
 
-  <script src="js/workspace.js?v=20261102130238" defer></script>
-  <script src="js/site.js?v=20261102130238" defer></script>
+  <script src="js/site.js?v=20261102132133" defer></script>
 </body>
 </html>
