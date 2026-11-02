@@ -198,7 +198,7 @@ horizontal browsing. No wheel interception or scroll lock.
 ## Roomier exhibit spreads, 2026-11-02
 
 Exhibits use wider spreads up to 1480px with a larger share for the text column,
-more internal spacing, and a 72–128px gap between cards (40px on phones). Both
+more internal spacing, and a 550px gap between cards at every viewport size. Both
 spreads stretch to the tallest card, including when details expand. Status stamps
 sit above the content. Short desktop windows use smaller vertical padding to
 preserve the pinned scroll interaction.

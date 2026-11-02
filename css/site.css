@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Libre Baskerville regular for heads and body, Courier Prime for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=20261102112413");
-@import url("./base.css?v=20261102112413");
+@import url("./tokens.css?v=20261102112605");
+@import url("./base.css?v=20261102112605");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -92,7 +92,7 @@ p.label { margin-bottom: var(--space-md); }
 .exhibit-wrap { padding-bottom: 0; scroll-margin-top: 80px; }
 .exhibit-gallery {
   --gallery-inset: max(var(--gutter), calc((100vw - 1480px) / 2));
-  display: flex; gap: clamp(72px, 7vw, 128px); align-items: stretch;
+  display: flex; gap: 550px; align-items: stretch;
   overflow-x: auto; padding: 8px var(--gallery-inset) 64px;
   scroll-snap-type: x proximity; scroll-padding-inline: var(--gallery-inset);
   scrollbar-color: var(--muted) var(--paper-2);
@@ -374,7 +374,6 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
   .exhibit-navigation { align-items: flex-end; gap: 12px; }
   .exhibit-navigation__hint { max-width: 12ch; }
   .exhibit-navigation__controls { gap: 12px; }
-  .exhibit-gallery { gap: 40px; }
   .exhibit-gallery > .exhibit-wrap { flex-basis: calc(100vw - 2 * var(--gutter) - 16px); }
   .nav__inner { gap: 16px; }
   .wordmark img { height: 30px; translate: 0 2px; }
