@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102141447");
-@import url("./base.css?v=20261102141447");
+@import url("./tokens.css?v=20261102141913");
+@import url("./base.css?v=20261102141913");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -206,7 +206,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 /* An engraved specimen resting in the space under the lead capture */
 .project__intro .film--lead { grid-column: 1; grid-row: 1; }
 .project__intro .project__story { grid-column: 2; grid-row: 1 / span 2; }
-.project__specimen { grid-column: 1; grid-row: 2; justify-self: center; width: clamp(160px, 16vw, 240px); height: auto; margin-top: 56px; rotate: -8deg; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); pointer-events: none; }
+.project__specimen { grid-column: 1; grid-row: 2; justify-self: center; width: clamp(160px, 16vw, 240px); height: auto; margin-top: 56px; opacity: 0.5; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); pointer-events: none; }
 .film--lead { position: relative; margin: 0; }
 .film--lead .film__video { width: 100%; }
 .scribble { position: absolute; z-index: 2; top: -44px; right: 8%; display: inline-flex; align-items: flex-start; gap: 4px; font-family: "Caveat", cursive; font-size: 1.75rem; line-height: 1; color: var(--accent); pointer-events: none; rotate: -3deg; }
@@ -257,6 +257,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .js [data-reveal].is-in { clip-path: inset(-0.1em -0.1em -0.25em -0.1em); translate: 0 0; }
   .js [data-settle] { opacity: 0; translate: 0 28px; transition: opacity 800ms var(--ease-out), translate 900ms var(--ease-out); }
   .js [data-settle].is-in { opacity: 1; translate: 0 0; }
+  .js .project__specimen[data-settle].is-in { opacity: 0.5; }
   .js .steps li:nth-child(2)[data-settle] { transition-delay: 80ms; }
   .js .steps li:nth-child(3)[data-settle] { transition-delay: 160ms; }
   .js .steps li:nth-child(4)[data-settle] { transition-delay: 240ms; }
