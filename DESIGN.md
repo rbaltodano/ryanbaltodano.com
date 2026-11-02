@@ -142,7 +142,7 @@ direction: Ryan as a naturalist documenting interfaces and software.
 - **Ground:** ivory plate (`#ece5d6`) by default, with a "Night" toggle to a dark
   reading room (`#151311`). The choice is saved in localStorage and applied in the
   head before first paint. Colour literals live only in `css/tokens.css`.
-- **Type:** Newsreader (light) for heads and body; Courier Prime for plate, figure
+- **Type:** Libre Baskerville (regular) for heads and body; Courier Prime for plate, figure
   and catalogue labels. Oxblood (`#8a3b22`, night `#d08a62`) is the one accent.
 - **Framing (full museum):** a title page, a contents list, Exhibits I and II,
   Observations (field notes), Record (client work and instruments), Correspondence.
