@@ -109,3 +109,19 @@ section. Capabilities are a compact tools list. Preserve the pinned Practice
 interaction, with shorter step spacing. No slogan, screenshot zooms, generic
 capability tiles, or giant decorative footer wordmark. Stageshow source remains
 parked in the repository, but its bundle is not requested by the page.
+
+## Interactive project workspace, 2026-11-01
+
+The owner approved a shared project workspace with clickable annotations.
+Angrove and inVectus use accessible tabs in one persistent toolbar. The selected
+panel contains its own description, links, metadata, real screenshot, and notes.
+Numbered screenshot markers and inspector controls select the same note. Escape
+closes the current note; arrow keys, Home, and End navigate project tabs. Direct
+links to #invectus and #project-angrove select the corresponding panel. All
+content remains visible without JavaScript. No automatic project switching,
+zooming, or demo cursor. Supporting Angrove screenshots expand on request.
+
+Annotations describe visible UI and documented behavior, without invented
+usability outcomes. Sources: the existing Angrove case study and inVectus README.
+The inspector moves below the capture at tablet and phone widths. The existing
+Practice section remains the primary scroll interaction.
