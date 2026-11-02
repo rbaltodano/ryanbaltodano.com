@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102132715");
-@import url("./base.css?v=20261102132715");
+@import url("./tokens.css?v=20261102133253");
+@import url("./base.css?v=20261102133253");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -198,14 +198,18 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .project__title { position: relative; margin-top: 24px; }
 .poster { font-size: var(--text-poster); line-height: 0.86; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; white-space: nowrap; max-width: none; }
 .project__title .stamp { position: absolute; top: 8%; right: var(--gutter); }
-.film--lead { position: relative; margin: 72px auto 0; }
+.film--lead { position: relative; margin: 0; }
 .film--lead .film__video { width: 100%; }
-.scribble { position: absolute; z-index: 2; top: -44px; right: calc(var(--gutter) + 6%); display: inline-flex; align-items: flex-start; gap: 4px; font-family: "Caveat", cursive; font-size: 1.75rem; line-height: 1; color: var(--accent); pointer-events: none; rotate: -3deg; }
-.scribble--left { right: auto; left: calc(var(--gutter) + 22%); }
+.scribble { position: absolute; z-index: 2; top: -44px; right: 8%; display: inline-flex; align-items: flex-start; gap: 4px; font-family: "Caveat", cursive; font-size: 1.75rem; line-height: 1; color: var(--accent); pointer-events: none; rotate: -3deg; }
+.scribble--left { right: auto; left: 22%; }
+.scribble--right { top: 10%; right: auto; left: calc(100% + 20px); flex-direction: row-reverse; align-items: flex-end; white-space: nowrap; }
+.scribble--right svg { scale: -1 1; margin: 0 0 -26px; }
 .scribble svg { width: 64px; height: 48px; margin-top: 10px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 
 .project__kicker { font-family: var(--font-mono); font-size: var(--text-meta); font-weight: 400; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-.project__story { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 96px; margin-top: 120px; align-items: start; }
+/* Lead capture on the left half; the story starts halfway down it (the captures are about 0.62 tall, so 31% of the column width) */
+.project__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: start; margin-top: 72px; }
+.project__story { display: grid; gap: 64px; padding-top: 31.2%; }
 .project__links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 28px; }
 .project__pull { margin: 0; padding-top: 28px; border-top: 1px solid var(--ink); }
 .project__pull p { font-size: var(--text-heading); line-height: 1.2; letter-spacing: -0.02em; color: var(--ink); font-style: italic; }
@@ -260,7 +264,9 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .project__head { flex-direction: column; gap: 12px; }
   .project__dek { text-align: left; }
   .project__title .stamp { position: relative; top: 0; right: 0; margin-top: 20px; display: inline-flex; }
-  .project__story, .project__feature { grid-template-columns: 1fr; gap: 56px; margin-top: 88px; }
+  .project__intro, .project__feature { grid-template-columns: 1fr; gap: 56px; }
+  .project__feature { margin-top: 88px; }
+  .project__story { padding-top: 0; gap: 48px; }
   .project__steps, .project__notes { margin-top: 96px; }
   .steps--phone { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 24px; }
   .steps--desktop { grid-template-columns: 1fr; gap: 56px; }
@@ -270,7 +276,6 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .trail { height: 140px; }
 }
 @media (max-width: 40rem) {
-  .film--lead { margin-top: 48px; }
   .steps--phone { gap: 40px 16px; }
 }
 
