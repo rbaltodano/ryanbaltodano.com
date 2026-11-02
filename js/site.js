@@ -20,3 +20,18 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   });
   render();
 })();
+
+// Hand-drawn marks (underlines, margin notes) draw in once each is a little way up the screen.
+(() => {
+  const marks = document.querySelectorAll(".draw-in");
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    marks.forEach((el) => el.classList.add("is-in"));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add("is-in");
+    io.unobserve(entry.target);
+  }), { rootMargin: "0px 0px -15% 0px" });
+  marks.forEach((el) => io.observe(el));
+})();

@@ -154,3 +154,15 @@ direction: Ryan as a naturalist documenting interfaces and software.
   mounted capture with roman-numeral callouts (`js/workspace.js`, unchanged logic).
 - **Observations:** five field notes drawn only from documented project behaviour.
 - **Removed:** the pinned Practice section and `js/practice.js` (owner did not keep it).
+
+## Notebook layer, 2026-11-01
+
+On top of the field guide: a red double margin line with handwritten section
+numerals; exhibits as open notebook spreads (fold, stacked page edges, dot-grid
+right page, folios matching the contents page numbers); tape on mounted figures,
+the supporting figures slightly askew; the moth pinned to the contents rule with
+a tag; rubber stamps for status; Caveat for no more than three margin notes with
+drawn arrows, plus hand underlines and a circle on the selected numeral (drawn in
+on scroll); Observations on ruled paper as journal entries, with a tick on read
+entries; plate captions as tags overlapping their frames. Journal entries need real
+dates from the owner before any are shown; none are invented.

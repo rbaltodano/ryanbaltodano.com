@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Newsreader light for heads and body, IBM Plex Mono for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=202611012215");
-@import url("./base.css?v=202611012215");
+@import url("./tokens.css?v=202611012245");
+@import url("./base.css?v=202611012245");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -88,7 +88,8 @@ p.label { margin-bottom: var(--space-md); }
 #exhibits { padding-top: 112px; border-top: 1px solid var(--rule); }
 
 /* ---------- Exhibits ---------- */
-.exhibit { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; align-items: start; padding-bottom: 96px; scroll-margin-top: 80px; }
+.exhibit-wrap { padding-bottom: 96px; scroll-margin-top: 80px; }
+.exhibit { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; align-items: start; }
 .exhibit__label { padding-top: 22px; border-top: 1px solid var(--ink); }
 .exhibit__label h3 { font-size: clamp(2.5rem, 2.4vw + 1.25rem, 3.5rem); line-height: 1; letter-spacing: -0.02em; }
 .exhibit__line { margin-top: 12px; font-size: 1.25rem; font-style: italic; color: var(--ink); line-height: 1.35; }
@@ -183,6 +184,99 @@ p.label { margin-bottom: var(--space-md); }
 .footer { display: flex; justify-content: space-between; gap: 24px; padding-block: 36px 48px; font-size: 0.875rem; font-style: italic; color: var(--muted); }
 .footer a { text-decoration: none; font-style: normal; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; }
 
+
+/* ==========================================================================
+   Notebook layer: paper, margin, spreads, things taped and pinned, the hand
+   ========================================================================== */
+.scribble, .pin-tag, .marginal, .journal .notes__no::after { font-family: "Caveat", "Bradley Hand", cursive; font-weight: 500; }
+
+/* 2. A red double margin line down the left edge of the page, with section numbers in the margin */
+body::after { content: ""; position: fixed; top: 0; bottom: 0; left: max(calc(var(--gutter) - 14px), calc((100vw - var(--container)) / 2 + var(--gutter) - 32px)); width: 4px; border-inline: 1px solid var(--margin-line); pointer-events: none; z-index: 5; }
+.section-head, .correspondence__body, .observations, .correspondence { position: relative; }
+.marginal.marginal--box { top: 104px; right: calc(100% - var(--gutter) + 40px); }
+.marginal { position: absolute; top: -10px; right: calc(100% + 40px); font-size: 1.5rem; line-height: 1; color: var(--accent); white-space: nowrap; transform: rotate(-4deg); }
+
+/* 3. Exhibits as an open notebook: two pages, a fold, stacked page edges, folios */
+.spread { position: relative; isolation: isolate; gap: 72px; padding: 48px; background: var(--page); border: 1px solid var(--rule); box-shadow: 3px 3px 0 -1px var(--page), 3px 3px 0 0 var(--rule), 6px 6px 0 -1px var(--page), 6px 6px 0 0 var(--rule); }
+.spread::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(48px + (100% - 168px) / 3 + 36px); width: 64px; translate: -50% 0; background: linear-gradient(90deg, transparent, var(--fold) 48%, var(--fold) 50%, transparent); z-index: -1; pointer-events: none; }
+/* 1. The right-hand page is dot-grid paper */
+.spread::after { content: ""; position: absolute; top: 0; bottom: 0; right: 0; left: calc(48px + (100% - 168px) / 3 + 68px); background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.4px); background-size: 22px 22px; background-position: 11px 11px; z-index: -2; pointer-events: none; }
+.spread .exhibit__label { border-top: 0; padding-top: 0; position: relative; }
+.folio { position: absolute; bottom: 16px; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); letter-spacing: 0.1em; }
+.folio--left { left: 48px; } .folio--right { right: 48px; }
+.folio::before, .folio::after { content: "—"; margin-inline: 6px; opacity: 0.5; }
+
+/* 6. Status stamps */
+.stamp { position: absolute; top: 44px; right: -4px; z-index: 2; display: inline-flex; flex-direction: column; align-items: center; padding: 6px 12px 5px; border: 2px solid var(--accent); border-radius: 3px; outline: 1px solid var(--accent); outline-offset: 2px; color: var(--accent); font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.3; rotate: -7deg; opacity: 0.82; mix-blend-mode: multiply; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.stamp small { font-size: 0.5625rem; letter-spacing: 0.2em; opacity: 0.85; }
+:root[data-theme="night"] .stamp { mix-blend-mode: normal; }
+
+/* 4. Tape on mounted figures; supporting figures sit slightly askew */
+.mount { position: relative; }
+.mount::before, .mount::after { content: ""; position: absolute; top: -12px; z-index: 3; width: 92px; height: 26px; background: var(--tape); border-inline: 1px dashed rgba(0, 0, 0, 0.06); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); pointer-events: none; }
+.mount::before { left: -22px; rotate: -32deg; }
+.mount::after { right: -22px; rotate: 32deg; }
+.mount--phone::before, .mount--phone::after, .correspondence__photo::after { display: none; }
+.mount--phone::before { display: block; left: 50%; translate: -50% 0; rotate: -3deg; }
+.mount--tilt-l { rotate: -0.7deg; }
+.mount--tilt-r { rotate: 1.1deg; }
+.correspondence__photo { rotate: -1.2deg; }
+
+/* 5. The moth, pinned to the contents rule with a tag */
+.specimen-pin { position: relative; display: inline-block; text-transform: none; letter-spacing: 0; }
+.contents__moth { position: relative; z-index: 1; }
+.pin { position: absolute; z-index: 2; left: 50%; top: 22px; width: 9px; height: 9px; translate: -50% 0; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e7c7a0, var(--accent) 60%, #3b170c); box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.3); }
+.pin::after { content: ""; position: absolute; left: 50%; top: 7px; width: 1px; height: 14px; background: var(--muted); rotate: 18deg; transform-origin: top; }
+.pin-tag { position: absolute; right: calc(100% + 6px); top: 34px; padding: 2px 10px 3px; background: var(--page); border: 1px solid var(--rule-2); border-radius: 2px 8px 8px 2px; font-size: 1.125rem; line-height: 1.1; color: var(--ink-2); white-space: nowrap; rotate: -6deg; box-shadow: 1px 1px 0 var(--rule); }
+.pin-tag::before { content: ""; position: absolute; right: -14px; top: 50%; width: 14px; border-top: 1px solid var(--muted); }
+
+/* 7. Handwritten margin notes with drawn arrows (two or three on the whole page) */
+.scribble { position: absolute; z-index: 4; display: inline-flex; align-items: flex-start; gap: 4px; font-size: 1.5rem; line-height: 1; color: var(--accent); white-space: nowrap; pointer-events: none; }
+.scrawl-arrow { width: 64px; height: 48px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.title__actions { position: relative; }
+.scribble--title { left: 120px; top: 50px; rotate: -3deg; align-items: flex-end; }
+.scribble--title .scrawl-arrow { width: 56px; height: 42px; margin-bottom: 4px; }
+.exhibit__figures { position: relative; padding-top: 52px; }
+.scribble--fig { top: -6px; left: var(--sx); rotate: -3deg; }
+.scribble--fig .scrawl-arrow { margin-top: 10px; }
+
+/* 8. Hand-drawn marks: underlines under one phrase per head, a circle around the selected numeral, a tick on read notes */
+.scrawl { position: relative; white-space: nowrap; }
+.scrawl::after { content: ""; position: absolute; left: -2%; right: -3%; bottom: -0.16em; height: 0.3em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M2 9 C40 3 90 4 130 6 S180 9 198 4' fill='none' stroke='%238a3b22' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M14 12 C60 8 120 9 170 10' fill='none' stroke='%238a3b22' stroke-width='1.4' stroke-linecap='round' opacity='.6'/%3E%3C/svg%3E") center / 100% 100% no-repeat; clip-path: inset(0 100% 0 0); transition: clip-path 900ms var(--ease-out) 150ms; }
+:root[data-theme="night"] .scrawl::after { filter: brightness(1.9) saturate(0.8); }
+.scrawl.is-in::after { clip-path: inset(0 0 0 0); }
+.scribble path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease-out) 200ms; }
+.scribble path + path { transition-delay: 900ms; }
+.scribble.is-in path { stroke-dashoffset: 0; }
+.scribble { opacity: 0; transition: opacity 500ms var(--ease-out); }
+.scribble.is-in { opacity: 1; }
+html:not(.js) .scribble, html:not(.js) .scrawl::after { opacity: 1; clip-path: none; }
+html:not(.js) .scribble path { stroke-dashoffset: 0; }
+.workspace__marker.is-selected::after { content: ""; position: absolute; inset: -11px -14px -9px -12px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 56'%3E%3Cpath d='M38 5 C20 1 4 12 5 29 C6 46 24 53 39 49 C54 45 58 30 53 18 C49 9 40 5 30 6' fill='none' stroke='%238a3b22' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; pointer-events: none; }
+:root[data-theme="night"] .workspace__marker.is-selected::after { filter: brightness(1.9); }
+
+/* 1 + 9. Observations on ruled paper, as journal entries; a read entry gets a tick */
+#observations { background-color: var(--paper-2); background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--ruling) 31px 32px); }
+.journal .notes__no { position: relative; }
+.journal li { border-bottom: 0; }
+.journal { border-bottom: 1px solid var(--rule); }
+.journal details[open] .notes__no::after { content: "✓"; position: absolute; left: -26px; top: -8px; font-size: 1.5rem; letter-spacing: 0; color: var(--accent); }
+.journal details p { font-size: 1.0625rem; line-height: 2rem; }
+
+/* 10. Contents with dotted leaders and page numbers */
+.contents__title { flex: none; }
+.contents__leader { flex: 1; min-width: 24px; align-self: center; translate: 0 4px; border-bottom: 1px dotted var(--rule-2); }
+.contents__kind { margin-left: 0; }
+.contents__page { width: 3.2em; text-align: right; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+
+/* 11. Looser placement: plate captions overlap their frames like tags; plates sit off-centre */
+.plate figcaption { position: relative; z-index: 1; width: fit-content; max-width: 92%; margin: -22px 0 0 18px; padding: 10px 14px; background: var(--page); border: 1px solid var(--rule); box-shadow: 2px 2px 0 var(--rule); }
+.plate--interlude figcaption { margin: 0; }
+.plate--loose .plate__frame { justify-self: end; margin-right: 6%; rotate: 1.2deg; }
+.plate--taped { rotate: 1.4deg; position: relative; }
+.plate--taped::before { content: ""; position: absolute; top: -12px; left: 50%; translate: -50% 0; rotate: -4deg; z-index: 3; width: 110px; height: 26px; background: var(--tape); }
+.title__plate { rotate: -0.8deg; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 60rem) {
   .nav__links a:not(.nav__keep) { display: none; }
@@ -191,6 +285,14 @@ p.label { margin-bottom: var(--space-md); }
   .contents__moth { width: 120px; height: auto; margin-bottom: -4px; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
 .contents ol { columns: 1; }
   .exhibit, .observations, .record, .correspondence, .plate--interlude { grid-template-columns: 1fr; gap: 36px; }
+  .spread { padding: 28px 22px 48px; gap: 36px; }
+  .spread::before { display: none; }
+  .spread::after { left: 0; top: auto; height: 0; }
+  .folio--left { left: 22px; } .folio--right { right: 22px; }
+  .marginal.marginal--box { display: none; }
+  .marginal { position: static; display: block; margin-bottom: 6px; font-size: 1.5rem; transform: none; }
+  .scribble--title { display: none; }
+  .plate--loose .plate__frame { justify-self: start; margin-right: 0; }
   .exhibit__figures { grid-row: 2; }
   .exhibit__label { grid-row: 1; }
   .plate--interlude .plate__frame, .plate--interlude figcaption { grid-column: 1; grid-row: auto; }
@@ -213,4 +315,8 @@ p.label { margin-bottom: var(--space-md); }
   .more__gallery .mount--phone { max-width: 220px; }
   .workspace__marker { width: 30px; height: 30px; font-size: 0.8125rem; }
   .footer { flex-direction: column; }
+  .scribble--fig { font-size: 1.25rem; left: 4px; }
+  .stamp { position: relative; top: 0; right: 0; margin-bottom: 18px; }
+  .pin-tag { display: none; }
+  .contents__kind { display: none; }
 }
