@@ -95,3 +95,17 @@ still. Phones get a dedicated crop and a still, with no redundant replay control
 These are animated presentations of screenshots, not recordings of app behavior.
 The supporting Angrove captures use an asymmetric composition; capabilities
 use shared hairlines on desktop. Color literals remain in the tokens file.
+
+## Software-inspired revision, 2026-11-01
+
+The owner rejected the Stageshow marketing treatment as generic, selected a
+denser software-inspired direction, and supplied a framed Voxa landing-page
+reference. This revision supersedes the Stageshow revision above. Use the
+inVectus neutral palette within a continuous page frame, square controls,
+short navigation, and narrow hatched registration bands. The name leads with
+plain factual copy and an uncropped rectangular portrait on desktop. Product
+captures remain static and whole. Both products precede the two-row employment
+section. Capabilities are a compact tools list. Preserve the pinned Practice
+interaction, with shorter step spacing. No slogan, screenshot zooms, generic
+capability tiles, or giant decorative footer wordmark. Stageshow source remains
+parked in the repository, but its bundle is not requested by the page.
