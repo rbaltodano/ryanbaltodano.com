@@ -125,3 +125,11 @@ Annotations describe visible UI and documented behavior, without invented
 usability outcomes. Sources: the existing Angrove case study and inVectus README.
 The inspector moves below the capture at tablet and phone widths. The existing
 Practice section remains the primary scroll interaction.
+
+## Visible project sections, 2026-11-01
+
+The owner requested both products be featured openly rather than behind tabs.
+Angrove and inVectus now have separate, always-visible sections under Selected
+projects. Remove tab controls, project hiding, tab keyboard handling, and hash
+rewriting. Keep each screenshot's independent annotations and inspector, native
+direct links, and the expandable supporting Angrove screens.

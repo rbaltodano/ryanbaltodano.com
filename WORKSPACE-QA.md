@@ -1,16 +1,12 @@
-# Project workspace verification
+# Featured project verification
 
-2026-11-01, isolated headless Chrome on macOS.
+2026-11-01. Angrove and inVectus are separate, always-visible sections; there
+are no project tabs or hidden project panels. Each project retains its own
+screenshot annotations and notes inspector. Native #project-angrove and
+#invectus links scroll to the respective section.
 
-At 1440, 768, 390, and 320 CSS pixels, verified project selection changes the
-visible panel and selected tab; clicking a screenshot marker selects its matching
-note; clicking an inspector note updates the matching marker; Escape closes the
-note; arrow keys and End move tab focus and selection; reloading an inVectus
-direct link retains that project. No page errors or document overflow.
-
-With JavaScript disabled, both project panels and all six interface notes are
-readable, screenshot markers stay hidden, and project links remain ordinary
-anchors. Screenshots reviewed at desktop and phone widths. Motion is a short
-panel/note fade and follows the site's reduced-motion rule.
-
-Not checked: physical-device rendering or screen-reader speech output.
+Passed in isolated headless Chrome at 1440, 390, and 320 CSS pixels: both
+sections visible, no tab roles, independent note selection, Escape, expandable
+Angrove screens, native direct links, no page errors, and no document overflow.
+With JavaScript disabled, both projects and all six notes remain readable.
+Physical-device rendering and screen-reader speech output are not checked.

@@ -1,8 +1,8 @@
 /* Hallmark · job: hire · shape: Marquee Hero (the name and one line, then the product, the index, the practice beside a card of line art) · genre: editorial · theme: brand · redesign: restyle
  * paper: #141414 · accent: #6edcaa · display/body: Inter · labels: Martian Mono · hero: Banner · nav: edge-aligned, numbered like inVectus's tabs · footer: colophon · signature: thin line diagrams and mono section codes, after inVectus
  * axes: inVectus Instrument theme, near-black/hairlines/mint · posture: restrained · v2.0.0 */
-@import url("./tokens.css?v=202611012100");
-@import url("./base.css?v=202611012100");
+@import url("./tokens.css?v=202611012110");
+@import url("./base.css?v=202611012110");
 
 html { scroll-behavior: smooth; scroll-padding-top: var(--space-lg); }
 body { color: var(--color-ink-2); font-size: 1rem; line-height: 1.6; letter-spacing: 0.005em; }
@@ -395,23 +395,14 @@ h3 { letter-spacing: -.025em; }
 .frame-rule::before, .frame-rule::after { content: "+"; position: absolute; top: -8px; font: 14px/1 var(--font-mono); color: var(--color-rule-2); }
 .frame-rule::before { left: -5px; }
 .frame-rule::after { right: -5px; }
-/* Project workspace: tabs, real captures, and a linked notes inspector. */
+/* Featured projects: real captures and independent notes inspectors. */
 #work.workspace { padding: 0; scroll-margin-top: 80px; border-block: 1px solid var(--color-rule); }
 .workspace__toolbar { display: flex; align-items: stretch; background: var(--surface); border-bottom: 1px solid var(--color-rule); padding-inline: var(--gutter); }
 .workspace__label, .workspace__hint { display: flex; align-items: center; font: 10px/1.5 var(--font-mono); color: var(--color-muted); }
 .workspace__label { margin-right: 32px; }
 .workspace__hint { margin-left: auto; }
-.workspace__tabs { display: flex; }
-.workspace__tabs a { position: relative; display: flex; align-items: center; gap: 12px; padding: 17px 24px; border-inline: 1px solid var(--color-rule); text-decoration: none; font-size: 13px; }
-.workspace__tabs a + a { border-left: 0; }
-.workspace__tabs a > span { font: 9px/1 var(--font-mono); color: var(--color-muted); }
-.workspace__tabs a[aria-selected="true"] { background: var(--bg); color: var(--color-ink); }
-.workspace__tabs a[aria-selected="true"]::after { content: ""; position: absolute; bottom: -1px; left: 18px; right: 18px; height: 2px; background: var(--mint); }
-.workspace__tabs a[aria-selected="true"] > span { color: var(--mint); }
-.workspace__tabs a:focus-visible { outline-offset: -5px; }
-.workspace__project { padding: 32px var(--gutter) 0; scroll-margin-top: 100px; }
-.workspace__project + .workspace__project { border-top: 1px solid var(--color-rule); margin-top: 32px; }
-.workspace.is-enhanced .workspace__project { margin-top: 0; border-top: 0; }
+.workspace__project { padding: 32px var(--gutter); scroll-margin-top: 100px; }
+.workspace__project + .workspace__project { border-top: 1px solid var(--color-rule); margin-top: 0; }
 .workspace__intro { display: grid; grid-template-columns: 1fr 1.35fr; gap: 48px; margin-bottom: 24px; }
 .workspace__intro .eyebrow { margin-bottom: 12px; }
 .workspace__intro h2 { font-size: 36px; }
@@ -449,10 +440,8 @@ h3 { letter-spacing: -.025em; }
 .workspace__gallery { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .32fr); align-items: start; gap: 24px; padding-block: 12px 28px; }
 .workspace__gallery .shot:last-child img { max-height: 390px; width: auto; margin-inline: auto; }
 .workspace__project[data-project="invectus"] { padding-bottom: 32px; }
-.workspace.is-enhanced .workspace__project:not([hidden]) { animation: project-in 180ms ease-out; }
 .workspace:not(.is-enhanced) .workspace__instructions, .workspace:not(.is-enhanced) .workspace__note-sign { display: none; }
 .workspace:not(.is-enhanced) .workspace__note > button { cursor: default; }
-@keyframes project-in { from { opacity: .35; } to { opacity: 1; } }
 @keyframes note-in { from { opacity: 0; translate: 0 4px; } to { opacity: 1; translate: 0 0; } }
 @media (max-width: 75rem) {
   .workspace__body { grid-template-columns: minmax(0, 1fr) 240px; }
@@ -471,10 +460,6 @@ h3 { letter-spacing: -.025em; }
   #work.workspace { padding: 0; }
   .workspace__toolbar { flex-wrap: wrap; }
   .workspace__label { width: 100%; margin: 0; padding-block: 12px; }
-  .workspace__tabs { width: 100%; }
-  .workspace__tabs a { flex: 1; justify-content: center; padding: 14px 12px; border-top: 1px solid var(--color-rule); }
-  .workspace__tabs a:first-child { border-left: 0; }
-  .workspace__tabs a:last-child { border-right: 0; }
   .workspace__project { padding-top: 24px; }
   .workspace__intro { grid-template-columns: 1fr; gap: 16px; margin-bottom: 20px; }
   .workspace__intro h2 { font-size: 32px; }

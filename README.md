@@ -28,5 +28,5 @@ not loaded on the portfolio. See `stageshow/REHEARSAL.md` for verification.
 The live project workspace is plain HTML/CSS with progressive enhancement in
 `js/workspace.js`. Add projects and interface notes in `index.html`; screenshot
 markers use percentage coordinates so they stay attached to each capture.
-Without JavaScript, both projects and all notes remain visible. Tabs support
-arrow keys, Home/End, and direct project links; Escape closes the selected note.
+Without JavaScript, both projects and all notes remain visible. Each project has its own visible section and direct link. Escape closes the
+selected note.
