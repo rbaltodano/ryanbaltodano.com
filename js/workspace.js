@@ -4,39 +4,6 @@
   if (!workspace) return;
   const panels = [...workspace.querySelectorAll('[data-project]')];
 
-  panels.forEach(panel => {
-    const markers = panel.querySelector('.workspace__markers');
-    if (markers) markers.hidden = false;
-    const controls = [...panel.querySelectorAll('[data-note]')];
-    function selectNote(number) {
-      const current = panel.dataset.selectedNote;
-      const selected = current === number ? '' : number;
-      panel.dataset.selectedNote = selected;
-      controls.forEach(control => {
-        const active = control.dataset.note === selected;
-        control.classList.toggle('is-selected', active);
-        control.setAttribute(control.classList.contains('workspace__marker') ? 'aria-pressed' : 'aria-expanded', String(active));
-      });
-      panel.querySelectorAll('.workspace__note-copy').forEach(copy => {
-        copy.hidden = copy.id !== `note-${panel.dataset.project}-${selected}`;
-      });
-    }
-    controls.forEach(control => {
-      control.disabled = false;
-      control.addEventListener('click', () => selectNote(control.dataset.note));
-    });
-    panel.addEventListener('keydown', event => {
-      if (event.key !== 'Escape' || !panel.dataset.selectedNote) return;
-      const selectedMarker = (markers || panel).querySelector(`[data-note="${panel.dataset.selectedNote}"]`);
-      const focusInCopy = document.activeElement.closest('.workspace__note-copy');
-      selectNote(panel.dataset.selectedNote);
-      if (focusInCopy) selectedMarker.focus({ preventScroll: true });
-    });
-    selectNote('1');
-  });
-
-  workspace.classList.add('is-enhanced');
-
   // A sticky gallery maps normal page scrolling to horizontal travel on roomy screens.
   const gallery = workspace.querySelector('.exhibit-gallery');
   const navigation = workspace.querySelector('.exhibit-navigation');
@@ -47,8 +14,6 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const flow = workspace.querySelector('.exhibit-flow');
   const sticky = flow.querySelector('.exhibit-flow__sticky');
-  const hint = navigation.querySelector('[data-exhibit-hint]');
-  const numerals = ['I', 'II'];
   let pinned = false;
   let distance = 0;
   let pending = false;
@@ -72,7 +37,6 @@
     flow.classList.toggle('is-pinned', pinned);
     distance = gallery.scrollWidth - gallery.clientWidth;
     flow.style.height = pinned ? `${sticky.offsetHeight + distance}px` : '';
-    hint.textContent = pinned ? 'Scroll to explore' : 'Swipe or browse';
     if (preserve && wasPinned !== pinned && oldTop < innerHeight && oldTop + sticky.offsetHeight > 64) {
       window.scrollTo({ top: pinned ? origin() + oldLeft : window.scrollY + sticky.getBoundingClientRect().top - oldTop, behavior: 'instant' });
     }
@@ -85,7 +49,7 @@
       Math.abs(panel.getBoundingClientRect().left - left) < Math.abs(panels[nearest].getBoundingClientRect().left - left) ? index : nearest, 0);
     previous.disabled = active === 0;
     next.disabled = active === panels.length - 1;
-    position.textContent = `${numerals[active] || active + 1} / ${numerals[panels.length - 1] || panels.length}`;
+    position.textContent = panels[active].querySelector('h3').textContent;
   }
   function showExhibit(index) {
     const panel = panels[Math.max(0, Math.min(index, panels.length - 1))];

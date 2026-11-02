@@ -1,13 +1,10 @@
-/* Museum field guide · 2026-11-01
- * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
- * type: Libre Baskerville regular for heads and body, Courier Prime for plate and figure labels
- * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=20261102120229");
-@import url("./base.css?v=20261102120229");
+/* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
+@import url("./tokens.css?v=20261102123108");
+@import url("./base.css?v=20261102123108");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
-/* Paper grain: a faint fixed noise over everything, multiplied by day, screened by night. */
+
 body::before { content: ""; position: fixed; inset: 0; z-index: 1000; pointer-events: none; opacity: var(--grain-opacity); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode: multiply; }
 :root[data-theme="night"] body::before { mix-blend-mode: screen; }
 
@@ -22,7 +19,6 @@ a:hover { color: var(--accent); }
 .skip { position: absolute; left: 16px; top: -60px; z-index: 400; padding: 8px 12px; background: var(--ink); color: var(--paper); }
 .skip:focus { top: 12px; }
 
-/* Mono labels: plate and figure numbers, catalogue headings, small metadata */
 .label { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
 .label span { opacity: 0.6; margin-inline: 0.2em; }
 p.label { margin-bottom: var(--space-md); }
@@ -36,7 +32,6 @@ p.label { margin-bottom: var(--space-md); }
 
 .band { background: var(--paper-2); border-block: 1px solid var(--rule); }
 
-/* ---------- Nav ---------- */
 .nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); }
 .nav__inner { display: flex; align-items: center; gap: 40px; height: 64px; }
 .wordmark { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
@@ -49,46 +44,25 @@ p.label { margin-bottom: var(--space-md); }
 .theme-toggle__dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid currentColor; transition: background-color var(--dur-short) var(--ease-out); }
 .theme-toggle[aria-pressed="true"] .theme-toggle__dot { background: currentColor; }
 
-/* ---------- Plates: engravings in a double-ruled frame with a numbered caption ---------- */
 .plate { margin: 0; }
 .plate__frame { position: relative; display: grid; place-items: center; padding: clamp(20px, 3vw, 40px); border: 1px solid var(--rule-2); outline: 1px solid var(--rule); outline-offset: 5px; }
 .plate__frame img { width: auto; max-width: 100%; height: auto; max-height: min(520px, 70vh); filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
-.plate figcaption, .mount figcaption { margin-top: 18px; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
-.plate figcaption .label, .mount figcaption .label { display: inline; margin-right: 0.6em; color: var(--accent); }
-.plate figcaption em { color: var(--muted); }
 
-/* ---------- Mounts: product captures mounted like photographs, with a mat and a caption ---------- */
 .mount { margin: 0; }
-.mount > img, .mount > .workspace__capture { border: 1px solid var(--rule-2); background: var(--paper-2); padding: 8px; }
-.mount > .workspace__capture img, .mount > img { display: block; width: 100%; height: auto; }
+.mount figcaption { margin-top: 18px; font-size: 0.9375rem; line-height: 1.5; }
+.mount > img { border: 1px solid var(--rule-2); background: var(--paper-2); padding: 8px; }
+.mount > img { display: block; width: 100%; height: auto; }
 
-/* ---------- Title page ---------- */
 .title { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--gap-columns) 64px; align-items: end; padding-block: 88px 72px; }
 .title h1 { font-size: var(--text-display); line-height: 0.95; letter-spacing: -0.025em; max-width: none; }
-.title__line { margin-top: 18px; font-size: clamp(1.375rem, 1.2vw + 1rem, 2rem); font-style: italic; font-weight: 400; color: var(--muted); }
 .title .lead { margin-top: 40px; max-width: 46ch; color: var(--ink-2); }
 .title__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; margin-top: 36px; }
 .title__plate { justify-self: end; width: 100%; max-width: 380px; }
 
-/* ---------- Contents ---------- */
-.contents { padding-bottom: 96px; }
-.contents__head { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--ink); margin-bottom: 0; }
-.contents__moth { width: 120px; height: auto; margin-bottom: -4px; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
-.contents ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 64px; }
-.contents li { break-inside: avoid; border-bottom: 1px solid var(--rule); }
-.contents a { display: flex; align-items: baseline; gap: 18px; padding: 14px 0; text-decoration: none; color: var(--ink); }
-.contents__no { width: 2.5em; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
-.contents__title { font-size: 1.375rem; font-weight: 400; }
-.contents__kind { margin-left: auto; font-style: italic; color: var(--muted); }
-.contents a:hover .contents__title { color: var(--accent); }
-
-/* ---------- Section heads ---------- */
 .section-head { padding-block: 0 56px; }
 .section-head h2 { max-width: 24ch; }
-.section-head__dek { margin-top: 18px; max-width: 48ch; font-size: var(--text-lead); line-height: 1.45; color: var(--ink-2); }
 #exhibits { padding-top: 112px; border-top: 1px solid var(--rule); }
 
-/* ---------- Exhibits ---------- */
 .exhibit-wrap { padding-bottom: 0; scroll-margin-top: 80px; }
 .exhibit-gallery {
   --gallery-inset: max(var(--gutter), calc((100vw - 1480px) / 2));
@@ -103,9 +77,7 @@ p.label { margin-bottom: var(--space-md); }
   min-width: 0; max-width: none; margin: 0; padding-inline: 0; scroll-snap-align: start;
 }
 .exhibit-gallery > .exhibit-wrap > .spread { width: 100%; }
-.exhibit-navigation { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-bottom: 24px; }
-.exhibit-navigation__hint { font-style: italic; color: var(--muted); }
-.exhibit-navigation__hint span { margin-left: 12px; }
+.exhibit-navigation { display: flex; justify-content: flex-end; align-items: center; gap: 24px; padding-bottom: 24px; }
 .exhibit-navigation__controls { display: flex; align-items: center; gap: 18px; }
 .exhibit-navigation__button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--rule-2); background: var(--paper-2); color: var(--ink); font-size: 1.25rem; cursor: pointer; }
 .exhibit-navigation__button:hover { border-color: var(--accent); color: var(--accent); }
@@ -118,11 +90,8 @@ p.label { margin-bottom: var(--space-md); }
 .exhibit-flow.is-pinned .exhibit-navigation { padding-top: 20px; }
 .exhibit-flow.is-pinned .spread { padding: 44px 48px 56px; }
 .exhibit-flow.is-pinned .workspace__inspector { margin-top: 32px; }
-.exhibit-flow.is-pinned .folio--left { left: 40px; }
-.exhibit-flow.is-pinned .folio--right { right: 40px; }
-.exhibit-flow.is-pinned .exhibit__figures { padding-top: 44px; }
+
 .exhibit-flow.is-pinned .film__video { width: auto; max-height: calc(100svh - 420px); }
-.exhibit__study { margin-top: 40px; padding-bottom: 12px; }
 .exhibit { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: start; }
 .exhibit__label { padding-top: 22px; border-top: 1px solid var(--ink); }
 .exhibit__label h3 { font-size: clamp(2.5rem, 2.4vw + 1.25rem, 3.5rem); line-height: 1; letter-spacing: -0.02em; }
@@ -138,28 +107,6 @@ p.label { margin-bottom: var(--space-md); }
 .workspace__inspector { margin-top: 40px; }
 .workspace__inspector > .label { color: var(--ink); margin-bottom: 6px; cursor: pointer; padding-block: 10px; border-block: 1px solid var(--rule); }
 .workspace__inspector[open] > .label { margin-bottom: 14px; }
-.workspace__instructions { font-size: 0.875rem; font-style: italic; color: var(--muted); margin-bottom: 14px; }
-.workspace__note { border-top: 1px solid var(--rule); }
-.workspace__note:last-child { border-bottom: 1px solid var(--rule); }
-.workspace__note > button { display: grid; grid-template-columns: 2.2em 1fr 12px; gap: 6px; width: 100%; padding: 12px 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 1rem; text-align: left; cursor: pointer; }
-.workspace__note > button > span:first-child { font-style: italic; color: var(--muted); }
-.workspace__note > button:hover, .workspace__note > button.is-selected { color: var(--accent); }
-.workspace__note-sign { color: var(--muted); font-family: var(--font-mono); }
-.workspace__note > button.is-selected .workspace__note-sign { font-size: 0; }
-.workspace__note > button.is-selected .workspace__note-sign::after { content: "−"; font-size: 0.875rem; }
-.workspace__note-copy { padding: 0 0 16px 2.6em; }
-.workspace__note-copy p { font-size: 0.9375rem; line-height: 1.65; color: var(--ink-2); }
-.workspace.is-enhanced .workspace__note-copy:not([hidden]) { animation: note-in 200ms var(--ease-out); }
-@keyframes note-in { from { opacity: 0; transform: translateY(-3px); } }
-.workspace:not(.is-enhanced) .workspace__instructions, .workspace:not(.is-enhanced) .workspace__note-sign { display: none; }
-.workspace:not(.is-enhanced) .workspace__note > button { cursor: default; }
-
-.workspace__capture { position: relative; }
-.workspace__markers { position: absolute; inset: 8px; }
-.workspace__marker { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%); width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper); color: var(--ink); font: italic 400 0.9375rem/1 var(--font-display); cursor: pointer; box-shadow: 0 0 0 4px color-mix(in srgb, var(--paper) 45%, transparent); transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease; }
-.workspace__marker::before { content: ""; position: absolute; inset: -5px; border-radius: inherit; }
-.workspace__marker:hover, .workspace__marker.is-selected { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.workspace__marker:focus-visible { outline-offset: 4px; }
 
 .more { margin-top: 28px; border-top: 1px solid var(--rule); }
 .more > summary { display: flex; align-items: center; gap: 14px; padding-block: 16px; cursor: pointer; list-style: none; color: var(--ink); }
@@ -169,29 +116,20 @@ p.label { margin-bottom: var(--space-md); }
 .more[open] .more__sign { rotate: 45deg; }
 .more__gallery { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.34fr); gap: 32px; align-items: start; padding-block: 8px 12px; }
 
-.plate--interlude { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; align-items: center; padding-bottom: 96px; }
-.plate--interlude .plate__frame { grid-column: 2; grid-row: 1; justify-self: center; width: min(100%, 300px); }
-.plate--interlude figcaption { grid-column: 1; grid-row: 1; margin: 0; font-size: 1.125rem; }
-.plate--interlude figcaption .label { display: block; margin-bottom: 8px; }
-.plate--wide .plate__frame { width: min(100%, 520px); }
-.plate--wide + .band { border-top: 1px solid var(--rule); }
 
-/* ---------- Observations ---------- */
 .observations { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; align-items: start; padding-block: 112px; }
 .observations__plate { position: sticky; top: 100px; }
 .section-head--flush { padding-bottom: 36px; }
 .notes { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
 .notes li { border-bottom: 1px solid var(--rule); }
-.notes summary { display: grid; grid-template-columns: 5.5em 1fr auto; gap: 16px; align-items: baseline; padding: 18px 0; cursor: pointer; list-style: none; color: var(--ink); }
+.notes summary { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: baseline; padding: 18px 0; cursor: pointer; list-style: none; color: var(--ink); }
 .notes summary::-webkit-details-marker { display: none; }
-.notes__no { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; color: var(--muted); }
 .notes__title { font-size: 1.375rem; font-weight: 400; line-height: 1.3; }
 .notes__src { font-style: italic; color: var(--muted); font-size: 0.9375rem; }
 .notes summary:hover .notes__title { color: var(--accent); }
 .notes details[open] .notes__title { color: var(--accent); }
-.notes details p { padding: 0 0 22px calc(5.5em + 16px); max-width: 62ch; color: var(--ink-2); }
+.notes details p { padding: 0 0 22px; max-width: 62ch; color: var(--ink-2); }
 
-/* ---------- Record ---------- */
 .record { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 56px; align-items: start; padding-block: 112px; }
 .catalogue { width: 100%; border-collapse: collapse; border-top: 1px solid var(--ink); }
 .catalogue th, .catalogue td { text-align: left; padding: 16px 16px 16px 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
@@ -203,174 +141,73 @@ p.label { margin-bottom: var(--space-md); }
 .instruments p:last-child { font-size: 1.25rem; font-style: italic; color: var(--ink); }
 .record__plate { padding-top: 8px; }
 
-/* ---------- Correspondence ---------- */
 .correspondence { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 56px; align-items: center; padding-block: 112px; }
 .correspondence .lead { margin-top: 18px; max-width: 40ch; }
 .ledger { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); max-width: 620px; }
 .ledger li { border-bottom: 1px solid var(--rule); }
 .ledger a { display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; text-decoration: none; color: var(--ink); }
-.ledger a span:first-child { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
-.ledger a span:last-child { font-size: 1.1875rem; }
+.ledger a { font-size: 1.125rem; overflow-wrap: anywhere; }
 .ledger a:hover span:last-child { color: var(--accent); }
 
-/* ---------- Footer: colophon ---------- */
 .footer { display: flex; justify-content: space-between; gap: 24px; padding-block: 36px 48px; font-size: 0.875rem; font-style: italic; color: var(--muted); }
 .footer a { text-decoration: none; font-style: normal; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
-
-
-/* ---------- Films: product video set straight on the page, no mount ---------- */
 .film { margin: 0; }
 .film__video { display: block; width: 100%; height: auto; border-radius: 10px; background: #141210; box-shadow: 0 30px 60px -28px rgba(18, 15, 12, 0.55), 0 0 0 1px rgba(18, 15, 12, 0.08); }
 .film figcaption { margin-top: 18px; font-size: 0.9375rem; line-height: 1.5; color: var(--ink-2); }
 .film figcaption .label { margin-right: 0.6em; color: var(--accent); }
 
-/* ---------- Correspondence: a taped snapshot beside a postcard ---------- */
 .snapshot { position: relative; margin: 0; padding: 12px 12px 0; background: var(--page); border: 1px solid var(--rule); box-shadow: 0 10px 24px -14px rgba(46, 33, 23, 0.45); rotate: -3deg; max-width: 300px; justify-self: end; }
 .snapshot img { display: block; width: 100%; height: auto; filter: var(--photo-filter); }
-.snapshot figcaption { padding: 10px 4px 14px; text-align: center; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--ink-2); }
 .snapshot::before { content: ""; position: absolute; z-index: 2; top: -13px; left: 50%; translate: -50% 0; rotate: 4deg; width: 110px; height: 26px; background: var(--tape); }
-
-.postcard { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--page); border: 1px solid var(--rule-2); box-shadow: 3px 3px 0 -1px var(--page), 3px 3px 0 0 var(--rule), 0 24px 40px -30px rgba(46, 33, 23, 0.5); rotate: 0.6deg; }
-.postcard__message { padding: 44px 40px 40px; border-right: 1px solid var(--rule-2); }
-.postcard__message .lead { margin-top: 18px; max-width: 30ch; }
-.postcard__sign { margin-top: 26px; font-family: "Caveat", cursive; font-size: 2rem; line-height: 1; color: var(--accent); rotate: -3deg; }
-.postcard__address { display: flex; flex-direction: column; padding: 28px 36px 40px; }
-.postcard__corner { display: flex; justify-content: flex-end; align-items: center; gap: 10px; min-height: 120px; margin-bottom: 18px; }
-.postage { width: 92px; padding: 7px; background: var(--paper); rotate: 3deg; box-shadow: 0 1px 3px rgba(46, 33, 23, 0.25); -webkit-mask: radial-gradient(circle 3.4px at 3.4px 3.4px, transparent 98%, #000) -3.4px -3.4px / 11px 11px, linear-gradient(#000 0 0) center / calc(100% - 12px) calc(100% - 12px) no-repeat; mask: radial-gradient(circle 3.4px at 3.4px 3.4px, transparent 98%, #000) -3.4px -3.4px / 11px 11px, linear-gradient(#000 0 0) center / calc(100% - 12px) calc(100% - 12px) no-repeat; }
-.postage img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
-.postmark { position: relative; display: block; width: 112px; height: 112px; margin-right: -46px; z-index: 2; color: var(--accent); opacity: 0.75; rotate: -12deg; }
-.postmark svg { width: 100%; height: 100%; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.5; }
-.postmark text { fill: currentColor; stroke: none; font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.06em; }
-.postmark .postmark__big { font-size: 13px; letter-spacing: 0.14em; font-weight: 700; }
-.postmark__waves { position: absolute; top: 26px; left: 70px; width: 120px !important; height: 52px !important; stroke-width: 1.3 !important; }
-.postcard__lines { margin-top: auto; border-top: 0; }
-.postcard__lines li { border-bottom: 1px solid var(--rule-2); }
-.postcard__lines a { padding: 14px 0 8px; align-items: baseline; }
-
-/* ==========================================================================
-   Notebook layer: paper, margin, spreads, things taped and pinned, the hand
-   ========================================================================== */
-.scribble, .pin-tag, .marginal, .journal .notes__no::after { font-family: "Caveat", "Bradley Hand", cursive; font-weight: 500; }
-
-/* 2. A red double margin line down the left edge of the page, with section numbers in the margin */
 body::after, .exhibit-flow__sticky::before { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(--container)) / 2) + var(--gutter) - 24px); width: 4px; border-inline: 1px solid var(--margin-line); pointer-events: none; }
 body::after { position: fixed; z-index: 7; }
 .exhibit-flow__sticky::before { position: absolute; z-index: 0; }
 .section-head, .correspondence__body, .observations, .correspondence { position: relative; }
-.marginal.marginal--box { top: 104px; }
-.marginal { position: absolute; top: -10px; left: 12px; font-size: 1.5rem; line-height: 1; color: var(--accent); white-space: nowrap; transform: rotate(-4deg); }
 
-.record .marginal { left: calc(12px - var(--gutter)); }
-
-/* 3. Exhibits as an open notebook: two pages, a fold, stacked page edges, folios */
 .spread { position: relative; z-index: 1; isolation: isolate; gap: 72px; padding: 48px; background: var(--page); border: 1px solid var(--rule); box-shadow: 3px 3px 0 -1px var(--page), 3px 3px 0 0 var(--rule), 6px 6px 0 -1px var(--page), 6px 6px 0 0 var(--rule); }
-/* 1. The right-hand page is dot-grid paper */
 .spread::after { content: ""; position: absolute; top: 0; bottom: 0; right: 0; left: calc(48px + (100% - 168px) * 5 / 12 + 36px); background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.4px); background-size: 22px 22px; background-position: 11px 11px; z-index: -2; pointer-events: none; }
-.spread .exhibit__label { border-top: 0; padding-top: 20px; position: relative; }
-.folio { position: absolute; bottom: 16px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; }
-.folio--left { left: 48px; } .folio--right { right: 48px; }
-.folio::before, .folio::after { content: "—"; margin-inline: 6px; opacity: 0.5; }
+.spread .exhibit__label { border-top: 0; padding-top: 32px; position: relative; }
 
-/* 6. Status stamps */
 .stamp { position: absolute; top: -28px; right: -16px; z-index: 2; display: inline-flex; flex-direction: column; align-items: center; padding: 6px 12px 5px; border: 2px solid var(--accent); border-radius: 3px; outline: 1px solid var(--accent); outline-offset: 2px; color: var(--accent); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.3; rotate: -7deg; opacity: 0.82; mix-blend-mode: multiply; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 .stamp small { font-size: 0.5625rem; letter-spacing: 0.12em; opacity: 0.85; }
 :root[data-theme="night"] .stamp { mix-blend-mode: normal; }
-
-/* 4. Tape on mounted figures; supporting figures sit slightly askew */
 .mount { position: relative; }
 .mount::before, .mount::after { content: ""; position: absolute; top: -12px; z-index: 3; width: 92px; height: 26px; background: var(--tape); border-inline: 1px dashed rgba(0, 0, 0, 0.06); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); pointer-events: none; }
 .mount::before { left: -22px; rotate: -32deg; }
 .mount::after { right: -22px; rotate: 32deg; }
 .mount--phone::before, .mount--phone::after { display: none; }
 .mount--phone::before { display: block; left: 50%; translate: -50% 0; rotate: -3deg; }
-.mount--tilt-l { rotate: -0.7deg; }
 .mount--tilt-r { rotate: 1.1deg; }
 
-/* 5. The moth, pinned to the contents rule with a tag */
-.specimen-pin { position: relative; display: inline-block; text-transform: none; letter-spacing: 0; }
-.contents__moth { position: relative; z-index: 1; }
-.pin { position: absolute; z-index: 2; left: 50%; top: 22px; width: 9px; height: 9px; translate: -50% 0; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e7c7a0, var(--accent) 60%, #3b170c); box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.3); }
-.pin::after { content: ""; position: absolute; left: 50%; top: 7px; width: 1px; height: 14px; background: var(--muted); rotate: 18deg; transform-origin: top; }
-.pin-tag { position: absolute; right: calc(100% + 6px); top: 34px; padding: 2px 10px 3px; background: var(--page); border: 1px solid var(--rule-2); border-radius: 2px 8px 8px 2px; font-size: 1.125rem; line-height: 1.1; color: var(--ink-2); white-space: nowrap; rotate: -6deg; box-shadow: 1px 1px 0 var(--rule); }
-.pin-tag::before { content: ""; position: absolute; right: -14px; top: 50%; width: 14px; border-top: 1px solid var(--muted); }
-
-/* 7. Handwritten margin notes with drawn arrows (two or three on the whole page) */
-.scribble { position: absolute; z-index: 4; display: inline-flex; align-items: flex-start; gap: 4px; font-size: 1.5rem; line-height: 1; color: var(--accent); white-space: nowrap; pointer-events: none; }
-.scrawl-arrow { width: 64px; height: 48px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .title__actions { position: relative; }
-.scribble--title { left: 120px; top: 50px; rotate: -3deg; align-items: flex-end; }
-.scribble--title .scrawl-arrow { width: 56px; height: 42px; margin-bottom: 4px; }
-.exhibit__figures { position: relative; padding-top: 52px; }
-.scribble--fig { top: -6px; left: var(--sx); rotate: -3deg; }
-.scribble--fig .scrawl-arrow { margin-top: 10px; }
+.exhibit__figures { position: relative; }
 
-/* 8. Hand-drawn marks: underlines under one phrase per head, a circle around the selected numeral, a tick on read notes */
-.scrawl { position: relative; white-space: nowrap; }
-.scrawl::after { content: ""; position: absolute; left: -2%; right: -3%; bottom: -0.16em; height: 0.3em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M2 9 C40 3 90 4 130 6 S180 9 198 4' fill='none' stroke='%238a3b22' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M14 12 C60 8 120 9 170 10' fill='none' stroke='%238a3b22' stroke-width='1.4' stroke-linecap='round' opacity='.6'/%3E%3C/svg%3E") center / 100% 100% no-repeat; clip-path: inset(0 100% 0 0); transition: clip-path 900ms var(--ease-out) 150ms; }
-:root[data-theme="night"] .scrawl::after { filter: brightness(1.9) saturate(0.8); }
-.scrawl.is-in::after { clip-path: inset(0 0 0 0); }
-.scribble path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease-out) 200ms; }
-.scribble path + path { transition-delay: 900ms; }
-.scribble.is-in path { stroke-dashoffset: 0; }
-.scribble { opacity: 0; transition: opacity 500ms var(--ease-out); }
-.scribble.is-in { opacity: 1; }
-html:not(.js) .scribble, html:not(.js) .scrawl::after { opacity: 1; clip-path: none; }
-html:not(.js) .scribble path { stroke-dashoffset: 0; }
-.workspace__marker.is-selected::after { content: ""; position: absolute; inset: -11px -14px -9px -12px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 56'%3E%3Cpath d='M38 5 C20 1 4 12 5 29 C6 46 24 53 39 49 C54 45 58 30 53 18 C49 9 40 5 30 6' fill='none' stroke='%238a3b22' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; pointer-events: none; }
-:root[data-theme="night"] .workspace__marker.is-selected::after { filter: brightness(1.9); }
-
-/* 1 + 9. Observations on ruled paper, as journal entries; a read entry gets a tick */
-/* The sticky stage carries its own paper image through the horizontal exhibit scroll. */
 #exhibits, .exhibit-flow__sticky { background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat; background-size: 32px 32px; }
-.journal .notes__no { position: relative; }
 .journal li { border-bottom: 0; }
 .journal { border-bottom: 1px solid var(--rule); }
-.journal details[open] .notes__no::after { content: "✓"; position: absolute; left: -26px; top: -8px; font-size: 1.5rem; letter-spacing: 0; color: var(--accent); }
 .journal details p { font-size: 1rem; line-height: 2rem; }
 
-/* 10. Contents with dotted leaders and page numbers */
-.contents__title { flex: none; }
-.contents__leader { flex: 1; min-width: 24px; align-self: center; translate: 0 4px; border-bottom: 1px dotted var(--rule-2); }
-.contents__kind { margin-left: 0; }
-.contents__page { width: 3.2em; text-align: right; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
-
-/* 11. Looser placement: plate captions overlap their frames like tags; plates sit off-centre */
-.plate figcaption { position: relative; z-index: 6; width: fit-content; max-width: 92%; margin: -22px 0 0 18px; padding: 10px 14px; background: var(--page); border: 1px solid var(--rule); box-shadow: 2px 2px 0 var(--rule); }
-.plate--interlude figcaption { margin: 0; }
-.plate--loose .plate__frame { justify-self: end; margin-right: 6%; rotate: 1.2deg; }
 .plate--taped { rotate: 1.4deg; position: relative; }
 .plate--taped::before { content: ""; position: absolute; top: -12px; left: 50%; translate: -50% 0; rotate: -4deg; z-index: 3; width: 110px; height: 26px; background: var(--tape); }
 .title__plate { rotate: -0.8deg; }
 
-/* Shorter desktop windows keep the expanded columns within the pinned stage. */
 @media (max-height: 850px) {
   .exhibit-flow.is-pinned .spread { padding: 32px 40px 48px; }
   .exhibit-flow.is-pinned .film__video { max-height: calc(100svh - 460px); }
 }
 
-/* ---------- Responsive ---------- */
 @media (max-width: 60rem) {
   body::after, .exhibit-flow__sticky::before { left: calc(var(--gutter) - 14px); }
   .nav__links a:not(.nav__keep) { display: none; }
   .title { grid-template-columns: 1fr; padding-block: 56px; }
+  .exhibit, .observations, .record, .correspondence { grid-template-columns: 1fr; gap: 36px; }
   .title__plate { justify-self: start; max-width: 240px; }
-  .contents__moth { width: 120px; height: auto; margin-bottom: -4px; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); }
-.contents ol { columns: 1; }
-  .exhibit, .observations, .record, .correspondence, .plate--interlude { grid-template-columns: 1fr; gap: 36px; }
   .snapshot { justify-self: start; max-width: 220px; }
-  .postcard { rotate: 0deg; }
   .spread { padding: 28px 22px 48px; gap: 36px; }
   .spread::after { left: 0; top: auto; height: 0; }
-  .folio--left { left: 22px; } .folio--right { right: 22px; }
-  .marginal.marginal--box { display: none; }
-  .marginal { position: static; display: block; margin-bottom: 6px; font-size: 1.5rem; transform: none; }
-  .scribble--title { display: none; }
-  .plate--loose .plate__frame { justify-self: start; margin-right: 0; }
   .exhibit__figures { grid-row: 2; }
   .exhibit__label { grid-row: 1; }
-  .plate--interlude .plate__frame, .plate--interlude figcaption { grid-column: 1; grid-row: auto; }
-  .plate--interlude .plate__frame { justify-self: start; width: min(100%, 260px); }
   .observations__plate { position: static; max-width: 300px; }
   .record__plate { max-width: 340px; }
   .observations, .record, .correspondence { padding-block: 80px; }
@@ -378,7 +215,6 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 }
 @media (max-width: 40rem) {
   .exhibit-navigation { align-items: flex-end; gap: 12px; }
-  .exhibit-navigation__hint { max-width: 12ch; }
   .exhibit-navigation__controls { gap: 12px; }
   .exhibit-gallery > .exhibit-wrap { flex-basis: calc(100vw - 2 * var(--gutter) - 16px); }
   .nav__inner { gap: 16px; }
@@ -392,16 +228,13 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
   .catalogue td.num { width: auto; }
   .more__gallery { grid-template-columns: 1fr; }
   .more__gallery .mount--phone { max-width: 220px; }
-  .workspace__marker { width: 30px; height: 30px; font-size: 0.8125rem; }
   .footer { flex-direction: column; }
-  .postcard { grid-template-columns: 1fr; }
-  .postcard__message { border-right: 0; border-bottom: 1px solid var(--rule-2); padding: 32px 24px 28px; }
-  .postcard__address { padding: 20px 24px 28px; }
-  .postcard__lines a { flex-direction: column; gap: 2px; }
-  .postmark__waves { display: none; }
-  .postmark { margin-right: -30px; }
-  .scribble--fig { font-size: 1.25rem; left: 4px; }
   .stamp { position: relative; top: 0; right: 0; margin-bottom: 18px; }
-  .pin-tag { display: none; }
-  .contents__kind { display: none; }
 }
+
+.project-note + .project-note { border-top: 1px solid var(--rule); }
+.project-note h4 { margin: 20px 0 12px; font-size: 1rem; font-weight: 400; color: var(--ink); }
+.project-note p { padding-bottom: 18px; }
+.correspondence__body .lead { margin-top: 24px; }
+.correspondence__body .ledger { margin-top: 32px; }
+.snapshot { padding-bottom: 12px; }
