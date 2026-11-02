@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102135925");
-@import url("./base.css?v=20261102135925");
+@import url("./tokens.css?v=20261102141212");
+@import url("./base.css?v=20261102141212");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -202,6 +202,10 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .project__title { position: relative; margin-top: 24px; }
 .poster { font-size: var(--text-poster); line-height: 0.86; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; white-space: nowrap; max-width: none; }
 .project__title .stamp { position: absolute; top: 8%; right: var(--gutter); }
+.project__title .poster { position: relative; z-index: 1; }
+/* An engraved specimen tucked behind the wordmark, like a plate pinned under a title */
+.project__specimen { position: absolute; z-index: 0; right: calc(var(--gutter) - 40px); top: -20px; width: clamp(220px, 26vw, 380px); height: auto; rotate: 10deg; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); pointer-events: none; }
+.project__title:has(.project__specimen) .stamp { top: auto; bottom: -15%; right: auto; left: calc(var(--gutter) + 50%); z-index: 2; }
 .film--lead { position: relative; margin: 0; }
 .film--lead .film__video { width: 100%; }
 .scribble { position: absolute; z-index: 2; top: -44px; right: 8%; display: inline-flex; align-items: flex-start; gap: 4px; font-family: "Caveat", cursive; font-size: 1.75rem; line-height: 1; color: var(--accent); pointer-events: none; rotate: -3deg; }
@@ -267,7 +271,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .hero__foot { grid-template-columns: 1fr; gap: 28px; margin-top: 48px; }
   .project__head { flex-direction: column; gap: 12px; }
   .project__dek { text-align: left; }
-  .project__title .stamp { position: relative; top: 0; right: 0; margin-top: 20px; display: inline-flex; }
+  .project__title .stamp, .project__title:has(.project__specimen) .stamp { position: relative; top: 0; bottom: auto; right: 0; margin-top: 20px; display: inline-flex; }
+  .project__specimen { top: -40px; right: 0; width: 200px; opacity: 0.9; }
   .project__intro, .project__feature { grid-template-columns: 1fr; gap: 56px; }
   .project__feature { margin-top: 88px; }
   .project__story { padding-top: 0; gap: 48px; }
