@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Newsreader light for heads and body, Courier Prime for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=202611012138");
-@import url("./base.css?v=202611012138");
+@import url("./tokens.css?v=202611012141");
+@import url("./base.css?v=202611012141");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -40,6 +40,7 @@ p.label { margin-bottom: var(--space-md); }
 .nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); }
 .nav__inner { display: flex; align-items: center; gap: 40px; height: 64px; }
 .wordmark { font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+.wordmark img { display: block; height: 40px; width: auto; translate: 0 3px; filter: var(--plate-filter); }
 .nav__links { display: flex; gap: 28px; margin-left: auto; }
 .nav__links a { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; }
 .nav__links a:hover { color: var(--accent); }
@@ -269,7 +270,7 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 .contents__page { width: 3.2em; text-align: right; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
 
 /* 11. Looser placement: plate captions overlap their frames like tags; plates sit off-centre */
-.plate figcaption { position: relative; z-index: 1; width: fit-content; max-width: 92%; margin: -22px 0 0 18px; padding: 10px 14px; background: var(--page); border: 1px solid var(--rule); box-shadow: 2px 2px 0 var(--rule); }
+.plate figcaption { position: relative; z-index: 6; width: fit-content; max-width: 92%; margin: -22px 0 0 18px; padding: 10px 14px; background: var(--page); border: 1px solid var(--rule); box-shadow: 2px 2px 0 var(--rule); }
 .plate--interlude figcaption { margin: 0; }
 .plate--loose .plate__frame { justify-self: end; margin-right: 6%; rotate: 1.2deg; }
 .plate--taped { rotate: 1.4deg; position: relative; }
@@ -302,6 +303,7 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 }
 @media (max-width: 40rem) {
   .nav__inner { gap: 16px; }
+  .wordmark img { height: 30px; translate: 0 2px; }
   .nav__links { gap: 16px; }
   .title h1 { font-size: clamp(2.75rem, 13vw, 4rem); }
   .notes summary { grid-template-columns: 1fr; gap: 4px; }
