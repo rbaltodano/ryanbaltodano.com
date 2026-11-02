@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Libre Baskerville regular for heads and body, Courier Prime for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=20261102115005");
-@import url("./base.css?v=20261102115005");
+@import url("./tokens.css?v=20261102115355");
+@import url("./base.css?v=20261102115355");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -319,7 +319,8 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 :root[data-theme="night"] .workspace__marker.is-selected::after { filter: brightness(1.9); }
 
 /* 1 + 9. Observations on ruled paper, as journal entries; a read entry gets a tick */
-#exhibits { background-color: var(--paper-2); background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--ruling) 31px 32px); background-attachment: scroll; }
+/* The sticky stage carries its own paper image through the horizontal exhibit scroll. */
+#exhibits, .exhibit-flow__sticky { background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat; background-size: 32px 32px; }
 .journal .notes__no { position: relative; }
 .journal li { border-bottom: 0; }
 .journal { border-bottom: 1px solid var(--rule); }

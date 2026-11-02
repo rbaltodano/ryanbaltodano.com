@@ -27,6 +27,7 @@
   --tape: rgba(214, 198, 160, 0.62);
   --margin-line: rgba(168, 62, 44, 0.42);
   --ruling: rgba(70, 96, 130, 0.13);
+  --ruling-image: url("../assets/img/exhibit-ruling-day.svg");
   --dot: rgba(46, 33, 23, 0.16);
   --fold: rgba(46, 33, 23, 0.11);
 
@@ -63,6 +64,7 @@
   --tape: rgba(200, 186, 150, 0.2);
   --margin-line: rgba(208, 120, 92, 0.35);
   --ruling: rgba(150, 175, 210, 0.08);
+  --ruling-image: url("../assets/img/exhibit-ruling-night.svg");
   --dot: rgba(228, 220, 203, 0.12);
   --fold: rgba(0, 0, 0, 0.45);
 }
