@@ -97,3 +97,7 @@ ink; all skipped under reduced motion.
 ### Trails, revised
 
 Each dotted trail draws in once, right to left (the trail into inVectus runs left to right), the first time it enters the viewport (a 1.6s clip-path wipe), then stays static. No idle marching. Reduced motion shows them fully drawn.
+
+### Experience on ruled paper
+
+The Experience section reuses the old exhibit stage ground: full-bleed paper-2 with 32px blue ruling (`--ruling-image`), hairlines top and bottom.

@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102163620");
-@import url("./base.css?v=20261102163620");
+@import url("./tokens.css?v=20261102181643");
+@import url("./base.css?v=20261102181643");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -344,3 +344,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 /* Icons: one inline SVG set, so arrows never fall back to colour emoji on phones */
 .icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .icon { display: inline-block; width: 0.8em; height: 0.8em; vertical-align: -0.05em; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+
+/* Experience sits on ruled notebook paper, like the old exhibit stage */
+html { overflow-x: clip; }
+.record { position: relative; isolation: isolate; }
+.record::before { content: ""; position: absolute; z-index: -1; inset: 0 calc(50% - 50vw); background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat-y; background-size: 100% 32px; border-block: 1px solid var(--rule); }
