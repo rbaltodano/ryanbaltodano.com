@@ -105,3 +105,4 @@ The Experience section reuses the old exhibit stage ground: full-bleed paper-2 w
 ### Experience layout
 
 Heading and the shells plate stack in the left column (4fr); the intro, roles, education and tools read down the right (8fr). Phones stack heading, plate, then content.
+On desktop the left column (heading + plate) is sticky at 112px while the right column scrolls; phones leave it static.

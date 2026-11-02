@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102181849");
-@import url("./base.css?v=20261102181849");
+@import url("./tokens.css?v=20261102182035");
+@import url("./base.css?v=20261102182035");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -359,4 +359,11 @@ html { overflow-x: clip; }
   .record__plate { margin-bottom: 40px; }
   .record__head, .record__plate, .record__body { grid-column: 1; grid-row: auto; }
   .record__body { padding-top: 0; }
+}
+/* The heading and plate hold still while the record scrolls past */
+.record { grid-template-rows: auto; }
+.record__aside { grid-column: 1; grid-row: 1; position: sticky; top: 112px; }
+.record__body { grid-row: 1; }
+@media (max-width: 60rem) {
+  .record__aside { position: static; }
 }
