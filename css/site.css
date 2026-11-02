@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102123108");
-@import url("./base.css?v=20261102123108");
+@import url("./tokens.css?v=20261102123606");
+@import url("./base.css?v=20261102123606");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -183,7 +183,7 @@ body::after { position: fixed; z-index: 7; }
 .title__actions { position: relative; }
 .exhibit__figures { position: relative; }
 
-#exhibits, .exhibit-flow__sticky { background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat; background-size: 32px 32px; }
+#exhibits, .exhibit-flow__sticky { background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat-y; background-size: 100% 32px; }
 .journal li { border-bottom: 0; }
 .journal { border-bottom: 1px solid var(--rule); }
 .journal details p { font-size: 1rem; line-height: 2rem; }
