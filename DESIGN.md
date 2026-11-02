@@ -13,7 +13,9 @@ Courier Prime, engraved illustrations, notebook spreads, and the ruled Exhibits
 background. Night mode uses the same layout with shared color tokens.
 
 - One navigation: Exhibits, Experience, Contact.
-- The opening contains Ryan’s name, what he does, a work link, and email, with Ryan’s headshot.
+- The opening contains Ryan’s name, what he does, a work link, and email, with Ryan’s headshot. The portrait sits closer to the name and
+  lower in the composition, with one small moth engraving tucked behind its edge.
+  A fine horizontal rule connects the hero; email is visually secondary to View work.
 - Exhibits have two equal-height spreads, up to 1480px wide, 550px apart.
 - Normal desktop page scrolling drives the pinned horizontal gallery. It releases
   into Experience after the second project. No wheel interception or scroll lock.

@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102125156");
-@import url("./base.css?v=20261102125156");
+@import url("./tokens.css?v=20261102125559");
+@import url("./base.css?v=20261102125559");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -53,14 +53,18 @@ p.label { margin-bottom: var(--space-md); }
 .mount > img { border: 1px solid var(--rule-2); background: var(--paper-2); padding: 8px; }
 .mount > img { display: block; width: 100%; height: auto; }
 
-.title { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--gap-columns) 64px; align-items: center; padding-block: 88px 72px; }
+.title { position: relative; display: grid; grid-template-columns: minmax(0, 600px) minmax(0, 320px); gap: 40px; align-items: start; padding-block: 56px 40px; }
+.title::before { content: ""; position: absolute; left: var(--gutter); right: var(--gutter); bottom: 112px; border-top: 1px solid var(--rule); pointer-events: none; }
+.title__text { position: relative; z-index: 1; padding-top: 24px; }
 .title h1 { font-size: var(--text-display); line-height: 1.05; letter-spacing: -0.025em; max-width: none; }
-.title .lead { margin-top: 40px; max-width: 46ch; color: var(--ink-2); }
-.title__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; margin-top: 36px; }
+.title .lead { margin-top: 24px; max-width: 46ch; color: var(--ink-2); }
+.title__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; margin-top: 28px; }
+.title__actions .text-link { color: var(--muted); border-color: transparent; }
+.title__actions .text-link:hover { color: var(--ink); border-color: var(--rule-2); }
 
 .section-head { padding-block: 0 56px; }
 .section-head h2 { max-width: 24ch; }
-#exhibits { padding-top: 112px; border-top: 1px solid var(--rule); }
+#exhibits { padding-top: 72px; border-top: 1px solid var(--rule); }
 
 .exhibit-wrap { padding-bottom: 0; scroll-margin-top: 80px; }
 .exhibit-gallery {
@@ -146,7 +150,8 @@ p.label { margin-bottom: var(--space-md); }
 .film figcaption .label { margin-right: 0.6em; color: var(--accent); }
 
 .snapshot { position: relative; margin: 0; padding: 12px 12px 0; background: var(--page); border: 1px solid var(--rule); box-shadow: 0 10px 24px -14px rgba(46, 33, 23, 0.45); rotate: -3deg; max-width: 300px; justify-self: end; }
-.title__portrait { width: 100%; max-width: 300px; }
+.title__portrait { width: 100%; max-width: 320px; margin-top: 64px; z-index: 1; }
+.title__portrait .title__moth { position: absolute; z-index: -1; right: -68px; bottom: 20px; width: 144px; height: auto; rotate: 18deg; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); pointer-events: none; }
 .snapshot img { display: block; width: 100%; height: auto; filter: var(--photo-filter); }
 .snapshot::before { content: ""; position: absolute; z-index: 2; top: -13px; left: 50%; translate: -50% 0; rotate: 4deg; width: 110px; height: 26px; background: var(--tape); }
 body::after, .exhibit-flow__sticky::before { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(--container)) / 2) + var(--gutter) - 24px); width: 4px; border-inline: 1px solid var(--margin-line); pointer-events: none; }
@@ -184,7 +189,10 @@ body::after { position: fixed; z-index: 7; }
 @media (max-width: 60rem) {
   body::after, .exhibit-flow__sticky::before { left: calc(var(--gutter) - 14px); }
   .nav__links a:not(.nav__keep) { display: none; }
-  .title { grid-template-columns: 1fr; padding-block: 56px; }
+  .title { grid-template-columns: minmax(0, 1fr) 240px; gap: 32px; padding-block: 48px 40px; }
+  .title__text { padding-top: 0; }
+  .title__portrait { margin-top: 48px; }
+  .title__portrait .title__moth { width: 112px; right: -20px; }
   .exhibit, .record, .correspondence { grid-template-columns: 1fr; gap: 36px; }
   .snapshot { justify-self: start; max-width: 220px; }
   .spread { padding: 28px 22px 48px; gap: 36px; }
@@ -198,6 +206,10 @@ body::after { position: fixed; z-index: 7; }
   .exhibit-navigation { align-items: flex-end; gap: 12px; }
   .exhibit-navigation__controls { gap: 12px; }
   .exhibit-gallery > .exhibit-wrap { flex-basis: calc(100vw - 2 * var(--gutter) - 16px); }
+  .title { grid-template-columns: 1fr; gap: 40px; }
+  .title::before { bottom: 104px; }
+  .title__portrait { margin-top: 0; }
+  .title__portrait .title__moth { width: 112px; right: -44px; }
   .nav__inner { gap: 16px; }
   .wordmark img { height: 30px; translate: 0 2px; }
   .nav__links { gap: 16px; }
