@@ -13,7 +13,7 @@ Courier Prime, engraved illustrations, notebook spreads, and the ruled Exhibits
 background. Night mode uses the same layout with shared color tokens.
 
 - One navigation: Exhibits, Experience, Contact.
-- The opening contains Ryan’s name, what he does, a work link, and email, with Ryan’s headshot. The portrait sits closer to the name and
+- The opening contains Ryan’s name, background, approach, work link, and email, with Ryan’s headshot. The portrait sits closer to the name and
   lower in the composition, with one small moth engraving tucked behind its edge.
   A fine horizontal rule connects the hero; email is visually secondary to View work.
 - Exhibits have two equal-height spreads, up to 1480px wide, 550px apart.
@@ -23,9 +23,12 @@ background. Night mode uses the same layout with shared color tokens.
 - Small/short viewports and reduced motion use native horizontal scrolling.
 - Design notes and additional screens use native HTML details. Expanding them
   releases the pin so the entire content remains readable.
-- Observations live in each project’s Design notes, without a separate section.
+- Each project has a visible workflow overview and a design decision beside its
+  capture. Deeper ownership, implementation, and evaluation details stay in Design
+  notes. Observations have no separate section.
 - Exhibit cards use plain paper without a dot grid. Experience contains actual
-  employment and tools. Contact contains email, GitHub, and résumé.
+  employment responsibilities, education, and tools grouped by use. Contact contains
+  email, GitHub, and résumé.
 - Keep useful product status, platform, technology, and screenshot descriptions.
   Avoid taglines, helper text, repeated section labels, and decorative numbering.
 
@@ -60,3 +63,6 @@ Use only four shared size tokens. Do not add component-specific font sizes.
 | Metadata: navigation, buttons, labels, dates, status, sources, footer | 12px | 12px |
 
 Libre Baskerville remains the content face; Courier Prime marks metadata.
+
+Content is grounded in the current résumé, Angrove case study, and inVectus README.
+Do not add unverified outcomes, user counts, or performance claims.
