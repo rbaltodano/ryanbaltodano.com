@@ -12,17 +12,18 @@ Keep the scholarly field-guide character through ivory paper, Libre Baskerville,
 Courier Prime, engraved illustrations, notebook spreads, and the ruled Exhibits
 background. Night mode uses the same layout with shared color tokens.
 
-- One navigation: Exhibits, Observations, Experience, Contact.
-- The opening contains Ryan’s name, what he does, a work link, and email.
+- One navigation: Exhibits, Experience, Contact.
+- The opening contains Ryan’s name, what he does, a work link, and email, with Ryan’s headshot.
 - Exhibits have two equal-height spreads, up to 1480px wide, 550px apart.
 - Normal desktop page scrolling drives the pinned horizontal gallery. It releases
-  into Observations after the second project. No wheel interception or scroll lock.
+  into Experience after the second project. No wheel interception or scroll lock.
 - Ruled lines stay stationary. Cards sit above the margin line.
 - Small/short viewports and reduced motion use native horizontal scrolling.
 - Design notes and additional screens use native HTML details. Expanding them
   releases the pin so the entire content remains readable.
-- Observations uses the standard page background. Experience contains actual
-  employment and tools. Contact contains email, GitHub, résumé, and a portrait.
+- Observations live in each project’s Design notes, without a separate section.
+- Exhibit cards use plain paper without a dot grid. Experience contains actual
+  employment and tools. Contact contains email, GitHub, and résumé.
 - Keep useful product status, platform, technology, and screenshot descriptions.
   Avoid taglines, helper text, repeated section labels, and decorative numbering.
 
