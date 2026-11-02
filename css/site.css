@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102134843");
-@import url("./base.css?v=20261102134843");
+@import url("./tokens.css?v=20261102135925");
+@import url("./base.css?v=20261102135925");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -317,6 +317,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .contact__facts > div { padding-top: 16px; border-top: 1px solid var(--rule); }
 .contact__facts dt { font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 .contact__facts dd { margin: 0; color: var(--ink); }
+.contact__note { display: block; margin-top: 4px; color: var(--ink-2); }
 .contact__dot { display: inline-block; width: 8px; height: 8px; margin-right: 10px; border-radius: 50%; background: var(--accent); vertical-align: 0.1em; box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent); }
 @media (prefers-reduced-motion: no-preference) { .contact__dot { animation: dot-pulse 2.4s ease-out infinite; } }
 @keyframes dot-pulse { 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
