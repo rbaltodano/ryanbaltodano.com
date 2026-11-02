@@ -2,8 +2,8 @@
  * ground: ivory plate (#ece5d6) with a night reading room toggle · ink: sepia · accent: oxblood, under 3% of a screen
  * type: Libre Baskerville regular for heads and body, Courier Prime for plate and figure labels
  * signature: engraved plates with numbered captions, wall labels beside mounted product figures, a contents page */
-@import url("./tokens.css?v=20261102120005");
-@import url("./base.css?v=20261102120005");
+@import url("./tokens.css?v=20261102120229");
+@import url("./base.css?v=20261102120229");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-md); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -112,7 +112,7 @@ p.label { margin-bottom: var(--space-md); }
 .exhibit-navigation__button:disabled { opacity: 0.35; cursor: default; }
 #exhibits { padding-bottom: 48px; }
 .exhibit-flow { position: relative; }
-.exhibit-flow__sticky { position: relative; z-index: 6; }
+.exhibit-flow__sticky { position: relative; z-index: 8; }
 .exhibit-flow.is-pinned .exhibit-flow__sticky { position: sticky; top: 64px; }
 .exhibit-flow.is-pinned .exhibit-gallery { overflow-x: hidden; scroll-snap-type: none; padding-bottom: 16px; }
 .exhibit-flow.is-pinned .exhibit-navigation { padding-top: 20px; }
@@ -254,7 +254,9 @@ p.label { margin-bottom: var(--space-md); }
 .scribble, .pin-tag, .marginal, .journal .notes__no::after { font-family: "Caveat", "Bradley Hand", cursive; font-weight: 500; }
 
 /* 2. A red double margin line down the left edge of the page, with section numbers in the margin */
-body::after { content: ""; position: fixed; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(--container)) / 2) + var(--gutter) - 24px); width: 4px; border-inline: 1px solid var(--margin-line); pointer-events: none; z-index: 7; }
+body::after, .exhibit-flow__sticky::before { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(--container)) / 2) + var(--gutter) - 24px); width: 4px; border-inline: 1px solid var(--margin-line); pointer-events: none; }
+body::after { position: fixed; z-index: 7; }
+.exhibit-flow__sticky::before { position: absolute; z-index: 0; }
 .section-head, .correspondence__body, .observations, .correspondence { position: relative; }
 .marginal.marginal--box { top: 104px; }
 .marginal { position: absolute; top: -10px; left: 12px; font-size: 1.5rem; line-height: 1; color: var(--accent); white-space: nowrap; transform: rotate(-4deg); }
@@ -262,7 +264,7 @@ body::after { content: ""; position: fixed; top: 0; bottom: 0; left: calc(max(0p
 .record .marginal { left: calc(12px - var(--gutter)); }
 
 /* 3. Exhibits as an open notebook: two pages, a fold, stacked page edges, folios */
-.spread { position: relative; isolation: isolate; gap: 72px; padding: 48px; background: var(--page); border: 1px solid var(--rule); box-shadow: 3px 3px 0 -1px var(--page), 3px 3px 0 0 var(--rule), 6px 6px 0 -1px var(--page), 6px 6px 0 0 var(--rule); }
+.spread { position: relative; z-index: 1; isolation: isolate; gap: 72px; padding: 48px; background: var(--page); border: 1px solid var(--rule); box-shadow: 3px 3px 0 -1px var(--page), 3px 3px 0 0 var(--rule), 6px 6px 0 -1px var(--page), 6px 6px 0 0 var(--rule); }
 /* 1. The right-hand page is dot-grid paper */
 .spread::after { content: ""; position: absolute; top: 0; bottom: 0; right: 0; left: calc(48px + (100% - 168px) * 5 / 12 + 36px); background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.4px); background-size: 22px 22px; background-position: 11px 11px; z-index: -2; pointer-events: none; }
 .spread .exhibit__label { border-top: 0; padding-top: 20px; position: relative; }
@@ -349,7 +351,7 @@ html:not(.js) .scribble path { stroke-dashoffset: 0; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 60rem) {
-  body::after { left: calc(var(--gutter) - 14px); }
+  body::after, .exhibit-flow__sticky::before { left: calc(var(--gutter) - 14px); }
   .nav__links a:not(.nav__keep) { display: none; }
   .title { grid-template-columns: 1fr; padding-block: 56px; }
   .title__plate { justify-self: start; max-width: 240px; }
