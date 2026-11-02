@@ -44,3 +44,16 @@ Check desktop and phone widths, equal card heights, the 550px gap, pinned scroll
 and release, project hashes, previous/next and keyboard controls, native details,
 themes, reduced motion, and usable content without JavaScript. Check local links
 and browser errors. Bump CSS/JS cache queries when publishing.
+
+## Typography
+
+Use only four shared size tokens. Do not add component-specific font sizes.
+
+| Role | Desktop | Phone (640px and below) |
+|---|---:|---:|
+| Display: Ryan’s name | 56px | 40px |
+| Heading: sections and projects | 32px | 28px |
+| Body: descriptions, notes, links, captions, company names, tools | 16px | 16px |
+| Metadata: navigation, buttons, labels, dates, status, sources, footer | 12px | 12px |
+
+Libre Baskerville remains the content face; Courier Prime marks metadata.
