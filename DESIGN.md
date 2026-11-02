@@ -101,3 +101,7 @@ Each dotted trail draws in once, right to left (the trail into inVectus runs lef
 ### Experience on ruled paper
 
 The Experience section reuses the old exhibit stage ground: full-bleed paper-2 with 32px blue ruling (`--ruling-image`), hairlines top and bottom.
+
+### Experience layout
+
+Heading and the shells plate stack in the left column (4fr); the intro, roles, education and tools read down the right (8fr). Phones stack heading, plate, then content.

@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102181643");
-@import url("./base.css?v=20261102181643");
+@import url("./tokens.css?v=20261102181849");
+@import url("./base.css?v=20261102181849");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -349,3 +349,14 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 html { overflow-x: clip; }
 .record { position: relative; isolation: isolate; }
 .record::before { content: ""; position: absolute; z-index: -1; inset: 0 calc(50% - 50vw); background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat-y; background-size: 100% 32px; border-block: 1px solid var(--rule); }
+/* Heading and shells plate on the left; the record reads down the right */
+.record { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); grid-template-rows: auto 1fr; column-gap: 72px; row-gap: 0; }
+.record__head { grid-column: 1; grid-row: 1; }
+.record__plate { grid-column: 1; grid-row: 2; padding-top: 0; }
+.record__body { grid-column: 2; grid-row: 1 / span 2; padding-top: 12px; }
+@media (max-width: 60rem) {
+  .record { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 0; }
+  .record__plate { margin-bottom: 40px; }
+  .record__head, .record__plate, .record__body { grid-column: 1; grid-row: auto; }
+  .record__body { padding-top: 0; }
+}
