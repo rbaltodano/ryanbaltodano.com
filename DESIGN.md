@@ -109,4 +109,12 @@ On desktop the left column (heading + plate) is sticky at 112px while the right 
 
 ### Desk objects
 
-Photoreal objects (Midjourney, cut out) sit on the page as if left on a desk: paperclip on the hero portrait, fern at the end of Angrove, drafting compass at the end of inVectus, washi tape and a brass ruler on the Experience plate, key, postage stamp and wax seal in Contact. Originals live in `assets/desk/src/` (git-ignored); web copies are resampled to 2x display size. All are `aria-hidden`, non-interactive, dimmed at night, and hidden on phones except the ruler and tape.
+Objects are spaced through the page: paperclip on the portrait, postage stamp on
+the opening trail, ruler between Angrove’s feature and notes, fern after Angrove,
+compass before inVectus’s workflow, key after inVectus, tape on the Experience
+plate, and wax seal in the footer. Tall objects have their own space in the flow
+so they cannot cover text or captures. Size them consistently: a 30cm ruler is
+about 500px wide; paperclip 56px, fern 160px wide, compass 180px, key 110px,
+postage stamp 56px, wax seal 60px, tape 104px. No CSS drop shadows on desk objects.
+Night mode dims them. Phones keep only the ruler and tape. Originals remain in
+`assets/desk/src/` (git-ignored); web copies are in `assets/desk/`.

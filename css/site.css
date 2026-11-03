@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102185907");
-@import url("./base.css?v=20261102185907");
+@import url("./tokens.css?v=20261102191214");
+@import url("./base.css?v=20261102191214");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -368,21 +368,32 @@ html { overflow-x: clip; }
   .record__aside { position: static; }
 }
 
-/* Desk objects: real things left on the notebook. Decorative, never over text, hidden on phones. */
-.desk { position: absolute; z-index: 4; height: auto; pointer-events: none; user-select: none; filter: drop-shadow(0 10px 12px rgba(46, 33, 23, 0.22)) drop-shadow(0 1px 1px rgba(46, 33, 23, 0.25)); }
-:root[data-theme="night"] .desk { filter: brightness(0.82) drop-shadow(0 10px 14px rgba(0, 0, 0, 0.55)); }
-.hero__portrait .desk--paperclip { width: 72px; top: -22px; left: 22px; rotate: 94deg; filter: drop-shadow(0 4px 4px rgba(46, 33, 23, 0.25)); }
+/* Desk objects share a physical scale: a 30cm ruler is about 500px wide.
+   Dedicated rests keep the taller objects clear of content. */
+.desk { position: absolute; z-index: 4; height: auto; pointer-events: none; user-select: none; filter: none; }
+:root[data-theme="night"] .desk { filter: brightness(0.82); }
+.hero__portrait .desk--paperclip { width: 56px; top: -18px; left: 22px; rotate: 94deg; filter: none; }
 .hero__portrait::before { display: none; }
-.desk--fern { width: 150px; right: -34px; bottom: 30px; rotate: -16deg; }
-.desk--compass { width: 120px; left: 8px; bottom: -70px; rotate: 22deg; }
-.desk--ruler { position: relative; display: block; width: 100%; max-width: 380px; margin: 56px 0 0 -6px; rotate: -2.5deg; }
-.record__plate.plate--taped::before { width: 150px; height: 33px; background: url("../assets/desk/washi-tape.png") center / 100% 100% no-repeat; rotate: -3deg; filter: drop-shadow(0 1px 1px rgba(46, 33, 23, 0.2)); }
-.contact { overflow: visible; }
-.desk--stamp { width: 104px; right: calc(var(--gutter) + 120px); bottom: -170px; rotate: 7deg; }
-.desk--wax-seal { width: 96px; right: calc(var(--gutter) + 60px); bottom: -188px; rotate: -10deg; z-index: 5; }
-.desk--key { width: 190px; left: var(--gutter); bottom: -130px; rotate: -8deg; }
+.desk-rest { display: flex; align-items: center; padding-block: 32px; margin-top: 48px; }
+.desk-rest .desk { position: static; flex: none; }
+.desk-rest--ruler { justify-content: flex-end; }
+.desk--ruler { display: block; width: min(100%, 500px); rotate: -3deg; }
+.desk-rest--ruler + .project__notes { margin-top: 64px; }
+.desk-rest--fern { justify-content: flex-end; padding-block: 40px; }
+.desk--fern { width: 160px; rotate: -12deg; }
+.desk-rest--compass { justify-content: flex-start; padding-left: calc(var(--gutter) + 56px); }
+.desk--compass { width: 180px; rotate: 18deg; }
+.desk-rest--compass + .project__steps { margin-top: 48px; }
+.desk-rest--key { justify-content: center; }
+.desk--key { width: 110px; rotate: -12deg; }
+.project:has(> .desk-rest:last-child) { padding-bottom: 64px; }
+.record__plate.plate--taped::before { width: 104px; height: 23px; background: url("../assets/desk/washi-tape.png") center / 100% 100% no-repeat; rotate: -3deg; filter: none; }
+.desk--stamp { width: 56px; left: 58%; top: 40%; rotate: 9deg; }
+.footer { align-items: center; }
+.footer .desk--wax-seal { position: static; flex: none; width: 60px; rotate: -8deg; }
 @media (max-width: 60rem) {
-  .desk:not(.desk--ruler) { display: none; }
+  .desk:not(.desk--ruler), .desk-rest:not(.desk-rest--ruler) { display: none; }
   .hero__portrait::before { display: block; }
+  .desk-rest--ruler { margin-top: 48px; padding-block: 24px; }
   .desk--ruler { max-width: 300px; }
 }
