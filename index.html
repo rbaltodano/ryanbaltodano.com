@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261102194005">
+  <link rel="stylesheet" href="css/site.css?v=20261102194950">
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -48,9 +48,9 @@
   <main id="top">
     <section class="container hero">
       <p class="label hero__kicker" data-rise>Designer &amp; developer <span>·</span> Tampa, Florida</p>
-      <h1 class="statement" aria-label="Careful software for curious people.">
-        <span class="statement__line" aria-hidden="true"><span data-rise>Careful software</span></span>
-        <span class="statement__line" aria-hidden="true"><span data-rise>for <em class="scrawl">curious</em> people.</span></span>
+      <h1 class="statement" aria-label="Careful software for curious people." data-ink>
+        <span class="statement__line" aria-hidden="true"><span>Careful software</span></span>
+        <span class="statement__line" aria-hidden="true"><span>for <em class="scrawl">curious</em> people.</span></span>
       </h1>
       <figure class="snapshot hero__portrait" data-settle>
         <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125" fetchpriority="high">
@@ -80,7 +80,7 @@
           <div class="project__dek"><p>A private study app for philosophy and theology. Conversations, notes, and saved ideas stay together on iPhone and Mac.</p><a class="project__visit" href="https://angrove.app">Visit angrove.app <span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></span></a></div>
         </header>
         <div class="container project__title">
-          <h2 id="title-angrove" class="poster" data-reveal>Angrove</h2>
+          <h2 id="title-angrove" class="poster" data-ink>Angrove</h2>
           <p class="stamp" data-stamp aria-label="Status: public beta on iPhone">Public beta<small>on iPhone</small></p>
         </div>
 
@@ -95,7 +95,7 @@
 
           <div class="project__story">
           <div class="project__about">
-            <h3 class="project__kicker">The project</h3>
+            <h3 class="project__kicker" data-ink>The project</h3>
             <p>I design and build Angrove to give a study session somewhere to continue after the conversation ends. Source-backed answers lead to definitions you can save as Insights and revisit in a map. On Mac, Boards bring conversations, writing, and images into one workspace.</p>
             <dl class="specimen">
               <div><dt>Platform</dt><dd>iPhone &amp; Mac</dd></div>
@@ -113,7 +113,7 @@
         </div>
 
         <section class="container project__steps" aria-labelledby="steps-angrove">
-          <h3 id="steps-angrove" class="project__kicker">How a study session works</h3>
+          <h3 id="steps-angrove" class="project__kicker" data-ink>How a study session works</h3>
           <ol class="steps steps--phone">
             <li data-settle><figure><img src="assets/img/angrove/home.jpg" alt="Angrove Home with activity, saved Insights, and a Question of the Day." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">01</span><b>Start from Home.</b> Recent activity, saved Insights, and a Question of the Day.</figcaption></figure></li>
             <li data-settle><figure><img src="assets/img/angrove/conversation-nature-of-evil.jpg" alt="Nature of Evil conversation with expanded Corpus Grounded details and Summa Theologica source links." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">02</span><b>Ask with sources.</b> Answers show the passages they draw on, such as the Summa Theologica.</figcaption></figure></li>
@@ -128,7 +128,7 @@
             <figcaption><span class="label">Fig. 2</span> Typing /heading in a Board’s notes adds a heading above them.</figcaption>
           </figure>
           <div class="project__aside">
-            <h3 class="project__kicker">Room for a visual reference</h3>
+            <h3 class="project__kicker" data-ink>Room for a visual reference</h3>
             <p>An image shares the workspace with the writing. A Board can hold more than a sequence of chat messages, so an argument can take a shape on the page.</p>
           </div>
         </div>
@@ -138,11 +138,11 @@
         </div>
 
         <section class="container project__notes" aria-labelledby="notes-angrove">
-          <h3 id="notes-angrove" class="project__kicker">Design notes</h3>
+          <h3 id="notes-angrove" class="project__kicker" data-ink>Design notes</h3>
           <div class="notes-grid">
-            <div class="project-note"><h4>From design to implementation</h4><p>I own the product direction, visual and interaction design, and SwiftUI implementation, including the connections between the interface, local AI, and saved work.</p></div>
-            <div class="project-note"><h4>Keep the way back within reach</h4><p>Boards, conversations, the library, and study topics share one sidebar. Moving between kinds of work should never feel like leaving the room.</p></div>
-            <div class="project-note"><h4>Test the default before choosing it</h4><p>Before choosing Angrove’s reasoning default, I ran an 80-case evaluation. Both settings passed 74 of 80 cases, while reasoning roughly doubled latency, so I kept it off by default. This was a development configuration test, not a general accuracy claim.</p></div>
+            <div class="project-note"><h4 data-ink>From design to implementation</h4><p>I own the product direction, visual and interaction design, and SwiftUI implementation, including the connections between the interface, local AI, and saved work.</p></div>
+            <div class="project-note"><h4 data-ink>Keep the way back within reach</h4><p>Boards, conversations, the library, and study topics share one sidebar. Moving between kinds of work should never feel like leaving the room.</p></div>
+            <div class="project-note"><h4 data-ink>Test the default before choosing it</h4><p>Before choosing Angrove’s reasoning default, I ran an 80-case evaluation. Both settings passed 74 of 80 cases, while reasoning roughly doubled latency, so I kept it off by default. This was a development configuration test, not a general accuracy claim.</p></div>
           </div>
         </section>
       </article>
@@ -156,7 +156,7 @@
           <p class="project__dek">A local-first research tool for Mac. Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p>
         </header>
         <div class="container project__title">
-          <h2 id="title-invectus" class="poster" data-reveal>inVectus</h2>
+          <h2 id="title-invectus" class="poster" data-ink>inVectus</h2>
           <p class="stamp" data-stamp aria-label="Status: in development">In development</p>
         </div>
 
@@ -171,7 +171,7 @@
 
           <div class="project__story">
           <div class="project__about">
-            <h3 class="project__kicker">The project</h3>
+            <h3 class="project__kicker" data-ink>The project</h3>
             <p>I’m building inVectus to help researchers explore a document collection and decide what to investigate next. Import a collection, search by meaning, or browse potential gaps on a map. Each candidate opens beside its supporting papers and score breakdown.</p>
             <dl class="specimen">
               <div><dt>Platform</dt><dd>Mac</dd></div>
@@ -190,7 +190,7 @@
 
 
         <section class="container project__steps" aria-labelledby="steps-invectus">
-          <h3 id="steps-invectus" class="project__kicker">A typical workflow</h3>
+          <h3 id="steps-invectus" class="project__kicker" data-ink>A typical workflow</h3>
           <ol class="steps steps--desktop">
             <li data-settle><figure><img src="assets/img/invectus/collections.jpg" alt="The indexed medical collection, with role counts and calibration details." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">01</span><b>Import a collection.</b> Check that it’s indexed, with role counts and calibration details.</figcaption></figure></li>
             <li data-settle><figure><img src="assets/img/invectus/search.jpg" alt="Semantic search with supporting medical-paper matches." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">02</span><b>Search by meaning.</b> Compare an idea with the collection and inspect the nearest papers.</figcaption></figure></li>
@@ -200,11 +200,11 @@
         </section>
 
         <section class="container project__notes" aria-labelledby="notes-invectus">
-          <h3 id="notes-invectus" class="project__kicker">Design notes</h3>
+          <h3 id="notes-invectus" class="project__kicker" data-ink>Design notes</h3>
           <div class="notes-grid">
-            <div class="project-note"><h4>One local workspace</h4><p>I design and build the desktop interface and its connection to a shared Rust engine. Search and indexing run locally, with resumable jobs and cancellation.</p></div>
-            <div class="project-note"><h4>Keep a decision, not just a bookmark</h4><p>Saving a gap and reviewing it are different actions. A persistent decision log keeps the evidence, notes, and review decisions available after rescanning the collection.</p></div>
-            <div class="project-note"><h4>A claim should name its scope</h4><p>“A gap in this collection” and “a novel idea” mean different things. The flag describes coverage within this collection; it does not establish that an idea is globally novel.</p></div>
+            <div class="project-note"><h4 data-ink>One local workspace</h4><p>I design and build the desktop interface and its connection to a shared Rust engine. Search and indexing run locally, with resumable jobs and cancellation.</p></div>
+            <div class="project-note"><h4 data-ink>Keep a decision, not just a bookmark</h4><p>Saving a gap and reviewing it are different actions. A persistent decision log keeps the evidence, notes, and review decisions available after rescanning the collection.</p></div>
+            <div class="project-note"><h4 data-ink>A claim should name its scope</h4><p>“A gap in this collection” and “a novel idea” mean different things. The flag describes coverage within this collection; it does not establish that an idea is globally novel.</p></div>
           </div>
         </section>
         <div class="container desk-rest desk-rest--key" aria-hidden="true">
@@ -218,7 +218,7 @@
     <section id="record" class="container record">
       <div class="record__aside">
       <header class="section-head section-head--flush record__head">
-        <h2>Experience</h2>
+        <h2 data-ink>Experience</h2>
       </header>
       <figure class="plate record__plate plate--taped">
         <div class="plate__frame"><img src="assets/plates/plate-4-shells.png" alt="Four engraved shells: an ammonite, a chambered nautilus, a ribbed scallop, and an open clam." width="829" height="768" loading="lazy"></div>
@@ -238,7 +238,7 @@
           </tbody>
         </table>
         <div class="record__education">
-          <h3>Education</h3>
+          <h3 data-ink>Education</h3>
           <p>B.S. in Information Science, University of South Florida, 2023. Concentration in Information Security.</p>
         </div>
         <dl class="instruments">
@@ -256,7 +256,7 @@
     <section id="correspondence" class="contact">
       <div class="container contact__inner">
         <p class="label">Correspondence</p>
-        <h2 class="contact__statement" data-settle>Let’s compare <em class="scrawl">notes</em>.</h2>
+        <h2 class="contact__statement" data-ink>Let’s compare <em class="scrawl">notes</em>.</h2>
         <div class="contact__body">
           <p class="contact__lead">I’m open to product design, design engineering, and web design opportunities. If you’re building a tool for learning, research, or working with complex information, I’d like to hear about it.</p>
           <a class="contact__email" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com <span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></span></a>
@@ -278,7 +278,7 @@
     <a href="#top">Back to top <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a>
   </footer>
 
-  <script src="js/site.js?v=20261102194005" defer></script>
-  <script src="js/lightbox.js?v=20261102194005" defer></script>
+  <script src="js/site.js?v=20261102194950" defer></script>
+  <script src="js/lightbox.js?v=20261102194950" defer></script>
 </body>
 </html>

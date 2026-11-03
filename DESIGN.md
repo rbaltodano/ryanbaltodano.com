@@ -122,3 +122,11 @@ least 200px of the key visible so it reads larger than the seal. No CSS shadows.
 Desk objects stay static and do not use the reveal/settle observer. Phones retain the ruler and tape at
 smaller sizes. All remain decorative, noninteractive, dimmed at night, and clear
 of text/captures. Originals are in `assets/desk/src/` (git-ignored).
+
+### Heading ink reveal
+
+All headings fade in once as they enter the viewport. A soft edge in the existing
+ink color gathers into crisp type over 1.4 seconds, using CSS blur and text shadow.
+No movement or layout changes. It uses the existing intersection observer and
+replaces heading slide/wipe entrances. Reduced motion and no-JavaScript visitors
+see the finished text immediately. Desk objects remain static.

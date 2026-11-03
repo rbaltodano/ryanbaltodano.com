@@ -32,11 +32,11 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   films.forEach((film) => io.observe(film));
 })();
 
-// Hero lines rise on load; wordmarks, figures and stamps settle as they arrive; trails draw in when they arrive.
+// Headings gather like ink; figures settle, stamps press, and trails draw once.
 (() => {
   const root = document.documentElement;
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("is-ready")));
-  const items = document.querySelectorAll("[data-reveal], [data-settle], [data-stamp], .trail");
+  const items = document.querySelectorAll("[data-ink], [data-settle], [data-stamp], .trail");
   if (!("IntersectionObserver" in window)) { items.forEach((el) => el.classList.add("is-in")); return; }
   const reveal = (entries, observer) => entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
