@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261103071214");
-@import url("./base.css?v=20261103071214");
+@import url("./tokens.css?v=20261103091250");
+@import url("./base.css?v=20261103091250");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -29,6 +29,8 @@ p.label { margin-bottom: var(--space-md); }
 .button { display: inline-flex; align-items: center; height: 46px; padding-inline: 20px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.1em; text-transform: uppercase; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
 .button:hover { background: var(--ink); color: var(--paper); }
 .button:active { transform: translateY(1px); }
+.button--primary { background: var(--ink); color: var(--paper); }
+.button--primary:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
 .band { background: var(--paper-2); border-block: 1px solid var(--rule); }
 
@@ -196,10 +198,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .project { position: relative; padding-bottom: 160px; scroll-margin-top: 72px; }
 .project__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; }
 .project__dek { max-width: 46ch; text-align: right; color: var(--ink-2); }
-.project__visit { display: inline-block; margin-top: 18px; padding-bottom: 4px; font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); transition: color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out); }
-.project__visit span { display: inline-block; margin-left: 6px; transition: translate var(--dur-short) var(--ease-out); }
-.project__visit:hover { color: var(--accent); border-color: var(--accent); }
-.project__visit:hover span { translate: 2px -2px; }
+.project__visit { position: absolute; right: calc(var(--gutter) + 96px); bottom: 0; gap: 10px; white-space: nowrap; z-index: 2; }
+.project__title--action { padding-bottom: 64px; }
 .project__title { position: relative; margin-top: 24px; }
 .poster { font-size: var(--text-poster); line-height: 0.86; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; white-space: nowrap; max-width: none; }
 .project__title .stamp { position: absolute; top: 8%; right: var(--gutter); }
@@ -290,6 +290,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .hero__foot { grid-template-columns: 1fr; gap: 28px; margin-top: 48px; }
   .project__head { flex-direction: column; gap: 12px; }
   .project__dek { text-align: left; }
+  .project__title--action { padding-bottom: 0; }
+  .project__title--action .project__visit { position: static; display: flex; width: fit-content; margin-top: 24px; }
   .project__title .stamp { position: relative; top: 0; right: 0; margin-top: 20px; display: inline-flex; }
   .project__intro .film--lead, .project__intro .project__story { grid-column: 1; grid-row: auto; }
   .project__specimen { grid-column: 1; grid-row: auto; width: 150px; margin-top: 0; justify-self: start; }

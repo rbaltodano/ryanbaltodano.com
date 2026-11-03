@@ -142,3 +142,10 @@ The fixed header is flush to the viewport with an opaque paper background.
 safe-area tokens reserve the same space above the page and for anchor scrolling.
 Container gutters respect left/right safe areas in landscape; the page also
 reserves bottom safe-area space. No scroll-position JavaScript is involved.
+
+### Angrove title action
+
+The Angrove title block contains a filled primary “Visit Angrove” link. It sits
+at the lower right beneath the large wordmark on desktop and follows the status
+stamp on phones. The summary above the title has no duplicate visit link. Reuse
+the shared button styles and theme colors; keep the wordmark full-sized.
