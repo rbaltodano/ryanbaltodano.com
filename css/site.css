@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102191214");
-@import url("./base.css?v=20261102191214");
+@import url("./tokens.css?v=20261102192201");
+@import url("./base.css?v=20261102192201");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -368,32 +368,35 @@ html { overflow-x: clip; }
   .record__aside { position: static; }
 }
 
-/* Desk objects share a physical scale: a 30cm ruler is about 500px wide.
-   Dedicated rests keep the taller objects clear of content. */
-.desk { position: absolute; z-index: 4; height: auto; pointer-events: none; user-select: none; filter: none; }
+/* Fixed, irregular edge placements keep the scatter stable and away from content.
+   Shared scale: 30cm ruler ~600px; key 240px long, seal 64px across. */
+.desk { position: absolute; z-index: 4; max-width: none; height: auto; pointer-events: none; user-select: none; filter: none; }
 :root[data-theme="night"] .desk { filter: brightness(0.82); }
-.hero__portrait .desk--paperclip { width: 56px; top: -18px; left: 22px; rotate: 94deg; filter: none; }
+.desk--paperclip { width: 70px; left: calc((100% - 100vw) / 2 - 18px); top: 66%; rotate: 34deg; --desk-enter: -48px; }
 .hero__portrait::before { display: none; }
-.desk-rest { display: flex; align-items: center; padding-block: 32px; margin-top: 48px; }
-.desk-rest .desk { position: static; flex: none; }
-.desk-rest--ruler { justify-content: flex-end; }
-.desk--ruler { display: block; width: min(100%, 500px); rotate: -3deg; }
-.desk-rest--ruler + .project__notes { margin-top: 64px; }
-.desk-rest--fern { justify-content: flex-end; padding-block: 40px; }
-.desk--fern { width: 160px; rotate: -12deg; }
-.desk-rest--compass { justify-content: flex-start; padding-left: calc(var(--gutter) + 56px); }
-.desk--compass { width: 180px; rotate: 18deg; }
+.desk-rest { position: relative; width: 100%; max-width: none; height: 180px; padding: 0; margin-top: 48px; overflow: clip; }
+.desk-rest .desk { position: absolute; }
+.desk--ruler { width: 600px; right: -100px; top: 60px; rotate: -8deg; --desk-enter: 64px; }
+.desk-rest--ruler + .project__notes { margin-top: 48px; }
+.desk-rest--fern { height: 550px; }
+.desk--fern { width: 200px; left: -72px; top: 32px; rotate: -12deg; --desk-enter: -64px; }
+.desk-rest--compass { height: 400px; }
+.desk--compass { width: 220px; right: -72px; top: 30px; rotate: -18deg; --desk-enter: 64px; }
 .desk-rest--compass + .project__steps { margin-top: 48px; }
-.desk-rest--key { justify-content: center; }
-.desk--key { width: 110px; rotate: -12deg; }
+.desk--key { width: 240px; left: -30px; top: 48px; rotate: -16deg; --desk-enter: -64px; }
 .project:has(> .desk-rest:last-child) { padding-bottom: 64px; }
-.record__plate.plate--taped::before { width: 104px; height: 23px; background: url("../assets/desk/washi-tape.png") center / 100% 100% no-repeat; rotate: -3deg; filter: none; }
-.desk--stamp { width: 56px; left: 58%; top: 40%; rotate: 9deg; }
-.footer { align-items: center; }
-.footer .desk--wax-seal { position: static; flex: none; width: 60px; rotate: -8deg; }
+.record__plate.plate--taped::before { display: none; }
+.desk--tape { width: 140px; right: calc((100% - 100vw) / 2 - 60px); top: 44%; rotate: 24deg; --desk-enter: 48px; }
+.desk--stamp { width: 64px; right: -12px; top: 42%; rotate: -18deg; --desk-enter: 48px; }
+.footer { position: relative; align-items: center; }
+.footer .desk--wax-seal { position: absolute; left: calc((100% - 100vw) / 2 - 14px); top: 22px; width: 64px; rotate: -24deg; --desk-enter: -48px; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .desk[data-settle] { opacity: 0; translate: var(--desk-enter) 0; transition: opacity 500ms var(--ease-out), translate 900ms var(--ease-out); }
+  .js .desk[data-settle].is-in { opacity: 1; translate: 0 0; }
+}
 @media (max-width: 60rem) {
-  .desk:not(.desk--ruler), .desk-rest:not(.desk-rest--ruler) { display: none; }
-  .hero__portrait::before { display: block; }
-  .desk-rest--ruler { margin-top: 48px; padding-block: 24px; }
-  .desk--ruler { max-width: 300px; }
+  .desk:not(.desk--ruler):not(.desk--tape), .desk-rest:not(.desk-rest--ruler) { display: none; }
+  .desk-rest--ruler { margin-top: 48px; height: 140px; }
+  .desk--ruler { width: 360px; right: -72px; top: 48px; }
+  .desk--tape { width: 90px; right: calc((100% - 100vw) / 2 - 60px); top: 52px; }
 }

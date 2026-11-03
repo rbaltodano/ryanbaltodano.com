@@ -38,11 +38,14 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("is-ready")));
   const items = document.querySelectorAll("[data-reveal], [data-settle], [data-stamp], .trail");
   if (!("IntersectionObserver" in window)) { items.forEach((el) => el.classList.add("is-in")); return; }
-  const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
+  const reveal = (entries, observer) => entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
     entry.target.classList.add("is-in");
-    io.unobserve(entry.target);
-  }), { rootMargin: "0px 0px -12% 0px" });
-  items.forEach((el) => io.observe(el));
+    observer.unobserve(entry.target);
+  });
+  const io = new IntersectionObserver(reveal, { rootMargin: "0px 0px -12% 0px" });
+  // Edge decorations, including the footer seal, reveal as soon as they are visible.
+  const edges = new IntersectionObserver(reveal);
+  items.forEach((el) => (el.classList.contains("desk") ? edges : io).observe(el));
 
 })();

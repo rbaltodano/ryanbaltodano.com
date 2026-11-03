@@ -109,12 +109,17 @@ On desktop the left column (heading + plate) is sticky at 112px while the right 
 
 ### Desk objects
 
-Objects are spaced through the page: paperclip on the portrait, postage stamp on
-the opening trail, ruler between Angrove’s feature and notes, fern after Angrove,
-compass before inVectus’s workflow, key after inVectus, tape on the Experience
-plate, and wax seal in the footer. Tall objects have their own space in the flow
-so they cannot cover text or captures. Size them consistently: a 30cm ruler is
-about 500px wide; paperclip 56px, fern 160px wide, compass 180px, key 110px,
-postage stamp 56px, wax seal 60px, tape 104px. No CSS drop shadows on desk objects.
-Night mode dims them. Phones keep only the ruler and tape. Originals remain in
-`assets/desk/src/` (git-ignored); web copies are in `assets/desk/`.
+Objects peek in from alternating page edges at irregular, fixed positions; do not
+randomize on reload. Paperclip at the left hero edge, postage stamp on the right
+of the opening trail, ruler on the right between Angrove’s feature and notes,
+fern on the left after Angrove, compass on the right before inVectus’s workflow,
+key on the left after inVectus, tape on the right of Experience, wax seal at the
+left footer edge. The photo and shells illustration no longer hold these objects.
+
+Use a consistent physical scale: ruler 600px, paperclip 70px, fern 200px wide,
+compass 220px, key 240px long, postage stamp and seal 64px, tape 140px. Keep at
+least 200px of the key visible so it reads larger than the seal. No CSS shadows.
+Objects enter a short distance from their edge once, using the existing settle
+observer. Reduced motion shows them still. Phones retain the ruler and tape at
+smaller sizes. All remain decorative, noninteractive, dimmed at night, and clear
+of text/captures. Originals are in `assets/desk/src/` (git-ignored).
