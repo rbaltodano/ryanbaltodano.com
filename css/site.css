@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102192538");
-@import url("./base.css?v=20261102192538");
+@import url("./tokens.css?v=20261102192726");
+@import url("./base.css?v=20261102192726");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -379,7 +379,7 @@ html { overflow-x: clip; }
 .desk--ruler { width: 600px; right: -100px; top: 60px; rotate: -8deg; }
 .desk-rest--ruler + .project__notes { margin-top: 48px; }
 .desk-rest--fern { height: 550px; }
-.desk--fern { width: 200px; left: -72px; top: 32px; rotate: -12deg; }
+.desk--fern { width: 200px; right: -72px; top: 32px; rotate: 12deg; }
 .desk-rest--compass { height: 500px; }
 .desk--compass { width: 280px; right: -64px; top: 30px; rotate: -18deg; }
 .desk-rest--compass + .project__steps { margin-top: 48px; }
