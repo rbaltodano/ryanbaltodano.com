@@ -125,8 +125,11 @@ of text/captures. Originals are in `assets/desk/src/` (git-ignored).
 
 ### Heading ink reveal
 
-All headings fade in once as they enter the viewport. A soft edge in the existing
-ink color gathers into crisp type over 1.4 seconds, using CSS blur and text shadow.
-No movement or layout changes. It uses the existing intersection observer and
-replaces heading slide/wipe entrances. Reduced motion and no-JavaScript visitors
-see the finished text immediately. Desk objects remain static.
+Headings reveal once through CodyHouse’s MIT-licensed ink-spread alpha sprite,
+using 25 frames over 600ms. The mask has irregular liquid edges; there is no blur,
+text shadow, movement, or layout change. The image is preloaded and hosted locally.
+The mask is removed at completion so the final type is completely sharp. Source,
+pinned upstream commit, and license are in `assets/motion/README.md`.
+Reduced motion, no JavaScript, or unsupported masking shows normal type. A failed
+sprite request still leaves readable headings when the 600ms animation ends.
+Desk objects remain static.
