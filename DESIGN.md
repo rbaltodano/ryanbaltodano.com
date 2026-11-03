@@ -106,3 +106,7 @@ The Experience section reuses the old exhibit stage ground: full-bleed paper-2 w
 
 Heading and the shells plate stack in the left column (4fr); the intro, roles, education and tools read down the right (8fr). Phones stack heading, plate, then content.
 On desktop the left column (heading + plate) is sticky at 112px while the right column scrolls; phones leave it static.
+
+### Desk objects
+
+Photoreal objects (Midjourney, cut out) sit on the page as if left on a desk: paperclip on the hero portrait, fern at the end of Angrove, drafting compass at the end of inVectus, washi tape and a brass ruler on the Experience plate, key, postage stamp and wax seal in Contact. Originals live in `assets/desk/src/` (git-ignored); web copies are resampled to 2x display size. All are `aria-hidden`, non-interactive, dimmed at night, and hidden on phones except the ruler and tape.

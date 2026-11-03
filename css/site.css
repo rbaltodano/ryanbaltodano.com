@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102182035");
-@import url("./base.css?v=20261102182035");
+@import url("./tokens.css?v=20261102185907");
+@import url("./base.css?v=20261102185907");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -366,4 +366,23 @@ html { overflow-x: clip; }
 .record__body { grid-row: 1; }
 @media (max-width: 60rem) {
   .record__aside { position: static; }
+}
+
+/* Desk objects: real things left on the notebook. Decorative, never over text, hidden on phones. */
+.desk { position: absolute; z-index: 4; height: auto; pointer-events: none; user-select: none; filter: drop-shadow(0 10px 12px rgba(46, 33, 23, 0.22)) drop-shadow(0 1px 1px rgba(46, 33, 23, 0.25)); }
+:root[data-theme="night"] .desk { filter: brightness(0.82) drop-shadow(0 10px 14px rgba(0, 0, 0, 0.55)); }
+.hero__portrait .desk--paperclip { width: 72px; top: -22px; left: 22px; rotate: 94deg; filter: drop-shadow(0 4px 4px rgba(46, 33, 23, 0.25)); }
+.hero__portrait::before { display: none; }
+.desk--fern { width: 150px; right: -34px; bottom: 30px; rotate: -16deg; }
+.desk--compass { width: 120px; left: 8px; bottom: -70px; rotate: 22deg; }
+.desk--ruler { position: relative; display: block; width: 100%; max-width: 380px; margin: 56px 0 0 -6px; rotate: -2.5deg; }
+.record__plate.plate--taped::before { width: 150px; height: 33px; background: url("../assets/desk/washi-tape.png") center / 100% 100% no-repeat; rotate: -3deg; filter: drop-shadow(0 1px 1px rgba(46, 33, 23, 0.2)); }
+.contact { overflow: visible; }
+.desk--stamp { width: 104px; right: calc(var(--gutter) + 120px); bottom: -170px; rotate: 7deg; }
+.desk--wax-seal { width: 96px; right: calc(var(--gutter) + 60px); bottom: -188px; rotate: -10deg; z-index: 5; }
+.desk--key { width: 190px; left: var(--gutter); bottom: -130px; rotate: -8deg; }
+@media (max-width: 60rem) {
+  .desk:not(.desk--ruler) { display: none; }
+  .hero__portrait::before { display: block; }
+  .desk--ruler { max-width: 300px; }
 }
