@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261103110503");
-@import url("./base.css?v=20261103110503");
+@import url("./tokens.css?v=20261103123248");
+@import url("./base.css?v=20261103123248");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -203,7 +203,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .project__title { position: relative; margin-top: 24px; }
 .poster { font-size: var(--text-poster); line-height: 0.86; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; white-space: nowrap; max-width: none; }
 .project__title .stamp { position: absolute; top: 8%; right: var(--gutter); }
-.project__title .poster { position: relative; z-index: 1; }
+.project__title .poster { position: relative; z-index: 1; padding-block: 0.08em 0.24em; margin-block: -0.08em -0.24em; }
 /* An engraved specimen resting in the space under the lead capture */
 .project__intro .film--lead { grid-column: 1; grid-row: 1; }
 .project__intro .project__story { grid-column: 2; grid-row: 1 / span 2; }

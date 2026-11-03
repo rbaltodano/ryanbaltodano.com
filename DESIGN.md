@@ -131,6 +131,8 @@ mobile-menu curve, `cubic-bezier(0.55, 0, 0.17, 1)`. Native mask-size interpolat
 expands the masks smoothly, replacing the visibly stepped
 25-frame sprite. No text shadow, movement, or layout change. No image request.
 The mask and blur are removed at completion so final type is completely sharp.
+Project wordmarks include vertical padding with matching negative margins so
+the mask contains descenders and blur without changing the surrounding layout.
 Reduced motion, no JavaScript, or unsupported masking shows normal type.
 Desk objects remain static. The unused original sprite and its license are
 retained in `assets/motion/` for attribution and reference.
