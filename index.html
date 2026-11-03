@@ -45,6 +45,23 @@
     </div>
   </header>
 
+  <nav class="field-map" aria-label="Field map">
+    <span class="field-map__north" aria-hidden="true">N</span>
+    <svg class="field-map__route" viewBox="0 0 40 280" width="40" height="280" aria-hidden="true" focusable="false">
+      <defs><clipPath id="field-map-walked"><rect class="field-map__walked" x="-20" y="0" width="80" height="0"/></clipPath></defs>
+      <path class="field-map__path" d="M20 6 C36 38 4 62 20 94 S36 150 20 182 S4 244 20 274"/>
+      <path class="field-map__path field-map__path--walked" d="M20 6 C36 38 4 62 20 94 S36 150 20 182 S4 244 20 274" clip-path="url(#field-map-walked)"/>
+    </svg>
+    <span class="field-map__you" aria-hidden="true"></span>
+    <ol>
+      <li><a class="field-map__stop" href="#top"><span>Opening</span></a></li>
+      <li><a class="field-map__stop" href="#project-angrove"><span>Angrove</span></a></li>
+      <li><a class="field-map__stop" href="#invectus"><span>inVectus</span></a></li>
+      <li><a class="field-map__stop" href="#record"><span>Experience</span></a></li>
+      <li><a class="field-map__stop" href="#correspondence"><span>Contact</span></a></li>
+    </ol>
+  </nav>
+
   <main id="top">
     <section class="container hero">
       <p class="label hero__kicker" data-rise>Designer &amp; developer <span>·</span> Tampa, Florida</p>
@@ -77,13 +94,13 @@
       <article id="project-angrove" class="project" aria-labelledby="title-angrove">
         <header class="container project__head">
           <p class="label">Exhibit I <span>·</span> Study software</p>
-          <div class="project__dek"><p>A private study app for philosophy and theology. Conversations, notes, and saved ideas stay together on iPhone and Mac.</p></div>
         </header>
         <div class="container project__title project__title--action">
           <h2 id="title-angrove" class="poster" data-ink>Angrove</h2>
           <p class="stamp" data-stamp aria-label="Status: public beta on iPhone">Public beta<small>on iPhone</small></p>
           <a class="button button--primary project__visit" href="https://angrove.app">Visit Angrove <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a>
         </div>
+        <div class="container project__lede"><p class="project__dek">A private study app for philosophy and theology. Conversations, notes, and saved ideas stay together on iPhone and Mac.</p></div>
 
         <div class="container project__intro">
           <img class="desk desk--fern" src="assets/desk/fern.png" alt="" aria-hidden="true" width="340" height="815" loading="lazy">
@@ -108,6 +125,7 @@
           </div>
           <blockquote class="project__pull">
             <p>Notes want a place, not a scroll.</p>
+            <span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>a Board is a room; a chat is a hallway</span></span>
             <footer>A named Board gives conversations, writing, and visual references a shared place. Ideas stay beside each other instead of disappearing into a chat history.</footer>
           </blockquote>
           </div>
@@ -117,9 +135,9 @@
           <h3 id="steps-angrove" class="project__kicker" data-ink>How a study session works</h3>
           <ol class="steps steps--phone">
             <li data-settle><figure><img src="assets/img/angrove/home.jpg" alt="Angrove Home with activity, saved Insights, and a Question of the Day." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">01</span><b>Start from Home.</b> Recent activity, saved Insights, and a Question of the Day.</figcaption></figure></li>
-            <li data-settle><figure><img src="assets/img/angrove/conversation-nature-of-evil.jpg" alt="Nature of Evil conversation with expanded Corpus Grounded details and Summa Theologica source links." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">02</span><b>Ask with sources.</b> Answers show the passages they draw on, such as the Summa Theologica.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/angrove/conversation-nature-of-evil.jpg" alt="Nature of Evil conversation with expanded Corpus Grounded details and Summa Theologica source links." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">02</span><b>Ask with sources.</b> Answers show the passages they draw on, such as the Summa Theologica.</figcaption></figure><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>show the passage, not just the answer</span></span></li>
             <li data-settle><figure><img src="assets/img/angrove/conversation-homoousios.jpg" alt="Homoousios conversation with consubstantial highlighted as a contextual concept." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">03</span><b>Open a concept.</b> Underlined terms open a definition in the context of the answer.</figcaption></figure></li>
-            <li data-settle><figure><img src="assets/img/angrove/insight-map.jpg" alt="Ancient Greek Politics map with related concepts and a saved Insight card." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">04</span><b>Keep it.</b> Saved Insights return on a map of related ideas.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/angrove/insight-map.jpg" alt="Ancient Greek Politics map with related concepts and a saved Insight card." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">04</span><b>Keep it.</b> Saved Insights return on a map of related ideas.</figcaption></figure><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>a saved idea should come back</span></span></li>
           </ol>
         </section>
 
@@ -143,7 +161,7 @@
           <div class="notes-grid">
             <div class="project-note"><h4 data-ink>From design to implementation</h4><p>I own the product direction, visual and interaction design, and SwiftUI implementation, including the connections between the interface, local AI, and saved work.</p></div>
             <div class="project-note"><h4 data-ink>Keep the way back within reach</h4><p>Boards, conversations, the library, and study topics share one sidebar. Moving between kinds of work should never feel like leaving the room.</p></div>
-            <div class="project-note"><h4 data-ink>Test the default before choosing it</h4><p>Before choosing Angrove’s reasoning default, I ran an 80-case evaluation. Both settings passed 74 of 80 cases, while reasoning roughly doubled latency, so I kept it off by default. This was a development configuration test, not a general accuracy claim.</p></div>
+            <div class="project-note"><h4 data-ink>Test the default before choosing it</h4><p>Before choosing Angrove’s reasoning default, I ran an 80-case evaluation. Both settings passed 74 of 80 cases, while reasoning roughly doubled latency, so I kept it off by default. This was a development configuration test, not a general accuracy claim.</p><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>74 of 80 either way, so: off</span></span></div>
           </div>
         </section>
       </article>
@@ -154,12 +172,12 @@
       <article id="invectus" class="project" aria-labelledby="title-invectus">
         <header class="container project__head">
           <p class="label">Exhibit II <span>·</span> Research software</p>
-          <p class="project__dek">A local-first research tool for Mac. Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p>
         </header>
         <div class="container project__title">
           <h2 id="title-invectus" class="poster" data-ink>inVectus</h2>
           <p class="stamp" data-stamp aria-label="Status: in development">In development</p>
         </div>
+        <div class="container project__lede"><p class="project__dek">A local-first research tool for Mac. Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p></div>
 
         <div class="container project__intro">
           <img class="desk desk--compass" src="assets/desk/compass.png" alt="" aria-hidden="true" width="320" height="492" loading="lazy">
@@ -184,6 +202,7 @@
           </div>
           <blockquote class="project__pull">
             <p>Show the numbers behind a judgment.</p>
+            <span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>a score you can argue with</span></span>
             <footer>Demand, coverage, and activity stay visible beside a flagged gap. The score is something to inspect, with the supporting papers close at hand.</footer>
           </blockquote>
           </div>
@@ -196,7 +215,7 @@
             <li data-settle><figure><img src="assets/img/invectus/collections.jpg" alt="The indexed medical collection, with role counts and calibration details." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">01</span><b>Import a collection.</b> Check that it’s indexed, with role counts and calibration details.</figcaption></figure></li>
             <li data-settle><figure><img src="assets/img/invectus/search.jpg" alt="Semantic search with supporting medical-paper matches." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">02</span><b>Search by meaning.</b> Compare an idea with the collection and inspect the nearest papers.</figcaption></figure></li>
             <li data-settle><figure><img src="assets/img/invectus/item.jpg" alt="A source paper and its position in the collection map." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">03</span><b>Inspect the evidence.</b> Open a source paper and see where it sits on the map.</figcaption></figure></li>
-            <li data-settle><figure><img src="assets/img/invectus/saved.jpg" alt="Saved gaps and a human-authored decision in the native app." width="2000" height="1255" loading="lazy"><figcaption><span class="steps__no">04</span><b>Keep a decision.</b> Save a gap for review and record what you decided, shown here with a fictional demo collection.</figcaption></figure></li>
+            <li data-settle><figure><img src="assets/img/invectus/saved.jpg" alt="Saved gaps and a human-authored decision in the native app." width="2000" height="1255" loading="lazy"><figcaption><span class="steps__no">04</span><b>Keep a decision.</b> Save a gap for review and record what you decided, shown here with a fictional demo collection.</figcaption></figure><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>saving &ne; deciding</span></span></li>
           </ol>
         </section>
 
@@ -205,7 +224,7 @@
           <div class="notes-grid">
             <div class="project-note"><h4 data-ink>One local workspace</h4><p>I design and build the desktop interface and its connection to a shared Rust engine. Search and indexing run locally, with resumable jobs and cancellation.</p></div>
             <div class="project-note"><h4 data-ink>Keep a decision, not just a bookmark</h4><p>Saving a gap and reviewing it are different actions. A persistent decision log keeps the evidence, notes, and review decisions available after rescanning the collection.</p></div>
-            <div class="project-note"><h4 data-ink>A claim should name its scope</h4><p>“A gap in this collection” and “a novel idea” mean different things. The flag describes coverage within this collection; it does not establish that an idea is globally novel.</p></div>
+            <div class="project-note"><h4 data-ink>A claim should name its scope</h4><p>“A gap in this collection” and “a novel idea” mean different things. The flag describes coverage within this collection; it does not establish that an idea is globally novel.</p><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>this collection, not the world</span></span></div>
           </div>
         </section>
         <div class="container desk-rest desk-rest--key" aria-hidden="true">
@@ -216,39 +235,54 @@
 
     <div class="trail trail--down" aria-hidden="true"><svg viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M930 0 C950 90 760 120 520 140 S120 180 100 300" vector-effect="non-scaling-stroke"/></svg></div>
 
-    <section id="record" class="container record">
-      <div class="record__aside">
-      <header class="section-head section-head--flush record__head">
-        <h2 data-ink>Experience</h2>
+    <section id="record" class="record" aria-labelledby="title-record">
+      <header class="container project__head">
+        <p class="label">Field record <span>·</span> Work and study</p>
+        <p class="project__dek">Alongside my own software, I design websites for clients, from understanding a business through responsive layout and delivery.</p>
       </header>
-      <figure class="plate record__plate plate--taped">
-        <div class="plate__frame"><img src="assets/plates/plate-4-shells.png" alt="Four engraved shells: an ammonite, a chambered nautilus, a ribbed scallop, and an open clam." width="829" height="768" loading="lazy"></div>
-      </figure>
+      <div class="container project__title">
+        <h2 id="title-record" class="record__title" data-ink>Experience</h2>
       </div>
-      <div class="record__body">
-        <div class="record__intro">
-          <p>Alongside my own software, I design websites for clients. That work starts with understanding a business and translating its requirements into a responsive layout, then carrying the design through delivery.</p>
+
+      <div class="container record__intro">
+        <img class="record__specimen" src="assets/plates/plate-4-shells.png" alt="" aria-hidden="true" width="829" height="768" loading="lazy" data-settle>
+        <div class="record__about">
+          <h3 class="project__kicker" data-ink>The practice</h3>
+          <p>Client work starts with understanding a business and translating its requirements into a responsive layout, then carrying the design through delivery.</p>
           <p>My independent projects let me take the same care further into the product: shaping navigation, designing reusable interface elements, and working through how the experience behaves with real data.</p>
+          <dl class="specimen">
+            <div><dt>Degree</dt><dd>B.S. in Information Science</dd></div>
+            <div><dt>School</dt><dd>University of South Florida, 2023</dd></div>
+            <div><dt>Focus</dt><dd>Information Security</dd></div>
+          </dl>
         </div>
-        <table class="catalogue">
-          <caption class="visually-hidden">Client work</caption>
-          <thead><tr><th scope="col">Years</th><th scope="col">Company</th><th scope="col">Role</th></tr></thead>
-          <tbody>
-            <tr><td class="num">2024 to now</td><th scope="row">PostcardMania</th><td>Web designer<p class="catalogue__description">Design and deliver custom, responsive websites, translating business requirements into individual layouts and managing client-facing delivery deadlines.</p></td></tr>
-            <tr><td class="num">2024</td><th scope="row">Cloud Carpenter</th><td>Front-end intern<p class="catalogue__description">Designed and built responsive client websites and interactive features with HTML, CSS, JavaScript, and PHP, working with a development team.</p></td></tr>
-          </tbody>
-        </table>
-        <div class="record__education">
-          <h3 data-ink>Education</h3>
-          <p>B.S. in Information Science, University of South Florida, 2023. Concentration in Information Security.</p>
-        </div>
-        <dl class="instruments">
-          <div><dt>Design</dt><dd>Figma, interaction design, design systems, responsive layouts, and visual identity.</dd></div>
-          <div><dt>Interfaces</dt><dd>SwiftUI, React, TypeScript, HTML, CSS, and JavaScript.</dd></div>
-          <div><dt>Local software</dt><dd>Rust, Python, SQLite, semantic search, on-device model integration, and evaluation.</dd></div>
-        </dl>
       </div>
-          <img class="desk desk--tape" src="assets/desk/washi-tape.png" alt="" aria-hidden="true" width="360" height="79" loading="lazy">
+
+      <section class="container record__roles" aria-labelledby="roles-record">
+        <h3 id="roles-record" class="project__kicker" data-ink>Client work</h3>
+        <ol class="roles">
+          <li class="role">
+            <p class="role__years">2024 to now</p>
+            <div class="role__name"><h4>PostcardMania</h4><p class="label">Web designer</p></div>
+            <p class="role__about">Design and deliver custom, responsive websites, translating business requirements into individual layouts and managing client-facing delivery deadlines.</p>
+          </li>
+          <li class="role">
+            <p class="role__years">2024</p>
+            <div class="role__name"><h4>Cloud Carpenter</h4><p class="label">Front-end intern</p></div>
+            <p class="role__about">Designed and built responsive client websites and interactive features with HTML, CSS, JavaScript, and PHP, working with a development team.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="container project__notes" aria-labelledby="tools-record">
+        <h3 id="tools-record" class="project__kicker" data-ink>Tools, by use</h3>
+        <div class="notes-grid">
+          <div class="project-note"><h4 data-ink>Design</h4><p>Figma, interaction design, design systems, responsive layouts, and visual identity.</p></div>
+          <div class="project-note"><h4 data-ink>Interfaces</h4><p>SwiftUI, React, TypeScript, HTML, CSS, and JavaScript.</p></div>
+          <div class="project-note"><h4 data-ink>Local software</h4><p>Rust, Python, SQLite, semantic search, on-device model integration, and evaluation.</p></div>
+        </div>
+      </section>
+      <img class="desk desk--tape" src="assets/desk/washi-tape.png" alt="" aria-hidden="true" width="360" height="79" loading="lazy">
     </section>
 
 
@@ -280,6 +314,7 @@
   </footer>
 
   <script src="js/site.js?v=20261103133058" defer></script>
+  <script src="js/journal.js?v=20261103133058" defer></script>
   <script src="js/lightbox.js?v=20261103133058" defer></script>
 </body>
 </html>

@@ -75,23 +75,6 @@ p.label { margin-bottom: var(--space-md); }
 
 .section-head--flush { padding-bottom: 36px; }
 
-.record { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 56px; align-items: start; padding-block: var(--section-gap); }
-.catalogue { width: 100%; border-collapse: collapse; border-top: 1px solid var(--ink); }
-.catalogue th, .catalogue td { text-align: left; padding: 16px 16px 16px 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
-.catalogue thead th { font-family: var(--font-mono); font-size: var(--text-meta); font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-block: 12px; }
-.catalogue tbody th { font-weight: 400; font-size: var(--text-body); color: var(--ink); }
-.catalogue td { color: var(--ink-2); }
-.catalogue td.num { font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.06em; color: var(--muted); width: 9.5em; }
-.record__intro { margin-bottom: 32px; }
-.record__intro p + p { margin-top: 16px; }
-.catalogue__description { margin-top: 12px; color: var(--muted); }
-.record__education { margin-top: 40px; }
-.record__education h3 { font-size: var(--text-body); margin-bottom: 12px; }
-.instruments { margin: 40px 0 0; }
-.instruments > div { display: grid; grid-template-columns: 8em 1fr; gap: 24px; padding-block: 16px; border-top: 1px solid var(--rule); }
-.instruments dt { font-family: var(--font-mono); font-size: var(--text-meta); text-transform: uppercase; letter-spacing: 0.08em; }
-.instruments dd { margin: 0; }
-.record__plate { padding-top: 8px; }
 
 .correspondence { display: grid; grid-template-columns: 1fr; gap: 56px; align-items: center; padding-block: 112px; }
 .correspondence .lead { margin-top: 18px; max-width: 40ch; }
@@ -134,21 +117,12 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 
 @media (max-width: 60rem) {
   .nav__links a:not(.nav__keep) { display: none; }
-  .record__plate { max-width: 340px; }
-  .record, .correspondence { padding-block: var(--section-gap); }
-  .record, .correspondence { grid-template-columns: 1fr; gap: 36px; }
   body::after { left: calc(var(--gutter) - 14px); }
 }
 @media (max-width: 40rem) {
   .nav__inner { gap: 16px; }
   .wordmark img { height: 30px; translate: 0 2px; }
   .nav__links { gap: 16px; }
-  .instruments > div { grid-template-columns: 1fr; gap: 8px; }
-  .catalogue thead { display: none; }
-  .catalogue tbody, .catalogue th, .catalogue td { display: block; }
-  .catalogue tr { display: grid; gap: 8px; padding-block: 20px; border-bottom: 1px solid var(--rule); }
-  .catalogue th, .catalogue td { padding: 0; border: 0; }
-  .catalogue td.num { width: auto; }
   .footer { flex-direction: column; }
   .stamp { position: relative; top: 0; right: 0; margin-bottom: 18px; }
 }
@@ -200,6 +174,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .project__dek { max-width: 46ch; text-align: right; color: var(--ink-2); }
 .project__visit { position: absolute; right: calc(var(--gutter) + 96px); bottom: 0; gap: 10px; white-space: nowrap; z-index: 2; }
 .project__title--action { padding-bottom: 64px; }
+.project__lede .project__dek { max-width: 46ch; margin-top: 32px; text-align: left; }
+.project__title--action + .project__lede .project__dek { margin-top: -24px; }
 .project__title { position: relative; margin-top: 24px; }
 .poster { font-size: var(--text-poster); line-height: 0.86; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; white-space: nowrap; max-width: none; }
 .project__title .stamp { position: absolute; top: 8%; right: var(--gutter); }
@@ -295,6 +271,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .project__head { flex-direction: column; gap: 12px; }
   .project__dek { text-align: left; }
   .project__title--action { padding-bottom: 0; }
+  .project__title--action + .project__lede .project__dek { margin-top: 32px; }
   .project__title--action .project__visit { position: static; display: flex; width: fit-content; margin-top: 24px; }
   .project__title .stamp { position: relative; top: 0; right: 0; margin-top: 20px; display: inline-flex; }
   .project__intro .film--lead, .project__intro .project__story { grid-column: 1; grid-row: auto; }
@@ -367,28 +344,10 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .icon { display: inline-block; width: 0.8em; height: 0.8em; vertical-align: -0.05em; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
 
-/* Experience sits on ruled notebook paper, like the old exhibit stage */
+/* Experience sits on ruled notebook paper, laid out like an exhibit */
 html { overflow-x: clip; }
-.record { position: relative; isolation: isolate; }
+.record { position: relative; isolation: isolate; padding-block: var(--section-gap); }
 .record::before { content: ""; position: absolute; z-index: -1; inset: 0 calc(50% - 50vw); background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat-y; background-size: 100% 32px; border-block: 1px solid var(--rule); }
-/* Heading and shells plate on the left; the record reads down the right */
-.record { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); grid-template-rows: auto 1fr; column-gap: 72px; row-gap: 0; }
-.record__head { grid-column: 1; grid-row: 1; }
-.record__plate { grid-column: 1; grid-row: 2; padding-top: 0; }
-.record__body { grid-column: 2; grid-row: 1 / span 2; padding-top: 12px; }
-@media (max-width: 60rem) {
-  .record { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 0; }
-  .record__plate { margin-bottom: 40px; }
-  .record__head, .record__plate, .record__body { grid-column: 1; grid-row: auto; }
-  .record__body { padding-top: 0; }
-}
-/* The heading and plate hold still while the record scrolls past */
-.record { grid-template-rows: auto; }
-.record__aside { grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--nav-offset) + 48px); }
-.record__body { grid-row: 1; }
-@media (max-width: 60rem) {
-  .record__aside { position: static; }
-}
 
 /* Fixed, irregular edge placements keep the scatter stable and away from content.
    Shared scale: 30cm ruler ~600px; key 240px long, seal 64px across. */
@@ -404,7 +363,6 @@ html { overflow-x: clip; }
 .desk--compass { width: 280px; right: calc((100% - 100vw) / 2 - 100px); top: -136px; rotate: -45deg; }
 .desk--key { width: 240px; left: -30px; top: 48px; rotate: -16deg; }
 .project:has(> .desk-rest:last-child) { padding-bottom: 64px; }
-.record__plate.plate--taped::before { display: none; }
 .desk--tape { width: 140px; right: calc((100% - 100vw) / 2 - 60px); top: 44%; rotate: 24deg; }
 .desk--stamp { width: 64px; right: -12px; top: 42%; rotate: -18deg; }
 .footer { position: relative; align-items: center; }
@@ -415,4 +373,81 @@ html { overflow-x: clip; }
   .desk-rest--ruler { margin-top: 48px; height: 140px; }
   .desk--ruler { width: 360px; right: -72px; top: 48px; }
   .desk--tape { width: 90px; right: calc((100% - 100vw) / 2 - 60px); top: 52px; }
+}
+
+/* ==========================================================================
+   Expedition journal: nudgeable desk objects, field map, marginalia,
+   and the viewing-table lightbox. Behaviour lives in js/journal.js.
+   ========================================================================== */
+
+/* Field map: a fixed route in the left margin on wide screens */
+.field-map { display: none; }
+@media (min-width: 75rem) {
+  .js .field-map { display: block; position: fixed; z-index: 6; left: max(12px, calc((100vw - var(--container)) / 2 + 14px)); top: calc(50% + var(--nav-offset) / 2); translate: 0 -50%; width: 40px; height: 280px; opacity: 0; transition: opacity var(--dur-long) var(--ease-out); pointer-events: none; }
+  .js .field-map.is-shown { opacity: 1; pointer-events: auto; }
+}
+.field-map ol { list-style: none; margin: 0; padding: 0; }
+.field-map__route { position: absolute; inset: 0; overflow: visible; }
+.field-map__path { fill: none; stroke: var(--rule-2); stroke-width: 1.5; stroke-dasharray: 3 5; stroke-linecap: round; }
+.field-map__path--walked { stroke: var(--accent); }
+.field-map__north { position: absolute; top: -26px; left: 50%; translate: -50% 0; font-family: var(--font-mono); font-size: var(--text-meta); color: var(--muted); }
+.field-map__north::before { content: ""; position: absolute; left: 50%; top: -9px; translate: -50% 0; border: 4px solid transparent; border-bottom: 6px solid var(--muted); border-top: 0; }
+.field-map__you { position: absolute; left: 0; top: 0; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px var(--accent); pointer-events: none; z-index: 2; }
+.field-map__stop { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; display: grid; place-items: center; text-decoration: none; }
+.field-map__stop::before { content: ""; width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--accent); background: var(--paper); transition: background-color var(--dur-short) var(--ease-out); }
+.field-map__stop[aria-current]::before { background: var(--accent); }
+.field-map__stop span { position: absolute; left: 26px; top: 50%; translate: -4px -50%; padding: 2px 8px; white-space: nowrap; background: var(--paper); border: 1px solid var(--rule); font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); opacity: 0; transition: opacity var(--dur-short) var(--ease-out), translate var(--dur-short) var(--ease-out); pointer-events: none; }
+.field-map:hover .field-map__stop span, .field-map:focus-within .field-map__stop span { opacity: 1; translate: 0 -50%; }
+.field-map__stop[aria-current] span { color: var(--accent); border-color: var(--accent); }
+.field-map__stop:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 50%; }
+
+/* Marginalia: pencil notes under a passage, written in on hover (or on scroll for touch) */
+.margin-note { display: flex; align-items: flex-start; gap: 6px; width: fit-content; margin-top: 14px; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.05; color: var(--pencil); rotate: -1.5deg; pointer-events: none; }
+.margin-note svg { flex: none; width: 34px; height: 26px; margin-top: -8px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.project__pull .margin-note { margin: 0 0 14px auto; }
+.project__pull .margin-note svg { order: 2; scale: -1 -1; margin: 6px 0 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .margin-note > span { clip-path: inset(-0.2em 100% -0.3em 0); transition: clip-path 1100ms cubic-bezier(0.45, 0.05, 0.4, 1) 350ms; }
+  .js .margin-note path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 450ms var(--ease-out); }
+  .js .margin-note path + path { transition-delay: 300ms; }
+  .js .margin-note.is-written > span { clip-path: inset(-0.2em -0.3em -0.3em -0.2em); }
+  .js .margin-note.is-written path { stroke-dashoffset: 0; }
+  .js .margin-note:not(.is-written) svg { opacity: 0; }
+}
+
+/* Lightbox as a viewing table: paper ground, a mount with crop marks and a scale, a label card */
+.lightbox__shade { background: var(--table); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.lightbox__mount { position: fixed; background: var(--page); border: 1px solid var(--rule-2); box-shadow: 0 30px 60px -34px rgba(18, 15, 12, 0.5); pointer-events: none; }
+.lightbox__mount::before { content: ""; position: absolute; inset: -16px; background:
+  linear-gradient(var(--muted), var(--muted)) left top / 12px 1px, linear-gradient(var(--muted), var(--muted)) left top / 1px 12px,
+  linear-gradient(var(--muted), var(--muted)) right top / 12px 1px, linear-gradient(var(--muted), var(--muted)) right top / 1px 12px,
+  linear-gradient(var(--muted), var(--muted)) left bottom / 12px 1px, linear-gradient(var(--muted), var(--muted)) left bottom / 1px 12px,
+  linear-gradient(var(--muted), var(--muted)) right bottom / 12px 1px, linear-gradient(var(--muted), var(--muted)) right bottom / 1px 12px; background-repeat: no-repeat; opacity: 0.7; }
+.lightbox__scale { position: absolute; left: 0; right: 0; bottom: calc(100% + 22px); height: 12px; border-bottom: 1px solid var(--muted); opacity: 0.6;
+  background: repeating-linear-gradient(to right, var(--muted) 0 1px, transparent 1px 50px) left bottom / 100% 12px no-repeat, repeating-linear-gradient(to right, var(--muted) 0 1px, transparent 1px 10px) left bottom / 100% 5px no-repeat; }
+.lightbox__caption { padding: 12px 18px 14px; background: var(--page); border: 1px solid var(--rule-2); box-shadow: 0 12px 24px -18px rgba(18, 15, 12, 0.5); rotate: -0.6deg; }
+.lightbox__title { color: var(--accent); }
+.lightbox__text { color: var(--ink-2); }
+@media (max-width: 40rem) { .lightbox__scale, .lightbox__mount::before { display: none; } }
+
+/* Experience: an exhibit-style record. Title at statement size, the shells beside the practice
+   and education, roles as a ruled ledger, tools in the shared notes grid. */
+.record__title { font-size: var(--text-statement); line-height: 0.98; letter-spacing: -0.035em; color: var(--ink); padding-block: 0.06em 0.2em; margin-block: -0.06em -0.2em; }
+.record__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: center; margin-top: 72px; }
+.record__specimen { justify-self: center; width: clamp(220px, 26vw, 380px); height: auto; opacity: 0.6; filter: var(--plate-filter); mix-blend-mode: var(--plate-blend); pointer-events: none; }
+.js .record__specimen[data-settle].is-in { opacity: 0.6; }
+.record__about p + p { margin-top: 16px; }
+.record__roles { margin-top: 140px; }
+.roles { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.role { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 4fr) minmax(0, 6fr); gap: 48px; align-items: baseline; padding-block: 28px; border-bottom: 1px solid var(--rule); }
+.role__years { font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); }
+.role__name h4 { font-size: var(--text-heading); line-height: 1.2; letter-spacing: -0.02em; font-weight: 400; color: var(--ink); }
+.role__name .label { margin: 8px 0 0; }
+.role__about { color: var(--ink-2); max-width: 52ch; }
+.record .project__notes { margin-top: 140px; }
+@media (max-width: 60rem) {
+  .record__intro { grid-template-columns: 1fr; gap: 48px; margin-top: 56px; }
+  .record__specimen { justify-self: start; width: 200px; }
+  .record__roles, .record .project__notes { margin-top: 96px; }
+  .role { grid-template-columns: 1fr; gap: 10px; padding-block: 24px; }
 }

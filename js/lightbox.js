@@ -11,6 +11,7 @@
   // The mobile menu's curve and timing (--ease-menu: 0.6s, its fade 0.45s), both ways.
   var EASE = 'cubic-bezier(0.55, 0, 0.17, 1)';
   function margin() { return innerWidth < 600 ? 16 : 56; }   // around the enlarged media
+  function pad() { return innerWidth < 600 ? 8 : 18; }        // the paper mount around it
   var GAP = 20;        // between it and its caption
   var OPEN_MS = reduce ? 0 : 600, CLOSE_MS = reduce ? 0 : 600, FADE_MS = reduce ? 0 : 450;
   var TILT = 1.5; // degrees at the edges: a gentle response
@@ -82,7 +83,7 @@
     m.style.removeProperty('scale');
     m.style.removeProperty('transition');
     var cs = getComputedStyle(m);
-    var MARGIN = margin();
+    var MARGIN = margin(), PAD = pad();
 
     var scrim = document.createElement('div');
     scrim.className = 'lightbox';
@@ -93,6 +94,13 @@
     var shade = document.createElement('div');
     shade.className = 'lightbox__shade';
     scrim.appendChild(shade);
+    // On the viewing table the media rests on a paper mount with crop marks and a scale.
+    var mount = document.createElement('div');
+    mount.className = 'lightbox__mount';
+    var scaleBar = document.createElement('span');
+    scaleBar.className = 'lightbox__scale';
+    mount.appendChild(scaleBar);
+    scrim.appendChild(mount);
     document.body.appendChild(scrim);
 
     // The caption is measured first so the media fits the room it leaves.
@@ -119,8 +127,9 @@
       if (title) caption.appendChild(text('h2', 'lightbox__title', title));
       if (about) caption.appendChild(text('p', 'lightbox__text', about));
       caption.style.width = Math.min(640, innerWidth - MARGIN * 2) + 'px';
+      caption.style.boxSizing = 'border-box';
       scrim.appendChild(caption);
-      room = caption.offsetHeight + GAP;
+      room = caption.offsetHeight + GAP + PAD;
       scrim.setAttribute('aria-labelledby', caption.id);
     } else {
       scrim.setAttribute('aria-label', m.getAttribute('alt') || m.getAttribute('aria-label') || 'Enlarged media');
@@ -128,7 +137,7 @@
 
     // Fit the screen less a margin and the caption, never past the file's own size.
     var natural = m.naturalWidth || m.videoWidth || +m.getAttribute('width') || rect.width;
-    var scale = Math.min((innerWidth - MARGIN * 2) / rest.width, (innerHeight - MARGIN * 2 - room) / rest.height);
+    var scale = Math.min((innerWidth - (MARGIN + PAD) * 2) / rest.width, (innerHeight - (MARGIN + PAD) * 2 - room) / rest.height);
     scale = Math.max(Math.min(1, scale), Math.min(scale, natural / rest.width));
     var w = rest.width * scale, h = rest.height * scale;
     var left = (innerWidth - w) / 2, top = (innerHeight - h - room) / 2;
@@ -136,8 +145,10 @@
       // Window captures carry a transparent shadow margin; the caption sits under the window.
       var inset = m.classList.contains('mac-shot') ? h * 0.04 : 0;
       caption.style.left = innerWidth / 2 + 'px';
-      caption.style.top = (top + h - inset + GAP) + 'px';
+      caption.style.top = (top + h - inset + PAD + GAP) + 'px';
     }
+
+    mount.style.cssText = 'left:' + (left - PAD) + 'px;top:' + (top - PAD) + 'px;width:' + (w + PAD * 2) + 'px;height:' + (h + PAD * 2) + 'px';
 
     // A stand-in holds its place in the page while it is away.
     var placeholder = document.createElement('span');
@@ -157,12 +168,13 @@
     m.classList.add('lightbox__media');
 
     shown = {
-      media: m, placeholder: placeholder, scrim: scrim, shade: shade, caption: caption, style: style, focus: document.activeElement,
+      media: m, placeholder: placeholder, scrim: scrim, shade: shade, mount: mount, caption: caption, style: style, focus: document.activeElement,
       offset: { x: rest.left - pr.left, y: rest.top - pr.top }, size: { w: w, h: h }, at: { x: left, y: top }
     };
 
     m.animate([{ transform: from(rect) }, { transform: 'none' }], { duration: OPEN_MS, easing: EASE });
     shade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FADE_MS, easing: EASE, fill: 'forwards' });
+    mount.animate([{ opacity: 0, transform: 'scale(0.97)' }, { opacity: 1, transform: 'none' }], { duration: reduce ? 0 : 420, delay: reduce ? 0 : 260, easing: 'ease-out', fill: 'backwards' });
     if (caption) caption.animate([
       { opacity: 0, filter: 'blur(8px)', transform: 'translateY(6px)' },
       { opacity: 1, filter: 'blur(0)', transform: 'none' }
@@ -199,6 +211,7 @@
     var back = s.media.animate([{ transform: 'none' }, { transform: from(home) }], { duration: CLOSE_MS, easing: EASE, fill: 'forwards' });
     if (s.caption) s.caption.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.5, easing: 'ease-in', fill: 'forwards' });
     s.shade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FADE_MS, easing: EASE, fill: 'forwards' });
+    s.mount.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.4, easing: 'ease-in', fill: 'forwards' });
     back.finished.then(function () {
       s.placeholder.replaceWith(s.media);
       s.media.classList.remove('lightbox__media');

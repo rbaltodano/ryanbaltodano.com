@@ -121,7 +121,7 @@ Use a consistent physical scale: ruler 600px, paperclip 70px, fern 200px wide,
 compass 280px, key 240px long, postage stamp and seal 64px, tape 140px. Keep at
 least 200px of the key visible so it reads larger than the seal. No CSS shadows.
 Desk objects stay static and do not use the reveal/settle observer. Phones retain the ruler and tape at
-smaller sizes. All remain decorative, noninteractive, dimmed at night, and clear
+smaller sizes. All remain decorative (the cursor knocks them; see below), dimmed at night, and clear
 of text/captures. Originals are in `assets/desk/src/` (git-ignored).
 
 ### Heading ink reveal
@@ -159,3 +159,26 @@ the shared button styles and theme colors; keep the wordmark full-sized.
 Use the shared 144px section gap for project separation, Experience padding, and
 Contact padding at every viewport size. Internal content spacing and decorative
 trail heights retain their own proportions.
+
+## Expedition journal interactions, 2026-11-03
+
+`js/journal.js` owns these; each degrades to plain content without JavaScript.
+
+- Desk objects get knocked: the cursor passing over an object's opaque pixels
+  (alpha hit test) pushes it up to 10px along the cursor's path, scaled by speed,
+  with up to 3 degrees of turn for off-centre hits, over 160ms; it returns over
+  0.75s on `cubic-bezier(0.55, 0, 0.17, 1)`. One knock per pass. Touch: a tap
+  knocks it away. Off under reduced motion.
+- Field map: a fixed dashed route in the left margin at 75rem and wider, with stops
+  for Opening, Angrove, inVectus, Experience, and Contact. A marker follows scroll;
+  the walked part turns accent. Labels show on hover or focus. Hidden at the top.
+- Marginalia: pencil notes (Caveat, `--pencil`) under a pull quote, a step, and a
+  design note per project. They write in on hover (touch: on scroll) and stay.
+  Notes are drafts paraphrasing existing copy; Ryan to approve wording.
+- Lightbox viewing table: paper ground (`--table`), the media on a mount with crop
+  marks and a scale, the caption as a label card.
+
+### Project lede
+
+Each project's one-line description sits under its wordmark, left-aligned at
+46ch. The label row above the wordmark holds only the exhibit label.
