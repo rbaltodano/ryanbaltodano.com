@@ -174,8 +174,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .project__dek { max-width: 46ch; text-align: right; color: var(--ink-2); }
 .project__visit { position: absolute; right: calc(var(--gutter) + 96px); bottom: 0; gap: 10px; white-space: nowrap; z-index: 2; }
 .project__title--action { padding-bottom: 64px; }
-.project__lede .project__dek { max-width: 46ch; margin-top: 32px; text-align: left; }
-.project__title--action + .project__lede .project__dek { margin-top: -24px; }
+.project__lede .project__dek { max-width: 46ch; margin-top: 64px; text-align: left; }
+.project__title--action + .project__lede .project__dek { margin-top: 48px; }
 .project__title { position: relative; margin-top: 24px; }
 .poster { font-size: var(--text-poster); line-height: 0.86; letter-spacing: -0.055em; color: var(--ink); margin-left: -0.04em; white-space: nowrap; max-width: none; }
 .project__title .stamp { position: absolute; top: 8%; right: var(--gutter); }
@@ -271,7 +271,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .project__head { flex-direction: column; gap: 12px; }
   .project__dek { text-align: left; }
   .project__title--action { padding-bottom: 0; }
-  .project__title--action + .project__lede .project__dek { margin-top: 32px; }
+  .project__title--action + .project__lede .project__dek { margin-top: 48px; }
   .project__title--action .project__visit { position: static; display: flex; width: fit-content; margin-top: 24px; }
   .project__title .stamp { position: relative; top: 0; right: 0; margin-top: 20px; display: inline-flex; }
   .project__intro .film--lead, .project__intro .project__story { grid-column: 1; grid-row: auto; }
