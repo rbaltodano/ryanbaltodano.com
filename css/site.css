@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261103123248");
-@import url("./base.css?v=20261103123248");
+@import url("./tokens.css?v=20261103123354");
+@import url("./base.css?v=20261103123354");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -75,7 +75,7 @@ p.label { margin-bottom: var(--space-md); }
 
 .section-head--flush { padding-bottom: 36px; }
 
-.record { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 56px; align-items: start; padding-block: 112px; }
+.record { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 56px; align-items: start; padding-block: var(--section-gap); }
 .catalogue { width: 100%; border-collapse: collapse; border-top: 1px solid var(--ink); }
 .catalogue th, .catalogue td { text-align: left; padding: 16px 16px 16px 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
 .catalogue thead th { font-family: var(--font-mono); font-size: var(--text-meta); font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-block: 12px; }
@@ -135,7 +135,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 @media (max-width: 60rem) {
   .nav__links a:not(.nav__keep) { display: none; }
   .record__plate { max-width: 340px; }
-  .record, .correspondence { padding-block: 80px; }
+  .record, .correspondence { padding-block: var(--section-gap); }
   .record, .correspondence { grid-template-columns: 1fr; gap: 36px; }
   body::after { left: calc(var(--gutter) - 14px); }
 }
@@ -195,7 +195,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .trail--down { margin-top: -40px; }
 
 /* Projects */
-.project { position: relative; padding-bottom: 160px; scroll-margin-top: 72px; }
+.project { position: relative; padding-bottom: var(--section-gap); scroll-margin-top: 72px; }
 .project__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; }
 .project__dek { max-width: 46ch; text-align: right; color: var(--ink-2); }
 .project__visit { position: absolute; right: calc(var(--gutter) + 96px); bottom: 0; gap: 10px; white-space: nowrap; z-index: 2; }
@@ -305,7 +305,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .steps--phone { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 24px; }
   .steps--desktop { grid-template-columns: 1fr; gap: 56px; }
   .notes-grid { grid-template-columns: 1fr; gap: 0; }
-  .project { padding-bottom: 112px; }
+  .project { padding-bottom: var(--section-gap); }
   .scribble { display: none; }
   .trail { height: 140px; }
 }
@@ -334,7 +334,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .lightbox__text { margin: 0; font: 400 var(--text-body) / 1.55 var(--font-body); color: rgba(242, 236, 224, 0.82); }
 
 /* Contact: a closing statement, the address large, a few facts */
-.contact { position: relative; padding-block: 72px 160px; }
+.contact { position: relative; padding-block: var(--section-gap); }
 .contact__inner { position: relative; }
 .contact__statement { font-size: var(--text-statement); line-height: 0.98; letter-spacing: -0.035em; max-width: none; }
 .contact__statement em { font-style: italic; color: var(--accent); }
@@ -354,7 +354,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 @keyframes dot-pulse { 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 .contact__stamp { top: 12px; right: var(--gutter); }
 @media (max-width: 60rem) {
-  .contact { padding-block: 48px 112px; }
+  .contact { padding-block: var(--section-gap); }
   .contact__body { grid-template-columns: 1fr; gap: 32px; margin-top: 40px; }
   .contact__email { justify-self: start; }
   .contact__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 48px; }

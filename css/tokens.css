@@ -14,7 +14,7 @@
   --ease-menu: cubic-bezier(0.55, 0, 0.17, 1);
   --dur-ink: 2000ms;
   --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
-  --container: 1320px; --gutter: 88px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 128px; --section-gap-l: 160px;
+  --container: 1320px; --gutter: 88px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 144px; --section-gap-l: 160px;
   --z-sticky-nav: 300;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);

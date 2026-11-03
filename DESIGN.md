@@ -152,3 +152,9 @@ The Angrove title block contains a filled primary “Visit Angrove” link. It s
 at the lower right beneath the large wordmark on desktop and follows the status
 stamp on phones. The summary above the title has no duplicate visit link. Reuse
 the shared button styles and theme colors; keep the wordmark full-sized.
+
+### Section spacing
+
+Use the shared 144px section gap for project separation, Experience padding, and
+Contact padding at every viewport size. Internal content spacing and decorative
+trail heights retain their own proportions.
