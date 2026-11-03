@@ -170,7 +170,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .project { position: relative; padding-bottom: var(--section-gap); scroll-margin-top: 72px; }
 .project__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; }
 .project__dek { max-width: 46ch; text-align: right; color: var(--ink-2); }
-.project__visit { position: absolute; right: calc(var(--gutter) + 96px); bottom: 0; gap: 10px; white-space: nowrap; z-index: 2; }
+.project__visit { display: flex; width: fit-content; margin-top: 32px; gap: 10px; white-space: nowrap; }
 .project__title--action { padding-bottom: 64px; }
 .project__lede .project__dek { max-width: 46ch; margin-top: 64px; text-align: left; }
 .project__title--action + .project__lede .project__dek { margin-top: 48px; }
@@ -270,7 +270,6 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .project__dek { text-align: left; }
   .project__title--action { padding-bottom: 0; }
   .project__title--action + .project__lede .project__dek { margin-top: 48px; }
-  .project__title--action .project__visit { position: static; display: flex; width: fit-content; margin-top: 24px; }
   .project__title .stamp { position: relative; top: 0; right: 0; margin-top: 20px; display: inline-flex; }
   .project__intro .film--lead, .project__intro .project__story { grid-column: 1; grid-row: auto; }
   .project__specimen { grid-column: 1; grid-row: auto; width: 150px; margin-top: 0; justify-self: start; }
