@@ -44,8 +44,6 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
     observer.unobserve(entry.target);
   });
   const io = new IntersectionObserver(reveal, { rootMargin: "0px 0px -12% 0px" });
-  // Edge decorations, including the footer seal, reveal as soon as they are visible.
-  const edges = new IntersectionObserver(reveal);
-  items.forEach((el) => (el.classList.contains("desk") ? edges : io).observe(el));
+  items.forEach((el) => io.observe(el));
 
 })();

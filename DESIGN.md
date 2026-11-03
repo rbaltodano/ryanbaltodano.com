@@ -117,9 +117,8 @@ key on the left after inVectus, tape on the right of Experience, wax seal at the
 left footer edge. The photo and shells illustration no longer hold these objects.
 
 Use a consistent physical scale: ruler 600px, paperclip 70px, fern 200px wide,
-compass 220px, key 240px long, postage stamp and seal 64px, tape 140px. Keep at
+compass 280px, key 240px long, postage stamp and seal 64px, tape 140px. Keep at
 least 200px of the key visible so it reads larger than the seal. No CSS shadows.
-Objects enter a short distance from their edge once, using the existing settle
-observer. Reduced motion shows them still. Phones retain the ruler and tape at
+Desk objects stay static and do not use the reveal/settle observer. Phones retain the ruler and tape at
 smaller sizes. All remain decorative, noninteractive, dimmed at night, and clear
 of text/captures. Originals are in `assets/desk/src/` (git-ignored).
