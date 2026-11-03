@@ -133,3 +133,12 @@ pinned upstream commit, and license are in `assets/motion/README.md`.
 Reduced motion, no JavaScript, or unsupported masking shows normal type. A failed
 sprite request still leaves readable headings when the 600ms animation ends.
 Desk objects remain static.
+
+### Navigation and iPhone safe areas
+
+The fixed header is flush to the viewport with an opaque paper background.
+`viewport-fit=cover` lets that background cover the status-bar area. Padding from
+`env(safe-area-inset-top)` keeps controls below the notch. Shared nav-height and
+safe-area tokens reserve the same space above the page and for anchor scrolling.
+Container gutters respect left/right safe areas in landscape; the page also
+reserves bottom safe-area space. No scroll-position JavaScript is involved.

@@ -1,9 +1,9 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261103065812");
-@import url("./base.css?v=20261103065812");
+@import url("./tokens.css?v=20261103071214");
+@import url("./base.css?v=20261103071214");
 
-html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
+body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
 
 body::before { content: ""; position: fixed; inset: 0; z-index: 1000; pointer-events: none; opacity: var(--grain-opacity); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode: multiply; }
 :root[data-theme="night"] body::before { mix-blend-mode: screen; }
@@ -17,7 +17,7 @@ a:hover { color: var(--accent); }
 ::selection { background: color-mix(in srgb, var(--accent) 22%, transparent); }
 
 .skip { position: absolute; left: 16px; top: -60px; z-index: 400; padding: 8px 12px; background: var(--ink); color: var(--paper); }
-.skip:focus { top: 12px; }
+.skip:focus { top: calc(var(--safe-top) + 12px); }
 
 .label { font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
 .label span { opacity: 0.6; margin-inline: 0.2em; }
@@ -32,8 +32,8 @@ p.label { margin-bottom: var(--space-md); }
 
 .band { background: var(--paper-2); border-block: 1px solid var(--rule); }
 
-.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); }
-.nav__inner { display: flex; align-items: center; gap: 40px; height: 64px; }
+.nav { position: fixed; inset: 0 0 auto; z-index: var(--z-sticky-nav); padding-top: var(--safe-top); background: var(--paper); border-bottom: 1px solid var(--rule); }
+.nav__inner { display: flex; align-items: center; gap: 40px; height: var(--nav-height); }
 .wordmark { font-family: var(--font-display); font-size: var(--text-body); font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
 .wordmark img { display: block; height: 40px; width: auto; translate: 0 3px; filter: var(--plate-filter); }
 .nav__links { display: flex; gap: 28px; margin-left: auto; }
@@ -378,7 +378,7 @@ html { overflow-x: clip; }
 }
 /* The heading and plate hold still while the record scrolls past */
 .record { grid-template-rows: auto; }
-.record__aside { grid-column: 1; grid-row: 1; position: sticky; top: 112px; }
+.record__aside { grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--nav-offset) + 48px); }
 .record__body { grid-row: 1; }
 @media (max-width: 60rem) {
   .record__aside { position: static; }
