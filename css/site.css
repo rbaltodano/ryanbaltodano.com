@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261103123354");
-@import url("./base.css?v=20261103123354");
+@import url("./tokens.css?v=20261103132437");
+@import url("./base.css?v=20261103132437");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -324,7 +324,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 
 /* Lightbox, after angrove.app: hover tilts toward the cursor, click grows the media to fill the screen */
 .lightbox-target { cursor: zoom-in; transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), scale 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-.lightbox-target.is-hovered { scale: 1.03; }
+.lightbox-target.is-hovered { scale: 1.01; }
 .lightbox-target:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .lightbox { position: fixed; inset: 0; z-index: 2147483002; cursor: zoom-out; outline: none; }
 .lightbox__shade { position: absolute; inset: 0; background: rgba(18, 15, 12, 0.86); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }

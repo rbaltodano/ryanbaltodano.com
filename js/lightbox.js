@@ -5,7 +5,7 @@
 // marked data-no-lightbox are left alone; an image linked to its own file opens here instead.
 // Under it sit its heading and a line about it: data-caption-title and data-caption, else the
 // figure's caption when the figure holds only this media, else its alt text.
-// On hover (mouse or trackpad) each one grows 5% and turns slightly to face the cursor.
+// On hover (mouse or trackpad) each one grows 1% and turns slightly to face the cursor.
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // The mobile menu's curve and timing (--ease-menu: 0.6s, its fade 0.45s), both ways.
@@ -13,7 +13,7 @@
   function margin() { return innerWidth < 600 ? 16 : 56; }   // around the enlarged media
   var GAP = 20;        // between it and its caption
   var OPEN_MS = reduce ? 0 : 600, CLOSE_MS = reduce ? 0 : 600, FADE_MS = reduce ? 0 : 450;
-  var TILT = 4;   // degrees at the edges: subtle
+  var TILT = 1.5; // degrees at the edges: a gentle response
 
   var IMAGE_FILE = /\.(jpe?g|png|webp|gif|avif)([?#]|$)/i;
   var media = Array.prototype.filter.call(document.querySelectorAll('img, video'), function (m) {

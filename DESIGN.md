@@ -85,7 +85,7 @@ ink; all skipped under reduced motion.
 - Paragraph text (`--ink-2`) is the heading ink at 75% opacity in both themes.
 - Videos and window captures have no outline ring, only a soft shadow.
 - `js/lightbox.js` is ported from angrove.app: media tilts toward the cursor and
-  grows 3% on hover; a click or Return opens it full screen with its figure
+  grows 1% on hover with a maximum 1.5° tilt; a click or Return opens it full screen with its figure
   caption; a click, Esc, or scroll returns it. Decorative images (empty alt) and
   the nav are excluded.
 - Trails march slowly (stroke-dashoffset) and also draw in with scroll; trails now
