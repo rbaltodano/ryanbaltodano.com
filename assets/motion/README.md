@@ -8,7 +8,7 @@ at commit `b7ca5a517290fea45eb052939346e6e7b6f8ecea`.
 · [License and copyright notice](https://codyhouse.co/mit)
 
 The original uses a 25-frame sprite for a page transition. This site adapts that
-technique as a CSS alpha mask over live HTML headings, at 1000ms with Angrove’s mobile-menu easing
+technique as a CSS alpha mask over live HTML headings, at 3000ms with Angrove’s mobile-menu easing
 (`cubic-bezier(0.55, 0, 0.17, 1)`). An animated registered integer selects whole
 sprite frames; blur follows the same curve. No jQuery or
 other runtime dependencies are imported. The mask only exists during the reveal.

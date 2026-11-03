@@ -126,14 +126,14 @@ of text/captures. Originals are in `assets/desk/src/` (git-ignored).
 ### Heading ink reveal
 
 Headings reveal once through CodyHouse’s MIT-licensed ink-spread alpha sprite,
-using 25 frames over 1000ms. The mask and a blur-to-sharp filter share Angrove’s
+using 25 frames over 3000ms. The mask and a blur-to-sharp filter share Angrove’s
 mobile-menu curve, `cubic-bezier(0.55, 0, 0.17, 1)`. A registered integer property
 selects whole sprite frames without sliding between images. No text shadow,
 movement, or layout change. The image is preloaded and hosted locally.
 The mask is removed at completion so the final type is completely sharp. Source,
 pinned upstream commit, and license are in `assets/motion/README.md`.
 Reduced motion, no JavaScript, or unsupported masking shows normal type. A failed
-sprite request still leaves readable headings when the 1000ms animation ends.
+sprite request still leaves readable headings when the 3000ms animation ends.
 Desk objects remain static.
 
 ### Navigation and iPhone safe areas
