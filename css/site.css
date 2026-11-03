@@ -140,13 +140,13 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 /* ==========================================================================
    Statements and exhibits: big serif type, a trail between sections, roomy projects
    ========================================================================== */
-.hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); padding-block: 88px 0; }
+.hero { --portrait: clamp(220px, 22vw, 300px); position: relative; display: grid; grid-template-columns: minmax(0, 1fr); padding-block: 88px 0; }
 .hero__kicker { grid-column: 1 / -1; }
-.statement { grid-column: 1; position: relative; z-index: 1; margin-top: 8px; font-size: var(--text-statement); line-height: 0.98; letter-spacing: -0.035em; color: var(--ink); max-width: none; padding-right: calc(220px + 48px); }
+.statement { grid-column: 1; position: relative; z-index: 1; margin-top: 8px; font-size: var(--text-statement); line-height: 0.98; letter-spacing: -0.035em; color: var(--ink); max-width: none; padding-right: calc(var(--portrait) + 48px); }
 .statement__line { display: block; overflow: hidden; padding-bottom: 0.2em; margin-bottom: -0.2em; }
 .statement__line > span { display: inline-block; }
 .statement em { font-style: italic; color: var(--accent); }
-.hero__portrait { position: absolute; top: 120px; right: var(--gutter); width: 220px; rotate: 4deg; }
+.hero__portrait { position: absolute; top: 120px; right: var(--gutter); width: var(--portrait); rotate: 4deg; }
 .hero__portrait img { filter: none; }
 .hero__portrait figcaption { padding: 10px 4px 2px; text-align: center; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--ink-2); }
 .hero__foot { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); gap: 32px 48px; margin-top: 72px; padding-bottom: 40px; }
