@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261103102949");
-@import url("./base.css?v=20261103102949");
+@import url("./tokens.css?v=20261103110503");
+@import url("./base.css?v=20261103110503");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -245,33 +245,31 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .notes-grid .project-note { border-top: 0; }
 .notes-grid .project-note h4 { margin-top: 24px; }
 
-/* Integer interpolation selects complete sprite frames along the menu curve. */
-@property --ink-frame { syntax: "<integer>"; inherits: false; initial-value: 0; }
-
 /* Micro-interactions (all skipped under reduced motion and without JavaScript) */
 .text-link { background: linear-gradient(var(--accent), var(--accent)) left bottom / 0 1px no-repeat; transition: background-size var(--dur-long) var(--ease-out), border-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
 .text-link:hover { background-size: 100% 1px; border-color: transparent; }
 @media (prefers-reduced-motion: no-preference) {
-  /* Adapted from CodyHouse Ink Transition Effect (25-frame alpha sprite).
-     Copyright (c) 2014-2026 Amber Creative. License: https://codyhouse.co/mit
-     Source and full notice: assets/motion/README.md */
-  @supports (mask-image: url("")) or (-webkit-mask-image: url("")) {
+  @supports (mask-image: radial-gradient(black, transparent)) or (-webkit-mask-image: radial-gradient(black, transparent)) {
     .js [data-ink] { opacity: 0; }
     .js [data-ink].is-in { opacity: 1; animation: ink-reveal var(--dur-ink) var(--ease-menu) backwards; }
     @keyframes ink-reveal {
       0%, 100% {
-        -webkit-mask-image: url("../assets/motion/ink-reveal.png");
-        mask-image: url("../assets/motion/ink-reveal.png");
+        -webkit-mask-image:
+          radial-gradient(ellipse at center, #000 40%, transparent 72%),
+          radial-gradient(ellipse at center, #000 40%, transparent 72%),
+          radial-gradient(ellipse at center, #000 40%, transparent 72%);
+        mask-image:
+          radial-gradient(ellipse at center, #000 40%, transparent 72%),
+          radial-gradient(ellipse at center, #000 40%, transparent 72%),
+          radial-gradient(ellipse at center, #000 40%, transparent 72%);
         -webkit-mask-repeat: no-repeat;
         mask-repeat: no-repeat;
-        -webkit-mask-size: 2500% 100%;
-        mask-size: 2500% 100%;
         mask-mode: alpha;
-        -webkit-mask-position: calc(var(--ink-frame) * 100% / 24) 50%;
-        mask-position: calc(var(--ink-frame) * 100% / 24) 50%;
+        -webkit-mask-position: 12% 35%, 48% 70%, 85% 25%;
+        mask-position: 12% 35%, 48% 70%, 85% 25%;
       }
-      0% { --ink-frame: 0; filter: blur(clamp(1px, 0.035em, 8px)); }
-      100% { --ink-frame: 24; filter: blur(0); }
+      0% { -webkit-mask-size: 0% 0%; mask-size: 0% 0%; opacity: 0; filter: blur(clamp(1px, 0.035em, 8px)); }
+      100% { -webkit-mask-size: 300% 300%; mask-size: 300% 300%; opacity: 1; filter: blur(0); }
     }
   }
   .js [data-rise] { translate: 0 105%; transition: translate 1000ms var(--ease-out); }

@@ -1,3 +1,5 @@
+> Archived reference asset. The live heading reveal now uses continuous CSS gradient masks; this sprite is no longer loaded.
+
 # Ink heading reveal
 
 `ink-reveal.png` is the unmodified `img/ink.png` asset from CodyHouse’s
