@@ -168,7 +168,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
    ========================================================================== */
 .hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); padding-block: 88px 0; }
 .hero__kicker { grid-column: 1 / -1; }
-.statement { grid-column: 1; position: relative; z-index: 1; margin-top: 8px; font-size: var(--text-statement); line-height: 0.98; letter-spacing: -0.035em; color: var(--ink); max-width: none; }
+.statement { grid-column: 1; position: relative; z-index: 1; margin-top: 8px; font-size: var(--text-statement); line-height: 0.98; letter-spacing: -0.035em; color: var(--ink); max-width: none; padding-right: calc(220px + 48px); }
 .statement__line { display: block; overflow: hidden; padding-bottom: 0.2em; margin-bottom: -0.2em; }
 .statement__line > span { display: inline-block; }
 .statement em { font-style: italic; color: var(--accent); }
@@ -289,6 +289,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 
 @media (max-width: 60rem) {
   .hero { padding-top: 56px; }
+  .statement { padding-right: 0; }
   .hero__portrait { position: relative; top: auto; right: auto; justify-self: start; width: 200px; margin-top: 40px; grid-row: 4; }
   .hero__foot { grid-template-columns: 1fr; gap: 28px; margin-top: 48px; }
   .project__head { flex-direction: column; gap: 12px; }
