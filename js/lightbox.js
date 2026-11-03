@@ -52,6 +52,9 @@
     var r = m.getBoundingClientRect();
     var nx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
     var ny = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height) * 2 - 1));
+    // Reduce cursor influence near the center instead of tracking every movement directly.
+    nx *= Math.abs(nx);
+    ny *= Math.abs(ny);
     m.style.setProperty('--tilt-y', (nx * TILT).toFixed(2) + 'deg');
     m.style.setProperty('--tilt-x', (-ny * TILT).toFixed(2) + 'deg');
     m.classList.add('is-hovered');
