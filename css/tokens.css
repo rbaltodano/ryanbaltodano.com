@@ -11,6 +11,8 @@
   --text-body: 1rem;
   --text-meta: 0.75rem;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-menu: cubic-bezier(0.55, 0, 0.17, 1);
+  --dur-ink: 1000ms;
   --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
   --container: 1320px; --gutter: 88px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 128px; --section-gap-l: 160px;
   --z-sticky-nav: 300;
