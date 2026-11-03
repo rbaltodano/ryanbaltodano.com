@@ -112,7 +112,7 @@ On desktop the left column (heading + plate) is sticky at 112px while the right 
 Objects peek in from alternating page edges at irregular, fixed positions; do not
 randomize on reload. Paperclip at the left hero edge, postage stamp on the right
 of the opening trail, ruler on the right between Angrove’s feature and notes,
-fern on the right after Angrove, compass on the right before inVectus’s workflow,
+fern turned sideways beneath Angrove’s title at the right edge, compass in the matching space beneath inVectus’s title at the right edge,
 key on the left after inVectus, tape on the right of Experience, wax seal at the
 left footer edge. The photo and shells illustration no longer hold these objects.
 

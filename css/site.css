@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261102192726");
-@import url("./base.css?v=20261102192726");
+@import url("./tokens.css?v=20261102193410");
+@import url("./base.css?v=20261102193410");
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -217,9 +217,9 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .scribble svg { width: 64px; height: 48px; margin-top: 10px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 
 .project__kicker { font-family: var(--font-mono); font-size: var(--text-meta); font-weight: 400; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-/* Lead capture on the left half; the story starts halfway down it (the captures are about 0.62 tall, so 31% of the column width) */
-.project__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: start; margin-top: 72px; }
-.project__story { display: grid; gap: 64px; padding-top: 31.2%; }
+/* The story starts below the edge specimen, beside the lead capture. */
+.project__intro { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: start; margin-top: 72px; }
+.project__story { display: grid; gap: 64px; padding-top: max(31.2%, 240px); }
 .project__links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 28px; }
 .project__pull { margin: 0; padding-top: 28px; border-top: 1px solid var(--ink); }
 .project__pull p { font-size: var(--text-heading); line-height: 1.2; letter-spacing: -0.02em; color: var(--ink); font-style: italic; }
@@ -378,11 +378,8 @@ html { overflow-x: clip; }
 .desk-rest .desk { position: absolute; }
 .desk--ruler { width: 600px; right: -100px; top: 60px; rotate: -8deg; }
 .desk-rest--ruler + .project__notes { margin-top: 48px; }
-.desk-rest--fern { height: 550px; }
-.desk--fern { width: 200px; right: -72px; top: 32px; rotate: 12deg; }
-.desk-rest--compass { height: 500px; }
-.desk--compass { width: 280px; right: -64px; top: 30px; rotate: -18deg; }
-.desk-rest--compass + .project__steps { margin-top: 48px; }
+.desk--fern { width: 200px; right: calc((100% - 100vw) / 2 - 100px); top: -160px; rotate: 90deg; }
+.desk--compass { width: 280px; right: calc((100% - 100vw) / 2 - 100px); top: -136px; rotate: 90deg; }
 .desk--key { width: 240px; left: -30px; top: 48px; rotate: -16deg; }
 .project:has(> .desk-rest:last-child) { padding-bottom: 64px; }
 .record__plate.plate--taped::before { display: none; }
