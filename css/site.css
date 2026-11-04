@@ -36,8 +36,8 @@ p.label { margin-bottom: var(--space-md); }
 
 .nav { position: fixed; inset: 0 0 auto; z-index: var(--z-sticky-nav); padding-top: var(--safe-top); background: var(--paper); border-bottom: 1px solid var(--rule); }
 .nav__inner { display: flex; align-items: center; gap: 40px; height: var(--nav-height); }
-.wordmark { font-family: var(--font-display); font-size: var(--text-body); font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
-.wordmark img { display: block; height: 40px; width: auto; translate: 0 3px; filter: var(--plate-filter); }
+.wordmark { display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; font-family: var(--font-display); font-size: var(--text-body); font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+.wordmark img { display: block; height: 40px; width: auto; }
 .nav__links { display: flex; gap: 28px; margin-left: auto; }
 .nav__links a { font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); text-decoration: none; }
 .nav__links a:hover { color: var(--accent); }
@@ -117,7 +117,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 }
 @media (max-width: 40rem) {
   .nav__inner { gap: 16px; }
-  .wordmark img { height: 30px; translate: 0 2px; }
+  .wordmark img { height: 30px; }
+  .wordmark__name { display: none; }
   .nav__links { gap: 16px; }
   .footer { flex-direction: column; }
   .stamp { position: relative; top: 0; right: 0; margin-bottom: 18px; }
@@ -144,7 +145,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .statement em { font-style: italic; color: var(--accent); }
 .hero__portrait { position: absolute; top: 120px; right: var(--gutter); width: var(--portrait); rotate: 4deg; }
 .hero__portrait img { filter: none; }
-.hero__portrait figcaption { padding: 10px 4px 2px; text-align: center; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--ink-2); }
+.snapshot figcaption { padding: 10px 4px 2px; text-align: center; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--ink-2); }
 .hero__foot { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); gap: 32px 48px; margin-top: 72px; padding-bottom: 40px; }
 .hero__foot > * { grid-column: 1; }
 .hero__intro p + p { margin-top: 14px; }
@@ -312,8 +313,10 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .contact__lead { max-width: 48ch; }
 .contact__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .contact__actions .button { gap: 10px; }
-.contact__photo { margin: 0; }
-.contact__photo img { width: 100%; height: auto; filter: grayscale(1); box-shadow: 0 10px 24px -14px rgba(46, 33, 23, 0.45); }
+.contact__photo { margin: 12px 8px; width: calc(100% - 16px); max-width: 420px; padding: 16px 16px 0; background: #fffdf8; box-shadow: 0 3px 6px rgba(35, 26, 18, 0.12), 0 18px 32px -12px rgba(35, 26, 18, 0.3); rotate: 3deg; }
+.contact__photo::before { display: none; }
+.contact__photo > img:first-child { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: center; filter: grayscale(1); }
+.contact__photo figcaption { display: grid; place-items: center; min-height: 80px; padding: 16px 4px 20px; color: #463b30; }
 .contact__stamp { top: 12px; right: var(--gutter); }
 @media (max-width: 60rem) {
   .contact { padding-block: var(--section-gap-s); }
@@ -329,6 +332,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 /* Experience sits on ruled notebook paper, laid out like an exhibit */
 html { overflow-x: clip; }
 .record { position: relative; isolation: isolate; padding-block: var(--section-gap); }
+@media (max-width: 60rem) { .record { padding-block: var(--section-gap-s); } }
 .record::before { content: ""; position: absolute; z-index: -1; inset: 0 calc(50% - 50vw); background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat-y; background-size: 100% 32px; border-block: 1px solid var(--rule); }
 
 /* Fixed, irregular edge placements keep the scatter stable and away from content.
@@ -444,7 +448,7 @@ html { overflow-x: clip; }
 .draft__smudge { position: absolute; border-radius: 40%; background: radial-gradient(closest-side, var(--rule), transparent); filter: blur(4px); opacity: 0; }
 
 /* The portrait is slid in from the right, then placed, and a paperclip pins its top right. */
-.hero__portrait .hero__clip { position: absolute; z-index: 3; top: 6px; right: 6px; width: 54px; height: auto; rotate: 98deg; pointer-events: none; }
+.hero__portrait .hero__clip, .contact__photo .contact__clip { position: absolute; z-index: 3; top: 6px; right: 6px; width: 54px; height: auto; rotate: 98deg; pointer-events: none; }
 :root[data-theme="night"] .hero__clip { filter: brightness(0.82); }
 @media (prefers-reduced-motion: no-preference) {
   .js:not(.is-placed) .hero__portrait:not(.is-sliding):not(.is-landed) { visibility: hidden; }

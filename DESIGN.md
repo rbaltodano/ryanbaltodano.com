@@ -274,3 +274,26 @@ and openness to relocation, followed by Email me, GitHub, and Résumé PDF butto
 The original black-and-white rooftop photo (`assets/img/hero-skyline.jpg`) sits
 to the right on desktop and below the actions on smaller screens. The separate
 facts grid and oversized email address are removed; the availability stamp stays.
+
+The opening gap above Angrove keeps its spacing and postage stamp, with no dotted
+line or Eye trail label.
+
+External website links open in a new tab with `target="_blank"` and `rel="noopener"`.
+
+
+The transition into Experience also has no dotted trail or Eye trail label.
+Experience uses equal top and bottom padding, matching Contact’s responsive
+144/80/56px spacing. Keep the brass key after inVectus. The rooftop photo uses
+the shared snapshot paper frame, shadow, handwritten caption, and a paperclip,
+with a slight rotation like the masthead portrait; the photo stays black and white.
+
+### RB identity
+
+The supplied RB monogram replaces the acorn identity. Its original 512px PNG
+lives at `assets/brand/rb-monogram.png`; the header pairs it with the name on
+wider screens and uses the mark alone on phones. Favicons (32px and 512px) and
+the 180px Apple touch icon are generated from that same source.
+
+The rooftop Polaroid has a square, centered black-and-white crop, an ivory-white
+16px frame, and an 80px caption border at the bottom. Its paper remains light
+in both themes, with dark handwriting and a more visible cast shadow.
