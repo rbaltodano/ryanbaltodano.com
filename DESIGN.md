@@ -97,7 +97,7 @@ ink; all skipped under reduced motion.
 
 ### Trails, revised
 
-Each dotted trail draws in once, right to left (between Angrove and inVectus the compass rules a straight line instead; see below), the first time it enters the viewport (a 1.6s clip-path wipe), then stays static. No idle marching. Reduced motion shows them fully drawn.
+Each dotted trail draws in once, right to left (between Angrove and inVectus the compass rules a straight line instead, left to right; see below), the first time it enters the viewport (a 1.6s clip-path wipe), then stays static. No idle marching. Reduced motion shows them fully drawn.
 
 ### Experience on ruled paper
 
@@ -228,9 +228,9 @@ the clip. A head-script timeout reveals it after 8s.
 
 Between Angrove and inVectus there is no dotted trail: a straight 1px ink rule spans
 the content width just above inVectus's label. When it is 60% in view, the drafting compass enters from the
-right edge to the rule's right end, then rides it to the left with its point on
-the line, leaning about -18 degrees with a slight rock, while a mask reveals the
-dashes behind it (1.7s). It then runs off the left of the page and, once its resting
+left edge to the rule's left end, then rides it to the right with its point on
+the line, leaning about 18 degrees with a slight rock, while a mask reveals the
+line behind it (1.7s). It then runs off the right of the page and, once its resting
 place beside the inVectus title is on screen, slides in from the right with
 friction to rest. Skipped with reduced motion, on screens where the compass is
 hidden, or when the trail is already on screen at load.

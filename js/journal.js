@@ -139,9 +139,9 @@
     requestAnimationFrame(() => requestAnimationFrame(place));
   })();
 
-  // The drafting compass rules the line over inVectus. It rides the line from its right end to its
-  // left, leaning into the stroke with its point on the line as the dashes appear behind it, runs
-  // off the left of the page, then slides in from the right to rest beside the inVectus title.
+  // The drafting compass rules the line over inVectus. It rides the line from its left end to its
+  // right, leaning into the stroke with its point on the line as the line appears behind it, runs
+  // off the right of the page, then slides back in from the right to rest beside the inVectus title.
   (() => {
     const trail = document.querySelector(".trail--compass");
     const compass = document.querySelector(".desk--compass");
@@ -149,7 +149,7 @@
     if (trail.getBoundingClientRect().top < innerHeight) return;   // already passed: leave both as they are
     const SVGNS = "http://www.w3.org/2000/svg";
     const svg = trail.querySelector("svg"), line = svg.querySelector("path");
-    // A mask with the same route, revealed from its far (right) end toward its start.
+    // A mask with the same route, revealed from its start (left) toward its far end.
     const mask = document.createElementNS(SVGNS, "mask");
     mask.id = "compass-trail";
     mask.setAttribute("maskUnits", "userSpaceOnUse");
@@ -163,7 +163,7 @@
     reveal.setAttribute("stroke-width", "40");
     reveal.setAttribute("pathLength", "1");
     reveal.setAttribute("stroke-dasharray", "1 1");
-    reveal.setAttribute("stroke-dashoffset", "-1");
+    reveal.setAttribute("stroke-dashoffset", "1");
     mask.append(reveal);
     svg.prepend(mask);
     line.setAttribute("mask", "url(#compass-trail)");
@@ -201,20 +201,20 @@
 
     const draw = async () => {
       const home = rest();
-      const start = pointAt(1), lean = -18;
+      const start = pointAt(0), lean = 18;
       compass.classList.remove("is-away");
-      // In from the right edge to the start of the line.
-      const enter = { x: document.documentElement.clientWidth + compass.offsetWidth + scrollX, y: start.y - 40 };
+      // In from the left edge to the start of the line.
+      const enter = { x: -compass.offsetWidth + scrollX - 40, y: start.y - 40 };
       await run(380, easeOut, (k) => pose(home, { x: enter.x + (start.x - enter.x) * k, y: enter.y + (start.y - enter.y) * k }, lean + 6 * (1 - k)));
-      // Draw, right to left.
+      // Draw, left to right.
       await run(1700, inOut, (k) => {
-        reveal.setAttribute("stroke-dashoffset", (-(1 - k)).toFixed(4));
-        pose(home, pointAt(1 - k), lean + 3 * Math.sin(k * Math.PI * 3));
+        reveal.setAttribute("stroke-dashoffset", (1 - k).toFixed(4));
+        pose(home, pointAt(k), lean + 3 * Math.sin(k * Math.PI * 3));
       });
       reveal.setAttribute("stroke-dashoffset", "0");
-      // Off the left of the page.
-      const end = pointAt(0), exitX = -compass.offsetWidth + scrollX - 40;
-      await run(520, easeIn, (k) => pose(home, { x: end.x + (exitX - end.x) * k, y: end.y - 30 * k }, lean - 10 * k));
+      // Off the right of the page.
+      const end = pointAt(1), exitX = document.documentElement.clientWidth + compass.offsetWidth + scrollX + 40;
+      await run(520, easeIn, (k) => pose(home, { x: end.x + (exitX - end.x) * k, y: end.y - 30 * k }, lean + 10 * k));
       compass.classList.add("is-away");
       compass.style.removeProperty("translate");
       compass.style.removeProperty("transform");
