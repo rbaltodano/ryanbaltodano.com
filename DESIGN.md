@@ -182,3 +182,7 @@ trail heights retain their own proportions.
 
 Each project's one-line description sits under its wordmark, left-aligned at
 46ch. The label row above the wordmark holds only the exhibit label.
+
+### Phone portrait
+
+At 60rem and below the hero portrait sits right-aligned under the statement.

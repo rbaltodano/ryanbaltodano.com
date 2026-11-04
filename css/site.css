@@ -264,7 +264,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 @media (max-width: 60rem) {
   .hero { padding-top: 56px; }
   .statement { padding-right: 0; }
-  .hero__portrait { position: relative; top: auto; right: auto; justify-self: start; width: 200px; margin-top: 40px; grid-row: 4; }
+  .hero__portrait { position: relative; top: auto; right: auto; justify-self: end; width: 200px; margin-top: 40px; grid-row: 4; }
   .hero__foot { grid-template-columns: 1fr; gap: 28px; margin-top: 48px; }
   .project__head { flex-direction: column; gap: 12px; }
   .project__dek { text-align: left; }
