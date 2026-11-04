@@ -3,7 +3,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 // One persistent scene per print, on the page and while inspecting it. Both
 // faces and the cut edge share a bend; the photo's gloss coat only shows
-// while the print is open for inspection.
+// once the open print is turned in 3D.
 export async function createInspector(photo, image, host, reduce) {
   await image.decode();
   await document.fonts.ready;
@@ -144,7 +144,7 @@ export async function createInspector(photo, image, host, reduce) {
   edgeGeometry.computeVertexNormals();
   group.add(new THREE.Mesh(edgeGeometry, edgeMaterial));
   scene.add(group);
-  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false, shine = 0;
+  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false, shine = 0, turned = false;
   let baseDistance = 10, side = 1, view = null;
   const corner = new THREE.Vector3();
   group.rotation.set(targetX, targetY, -0.025, 'YXZ');
@@ -169,7 +169,7 @@ export async function createInspector(photo, image, host, reduce) {
       }
     }
     camera.position.z += (distance - camera.position.z) * (distance > camera.position.z ? 1 : smoothing);
-    const gloss = view ? 0.75 : 0;
+    const gloss = view && turned ? 0.75 : 0;
     shine += (gloss - shine) * (reduce ? 1 : 0.12);
     if (Math.abs(gloss - shine) < 0.001) shine = gloss;
     frontMaterial.clearcoat = Math.max(0.001, shine);
@@ -206,6 +206,7 @@ export async function createInspector(photo, image, host, reduce) {
       requestDraw();
     },
     setRotation(x, y) {
+      turned = x !== 0 || y !== 0;
       targetX = THREE.MathUtils.degToRad(x) - 0.09;
       targetY = THREE.MathUtils.degToRad(y) - 0.16;
       requestDraw();
