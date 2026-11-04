@@ -362,15 +362,15 @@
       if (!photo.contains(e.target) && !(state.inspector && e.target === state.inspector.canvas)) return;
       if (!state.rotationReady || state.closing || drag || !e.isPrimary || e.button !== 0) return;
       e.preventDefault();
-      drag = { id: e.pointerId, x: e.clientX, y: e.clientY };
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, horizontalSign: e.pointerType === 'touch' ? 1 : -1 };
       scrim.setPointerCapture(e.pointerId);
       photo.classList.add('is-rotating');
       scrim.classList.add('is-rotating');
     }, options);
     scrim.addEventListener('pointermove', function (e) {
       if (!drag || e.pointerId !== drag.id) return;
-      // The near face follows the finger or cursor.
-      y -= (e.clientX - drag.x) * 0.45;
+      // Touch turns with a horizontal swipe; preserve the mouse mapping and vertical axis.
+      y += (e.clientX - drag.x) * 0.45 * drag.horizontalSign;
       x += (e.clientY - drag.y) * 0.45;
       drag.x = e.clientX;
       drag.y = e.clientY;
