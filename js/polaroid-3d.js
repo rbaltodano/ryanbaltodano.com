@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 // One persistent scene per print, on the page and while inspecting it. Both
-// faces and the cut edge share a bend; the photo has its own coating maps.
+// faces and the cut edge share a bend; the photo's gloss coat only shows
+// while the print is open for inspection.
 export async function createInspector(photo, image, host, reduce) {
   await image.decode();
   await document.fonts.ready;
@@ -100,7 +101,7 @@ export async function createInspector(photo, image, host, reduce) {
   }
   const frontMaterial = new THREE.MeshPhysicalMaterial({
     map: texture(front, true), roughnessMap: texture(rough), roughness: 0.8,
-    clearcoat: 0.75, clearcoatMap: texture(gloss), clearcoatRoughness: 0.24,
+    clearcoat: 0.001, clearcoatMap: texture(gloss), clearcoatRoughness: 0.24,
     metalness: 0, ior: 1.46, envMapIntensity: 0.35
   });
   const backMaterial = new THREE.MeshStandardMaterial({
@@ -143,7 +144,7 @@ export async function createInspector(photo, image, host, reduce) {
   edgeGeometry.computeVertexNormals();
   group.add(new THREE.Mesh(edgeGeometry, edgeMaterial));
   scene.add(group);
-  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false;
+  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false, shine = 0;
   let baseDistance = 10, side = 1, view = null;
   const corner = new THREE.Vector3();
   group.rotation.set(targetX, targetY, -0.025, 'YXZ');
@@ -168,8 +169,12 @@ export async function createInspector(photo, image, host, reduce) {
       }
     }
     camera.position.z += (distance - camera.position.z) * (distance > camera.position.z ? 1 : smoothing);
+    const gloss = view ? 0.75 : 0;
+    shine += (gloss - shine) * (reduce ? 1 : 0.12);
+    if (Math.abs(gloss - shine) < 0.001) shine = gloss;
+    frontMaterial.clearcoat = Math.max(0.001, shine);
     renderer.render(scene, camera);
-    if (Math.abs(targetX - group.rotation.x) + Math.abs(targetY - group.rotation.y) + Math.abs(distance - camera.position.z) > 0.0001) frame = requestAnimationFrame(draw);
+    if (Math.abs(targetX - group.rotation.x) + Math.abs(targetY - group.rotation.y) + Math.abs(distance - camera.position.z) + Math.abs(gloss - shine) > 0.0001) frame = requestAnimationFrame(draw);
   }
   function requestDraw() { if (!frame && !disposed) frame = requestAnimationFrame(draw); }
   function resize() {
