@@ -313,10 +313,9 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .contact__lead { max-width: 48ch; }
 .contact__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .contact__actions .button { gap: 10px; }
-.contact__photo { margin: 12px 8px; width: calc(100% - 16px); max-width: 420px; padding: 16px 16px 0; background: #fffdf8; box-shadow: 0 3px 6px rgba(35, 26, 18, 0.12), 0 18px 32px -12px rgba(35, 26, 18, 0.3); rotate: 3deg; }
+.contact__photo { margin: 12px 8px; width: calc(100% - 16px); max-width: 420px; padding: 16px 16px 80px; background: #fffdf8; box-shadow: 0 3px 6px rgba(35, 26, 18, 0.12), 0 18px 32px -12px rgba(35, 26, 18, 0.3); rotate: 3deg; }
 .contact__photo::before { display: none; }
 .contact__photo > img:first-child { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: center; filter: grayscale(1); }
-.contact__photo figcaption { display: grid; place-items: center; min-height: 80px; padding: 16px 4px 20px; color: #463b30; }
 .contact__stamp { top: 12px; right: var(--gutter); }
 @media (max-width: 60rem) {
   .contact { padding-block: var(--section-gap-s); }

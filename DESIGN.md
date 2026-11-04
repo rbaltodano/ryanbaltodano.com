@@ -284,7 +284,7 @@ External website links open in a new tab with `target="_blank"` and `rel="noopen
 The transition into Experience also has no dotted trail or Eye trail label.
 Experience uses equal top and bottom padding, matching Contact’s responsive
 144/80/56px spacing. Keep the brass key after inVectus. The rooftop photo uses
-the shared snapshot paper frame, shadow, handwritten caption, and a paperclip,
+the shared snapshot paper frame, shadow, and a paperclip,
 with a slight rotation like the masthead portrait; the photo stays black and white.
 
 ### RB identity
@@ -295,5 +295,5 @@ wider screens and uses the mark alone on phones. Favicons (32px and 512px) and
 the 180px Apple touch icon are generated from that same source.
 
 The rooftop Polaroid has a square, centered black-and-white crop, an ivory-white
-16px frame, and an 80px caption border at the bottom. Its paper remains light
-in both themes, with dark handwriting and a more visible cast shadow.
+16px frame, and an 80px blank border at the bottom, without a caption. Its
+paper remains light in both themes, with a more visible cast shadow.
