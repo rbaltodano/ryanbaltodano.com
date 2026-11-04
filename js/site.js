@@ -47,3 +47,39 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   items.forEach((el) => io.observe(el));
 
 })();
+
+// The opening statement comes in a letter at a time once the opening is released (after the
+// portrait's first move). Each letter is its own span with its place in --i; the heading keeps its
+// aria-label, so it still reads as one line. While drafting, the letters wait as outlines and fill
+// with ink in the same order.
+(() => {
+  const root = document.documentElement;
+  const statement = document.querySelector(".hero .statement");
+  if (!statement || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let i = 0;
+  const split = (node) => [...node.childNodes].forEach((child) => {
+    if (child.nodeType === 1) return split(child);
+    if (child.nodeType !== 3) return;
+    const frag = document.createDocumentFragment();
+    for (const ch of child.textContent) {
+      if (/\s/.test(ch)) { frag.append(ch); continue; }
+      const letter = document.createElement("span");
+      letter.className = "letter";
+      letter.style.setProperty("--i", i++);
+      letter.textContent = ch;
+      frag.append(letter);
+    }
+    child.replaceWith(frag);
+  });
+  split(statement);
+  statement.classList.add("is-lettered");
+  const spell = () => statement.classList.add("is-spelled");
+  if (!root.classList.contains("is-awaiting-photo")) return requestAnimationFrame(spell);
+  const watch = new MutationObserver(() => {
+    if (root.classList.contains("is-awaiting-photo")) return;
+    watch.disconnect();
+    spell();
+  });
+  watch.observe(root, { attributes: true, attributeFilter: ["class"] });
+  setTimeout(spell, 4500);
+})();

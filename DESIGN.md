@@ -112,16 +112,15 @@ On desktop the left column (heading + plate) is sticky at 112px while the right 
 
 Objects peek in from alternating page edges at irregular, fixed positions; do not
 randomize on reload. Postage stamp on the right
-of the opening trail, ruler on the right between Angrove’s feature and notes,
+of the opening trail, ruler below the inVectus orbits illustration, 75% beyond the left edge and tilted 12° clockwise,
 fern rotated −45° beneath Angrove’s title at the right edge, compass rotated −45° in the matching space beneath inVectus’s title at the right edge,
 key on the left after inVectus, tape on the right of Experience, wax seal at the
 left footer edge. The photo and shells illustration no longer hold these objects.
 
-Use a consistent physical scale: ruler 600px, paperclip 46px (on the portrait), fern 200px wide,
+Use a consistent physical scale: ruler at the content width, paperclip 54px (on the portrait), fern 200px wide,
 compass 280px, key 240px long, postage stamp and seal 64px, tape 140px. Keep at
 least 200px of the key visible so it reads larger than the seal. No CSS shadows.
-Desk objects stay static and do not use the reveal/settle observer. Phones retain the ruler and tape at
-smaller sizes. All remain decorative (the cursor knocks them; see below), dimmed at night, and clear
+Desk objects stay static except for the compass and ruler drawing sequence. Phones retain the content-width ruler and smaller tape. All remain decorative (the cursor knocks them; see below), dimmed at night, and clear
 of text/captures. Originals are in `assets/desk/src/` (git-ignored).
 
 ### Heading ink reveal
@@ -212,25 +211,55 @@ block that fails to draft shows normally.
 
 ### Portrait arrival
 
-On load, without waiting for the drafted opening, the portrait slides in above
-everything (z-index 400, over the nav) on a diagonal from below the bottom right
-corner of the screen, turning from its 4 degrees to 8, and comes to rest centred on
-the page 40px below its line (1.1s, `cubic-bezier(0.16, 1, 0.3, 1)`). It is then
-dragged into place by hand in two moves on the menu curve: most of the way, to 16%
-of the distance short and 2.4 degrees overall (620ms), then after a 140ms beat a
-final nudge to its place at 4 degrees (420ms). A paperclip (46px, rotated 84
-degrees) then slides down over the top right corner to pin it, and the photo dips
-under it. The drafted opening draws no outline for the portrait. Once per page
-load. Reduced motion, or the portrait off screen at load, shows it in place with
-the clip. A head-script timeout reveals it after 8s.
+On load the portrait is slid up above everything (z-index 400, over the nav) from
+below the bottom centre of the screen, turning from its 4 degrees to 8, to rest in
+the middle of the viewport (1.1s, `cubic-bezier(0.16, 1, 0.3, 1)`). The rest of the
+opening is hidden (`html.is-awaiting-photo`) until the portrait's first move after
+that; then it appears, or drafts on a first visit. The portrait is then moved by
+hand on the menu curve: diagonally down and to the right (620ms), up into its place
+still at 7.5 degrees (560ms), and finally turned to its 4 degrees (380ms), with
+short beats between. A paperclip (54px, rotated 98 degrees, 6px from the corner and set deep
+over the edge) then slides down over the top right corner to pin it, and the photo dips under it. The drafted opening
+draws no outline for the portrait. Once per page load. Reduced motion, a URL hash,
+or the portrait off screen at load shows everything in place. Head-script timeouts
+release the opening after 4s and the portrait after 8s regardless.
 
 ### Compass rules the line over inVectus
 
 Between Angrove and inVectus there is no dotted trail: a straight 1px ink rule spans
 the content width just above inVectus's label. When it is 60% in view, the drafting compass enters from the
 left edge to the rule's left end, then rides it to the right with its point on
-the line, leaning about 18 degrees with a slight rock, while a mask reveals the
-line behind it (1.7s). It then runs off the right of the page and, once its resting
+the line, leaning about −18 degrees with a slight rock to keep the other leg above the ruler, while a mask reveals the
+line behind it (1.7s). Before drawing, the content-width ruler slides up from below the viewport (0.85s), with its top edge 3px below the line. The ruler image is turned 180° so its markings face upright. It stays straight while the compass draws, then slides completely off the left edge at the drawing height (0.65s). Once the inVectus orbits illustration comes into view, it slides back in from the left (1.05s) below the illustration, resting 75% off the left edge and rotated 12° clockwise. The compass then runs off the right of the page and, once its resting
 place beside the inVectus title is on screen, slides in from the right with
 friction to rest. Skipped with reduced motion, on screens where the compass is
 hidden, or when the trail is already on screen at load.
+
+### Statement letters
+
+The opening statement is split into one span per letter (`js/site.js`; the h1 keeps
+its aria-label). Once the opening is released by the portrait's first move, the
+letters appear one at a time, 45ms apart (360ms each), replacing the heading's ink
+reveal. On a drafted visit they appear as outlines in that order and later fill
+with ink in the same order. Reduced motion shows the statement whole.
+
+### Eye trail label and trail spacing
+
+Dotted trails are 340px tall on desktop (200px at 60rem and below), giving the
+sections more room. As each dotted trail draws, a pencil note, "Eye trail" (Caveat
+in `--draft`, with a graphite grain filter, `#graphite` in the icon sprite), writes
+in beside the point 62% along its path. The label and the entire dotted line
+are rubbed out together over 620ms as soon as the line finishes drawing. The
+section spacing stays in place. The ruled line into inVectus has no label. Reduced motion
+shows no label.
+
+### Fern placement at Angrove
+
+The fern waits horizontally centered, 80px below the center of Angrove's heading,
+as it scrolls into view. When the
+heading reaches the middle of the screen, it pauses, slides down and right, then
+moves out to its usual right-edge position and turns into place (2.5s total, with
+the portrait's menu easing and small pauses). It runs once per load. The fern is
+busy during placement so cursor nudges cannot interrupt it. Reduced motion,
+mobile layouts where the fern is hidden, and visits restored below Angrove keep
+the resting layout. Resizing during placement settles it immediately.

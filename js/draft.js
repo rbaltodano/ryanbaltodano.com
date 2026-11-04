@@ -267,7 +267,16 @@
   fonts.then(() => {
     const later = pending.filter((block) => block.els[0] !== hero);
     const opening = pending.find((block) => block.els[0] === hero);
-    if (opening) draft(opening);
+    // The opening waits for the portrait's first move (js/journal.js).
+    if (opening && !root.classList.contains("is-awaiting-photo")) draft(opening);
+    else if (opening) {
+      const wait = new MutationObserver(() => {
+        if (root.classList.contains("is-awaiting-photo")) return;
+        wait.disconnect();
+        draft(opening);
+      });
+      wait.observe(root, { attributes: true, attributeFilter: ["class"] });
+    }
     if (!("IntersectionObserver" in window)) return later.forEach((block) => block.parts.forEach((el) => el.removeAttribute("data-draft-part")));
     const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
       if (!entry.isIntersecting) return;

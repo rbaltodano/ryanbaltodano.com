@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261104121925");
-@import url("./base.css?v=20261104121925");
+@import url("./tokens.css?v=20261104130526");
+@import url("./base.css?v=20261104130526");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -161,7 +161,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 :root[data-theme="night"] .scrawl::after { filter: brightness(1.9); }
 
 /* The trail: a dashed ink route between sections, revealed as you scroll */
-.trail { position: relative; height: 220px; pointer-events: none; }
+.trail { position: relative; height: 340px; pointer-events: none; }
 .trail svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .trail path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 7 8; stroke-linecap: round; opacity: 0.85; }
 .trail--down { margin-top: -40px; }
@@ -282,7 +282,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .notes-grid { grid-template-columns: 1fr; gap: 0; }
   .project { padding-bottom: var(--section-gap); }
   .scribble { display: none; }
-  .trail { height: 140px; }
+  .trail { height: 200px; }
 }
 @media (max-width: 40rem) {
   .steps--phone { gap: 40px 16px; }
@@ -347,14 +347,23 @@ html { overflow-x: clip; }
 .record::before { content: ""; position: absolute; z-index: -1; inset: 0 calc(50% - 50vw); background-color: var(--paper-2); background-image: var(--ruling-image); background-repeat: repeat-y; background-size: 100% 32px; border-block: 1px solid var(--rule); }
 
 /* Fixed, irregular edge placements keep the scatter stable and away from content.
-   Shared scale: 30cm ruler ~600px; key 240px long, seal 64px across. */
+   The ruler spans the content width; key 240px long, seal 64px across. */
 .desk { position: absolute; z-index: 4; max-width: none; height: auto; pointer-events: none; user-select: none; filter: none; }
 :root[data-theme="night"] .desk { filter: brightness(0.82); }
 .hero__portrait::before { display: none; }
 .desk-rest { position: relative; width: 100%; max-width: none; height: 180px; padding: 0; margin-top: 48px; overflow: clip; }
 .desk-rest .desk { position: absolute; }
-.desk--ruler { width: 600px; right: -100px; top: 60px; rotate: -8deg; }
-.desk-rest--ruler + .project__notes { margin-top: 48px; }
+/* The plate anchors the ruler below the inVectus illustration, with 75% off the left edge. */
+.project__plate { position: relative; grid-column: 1; grid-row: 2; margin-bottom: 140px; }
+.project__plate .project__specimen { display: block; margin-inline: auto; }
+.desk--ruler {
+  --ruler-width: calc(min(var(--container), 100vw) - max(var(--gutter), var(--safe-left)) - max(var(--gutter), var(--safe-right)));
+  width: var(--ruler-width);
+  left: calc((100vw - min(var(--container), 100vw)) / -2 - max(var(--gutter), var(--safe-left)) - var(--ruler-width) * 0.75);
+  top: calc(100% + 36px);
+  rotate: 192deg; /* Turn the image over, plus its 12-degree resting tilt. */
+}
+.desk--ruler.is-away { visibility: hidden; }
 .desk--fern { width: 200px; right: calc((100% - 100vw) / 2 - 100px); top: -160px; rotate: -45deg; }
 .desk--compass { width: 280px; right: calc((100% - 100vw) / 2 - 100px); top: -136px; rotate: -45deg; }
 .desk--key { width: 240px; left: -30px; top: 48px; rotate: -16deg; }
@@ -366,8 +375,8 @@ html { overflow-x: clip; }
 
 @media (max-width: 60rem) {
   .desk:not(.desk--ruler):not(.desk--tape), .desk-rest:not(.desk-rest--ruler) { display: none; }
-  .desk-rest--ruler { margin-top: 48px; height: 140px; }
-  .desk--ruler { width: 360px; right: -72px; top: 48px; }
+  .project__plate { grid-row: auto; margin-bottom: 100px; }
+  .project__plate .project__specimen { margin-inline: 0; }
   .desk--tape { width: 90px; right: calc((100% - 100vw) / 2 - 60px); top: 52px; }
 }
 
@@ -450,10 +459,10 @@ html { overflow-x: clip; }
 .draft__smudge { position: absolute; border-radius: 40%; background: radial-gradient(closest-side, var(--rule), transparent); filter: blur(4px); opacity: 0; }
 
 /* The portrait is slid in from the right, then placed, and a paperclip pins its top right. */
-.hero__portrait .hero__clip { position: absolute; z-index: 3; top: -14px; right: 18px; width: 46px; height: auto; rotate: 84deg; pointer-events: none; }
+.hero__portrait .hero__clip { position: absolute; z-index: 3; top: 6px; right: 6px; width: 54px; height: auto; rotate: 98deg; pointer-events: none; }
 :root[data-theme="night"] .hero__clip { filter: brightness(0.82); }
 @media (prefers-reduced-motion: no-preference) {
-  .js:not(.is-placed) .hero__portrait:not(.is-sliding) { visibility: hidden; }
+  .js:not(.is-placed) .hero__portrait:not(.is-sliding):not(.is-landed) { visibility: hidden; }
   .js:not(.is-placed) .hero__portrait:not(.is-clipped) .hero__clip { opacity: 0; }
 }
 
@@ -464,4 +473,16 @@ html { overflow-x: clip; }
 .trail--rule path { stroke: var(--ink); stroke-width: 1; stroke-dasharray: none; opacity: 1; }
 .js .trail--compass.is-compass svg { clip-path: none !important; transition: none; }
 .desk--compass.is-away { visibility: hidden; }
-.hero__portrait.is-sliding { z-index: 400; }
+.hero__portrait.is-sliding:not(.is-landed) { z-index: 400; }
+/* The rest of the opening waits for the portrait's first move after it slides in. */
+.hero > :not(.hero__portrait) { transition: opacity 500ms var(--ease-out); }
+.is-awaiting-photo .hero > :not(.hero__portrait) { visibility: hidden !important; opacity: 0 !important; }
+
+/* The statement, a letter at a time (js/site.js); its own ink reveal gives way to the letters. */
+.statement.is-lettered { animation: none !important; opacity: 1 !important; }
+.statement.is-lettered .letter { opacity: 0; transition: opacity 360ms var(--ease-out), color 360ms var(--ease-menu), -webkit-text-stroke-color 360ms var(--ease-menu); transition-delay: calc(var(--i) * 45ms) !important; }
+.statement.is-lettered.is-spelled .letter { opacity: 1; }
+
+/* "eye trail": a pencil label on each dotted trail while it draws (js/journal.js). */
+.trail__note { position: absolute; display: none; white-space: nowrap; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--draft); rotate: -5deg; filter: url(#graphite); }
+.trail__note.is-shown { display: block; }

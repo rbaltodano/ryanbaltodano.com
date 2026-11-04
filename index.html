@@ -6,8 +6,8 @@
   <link rel="icon" type="image/png" sizes="512x512" href="assets/brand/favicon-512.png">
   <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Ryan Baltodano, Design Engineer</title>
-  <meta name="description" content="Ryan Baltodano designs and builds software end to end: Angrove, a private on-device AI study harness for iPhone and Mac, and inVectus, a local-first research tool.">
+  <title>Ryan Baltodano, Designer who can Build</title>
+  <meta name="description" content="Ryan Baltodano is a designer who can build, taking projects from early flows and visual design into working software: client websites, Angrove, and inVectus.">
   <meta name="theme-color" content="#ece5d6">
   <script>
     (() => {
@@ -26,17 +26,21 @@
         root.classList.add("is-drafting");
         setTimeout(() => root.classList.remove("is-drafting"), 6000);
       }
-      // The portrait slides in once (js/journal.js); it is never held back longer than this.
+      // The portrait slides in once (js/journal.js), and the rest of the opening waits for its
+      // first move; neither is ever held back longer than this.
+      if (!location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) root.classList.add("is-awaiting-photo");
+      setTimeout(() => root.classList.remove("is-awaiting-photo"), 4000);
       setTimeout(() => root.classList.add("is-placed"), 8000);
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261104122251">
+  <link rel="stylesheet" href="css/site.css?v=20261104130526">
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <filter id="graphite" x="-10%" y="-30%" width="120%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" result="d"/><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="9" result="g"/><feColorMatrix in="g" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.4 0 0 0 1.25" result="tooth"/><feComposite in="d" in2="tooth" operator="in"/></filter>
     <symbol id="i-ne" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6"/></symbol>
     <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></symbol>
     <symbol id="i-up" viewBox="0 0 16 16"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></symbol>
@@ -58,7 +62,7 @@
 
   <main id="top">
     <section class="container hero">
-      <p class="label hero__kicker" data-rise>Designer &amp; developer <span>·</span> Tampa, Florida</p>
+      <p class="label hero__kicker" data-rise>Designer who can Build <span>·</span> Tampa, Florida</p>
       <h1 data-draft-note="one idea, set large" class="statement" aria-label="Software built for people." data-ink>
         <span class="statement__line" aria-hidden="true"><span>Software built</span></span>
         <span class="statement__line" aria-hidden="true"><span>for <em class="scrawl">people</em>.</span></span>
@@ -145,10 +149,6 @@
           </div>
         </div>
 
-        <div class="container desk-rest desk-rest--ruler" aria-hidden="true">
-          <img class="desk desk--ruler" src="assets/desk/ruler.png" alt="" aria-hidden="true" width="820" height="64" loading="lazy">
-        </div>
-
         <section class="container project__notes" aria-labelledby="notes-angrove">
           <h3 id="notes-angrove" class="project__kicker" data-ink>Design notes</h3>
           <div data-draft-note="three notes under one rule" class="notes-grid">
@@ -179,7 +179,10 @@
           <img class="film__video" data-caption-title="Fig. 3" data-caption="A flagged gap in a 5,000-paper ophthalmology collection, with its evidence and score breakdown beside the collection map." src="assets/img/invectus/gap.jpg" alt="inVectus showing a ranked coverage gap, its evidence and score breakdown, beside an interactive collection map." width="2000" height="1247" loading="lazy">
           <figcaption><span class="label">Fig. 3</span></figcaption>
         </figure>
-          <img class="project__specimen" src="assets/plates/invectus-orbits.png" alt="" aria-hidden="true" width="1000" height="972" loading="lazy" data-settle>
+          <div class="project__plate">
+            <img class="project__specimen" src="assets/plates/invectus-orbits.png" alt="" aria-hidden="true" width="1000" height="972" loading="lazy" data-settle>
+            <img class="desk desk--ruler" src="assets/desk/long-brass-ruler.png" alt="" aria-hidden="true" width="2156" height="126">
+          </div>
 
           <div class="project__story">
           <div class="project__about">
@@ -306,9 +309,9 @@
     <a href="#top">Back to top <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a>
   </footer>
 
-  <script src="js/site.js?v=20261104122251" defer></script>
-  <script src="js/draft.js?v=20261104122251" defer></script>
-  <script src="js/journal.js?v=20261104122251" defer></script>
-  <script src="js/lightbox.js?v=20261104122251" defer></script>
+  <script src="js/site.js?v=20261104130526" defer></script>
+  <script src="js/draft.js?v=20261104130526" defer></script>
+  <script src="js/journal.js?v=20261104130526" defer></script>
+  <script src="js/lightbox.js?v=20261104130526" defer></script>
 </body>
 </html>

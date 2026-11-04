@@ -99,34 +99,41 @@
     }, { passive: true });
   })();
 
-  // On load the portrait slides in on a diagonal from below the bottom right, above everything,
-  // turning from its 4 degrees to 8 as it comes to rest near the middle of the page; it is then
-  // dragged into place by hand in two moves, and a paperclip slides over its top right corner.
+  // On load the portrait is slid up from below the bottom centre of the screen, above everything,
+  // turning from its 4 degrees to 8 as it comes to rest in the middle. The rest of the opening waits
+  // for it: as the portrait makes its first move after that, the opening is released (and drafts,
+  // on a first visit). The portrait is then moved by hand: diagonally down to the right, up into its
+  // place, and finally turned to its 4 degrees; a paperclip then slides over its top right corner.
   (() => {
     const root = document.documentElement;
     const portrait = document.querySelector(".hero__portrait");
     const clip = portrait && portrait.querySelector(".hero__clip");
-    if (!portrait || reduce) return root.classList.add("is-placed");
+    const release = () => root.classList.remove("is-awaiting-photo");
+    if (!portrait || reduce) { release(); return root.classList.add("is-placed"); }
     const place = async () => {
       const box = portrait.getBoundingClientRect();
-      if (box.bottom < 0 || box.top > innerHeight) return root.classList.add("is-placed");
-      const away = document.documentElement.clientWidth - box.left + 80;
-      // It comes in on a diagonal, from below the bottom right corner of the screen, and rests near the middle
-      // of the page, 4 degrees more (8 overall), above everything.
-      const mid = document.documentElement.clientWidth / 2 - (box.left + box.width / 2);
-      const past = `translate(${mid.toFixed(0)}px, 40px) rotate(4deg)`;
+      if (box.bottom < 0 || box.top > innerHeight) { release(); return root.classList.add("is-placed"); }
+      const EASE = "cubic-bezier(0.55, 0, 0.17, 1)";
+      const cx = document.documentElement.clientWidth / 2 - (box.left + box.width / 2);
+      const cy = innerHeight / 2 - (box.top + box.height / 2);
+      const below = innerHeight - box.top + 60;
+      const middle = `translate(${cx.toFixed(0)}px, ${cy.toFixed(0)}px) rotate(4deg)`;
+      const lower = `translate(${(cx * 0.42).toFixed(0)}px, ${(Math.max(cy, 0) + 90).toFixed(0)}px) rotate(3deg)`;
+      const placed = "rotate(3.5deg)";
+      const move = (from, to, ms, delay = 0, easing = EASE) =>
+        portrait.animate([{ transform: from }, { transform: to }], { duration: ms, delay, easing, fill: "forwards" }).finished;
       portrait.classList.add("is-sliding");
-      await portrait.animate([
-        { transform: `translate(${away}px, ${(innerHeight - box.top + 80).toFixed(0)}px) rotate(0deg)` },
-        { transform: past }
-      ], { duration: 1100, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }).finished;
-      // Then dragged into place by hand in two moves: most of the way, a beat, then a final nudge
-      // that corrects the last of the angle.
-      const near = `translate(${(mid * 0.16).toFixed(0)}px, 7px) rotate(-1.6deg)`;
-      await portrait.animate([{ transform: past }, { transform: near }], { duration: 620, easing: "cubic-bezier(0.55, 0, 0.17, 1)", fill: "forwards" }).finished;
-      await portrait.animate([{ transform: near }, { transform: "none" }], { duration: 420, delay: 140, easing: "cubic-bezier(0.55, 0, 0.17, 1)", fill: "forwards" }).finished;
+      // Slid up from the bottom centre, turning from 4 degrees to 8 overall.
+      await move(`translate(${cx.toFixed(0)}px, ${below.toFixed(0)}px) rotate(0deg)`, middle, 1100, 0, "cubic-bezier(0.16, 1, 0.3, 1)");
+      // First move: the rest of the opening starts as the portrait is pushed down and to the right.
+      release();
+      await move(middle, lower, 620, 60);
+      // Up into its place, still at its loose angle.
+      await move(lower, placed, 560, 90);
+      // And turned to its final 4 degrees.
+      await move(placed, "none", 380, 140);
       portrait.getAnimations().forEach((motion) => motion.cancel());
-      portrait.classList.remove("is-sliding");
+      portrait.classList.add("is-landed");
       if (!clip) return root.classList.add("is-placed");
       portrait.classList.add("is-clipped");
       clip.animate([
@@ -139,12 +146,75 @@
     requestAnimationFrame(() => requestAnimationFrame(place));
   })();
 
+  // The fern waits over Angrove's heading, then is moved by hand to its edge position.
+  (() => {
+    const fern = document.querySelector(".desk--fern");
+    const heading = document.querySelector("#title-angrove");
+    if (!fern || !heading || reduce || !fern.offsetParent || !("IntersectionObserver" in window)) return;
+    // A visit restored below Angrove should leave the object in its resting place.
+    if (heading.getBoundingClientRect().bottom < 0) return;
+    fern.loading = "eager";
+    fern.dataset.busy = "1";
+    fern.style.zIndex = "400";
+    let started = false, motion;
+    const clear = () => {
+      fern.style.removeProperty("translate");
+      fern.style.removeProperty("transform");
+      fern.style.removeProperty("z-index");
+      delete fern.dataset.busy;
+      window.removeEventListener("resize", resize);
+    };
+    const prepare = () => {
+      fern.style.removeProperty("translate");
+      fern.style.removeProperty("transform");
+      const home = fern.getBoundingClientRect(), title = heading.getBoundingClientRect();
+      const x = document.documentElement.clientWidth / 2 - (home.left + home.width / 2);
+      const y = title.top + title.height / 2 + 80 - (home.top + home.height / 2);
+      fern.style.translate = `${x}px ${y}px`;
+      fern.style.transform = "rotate(12deg)";
+      return { x, y };
+    };
+    const resize = () => {
+      if (started || !fern.offsetParent) {
+        watch.disconnect();
+        clear();
+        motion?.cancel();
+      } else prepare();
+    };
+    prepare();
+    const watch = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      watch.disconnect();
+      const { x, y } = prepare();
+      started = true;
+      const center = `${x}px ${y}px`;
+      const lower = `${x + 100}px ${y + 90}px`;
+      const ease = "cubic-bezier(0.55, 0, 0.17, 1)";
+      motion = fern.animate([
+        { translate: center, transform: "rotate(12deg)" },
+        { translate: center, transform: "rotate(12deg)", offset: 0.18, easing: ease },
+        { translate: lower, transform: "rotate(5deg)", offset: 0.43 },
+        { translate: lower, transform: "rotate(5deg)", offset: 0.48, easing: ease },
+        { translate: "-18px 24px", transform: "rotate(-4deg)", offset: 0.77 },
+        { translate: "-18px 24px", transform: "rotate(-4deg)", offset: 0.82, easing: ease },
+        { translate: "0px 0px", transform: "none" }
+      ], { duration: 2500, fill: "forwards" });
+      motion.finished.then(() => {
+        clear();
+        motion.cancel();
+      }).catch(() => clear());
+    }, { rootMargin: "-40% 0px -40% 0px" });
+    watch.observe(heading);
+    window.addEventListener("resize", resize, { passive: true });
+  })();
+
   // The drafting compass rules the line over inVectus. It rides the line from its left end to its
   // right, leaning into the stroke with its point on the line as the line appears behind it, runs
   // off the right of the page, then slides back in from the right to rest beside the inVectus title.
   (() => {
     const trail = document.querySelector(".trail--compass");
     const compass = document.querySelector(".desk--compass");
+    const ruler = document.querySelector(".desk--ruler");
     if (!trail || !compass || reduce || !compass.offsetParent || !("IntersectionObserver" in window)) return;
     if (trail.getBoundingClientRect().top < innerHeight) return;   // already passed: leave both as they are
     const SVGNS = "http://www.w3.org/2000/svg";
@@ -170,6 +240,10 @@
     trail.classList.add("is-compass");
     compass.classList.add("is-away");
     compass.dataset.busy = "1";
+    if (ruler) {
+      ruler.classList.add("is-away");
+      ruler.dataset.busy = "1";
+    }
 
     const length = line.getTotalLength();
     const TIP = { x: 0.03, y: 0.985 };          // the drawing leg's point, as a fraction of the image
@@ -201,7 +275,26 @@
 
     const draw = async () => {
       const home = rest();
-      const start = pointAt(0), lean = 18;
+      // Tilt the other leg above the straightedge while the drawing point follows the line.
+      const start = pointAt(0), lean = -18;
+      // Bring the ruler up from below the viewport and hold its top edge under the stroke.
+      let rulerHome;
+      const placeRuler = (x, y, angle = 0) => {
+        ruler.style.translate = `${x - rulerHome.x}px ${y - rulerHome.y}px`;
+        ruler.style.rotate = `${180 + angle}deg`;
+      };
+      if (ruler) {
+        ruler.style.rotate = "0deg";
+        const box = ruler.getBoundingClientRect();
+        rulerHome = { x: box.left + scrollX, y: box.top + scrollY };
+        const below = Math.max(innerHeight + scrollY, start.y) + ruler.offsetHeight + 40;
+        placeRuler(start.x, below);
+        ruler.classList.remove("is-away");
+        await run(850, easeOut, (k) => {
+          const edge = pointAt(0);
+          placeRuler(edge.x, below + (edge.y + 3 - below) * k);
+        });
+      }
       compass.classList.remove("is-away");
       // In from the left edge to the start of the line.
       const enter = { x: -compass.offsetWidth + scrollX - 40, y: start.y - 40 };
@@ -210,11 +303,38 @@
       await run(1700, inOut, (k) => {
         reveal.setAttribute("stroke-dashoffset", (1 - k).toFixed(4));
         pose(home, pointAt(k), lean + 3 * Math.sin(k * Math.PI * 3));
+        if (ruler) { const edge = pointAt(0); placeRuler(edge.x, edge.y + 3); }
       });
       reveal.setAttribute("stroke-dashoffset", "0");
       // Off the right of the page.
       const end = pointAt(1), exitX = document.documentElement.clientWidth + compass.offsetWidth + scrollX + 40;
-      await run(520, easeIn, (k) => pose(home, { x: end.x + (exitX - end.x) * k, y: end.y - 30 * k }, lean + 10 * k));
+      const rulerStart = pointAt(0);
+      await Promise.all([
+        run(520, easeIn, (k) => pose(home, { x: end.x + (exitX - end.x) * k, y: end.y - 30 * k }, lean + 10 * k)),
+        // Slide the whole ruler off the left edge at the drawing height first.
+        ruler ? run(650, easeIn, (k) => {
+          const offLeft = scrollX - ruler.offsetWidth - 40;
+          placeRuler(rulerStart.x + (offLeft - rulerStart.x) * k, rulerStart.y + 3);
+        }) : Promise.resolve()
+      ]);
+      if (ruler) {
+        ruler.classList.add("is-away");
+        ruler.style.removeProperty("translate");
+        ruler.style.removeProperty("rotate");
+        // Wait for the illustration below, then slide in horizontally at the resting tilt.
+        const rulerWatch = new IntersectionObserver((entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          rulerWatch.disconnect();
+          const away = -ruler.getBoundingClientRect().right - 40;
+          ruler.animate([
+            { translate: `${away}px 0px` },
+            { translate: "0px 0px" }
+          ], { duration: 1050, easing: "cubic-bezier(0.12, 0.8, 0.3, 1)" })
+            .finished.then(() => delete ruler.dataset.busy);
+          ruler.classList.remove("is-away");
+        }, { rootMargin: "0px 0px -10% 0px" });
+        rulerWatch.observe(ruler.closest(".project__plate"));
+      }
       compass.classList.add("is-away");
       compass.style.removeProperty("translate");
       compass.style.removeProperty("transform");
@@ -243,6 +363,70 @@
       draw();
     }, { threshold: 0.6 });
     watch.observe(trail);
+  })();
+
+  // Each dotted trail gets a pencil label while it draws, then both are rubbed out.
+  (() => {
+    if (reduce) return;
+    document.querySelectorAll(".trail:not(.trail--rule)").forEach((trail) => {
+      const svg = trail.querySelector("svg"), path = svg && svg.querySelector("path");
+      if (!path) return;
+      const note = document.createElement("span");
+      note.className = "trail__note";
+      note.setAttribute("aria-hidden", "true");
+      note.textContent = "Eye trail";
+      trail.append(note);
+      const show = () => {
+        const p = path.getPointAtLength(path.getTotalLength() * 0.62), m = svg.getScreenCTM();
+        const box = trail.getBoundingClientRect();
+        if (m) {
+          const x = m.a * p.x + m.c * p.y + m.e - box.left, y = m.b * p.x + m.d * p.y + m.f - box.top;
+          const right = x < box.width / 2;
+          note.style.left = right ? x + 28 + "px" : "auto";
+          note.style.right = right ? "auto" : box.width - x + 28 + "px";
+          note.style.top = y - 34 + "px";
+        }
+        note.classList.add("is-shown");
+        note.animate([{ clipPath: "inset(-30% 100% -40% -6%)" }, { clipPath: "inset(-30% -6% -40% -6%)" }], { duration: 700, delay: 350, easing: "cubic-bezier(0.45, 0.05, 0.4, 1)", fill: "backwards" });
+        let erased = false;
+        const erase = () => {
+          if (erased) return;
+          erased = true;
+          clearTimeout(fallback);
+          svg.removeEventListener("transitionend", onDrawn);
+          const lineErase = path.animate([
+            { opacity: 0.85, filter: "blur(0)", clipPath: "inset(-10px)" },
+            { opacity: 0.5, filter: "blur(0.4px)", offset: 0.25 },
+            { opacity: 0.25, filter: "blur(0.8px)", offset: 0.5 },
+            { opacity: 0, filter: "blur(1.6px)", clipPath: "inset(-10px -10px -10px 100%)" }
+          ], { duration: 620, easing: "ease-in-out", fill: "forwards" });
+          lineErase.finished.then(() => {
+            path.style.visibility = "hidden";
+            lineErase.cancel();
+          });
+          note.animate([
+            { opacity: 1, translate: "0 0", filter: "url(#graphite) blur(0)" },
+            { opacity: 0.6, translate: "4px 0", filter: "url(#graphite) blur(0.4px)", offset: 0.25 },
+            { opacity: 0.35, translate: "-4px 1px", filter: "url(#graphite) blur(0.8px)", offset: 0.5 },
+            { opacity: 0.14, translate: "3px 0", filter: "url(#graphite) blur(1.2px)", offset: 0.75 },
+            { opacity: 0, translate: "0 0", filter: "url(#graphite) blur(1.6px)" }
+          ], { duration: 620, fill: "forwards" }).finished.then(() => note.remove());
+        };
+        const onDrawn = (event) => {
+          if (event.target === svg && event.propertyName === "clip-path") erase();
+        };
+        svg.addEventListener("transitionend", onDrawn);
+        // A fallback also cleans up when the browser skips the transition (e.g. a hidden tab).
+        const fallback = setTimeout(erase, 1700);
+      };
+      if (trail.classList.contains("is-in")) return note.remove();
+      const watch = new MutationObserver(() => {
+        if (!trail.classList.contains("is-in")) return;
+        watch.disconnect();
+        show();
+      });
+      watch.observe(trail, { attributes: true, attributeFilter: ["class"] });
+    });
   })();
 
   // Marginalia: pencil notes write themselves in when their passage is pointed at, and stay.
