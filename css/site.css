@@ -91,9 +91,9 @@ p.label { margin-bottom: var(--space-md); }
 .footer__links { display: flex; flex-direction: column; align-items: start; gap: 12px; }
 .footer__links p.label { margin-bottom: 8px; }
 .footer__links a, .footer__bottom { font-family: var(--font-mono); font-size: var(--text-meta); }
-.footer__links a { display: inline-flex; align-items: center; gap: 8px; }
+.footer__links a { font-size: var(--text-body); display: inline-flex; align-items: center; gap: 8px; }
 .footer__bottom { display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--rule); padding-top: 24px; color: var(--muted); }
-.footer__bottom a { display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
+.footer__bottom a { font-size: var(--text-body); display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
 @media (max-width: 60rem) {
   .footer__main { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
   .footer__identity { grid-column: 1 / -1; }
