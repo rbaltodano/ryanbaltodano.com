@@ -11,8 +11,9 @@
 
   const SVG = "http://www.w3.org/2000/svg";
   const EASE = "cubic-bezier(0.55, 0, 0.17, 1)";
+  const lightDraft = matchMedia("(max-width: 48rem), (pointer: coarse)").matches;
   const PARTS = "h1, h2, h3, h4, p, dt, dd, figcaption, img, video, .contact__email, blockquote footer";
-  const SKIP = ".desk, .hero__clip, .hero__portrait img, .hero__portrait figcaption, .margin-note, .scribble, .visually-hidden, [hidden], .draft";
+  const SKIP = ".desk, .hero__clip, .contact__clip, .hero__portrait img, .hero__portrait figcaption, .margin-note, .scribble, .visually-hidden, [hidden], .draft";
   // Large type waits as outlined letters; small type (mono kickers, labels) as guidelines.
   const OUTLINED = "h1, h2, h3, h4, .project__pull p, .contact__email";
   const outlined = (el) => el.matches(OUTLINED) && parseFloat(getComputedStyle(el).fontSize) >= 24;
@@ -50,6 +51,9 @@
   const running = new Set();
   // A block that fails to draft simply shows; nothing stays held back.
   const draft = (block) => {
+    // Finish the previous sketch when scrolling into the next one instead of
+    // repainting several section-sized drawing surfaces at once on a phone.
+    if (lightDraft) running.forEach((job) => job.finish(true));
     try { drawBlock(block); }
     catch (e) { block.parts.forEach((el) => el.removeAttribute("data-draft-part")); if (block.els[0] === hero) root.classList.remove("is-drafting"); }
   };
@@ -68,9 +72,9 @@
     const svg = document.createElementNS(SVG, "svg");
     svg.setAttribute("width", w);
     svg.setAttribute("height", h);
-    svg.innerHTML = `<filter id="${id}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="${serial}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/></filter>`;
+    if (!lightDraft) svg.innerHTML = `<filter id="${id}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="${serial}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/></filter>`;
     const ink = document.createElementNS(SVG, "g");
-    ink.setAttribute("filter", `url(#${id})`);
+    if (!lightDraft) ink.setAttribute("filter", `url(#${id})`);
     svg.append(ink);
     layer.append(svg);
     document.body.append(layer);
@@ -78,7 +82,10 @@
     const jitter = (n) => (Math.random() - 0.5) * 2 * n;
 
     // A hand-ruled line: slightly bowed, running a little past both ends like construction lines.
+    let strokes = 0;
     const rule = (x1, y1, x2, y2, delay, cls = "draft__box", over = 7, ms = 380, parent = ink) => {
+      if (lightDraft && strokes >= 24) return null;
+      strokes++;
       const len = Math.hypot(x2 - x1, y2 - y1) || 1;
       const ux = (x2 - x1) / len, uy = (y2 - y1) / len;
       const o1 = over * (0.6 + Math.random() * 0.8), o2 = over * (0.6 + Math.random() * 0.8);
@@ -90,7 +97,7 @@
       path.setAttribute("class", cls);
       path.setAttribute("pathLength", "1");
       parent.append(path);
-      path.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: ms, delay, easing: EASE, fill: "backwards" });
+      path.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: lightDraft ? Math.min(ms, 300) : ms, delay: lightDraft ? Math.min(delay, 180) : delay, easing: EASE, fill: "backwards" });
       return path;
     };
     const box = (x, y, bw, bh, delay, angle = 0, cross = false) => {
@@ -103,7 +110,7 @@
         rule(x + bw, y + bh, x, y + bh, delay + 180, "draft__box", 7, 380, g),
         rule(x, y + bh, x, y, delay + 270, "draft__box", 7, 380, g)
       ];
-      if (cross) {
+      if (cross && !lightDraft) {
         rule(x, y, x + bw, y + bh, delay + 360, "draft__hatch", 0, 420, g);
         rule(x + bw, y, x, y + bh, delay + 420, "draft__hatch", 0, 420, g);
       }
@@ -152,13 +159,14 @@
         const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
         marks.push(box(cx - bw / 2, cy - bh / 2, bw, bh, delay, angle, el.matches("img, video")));
       } else {
-        rows(el).forEach((row, i) => {
+        const lines = rows(el);
+        (lightDraft ? lines.slice(0, 1) : lines).forEach((row, i) => {
           const x1 = row.left - left, x2 = row.right - left, y = row.top - top;
           marks.push(rule(x1, y + row.height * 0.34, x2, y + row.height * 0.34, delay + i * 30, "draft__letter", 4, 280));
-          marks.push(rule(x1, y + row.height * 0.74, x2, y + row.height * 0.74, delay + i * 30 + 20, "draft__letter", 4, 280));
+          if (!lightDraft) marks.push(rule(x1, y + row.height * 0.74, x2, y + row.height * 0.74, delay + i * 30 + 20, "draft__letter", 4, 280));
         });
       }
-      const part = { el, marks, done: false };
+      const part = { el, marks: marks.filter(Boolean), done: false };
       delay += step;
       return part;
     });
@@ -167,12 +175,14 @@
     // what they describe, clear of any text, image, or other note nearby.
     const pageW = document.documentElement.clientWidth;
     const near = (r) => r.bottom > top - 240 && r.top < bottom + 240;
-    const obstacles = [...document.querySelectorAll(PARTS + ", .scribble, .margin-note, .desk, .stamp, .button")]
+    const obstacleElements = lightDraft ? block.parts : [...document.querySelectorAll(PARTS + ", .scribble, .margin-note, .desk, .stamp, .button")];
+    const obstacles = obstacleElements
       .map((el) => el.getBoundingClientRect()).filter((r) => r.width && near(r)).map(at);
     const clear = (c) => c.x + left >= 8 && c.x + left + c.w <= pageW - 8 &&
       obstacles.every((o) => c.x + c.w + 8 < o.x || c.x - 8 > o.x + o.w || c.y + c.h + 6 < o.y || c.y - 6 > o.y + o.h);
     const notes = block.els.flatMap((el) => [...(el.matches("[data-draft-note]") ? [el] : []), ...el.querySelectorAll("[data-draft-note]")])
       .filter((el) => el.getClientRects().length && !el.closest(SKIP))
+      .slice(0, lightDraft ? 1 : Infinity)
       .map((el, i) => {
         const r = at(el.getBoundingClientRect());
         const note = document.createElement("span");
@@ -189,25 +199,30 @@
         const prefer = el.getAttribute("data-draft-side") || "above";
         const order = [prefer, ...["right", "left", "above", "below"].filter((s) => s !== prefer)];
         const tries = order.flatMap((s) => sides[s]).map((p) => ({ ...p, w: nw, h: nh }));
-        const spot = tries.find(clear) || tries[0];
+        const spot = tries.find(clear) || (lightDraft ? null : tries[0]);
+        if (!spot) { note.remove(); return null; }
         obstacles.push(spot);
         note.style.left = spot.x + "px";
         note.style.top = spot.y + "px";
         note.style.rotate = jitter(2.4).toFixed(1) + "deg";
         const start = 260 + i * 220;
-        note.animate([{ clipPath: "inset(-20% 100% -30% -4%)" }, { clipPath: "inset(-20% -4% -30% -4%)" }], { duration: 650, delay: start, easing: "cubic-bezier(0.45, 0.05, 0.4, 1)", fill: "backwards" });
+        note.animate(lightDraft ? [{ opacity: 0 }, { opacity: 1 }] : [{ clipPath: "inset(-20% 100% -30% -4%)" }, { clipPath: "inset(-20% -4% -30% -4%)" }], { duration: lightDraft ? 220 : 650, delay: start, easing: "cubic-bezier(0.45, 0.05, 0.4, 1)", fill: "backwards" });
         return { el, note, end: start + 650 };
-      });
+      }).filter(Boolean);
 
     // Fill: once outlined, each piece inks in quickly as its marks lift away. The notes stay a
     // second after the block is finished, then are rubbed out.
-    const FILL = delay + 150, GAP = Math.max(30, Math.min(70, 500 / Math.max(1, parts.length)));
+    const FILL = lightDraft ? 380 : delay + 150, GAP = Math.max(30, Math.min(70, (lightDraft ? 240 : 500) / Math.max(1, parts.length)));
     const DRAWN = FILL + parts.length * GAP + 450;
-    const ERASE = Math.max(DRAWN, ...notes.map((n) => n.end)) + 1000;
+    const ERASE = Math.max(DRAWN, ...notes.map((n) => n.end)) + (lightDraft ? 180 : 1000);
     const erase = (n, now) => {
       if (n.gone) return;
       n.gone = true;
       if (now) return n.note.remove();
+      if (lightDraft) {
+        n.note.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" });
+        return;
+      }
       const smudge = document.createElement("span");
       smudge.className = "draft__smudge";
       smudge.style.cssText = `left:${n.note.offsetLeft - 8}px;top:${n.note.offsetTop - 4}px;width:${n.note.offsetWidth + 16}px;height:${n.note.offsetHeight + 8}px`;
@@ -228,30 +243,34 @@
       if (part.el.matches("[data-ink]")) part.el.classList.add("is-inked");
       part.el.classList.add("is-drafted");
       if (!now && part.el.getAttribute("data-draft-part") !== "outline" && !part.el.matches("[data-settle], [data-stamp], [data-rise]")) {
-        part.el.animate([{ opacity: 0, filter: "blur(2px)" }, { opacity: 1, filter: "blur(0)" }], { duration: 420, easing: EASE });
+        part.el.animate(lightDraft ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, filter: "blur(2px)" }, { opacity: 1, filter: "blur(0)" }], { duration: lightDraft ? 240 : 420, easing: EASE });
       }
       part.marks.forEach((m) => m.animate([{ opacity: 1 }, { opacity: 0 }], { duration: now ? 1 : 360, delay: now ? 0 : 80, fill: "forwards" }));
     };
     const timers = parts.map((part, i) => setTimeout(() => fill(part), FILL + i * GAP));
     const job = { finish: null };
     let done = false;
+    let closed = false;
     const close = () => {
+      if (closed) return;
+      closed = true;
+      timers.forEach(clearTimeout);
       layer.remove();
       parts.forEach((part) => { part.el.removeAttribute("data-draft-part"); part.el.classList.remove("is-drafted"); });
       running.delete(job);
     };
     job.finish = (now) => {
-      if (done) return;
+      if (closed || (done && !now)) return;
       done = true;
       timers.forEach(clearTimeout);
       parts.forEach((part) => fill(part, now));
       if (block.els[0] === hero) root.classList.remove("is-drafting");
       if (now) return close();
       // Every piece is inked; the notes linger, then are rubbed out and the guides lift away.
-      setTimeout(() => {
+      timers.push(setTimeout(() => {
         notes.forEach((n) => erase(n, false));
-        layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 560, delay: 500, fill: "forwards" }).finished.then(close);
-      }, Math.max(0, ERASE - DRAWN));
+        layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: lightDraft ? 240 : 560, delay: lightDraft ? 0 : 500, fill: "forwards" }).finished.then(close);
+      }, Math.max(0, ERASE - DRAWN)));
     };
     timers.push(setTimeout(() => job.finish(false), DRAWN));
     running.add(job);

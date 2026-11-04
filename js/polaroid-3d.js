@@ -7,8 +7,9 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 export async function createInspector(photo, image, host, reduce) {
   await image.decode();
   await document.fonts.ready;
+  const mobile = matchMedia('(max-width: 48rem), (pointer: coarse)').matches;
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
@@ -20,7 +21,7 @@ export async function createInspector(photo, image, host, reduce) {
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 50);
   const pmrem = new THREE.PMREMGenerator(renderer);
   const room = new RoomEnvironment();
-  const environment = pmrem.fromScene(room, 0.04);
+  const environment = pmrem.fromScene(room, 0.04, 0.1, 100, { size: mobile ? 128 : 256 });
   scene.environment = environment.texture;
   scene.environmentIntensity = 0.65;
   room.dispose();
@@ -33,7 +34,7 @@ export async function createInspector(photo, image, host, reduce) {
   scene.add(rim);
 
   const w = photo.offsetWidth, h = photo.offsetHeight;
-  const textureWidth = innerWidth < 600 ? 1024 : 1536, factor = textureWidth / w;
+  const textureWidth = mobile ? 768 : 1536, factor = textureWidth / w;
   function sheet() {
     const c = document.createElement('canvas');
     c.width = textureWidth;
@@ -64,7 +65,7 @@ export async function createInspector(photo, image, host, reduce) {
   // Fine paper grain, shared by the color and roughness treatment.
   let seed = 17;
   const random = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-  for (let i = 0; i < 22000; i++) {
+  for (let i = 0; i < (mobile ? 5500 : 22000); i++) {
     ctx.fillStyle = `rgba(69, 55, 35, ${random() * 0.045})`;
     ctx.fillRect(random() * w, random() * h, 0.3, 0.3);
   }
@@ -83,7 +84,7 @@ export async function createInspector(photo, image, host, reduce) {
   bc.scale(factor, factor);
   bc.fillStyle = '#e4dfd2'; bc.fillRect(0, 0, w, h);
   bc.fillStyle = '#34352f'; bc.fillRect(ix, iy, iw, ih);
-  for (let i = 0; i < 18000; i++) {
+  for (let i = 0; i < (mobile ? 4500 : 18000); i++) {
     bc.fillStyle = `rgba(20, 20, 14, ${random() * 0.055})`;
     bc.fillRect(random() * w, random() * h, 0.4, 0.4);
   }
@@ -144,7 +145,7 @@ export async function createInspector(photo, image, host, reduce) {
   edgeGeometry.computeVertexNormals();
   group.add(new THREE.Mesh(edgeGeometry, edgeMaterial));
   scene.add(group);
-  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false, shine = 0, turned = false;
+  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false, compiled = false, shine = 0, turned = false;
   let baseDistance = 10, side = 1, view = null;
   const corner = new THREE.Vector3();
   group.rotation.set(targetX, targetY, -0.025, 'YXZ');
@@ -176,7 +177,7 @@ export async function createInspector(photo, image, host, reduce) {
     renderer.render(scene, camera);
     if (Math.abs(targetX - group.rotation.x) + Math.abs(targetY - group.rotation.y) + Math.abs(distance - camera.position.z) + Math.abs(gloss - shine) > 0.0001) frame = requestAnimationFrame(draw);
   }
-  function requestDraw() { if (!frame && !disposed) frame = requestAnimationFrame(draw); }
+  function requestDraw() { if (compiled && !frame && !disposed) frame = requestAnimationFrame(draw); }
   function resize() {
     const width = photo.offsetWidth, height = photo.offsetHeight;
     if (!width || !height) return;
@@ -197,7 +198,8 @@ export async function createInspector(photo, image, host, reduce) {
   observer.observe(photo);
   resize();
   // Compile before replacing the DOM print, avoiding a blank first frame.
-  renderer.compile(scene, camera);
+  await renderer.compileAsync(scene, camera);
+  compiled = true;
   renderer.render(scene, camera);
   return {
     canvas,

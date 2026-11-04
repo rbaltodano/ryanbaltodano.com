@@ -209,6 +209,14 @@ smudge. A click or key finishes it at once. Blocks already on screen at load
 (other than the opening), reduced motion, a URL hash, or no JavaScript skip it; a
 block that fails to draft shows normally.
 
+On screens up to 48rem wide or with a coarse pointer, keep the drafting sequence
+but draw one section at a time, with at most 24 pencil strokes and one note in a
+clear spot. Body copy gets one representative guide per paragraph; photo boxes
+keep their edges without the diagonal hatching. Use opacity fades instead of
+animated grain/displacement, blur, smudges, or gradient masks. Ink the opening
+heading as one piece. Scrolling into another block or interacting finishes the
+previous sketch immediately. Desktop keeps the full treatment.
+
 ### Portrait arrival
 
 On load the portrait is slid up above everything (z-index 400, over the nav) from

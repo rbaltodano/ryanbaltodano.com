@@ -36,6 +36,8 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   const root = document.documentElement;
   const statement = document.querySelector(".hero .statement");
   if (!statement || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  // Phones ink the heading as one piece instead of tracking a layer per letter.
+  if (matchMedia("(max-width: 48rem), (pointer: coarse)").matches) return;
   let i = 0;
   const split = (node) => [...node.childNodes].forEach((child) => {
     if (child.nodeType === 1) return split(child);

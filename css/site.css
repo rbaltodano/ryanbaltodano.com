@@ -491,6 +491,17 @@ html { overflow-x: clip; }
 .draft__note { position: absolute; white-space: nowrap; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.1; color: var(--draft); }
 .draft__smudge { position: absolute; border-radius: 40%; background: radial-gradient(closest-side, var(--rule), transparent); filter: blur(4px); opacity: 0; }
 
+/* Keep the pencil/ink sequence on touch screens without repainting blurred text
+   and animated gradient masks across an entire section. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 48rem), (prefers-reduced-motion: no-preference) and (pointer: coarse) {
+  .js [data-ink].is-in { animation: mobile-ink 360ms var(--ease-menu) backwards; }
+  @keyframes mobile-ink { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  [data-draft-part="outline"], [data-draft-part="outline"] *, .is-drafting .hero .statement, .is-drafting .hero .statement * { transition: none; }
+  .js [data-settle] { translate: 0 12px; transition-duration: 420ms, 480ms; }
+  .js [data-stamp] { scale: 1.12; }
+  .trail__note { filter: none; }
+}
+
 /* The portrait is slid in from the right, then placed, and a paperclip pins its top right. */
 .hero__portrait .hero__clip, .contact__photo .contact__clip { position: absolute; z-index: 3; top: 6px; right: 6px; width: 54px; height: auto; rotate: 98deg; pointer-events: none; }
 :root[data-theme="night"] .hero__clip { filter: brightness(0.82); }
