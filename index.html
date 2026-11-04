@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261104135256">
+  <link rel="stylesheet" href="css/site.css?v=20261104135847">
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -45,7 +45,7 @@
   <a class="skip" href="#exhibits">Skip to the work</a>
   <header class="nav">
     <div class="container nav__inner">
-      <a class="wordmark" href="#top" aria-label="Ryan Baltodano, home"><img src="assets/brand/rb-monogram.png" alt="" width="512" height="512"><span class="wordmark__name">Ryan Baltodano</span></a>
+      <a class="wordmark" href="#top" aria-label="Ryan Baltodano, home"><span class="wordmark__mark" aria-hidden="true"></span><span class="wordmark__name">Ryan Baltodano</span></a>
       <nav class="nav__links" aria-label="Sections">
         <a href="#exhibits">Exhibits</a>
         <a href="#record">Experience</a>
@@ -301,9 +301,30 @@
   </main>
 
   <footer class="container footer">
-    <p>Ryan Baltodano, <span data-year class="num">2026</span>.</p>
+    <div class="footer__main">
+      <div class="footer__identity">
+        <a class="footer__brand" href="#top"><span class="wordmark__mark" aria-hidden="true"></span><span>Ryan Baltodano</span></a>
+        <p class="footer__position">Designer who can Build.</p>
+        <p class="footer__location">Tampa, Florida · Open to relocating</p>
+      </div>
+      <nav class="footer__links" aria-label="Footer work navigation">
+        <p class="label">Explore</p>
+        <a href="#project-angrove">Angrove</a>
+        <a href="#invectus">inVectus</a>
+        <a href="#record">Experience</a>
+      </nav>
+      <nav class="footer__links" aria-label="Footer contact links">
+        <p class="label">Get in touch</p>
+        <a href="mailto:rbaltodano337@gmail.com">Email <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a>
+        <a href="https://github.com/rbaltodano" target="_blank" rel="noopener">GitHub <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a>
+        <a href="assets/Ryan-Baltodano-Resume.pdf?v=acf8372b661e" target="_blank" rel="noopener">Résumé PDF <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span data-year class="num">2026</span> Ryan Baltodano</p>
+      <a href="#top">Back to top <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a>
+    </div>
     <img class="desk desk--wax-seal" src="assets/desk/wax-seal.png" alt="" aria-hidden="true" width="300" height="310" loading="lazy">
-    <a href="#top">Back to top <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a>
   </footer>
 
   <script src="js/site.js?v=20261104132230" defer></script>

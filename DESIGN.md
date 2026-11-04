@@ -290,8 +290,9 @@ with a slight rotation like the masthead portrait; the photo stays black and whi
 ### RB identity
 
 The supplied RB monogram replaces the acorn identity. Its original 512px PNG
-lives at `assets/brand/rb-monogram.png`; the header pairs it with the name on
-wider screens and uses the mark alone on phones. Favicons (32px and 512px) and
+lives at `assets/brand/rb-monogram.png`; the header uses `rb-monogram-mask.svg`, a background-free mask derived from the
+original ink, paired with the name on wider screens and alone on phones. The
+masked mark follows the theme’s text color. Favicons (32px and 512px) and
 the 180px Apple touch icon are generated from that same source.
 
 The rooftop Polaroid has a square, centered black-and-white crop, an ivory-white
@@ -301,3 +302,12 @@ paper remains light in both themes, with a more visible cast shadow.
 Contact has no divider below its heading. The paragraph starts 32px below the
 heading on desktop and 24px below on smaller screens, aligned to the top of the
 photo column rather than vertically centered beside it.
+
+
+## Footer, 2026-11-04
+
+The footer closes the page with a ruled three-column layout: RB monogram and
+name, designer positioning and location, project/experience navigation, and
+email/GitHub/résumé links. A separate lower rule contains copyright and Back to
+top. On smaller screens the identity spans both link columns; the lower row
+stacks on phones. Keep the wax seal at the outside edge.
