@@ -186,3 +186,9 @@ Each project's one-line description sits under its wordmark, left-aligned at
 ### Phone portrait
 
 At 60rem and below the hero portrait sits right-aligned under the statement.
+
+### Figure captions
+
+Lead and feature captures show only their "Fig. N" label under the media. The
+description lives in the media's `data-caption` and appears in the lightbox
+label card under the same accent mono "Fig. N" title.
