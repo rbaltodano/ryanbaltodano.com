@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261104103505");
-@import url("./base.css?v=20261104103505");
+@import url("./tokens.css?v=20261104115148");
+@import url("./base.css?v=20261104115148");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -373,30 +373,9 @@ html { overflow-x: clip; }
 }
 
 /* ==========================================================================
-   Expedition journal: nudgeable desk objects, field map, marginalia,
+   Expedition journal: nudgeable desk objects, marginalia,
    and the viewing-table lightbox. Behaviour lives in js/journal.js.
    ========================================================================== */
-
-/* Field map: a fixed route in the left margin on wide screens */
-.field-map { display: none; }
-@media (min-width: 75rem) {
-  .js .field-map { display: block; position: fixed; z-index: 6; left: max(12px, calc((100vw - var(--container)) / 2 + 14px)); top: calc(50% + var(--nav-offset) / 2); translate: 0 -50%; width: 40px; height: 280px; opacity: 0; transition: opacity var(--dur-long) var(--ease-out); pointer-events: none; }
-  .js .field-map.is-shown { opacity: 1; pointer-events: auto; }
-}
-.field-map ol { list-style: none; margin: 0; padding: 0; }
-.field-map__route { position: absolute; inset: 0; overflow: visible; }
-.field-map__path { fill: none; stroke: var(--rule-2); stroke-width: 1.5; stroke-dasharray: 3 5; stroke-linecap: round; }
-.field-map__path--walked { stroke: var(--accent); }
-.field-map__north { position: absolute; top: -26px; left: 50%; translate: -50% 0; font-family: var(--font-mono); font-size: var(--text-meta); color: var(--muted); }
-.field-map__north::before { content: ""; position: absolute; left: 50%; top: -9px; translate: -50% 0; border: 4px solid transparent; border-bottom: 6px solid var(--muted); border-top: 0; }
-.field-map__you { position: absolute; left: 0; top: 0; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px var(--accent); pointer-events: none; z-index: 2; }
-.field-map__stop { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; display: grid; place-items: center; text-decoration: none; }
-.field-map__stop::before { content: ""; width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--accent); background: var(--paper); transition: background-color var(--dur-short) var(--ease-out); }
-.field-map__stop[aria-current]::before { background: var(--accent); }
-.field-map__stop span { position: absolute; left: 26px; top: 50%; translate: -4px -50%; padding: 2px 8px; white-space: nowrap; background: var(--paper); border: 1px solid var(--rule); font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); opacity: 0; transition: opacity var(--dur-short) var(--ease-out), translate var(--dur-short) var(--ease-out); pointer-events: none; }
-.field-map:hover .field-map__stop span, .field-map:focus-within .field-map__stop span { opacity: 1; translate: 0 -50%; }
-.field-map__stop[aria-current] span { color: var(--accent); border-color: var(--accent); }
-.field-map__stop:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 50%; }
 
 /* Marginalia: pencil notes under a passage, written in on hover (or on scroll for touch) */
 .margin-note { display: flex; align-items: flex-start; gap: 6px; width: fit-content; margin-top: 14px; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.05; color: var(--pencil); rotate: -1.5deg; pointer-events: none; }
@@ -448,3 +427,25 @@ html { overflow-x: clip; }
   .record__roles, .record .project__notes { margin-top: 96px; }
   .role { grid-template-columns: 1fr; gap: 10px; padding-block: 24px; }
 }
+
+/* Each block drafts itself (js/draft.js): construction guides, outlines, and line skeletons in
+   heading ink at 50%, then each piece fills in. The opening is held by the head script's class;
+   later blocks by data-draft-part, which the script sets and clears. */
+[data-draft-part=""]:not(.is-drafted) { opacity: 0 !important; animation: none !important; }
+.is-drafting .hero :is(.hero__kicker, .hero__portrait, .hero__intro p, .hero__actions > *):not(.is-drafted) { opacity: 0 !important; animation: none !important; }
+/* Headings wait as outlined letters, then fill with ink. */
+[data-draft-part="outline"], [data-draft-part="outline"] *, .is-drafting .hero .statement, .is-drafting .hero .statement * { transition: color 420ms var(--ease-menu), -webkit-text-stroke-color 420ms var(--ease-menu); }
+:is([data-draft-part="outline"], .is-drafting .hero .statement):not(.is-drafted) { opacity: 1 !important; animation: none !important; }
+:is([data-draft-part="outline"], .is-drafting .hero .statement):not(.is-drafted), :is([data-draft-part="outline"], .is-drafting .hero .statement):not(.is-drafted) * { color: transparent !important; -webkit-text-stroke: 1px var(--draft); }
+:is([data-draft-part="outline"], .is-drafting .hero .statement):not(.is-drafted) .scrawl::after { opacity: 0; }
+[data-draft-part="outline"].is-drafted, [data-draft-part="outline"].is-drafted * { -webkit-text-stroke-color: transparent; }
+.is-inked { animation: none !important; opacity: 1 !important; }
+.draft { position: absolute; z-index: 5; pointer-events: none; }
+.draft svg { position: absolute; inset: 0; overflow: visible; }
+.draft svg path { fill: none; stroke: var(--draft); stroke-dasharray: 1; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.draft__guide { stroke-width: 0.8; opacity: 0.55; }
+.draft__box { stroke-width: 1.1; }
+.draft__hatch { stroke-width: 0.8; opacity: 0.5; }
+.draft__letter { stroke-width: 0.7; opacity: 0.7; }
+.draft__note { position: absolute; white-space: nowrap; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.1; color: var(--draft); }
+.draft__smudge { position: absolute; border-radius: 40%; background: radial-gradient(closest-side, var(--rule), transparent); filter: blur(4px); opacity: 0; }

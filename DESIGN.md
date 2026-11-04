@@ -169,9 +169,6 @@ trail heights retain their own proportions.
   with up to 3 degrees of turn for off-centre hits, over 160ms; it returns over
   0.75s on `cubic-bezier(0.55, 0, 0.17, 1)`. One knock per pass. Touch: a tap
   knocks it away. Off under reduced motion.
-- Field map: a fixed dashed route in the left margin at 75rem and wider, with stops
-  for Opening, Angrove, inVectus, Experience, and Contact. A marker follows scroll;
-  the walked part turns accent. Labels show on hover or focus. Hidden at the top.
 - Marginalia: pencil notes (Caveat, `--pencil`) under a pull quote, a step, and a
   design note per project. They write in on hover (touch: on scroll) and stay.
   Notes are drafts paraphrasing existing copy; Ryan to approve wording.
@@ -192,3 +189,23 @@ At 60rem and below the hero portrait sits right-aligned under the statement.
 Lead and feature captures show only their "Fig. N" label under the media. The
 description lives in the media's `data-caption` and appears in the lightbox
 label card under the same accent mono "Fig. N" title.
+
+### Drafted page
+
+Once per visit (sessionStorage; `?draft` replays), each block is drafted before
+it is inked, as on a drawing board (`js/draft.js`). Blocks: the opening; each
+project's and Experience's title group and each later section; Contact. The
+opening drafts on load, later blocks the first time they reach 78% down the
+viewport. Everything is graphite in `--draft` (heading ink at 50%) with a slight
+grain displacement: hand-ruled construction guides that overrun their ends along
+the content edges and top; large type (24px and up: headings, pull quotes, the
+address) waits as outlined letters and fills with ink; crossed boxes for images and
+videos (rotated with their frames); boxes for stamps and buttons; two lettering
+guidelines per line of smaller text. Content fills quickly in reading order (about
+1s from a block's start). Pencil notes (Caveat), set in `data-draft-note` (with an
+optional preferred `data-draft-side`) on the element they describe, are placed
+where they cover no text, image, or other note, write in on the design choices,
+stay a second after the block is fully drawn, then are rubbed out with a faint
+smudge. A click or key finishes it at once. Blocks already on screen at load
+(other than the opening), reduced motion, a URL hash, or no JavaScript skip it; a
+block that fails to draft shows normally.

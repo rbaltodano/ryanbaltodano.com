@@ -1,9 +1,9 @@
-// Expedition-journal interactions: desk objects the cursor knocks around, a field map of the route,
-// and pencil marginalia. Each one is optional: without JavaScript the page shows plain content.
+// Expedition-journal interactions: desk objects the cursor knocks around and pencil
+// marginalia. Each one is optional: without JavaScript the page shows plain content.
 (() => {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const INTERACTIVE = "a, button, input, textarea, select, summary, video, [role='button'], .nav, .field-map, .lightbox";
+  const INTERACTIVE = "a, button, input, textarea, select, summary, video, [role='button'], .nav, .lightbox";
 
   // Desk objects: the cursor knocks them around as it passes over them (a tap does on touch), and
   // they ease back to their places. Hit testing reads each image's alpha, so only the object
@@ -96,49 +96,6 @@
         knock(img, now.x, now.y, (now.x - before.x) / dt, (now.y - before.y) / dt);
       });
     }, { passive: true });
-  })();
-
-  // Field map: the route from the opening to Contact, with a marker for where the reader stands.
-  // Stops sit at equal distances along the drawn path; the marker moves between them with scroll.
-  (() => {
-    const map = document.querySelector(".field-map");
-    if (!map) return;
-    const route = map.querySelector(".field-map__path");
-    const walked = map.querySelector(".field-map__walked");
-    const you = map.querySelector(".field-map__you");
-    const stops = [...map.querySelectorAll(".field-map__stop")];
-    const sections = stops.map((stop) => document.querySelector(stop.getAttribute("href")));
-    const total = route.getTotalLength();
-    const span = stops.length - 1;
-    stops.forEach((stop, i) => {
-      const point = route.getPointAtLength(total * i / span);
-      stop.style.left = point.x + "px";
-      stop.style.top = point.y + "px";
-    });
-    let frame = 0, current = -1;
-    const place = () => {
-      frame = 0;
-      const reading = scrollY + innerHeight * 0.35;
-      const tops = sections.map((el) => el.getBoundingClientRect().top + scrollY);
-      let i = 0;
-      while (i < span && reading >= tops[i + 1]) i++;
-      let t = i < span ? (reading - tops[i]) / (tops[i + 1] - tops[i]) : 0;
-      t = Math.max(0, Math.min(1, t));
-      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) { i = span; t = 0; }
-      const point = route.getPointAtLength(total * Math.min(1, (i + t) / span));
-      you.style.translate = `${point.x}px ${point.y}px`;
-      walked.setAttribute("height", point.y);
-      const at = t > 0.6 && i < span ? i + 1 : i;
-      if (at !== current) {
-        stops.forEach((stop, n) => n === at ? stop.setAttribute("aria-current", "location") : stop.removeAttribute("aria-current"));
-        current = at;
-      }
-      map.classList.toggle("is-shown", scrollY > innerHeight * 0.4);
-    };
-    const queue = () => { if (!frame) frame = requestAnimationFrame(place); };
-    addEventListener("scroll", queue, { passive: true });
-    addEventListener("resize", queue);
-    place();
   })();
 
   // Marginalia: pencil notes write themselves in when their passage is pointed at, and stay.

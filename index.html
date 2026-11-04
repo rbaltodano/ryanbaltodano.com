@@ -17,12 +17,21 @@
       root.dataset.theme = theme;
       root.classList.add("js");
       document.querySelector('meta[name="theme-color"]').content = theme === "night" ? "#151311" : "#ece5d6";
+      // The opening drafts itself once per visit (js/draft.js); ?draft replays it. Content is held
+      // back only while this class is set, and never for longer than six seconds.
+      let drafted = false;
+      try { drafted = sessionStorage.getItem("drafted") === "1"; } catch (e) {}
+      if (/[?&]draft\b/.test(location.search)) drafted = false;
+      if (!drafted && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        root.classList.add("is-drafting");
+        setTimeout(() => root.classList.remove("is-drafting"), 6000);
+      }
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261104103505">
+  <link rel="stylesheet" href="css/site.css?v=20261104115148">
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -45,42 +54,25 @@
     </div>
   </header>
 
-  <nav class="field-map" aria-label="Field map">
-    <span class="field-map__north" aria-hidden="true">N</span>
-    <svg class="field-map__route" viewBox="0 0 40 280" width="40" height="280" aria-hidden="true" focusable="false">
-      <defs><clipPath id="field-map-walked"><rect class="field-map__walked" x="-20" y="0" width="80" height="0"/></clipPath></defs>
-      <path class="field-map__path" d="M20 6 C36 38 4 62 20 94 S36 150 20 182 S4 244 20 274"/>
-      <path class="field-map__path field-map__path--walked" d="M20 6 C36 38 4 62 20 94 S36 150 20 182 S4 244 20 274" clip-path="url(#field-map-walked)"/>
-    </svg>
-    <span class="field-map__you" aria-hidden="true"></span>
-    <ol>
-      <li><a class="field-map__stop" href="#top"><span>Opening</span></a></li>
-      <li><a class="field-map__stop" href="#project-angrove"><span>Angrove</span></a></li>
-      <li><a class="field-map__stop" href="#invectus"><span>inVectus</span></a></li>
-      <li><a class="field-map__stop" href="#record"><span>Experience</span></a></li>
-      <li><a class="field-map__stop" href="#correspondence"><span>Contact</span></a></li>
-    </ol>
-  </nav>
-
   <main id="top">
     <section class="container hero">
       <p class="label hero__kicker" data-rise>Designer &amp; developer <span>·</span> Tampa, Florida</p>
-      <h1 class="statement" aria-label="Software built for people." data-ink>
+      <h1 data-draft-note="one idea, set large" class="statement" aria-label="Software built for people." data-ink>
         <span class="statement__line" aria-hidden="true"><span>Software built</span></span>
         <span class="statement__line" aria-hidden="true"><span>for <em class="scrawl">people</em>.</span></span>
       </h1>
-      <figure class="snapshot hero__portrait" data-settle>
+      <figure data-draft-note="tilted 4°, taped down" data-draft-side="left" class="snapshot hero__portrait" data-settle>
         <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125" fetchpriority="high">
         <figcaption>Ryan Baltodano</figcaption>
       </figure>
       <img class="desk desk--paperclip" src="assets/desk/paperclip.png" alt="" aria-hidden="true" width="240" height="70" loading="lazy">
       <div class="hero__foot">
-        <div class="hero__intro">
+        <div data-draft-note="two short paragraphs" class="hero__intro">
           <p>I take projects from early flows and visual design into working software: client websites, an AI study harness, and tools for exploring research.</p>
           <p>I’m interested in how AI can work alongside familiar interfaces while keeping sources, saved ideas, and decisions within reach.</p>
         </div>
         <div class="hero__actions">
-          <a class="button" href="#exhibits">View work</a>
+          <a data-draft-note="one clear action" data-draft-side="right" class="button" href="#exhibits">View work</a>
         </div>
       </div>
     </section>
@@ -94,8 +86,8 @@
           <p class="label">Exhibit I <span>·</span> Study harness</p>
         </header>
         <div class="container project__title project__title--action">
-          <h2 id="title-angrove" class="poster" data-ink>Angrove</h2>
-          <p class="stamp" data-stamp aria-label="Status: public beta on iPhone">Public beta<small>on iPhone</small></p>
+          <h2 data-draft-note="the name is the poster" id="title-angrove" class="poster" data-ink>Angrove</h2>
+          <p data-draft-note="status as a stamp, not a badge" data-draft-side="below" class="stamp" data-stamp aria-label="Status: public beta on iPhone">Public beta<small>on iPhone</small></p>
         </div>
         <div class="container project__lede"><p class="project__dek">A private AI study harness for philosophy and theology. Conversations, notes, and saved ideas stay together on iPhone and Mac.</p>
           <a class="button button--primary project__visit" href="https://angrove.app">Visit Angrove <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a>
@@ -103,7 +95,7 @@
 
         <div class="container project__intro">
           <img class="desk desk--fern" src="assets/desk/fern.png" alt="" aria-hidden="true" width="340" height="815" loading="lazy">
-          <figure class="film film--lead" data-settle>
+          <figure data-draft-note="the real app, not a mockup" class="film film--lead" data-settle>
           <span class="scribble scribble--right" aria-hidden="true">more than a chat log<svg viewBox="0 0 80 60"><path d="M8 6 C30 4 58 14 64 50"/><path d="M54 42 L64 52 L72 40"/></svg></span>
           <video class="film__video" data-caption-title="Fig. 1" data-caption="On Mac, a conversation dragged from Recents onto a Board, then a saved Insight found with search and set beside it." src="assets/video/learn-easier.mp4" poster="assets/video/learn-easier-poster.jpg" width="2400" height="1496" muted loop playsinline preload="metadata" data-play-in-view aria-label="Angrove for Mac: a Right to Self Defense conversation dragged from Recents onto a Board, then the Insight Infralapsarianism found with search and placed beside it."></video>
           <figcaption><span class="label">Fig. 1</span></figcaption>
@@ -114,7 +106,7 @@
           <div class="project__about">
             <h3 class="project__kicker" data-ink>The project</h3>
             <p>I design and build Angrove to give a study session somewhere to continue after the conversation ends. Source-backed answers lead to definitions you can save as Insights and revisit in a map. On Mac, Boards bring conversations, writing, and images into one workspace.</p>
-            <dl class="specimen">
+            <dl data-draft-note="facts in a specimen table" class="specimen">
               <div><dt>Platform</dt><dd>iPhone &amp; Mac</dd></div>
               <div><dt>Built with</dt><dd>SwiftUI, on-device AI</dd></div>
               <div><dt>My role</dt><dd>Product direction, visual and interaction design, SwiftUI implementation</dd></div>
@@ -132,7 +124,7 @@
 
         <section class="container project__steps" aria-labelledby="steps-angrove">
           <h3 id="steps-angrove" class="project__kicker" data-ink>How a study session works</h3>
-          <ol class="steps steps--phone">
+          <ol data-draft-note="four steps, real screens" class="steps steps--phone">
             <li data-settle><figure><img src="assets/img/angrove/home.jpg" alt="Angrove Home with activity, saved Insights, and a Question of the Day." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">01</span><b>Start from Home.</b> Recent activity, saved Insights, and a Question of the Day.</figcaption></figure></li>
             <li data-settle><figure><img src="assets/img/angrove/conversation-nature-of-evil.jpg" alt="Nature of Evil conversation with expanded Corpus Grounded details and Summa Theologica source links." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">02</span><b>Ask with sources.</b> Answers show the passages they draw on, such as the Summa Theologica.</figcaption></figure><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>show the passage, not just the answer</span></span></li>
             <li data-settle><figure><img src="assets/img/angrove/conversation-homoousios.jpg" alt="Homoousios conversation with consubstantial highlighted as a contextual concept." width="588" height="1280" loading="lazy"><figcaption><span class="steps__no">03</span><b>Open a concept.</b> Underlined terms open a definition in the context of the answer.</figcaption></figure></li>
@@ -141,7 +133,7 @@
         </section>
 
         <div class="container project__feature">
-          <figure class="film" data-settle>
+          <figure data-draft-note="image and words share the room" class="film" data-settle>
             <video class="film__video" data-caption-title="Fig. 2" data-caption="Typing /heading in a Board’s notes adds a heading above them." src="assets/video/lay-your-ideas-out.mp4" poster="assets/video/lay-your-ideas-out-poster.jpg" width="2400" height="1496" muted loop playsinline preload="none" data-play-in-view aria-label="Angrove for Mac: notes on just war theory in a Board, where typing /heading adds the Common Good heading above them."></video>
             <figcaption><span class="label">Fig. 2</span></figcaption>
           </figure>
@@ -157,7 +149,7 @@
 
         <section class="container project__notes" aria-labelledby="notes-angrove">
           <h3 id="notes-angrove" class="project__kicker" data-ink>Design notes</h3>
-          <div class="notes-grid">
+          <div data-draft-note="three notes under one rule" class="notes-grid">
             <div class="project-note"><h4 data-ink>From design to implementation</h4><p>I own the product direction, visual and interaction design, and SwiftUI implementation, including the connections between the interface, local AI, and saved work.</p></div>
             <div class="project-note"><h4 data-ink>Keep the way back within reach</h4><p>Boards, conversations, the library, and study topics share one sidebar. Moving between kinds of work should never feel like leaving the room.</p></div>
             <div class="project-note"><h4 data-ink>Test the default before choosing it</h4><p>Before choosing Angrove’s reasoning default, I ran an 80-case evaluation. Both settings passed 74 of 80 cases, while reasoning roughly doubled latency, so I kept it off by default. This was a development configuration test, not a general accuracy claim.</p><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>74 of 80 either way, so: off</span></span></div>
@@ -173,14 +165,14 @@
           <p class="label">Exhibit II <span>·</span> Research software</p>
         </header>
         <div class="container project__title">
-          <h2 id="title-invectus" class="poster" data-ink>inVectus</h2>
+          <h2 data-draft-note="same rhythm, second exhibit" id="title-invectus" class="poster" data-ink>inVectus</h2>
           <p class="stamp" data-stamp aria-label="Status: in development">In development</p>
         </div>
         <div class="container project__lede"><p class="project__dek">A local-first research tool for Mac. Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p></div>
 
         <div class="container project__intro">
           <img class="desk desk--compass" src="assets/desk/compass.png" alt="" aria-hidden="true" width="320" height="492" loading="lazy">
-          <figure class="film film--lead" data-settle>
+          <figure data-draft-note="evidence beside the claim" class="film film--lead" data-settle>
           <span class="scribble scribble--left" aria-hidden="true">it shows its work<svg viewBox="0 0 80 60"><path d="M8 6 C30 4 58 14 64 50"/><path d="M54 42 L64 52 L72 40"/></svg></span>
           <img class="film__video" data-caption-title="Fig. 3" data-caption="A flagged gap in a 5,000-paper ophthalmology collection, with its evidence and score breakdown beside the collection map." src="assets/img/invectus/gap.jpg" alt="inVectus showing a ranked coverage gap, its evidence and score breakdown, beside an interactive collection map." width="2000" height="1247" loading="lazy">
           <figcaption><span class="label">Fig. 3</span></figcaption>
@@ -210,7 +202,7 @@
 
         <section class="container project__steps" aria-labelledby="steps-invectus">
           <h3 id="steps-invectus" class="project__kicker" data-ink>A typical workflow</h3>
-          <ol class="steps steps--desktop">
+          <ol data-draft-note="desktop screens, two across" class="steps steps--desktop">
             <li data-settle><figure><img src="assets/img/invectus/collections.jpg" alt="The indexed medical collection, with role counts and calibration details." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">01</span><b>Import a collection.</b> Check that it’s indexed, with role counts and calibration details.</figcaption></figure></li>
             <li data-settle><figure><img src="assets/img/invectus/search.jpg" alt="Semantic search with supporting medical-paper matches." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">02</span><b>Search by meaning.</b> Compare an idea with the collection and inspect the nearest papers.</figcaption></figure></li>
             <li data-settle><figure><img src="assets/img/invectus/item.jpg" alt="A source paper and its position in the collection map." width="2000" height="1247" loading="lazy"><figcaption><span class="steps__no">03</span><b>Inspect the evidence.</b> Open a source paper and see where it sits on the map.</figcaption></figure></li>
@@ -239,12 +231,12 @@
         <p class="label">Field record <span>·</span> Work and study</p>
       </header>
       <div class="container project__title">
-        <h2 id="title-record" class="record__title" data-ink>Experience</h2>
+        <h2 data-draft-note="laid out like an exhibit" id="title-record" class="record__title" data-ink>Experience</h2>
       </div>
       <div class="container project__lede"><p class="project__dek">Alongside my own software, I design websites for clients, from understanding a business through responsive layout and delivery.</p></div>
 
       <div class="container record__intro">
-        <img class="record__specimen" src="assets/plates/plate-4-shells.png" alt="" aria-hidden="true" width="829" height="768" loading="lazy" data-settle>
+        <img data-draft-note="engraving at 60%" data-draft-side="right" class="record__specimen" src="assets/plates/plate-4-shells.png" alt="" aria-hidden="true" width="829" height="768" loading="lazy" data-settle>
         <div class="record__about">
           <h3 class="project__kicker" data-ink>The practice</h3>
           <p>Client work starts with understanding a business and translating its requirements into a responsive layout, then carrying the design through delivery.</p>
@@ -259,7 +251,7 @@
 
       <section class="container record__roles" aria-labelledby="roles-record">
         <h3 id="roles-record" class="project__kicker" data-ink>Client work</h3>
-        <ol class="roles">
+        <ol data-draft-note="years · company · what I did" class="roles">
           <li class="role">
             <p class="role__years">2024 to now</p>
             <div class="role__name"><h4>PostcardMania</h4><p class="label">Web designer</p></div>
@@ -275,7 +267,7 @@
 
       <section class="container project__notes" aria-labelledby="tools-record">
         <h3 id="tools-record" class="project__kicker" data-ink>Tools, by use</h3>
-        <div class="notes-grid">
+        <div data-draft-note="tools grouped by use" class="notes-grid">
           <div class="project-note"><h4 data-ink>Design</h4><p>Figma, interaction design, design systems, responsive layouts, and visual identity.</p></div>
           <div class="project-note"><h4 data-ink>Interfaces</h4><p>SwiftUI, React, TypeScript, HTML, CSS, and JavaScript.</p></div>
           <div class="project-note"><h4 data-ink>Local software</h4><p>Rust, Python, SQLite, semantic search, on-device model integration, and evaluation.</p></div>
@@ -290,10 +282,10 @@
     <section id="correspondence" class="contact">
       <div class="container contact__inner">
         <p class="label">Correspondence</p>
-        <h2 class="contact__statement" data-ink>Let’s compare <em class="scrawl">notes</em>.</h2>
+        <h2 data-draft-note="end on a conversation" class="contact__statement" data-ink>Let’s compare <em class="scrawl">notes</em>.</h2>
         <div class="contact__body">
           <p class="contact__lead">I’m open to product design, design engineering, and web design opportunities. If you’re building a tool for learning, research, or working with complex information, I’d like to hear about it.</p>
-          <a class="contact__email" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com <span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></span></a>
+          <a data-draft-note="make the address big" data-draft-side="below" class="contact__email" href="mailto:rbaltodano337@gmail.com">rbaltodano337@gmail.com <span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></span></a>
         </div>
         <dl class="contact__facts">
           <div><dt>Status</dt><dd><span class="contact__dot" aria-hidden="true"></span>Open to new roles</dd></div>
@@ -312,8 +304,9 @@
     <a href="#top">Back to top <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a>
   </footer>
 
-  <script src="js/site.js?v=20261104103505" defer></script>
-  <script src="js/journal.js?v=20261104103505" defer></script>
-  <script src="js/lightbox.js?v=20261104103505" defer></script>
+  <script src="js/site.js?v=20261104115148" defer></script>
+  <script src="js/draft.js?v=20261104115148" defer></script>
+  <script src="js/journal.js?v=20261104115148" defer></script>
+  <script src="js/lightbox.js?v=20261104115148" defer></script>
 </body>
 </html>
