@@ -3,12 +3,11 @@
 // boxes, images crossed boxes, and running text lettering guidelines, all in graphite; pencil
 // notes on the design choices are written beside them (from data-draft-note). Then each piece fills in reading
 // order as its marks lift away and the notes are rubbed out. The opening drafts on load, every later block the first time it
-// scrolls into view. It runs once per visit (?draft replays). A click or key finishes it at once.
-// Without JavaScript, with reduced motion, or after the first visit, nothing is held back.
+// scrolls into view. It runs on each page load. A click or key finishes it at once.
+// Without JavaScript, with reduced motion, or on a direct section link, nothing is held back.
 (() => {
   const root = document.documentElement;
   if (!root.classList.contains("is-drafting")) return;
-  try { sessionStorage.setItem("drafted", "1"); } catch (e) {}
 
   const SVG = "http://www.w3.org/2000/svg";
   const EASE = "cubic-bezier(0.55, 0, 0.17, 1)";

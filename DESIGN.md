@@ -191,7 +191,7 @@ label card under the same accent mono "Fig. N" title.
 
 ### Drafted page
 
-Once per visit (sessionStorage; `?draft` replays), each block is drafted before
+On every page load, each block is drafted before
 it is inked, as on a drawing board (`js/draft.js`). Blocks: the opening; each
 project's and Experience's title group and each later section; Contact. The
 opening drafts on load, later blocks the first time they reach 78% down the
@@ -215,7 +215,7 @@ On load the portrait is slid up above everything (z-index 400, over the nav) fro
 below the bottom centre of the screen, turning from its 4 degrees to 8, to rest in
 the middle of the viewport (1.1s, `cubic-bezier(0.16, 1, 0.3, 1)`). The rest of the
 opening is hidden (`html.is-awaiting-photo`) until the portrait's first move after
-that; then it appears, or drafts on a first visit. The portrait is then moved by
+that; then it appears and drafts. The portrait is then moved by
 hand on the menu curve: diagonally down and to the right (620ms), up into its place
 still at 7.5 degrees (560ms), and finally turned to its 4 degrees (380ms), with
 short beats between. A paperclip (54px, rotated 98 degrees, 6px from the corner and set deep
@@ -263,3 +263,14 @@ the portrait's menu easing and small pauses). It runs once per load. The fern is
 busy during placement so cursor nudges cannot interrupt it. Reduced motion,
 mobile layouts where the fern is hidden, and visits restored below Angrove keep
 the resting layout. Resizing during placement settles it immediately.
+
+
+## Contact simplification, 2026-11-04
+
+The closing contact section has no incoming dotted trail or Eye trail label.
+Use equal top and bottom padding: 144px on desktop, 80px on tablet, and 56px
+on phone. Below the heading’s rule, one paragraph includes availability, Tampa,
+and openness to relocation, followed by Email me, GitHub, and Résumé PDF buttons.
+The original black-and-white rooftop photo (`assets/img/hero-skyline.jpg`) sits
+to the right on desktop and below the actions on smaller screens. The separate
+facts grid and oversized email address are removed; the availability stamp stays.

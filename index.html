@@ -17,12 +17,9 @@
       root.dataset.theme = theme;
       root.classList.add("js");
       document.querySelector('meta[name="theme-color"]').content = theme === "night" ? "#151311" : "#ece5d6";
-      // The opening drafts itself once per visit (js/draft.js); ?draft replays it. Content is held
-      // back only while this class is set, and never for longer than six seconds.
-      let drafted = false;
-      try { drafted = sessionStorage.getItem("drafted") === "1"; } catch (e) {}
-      if (/[?&]draft\b/.test(location.search)) drafted = false;
-      if (!drafted && !location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Draft on every page load (js/draft.js). Content is held back only while this
+      // class is set, and never for longer than six seconds.
+      if (!location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
         root.classList.add("is-drafting");
         setTimeout(() => root.classList.remove("is-drafting"), 6000);
       }
@@ -309,9 +306,9 @@
     <a href="#top">Back to top <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a>
   </footer>
 
-  <script src="js/site.js?v=20261104130526" defer></script>
-  <script src="js/draft.js?v=20261104130526" defer></script>
-  <script src="js/journal.js?v=20261104130526" defer></script>
+  <script src="js/site.js?v=20261104131850" defer></script>
+  <script src="js/draft.js?v=20261104131850" defer></script>
+  <script src="js/journal.js?v=20261104131850" defer></script>
   <script src="js/lightbox.js?v=20261104130526" defer></script>
 </body>
 </html>
