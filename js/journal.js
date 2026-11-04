@@ -9,7 +9,7 @@
   // they ease back to their places. Hit testing reads each image's alpha, so only the object
   // itself reacts, never the transparent corners of its rotated box.
   (() => {
-    const objects = [...document.querySelectorAll(".desk")];
+    const objects = [...document.querySelectorAll(".desk, .hero__portrait")];
     if (!objects.length) return;
     const alpha = new Map();
     const sample = (img) => {
@@ -25,7 +25,8 @@
       return data;
     };
     const hit = (x, y) => objects.find((img) => {
-      if (!img.offsetParent) return false;
+      if (!img.offsetParent || img.dataset.busy) return false;
+      if (img.matches(".hero__portrait") && !document.documentElement.classList.contains("is-placed")) return false;
       const box = img.getBoundingClientRect();
       if (x < box.left || x > box.right || y < box.top || y > box.bottom) return false;
       const clip = img.parentElement.closest(".desk-rest");
@@ -39,6 +40,7 @@
       const u = dx * Math.cos(angle) + dy * Math.sin(angle) + w / 2;
       const v = -dx * Math.sin(angle) + dy * Math.cos(angle) + h / 2;
       if (u < 0 || v < 0 || u > w || v > h) return false;
+      if (img.matches(".hero__portrait")) return true;
       const data = sample(img);
       if (!data) return false;
       return data.ctx.getImageData(Math.floor(u / w * data.w), Math.floor(v / h * data.h), 1, 1).data[3] > 40;
@@ -88,7 +90,7 @@
         frame = 0;
         const now = last, before = prev;
         prev = now;
-        if (!before || now.t - before.t > 120 || now.target.closest(INTERACTIVE)) { inside = null; return; }
+        if (!before || now.t - before.t > 120 || (now.target.closest(INTERACTIVE) && !now.target.closest(".hero__portrait"))) { inside = null; return; }
         const img = hit(now.x, now.y);
         if (img === inside) return;
         inside = img;
@@ -101,8 +103,8 @@
 
   // On load the portrait is slid up from below the bottom centre of the screen, above everything,
   // turning from its 4 degrees to 8 as it comes to rest in the middle. The rest of the opening waits
-  // for it: as the portrait makes its first move after that, the opening is released (and drafts,
-  // on a first visit). The portrait is then moved by hand: diagonally down to the right, up into its
+  // for it: after the portrait's first repositioning, the opening is released and drafts.
+  // The portrait is moved by hand: diagonally down to the right, up into its
   // place, and finally turned to its 4 degrees; a paperclip then slides over its top right corner.
   (() => {
     const root = document.documentElement;
@@ -125,9 +127,9 @@
       portrait.classList.add("is-sliding");
       // Slid up from the bottom centre, turning from 4 degrees to 8 overall.
       await move(`translate(${cx.toFixed(0)}px, ${below.toFixed(0)}px) rotate(0deg)`, middle, 1100, 0, "cubic-bezier(0.16, 1, 0.3, 1)");
-      // First move: the rest of the opening starts as the portrait is pushed down and to the right.
-      release();
+      // Finish the first repositioning before the construction lines start drawing.
       await move(middle, lower, 620, 60);
+      release();
       // Up into its place, still at its loose angle.
       await move(lower, placed, 560, 90);
       // And turned to its final 4 degrees.

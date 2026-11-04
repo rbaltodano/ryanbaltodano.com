@@ -311,3 +311,9 @@ name, designer positioning and location, project/experience navigation, and
 email/GitHub/résumé links. A separate lower rule contains copyright and Back to
 top. On smaller screens the identity spans both link columns; the lower row
 stacks on phones. Keep the wax seal at the outside edge.
+
+### Navbar actions
+
+The navbar ends with GitHub (new tab) and a filled Contact button that opens
+email to `rbaltodano337@gmail.com`. Both remain visible on phones. The theme
+switch is removed, and the site starts in its day palette on every load.

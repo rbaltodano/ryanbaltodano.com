@@ -11,21 +11,18 @@
   <meta name="theme-color" content="#ece5d6">
   <script>
     (() => {
-      let theme = "day";
-      try { theme = localStorage.getItem("theme") === "night" ? "night" : "day"; } catch (e) {}
       const root = document.documentElement;
-      root.dataset.theme = theme;
+      root.dataset.theme = "day";
       root.classList.add("js");
-      document.querySelector('meta[name="theme-color"]').content = theme === "night" ? "#151311" : "#ece5d6";
       // Draft on every page load (js/draft.js). Content is held back only while this
       // class is set, and never for longer than six seconds.
-      if (!location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
         root.classList.add("is-drafting");
         setTimeout(() => root.classList.remove("is-drafting"), 6000);
       }
       // The portrait slides in once (js/journal.js), and the rest of the opening waits for its
-      // first move; neither is ever held back longer than this.
-      if (!location.hash && !matchMedia("(prefers-reduced-motion: reduce)").matches) root.classList.add("is-awaiting-photo");
+      // first repositioning; neither is ever held back longer than this.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) root.classList.add("is-awaiting-photo");
       setTimeout(() => root.classList.remove("is-awaiting-photo"), 4000);
       setTimeout(() => root.classList.add("is-placed"), 8000);
     })();
@@ -33,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261104141106">
+  <link rel="stylesheet" href="css/site.css?v=20261104-portrait-clip">
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -46,14 +43,12 @@
   <header class="nav">
     <div class="container nav__inner">
       <a class="wordmark" href="#top" aria-label="Ryan Baltodano, home"><span class="wordmark__mark" aria-hidden="true"></span><span class="wordmark__name">Ryan Baltodano</span></a>
-      <nav class="nav__links" aria-label="Sections">
+      <nav class="nav__links" aria-label="Main navigation">
         <a href="#exhibits">Exhibits</a>
         <a href="#record">Experience</a>
-        <a class="nav__keep" href="#correspondence">Contact</a>
+        <a class="nav__keep" href="https://github.com/rbaltodano" target="_blank" rel="noopener">GitHub</a>
+        <a class="button button--primary nav__keep nav__contact" href="mailto:rbaltodano337@gmail.com">Contact</a>
       </nav>
-      <button class="theme-toggle" type="button" aria-pressed="false" hidden>
-        <span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Night</span>
-      </button>
     </div>
   </header>
 
@@ -303,7 +298,7 @@
   <footer class="container footer">
     <div class="footer__main">
       <div class="footer__identity">
-        <a class="footer__brand" href="#top"><span class="wordmark__mark" aria-hidden="true"></span><span>Ryan Baltodano</span></a>
+        <a class="footer__brand" href="#top"><img src="assets/brand/rb-monogram.png" alt="" width="512" height="512"><span>Ryan Baltodano</span></a>
         <p class="footer__position">Designer who can Build.</p>
         <p class="footer__location">Tampa, Florida · Open to relocating</p>
       </div>
@@ -327,9 +322,9 @@
     <img class="desk desk--wax-seal" src="assets/desk/wax-seal.png" alt="" aria-hidden="true" width="300" height="310" loading="lazy">
   </footer>
 
-  <script src="js/site.js?v=20261104132230" defer></script>
-  <script src="js/draft.js?v=20261104132230" defer></script>
-  <script src="js/journal.js?v=20261104132230" defer></script>
-  <script src="js/lightbox.js?v=20261104132230" defer></script>
+  <script src="js/site.js?v=20261104140847" defer></script>
+  <script src="js/draft.js?v=20261104-draft-after-photo" defer></script>
+  <script src="js/journal.js?v=20261104-draft-after-photo" defer></script>
+  <script src="js/lightbox.js?v=20261104-polaroid" defer></script>
 </body>
 </html>

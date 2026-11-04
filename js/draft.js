@@ -4,7 +4,7 @@
 // notes on the design choices are written beside them (from data-draft-note). Then each piece fills in reading
 // order as its marks lift away and the notes are rubbed out. The opening drafts on load, every later block the first time it
 // scrolls into view. It runs on each page load. A click or key finishes it at once.
-// Without JavaScript, with reduced motion, or on a direct section link, nothing is held back.
+// Without JavaScript or with reduced motion, nothing is held back.
 (() => {
   const root = document.documentElement;
   if (!root.classList.contains("is-drafting")) return;
@@ -39,9 +39,10 @@
 
   // Hold back every block not yet on screen; the opening is already held by the head script.
   const pending = blocks.map((els) => ({ els, parts: partsOf(els) })).filter((block) => {
-    const top = block.els[0].getBoundingClientRect().top;
     const first = block.els[0] === hero;
-    if (!first && top < innerHeight) return false;
+    // A section link can land in the middle of the page. Draft what is visible there
+    // and the blocks below it; leave content already above the viewport readable.
+    if (!first && block.els.every((el) => el.getBoundingClientRect().bottom <= 0)) return false;
     block.parts.forEach((el) => el.setAttribute("data-draft-part", outlined(el) ? "outline" : ""));
     return true;
   });
@@ -263,19 +264,22 @@
 
   // Measure once the type has loaded, or the outlines won't match the lines.
   const fonts = document.fonts ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))]) : Promise.resolve();
-  fonts.then(() => {
+  fonts.then(async () => {
     const later = pending.filter((block) => block.els[0] !== hero);
     const opening = pending.find((block) => block.els[0] === hero);
-    // The opening waits for the portrait's first move (js/journal.js).
-    if (opening && !root.classList.contains("is-awaiting-photo")) draft(opening);
-    else if (opening) {
-      const wait = new MutationObserver(() => {
-        if (root.classList.contains("is-awaiting-photo")) return;
-        wait.disconnect();
-        draft(opening);
+    // All construction lines wait until the portrait finishes its first repositioning.
+    // This also holds visible project blocks on short screens and section-link loads.
+    if (root.classList.contains("is-awaiting-photo")) {
+      await new Promise((resolve) => {
+        const wait = new MutationObserver(() => {
+          if (root.classList.contains("is-awaiting-photo")) return;
+          wait.disconnect();
+          resolve();
+        });
+        wait.observe(root, { attributes: true, attributeFilter: ["class"] });
       });
-      wait.observe(root, { attributes: true, attributeFilter: ["class"] });
     }
+    if (opening) draft(opening);
     if (!("IntersectionObserver" in window)) return later.forEach((block) => block.parts.forEach((el) => el.removeAttribute("data-draft-part")));
     const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
       if (!entry.isIntersecting) return;

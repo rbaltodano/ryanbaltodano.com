@@ -25,23 +25,25 @@
   if (!media.length) return;
 
   media.forEach(function (m) {
-    m.classList.add('lightbox-target');
+    var target = m.closest('.hero__portrait') || m;
+    target.classList.add('lightbox-target');
     var link = m.closest('a');
     if (link) {
       // The link stays the keyboard stop; its click opens the image here rather than leaving.
       link.addEventListener('click', function (e) {
         if (e.metaKey || e.ctrlKey || e.shiftKey || shown) return;
-        if (open(m)) { e.preventDefault(); shown.openedBy = e; }
+        if (requestOpen(m, e)) e.preventDefault();
       });
     } else {
-      m.tabIndex = 0;
-      m.setAttribute('role', 'button');
-      m.addEventListener('click', function (e) { if (open(m)) shown.openedBy = e; });
-      m.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(m); }
+      target.tabIndex = 0;
+      target.setAttribute('role', 'button');
+      if (target !== m) target.setAttribute('aria-label', m.getAttribute('alt'));
+      target.addEventListener('click', function (e) { requestOpen(m, e); });
+      target.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); requestOpen(m, e); }
       });
     }
-    if (!reduce) {
+    if (!reduce && !m.closest('.hero__portrait')) {
       m.addEventListener('pointermove', function (e) { tilt(m, e); });
       m.addEventListener('pointerleave', function () { untilt(m); });
     }
@@ -67,9 +69,58 @@
   }
 
   var shown = null;   // { media, placeholder, scrim, style, offset, rect, focus }
+  var opening = null;
+
+  function slideClip(clip, away) {
+    return clip.animate(away ? [
+      { transform: 'none', opacity: 1 },
+      { transform: 'translate(0, -72px)', opacity: 0 }
+    ] : [
+      { transform: 'translate(0, -72px)', opacity: 0 },
+      { transform: 'translate(0, 2px)', opacity: 1, offset: 0.8 },
+      { transform: 'none', opacity: 1 }
+    ], { duration: reduce ? 0 : (away ? 300 : 400), easing: EASE, fill: 'forwards' });
+  }
+
+  function restoreClip(state) {
+    var back = slideClip(state.clip, false);
+    back.finished.then(function () {
+      state.motion.cancel();
+      back.cancel();
+      delete state.holder.dataset.busy;
+    });
+  }
+
+  function requestOpen(m, event) {
+    if (shown || opening) return false;
+    var holder = m.closest('.hero__portrait');
+    var clip = holder && holder.querySelector('.hero__clip');
+    if (!clip) {
+      if (!open(m)) return false;
+      shown.openedBy = event;
+      return true;
+    }
+    if (holder.dataset.busy || !document.documentElement.classList.contains('is-placed')) return false;
+    holder.dataset.busy = 'lightbox';
+    // Let the photo leave from its resting place, after the clip has slid clear.
+    holder.getAnimations().forEach(function (motion) { motion.cancel(); });
+    var state = { holder: holder, clip: clip, motion: slideClip(clip, true) };
+    opening = state;
+    state.motion.finished.then(function () {
+      if (opening !== state) return;
+      opening = null;
+      if (open(m)) {
+        shown.openedBy = event;
+        shown.clipState = state;
+      } else restoreClip(state);
+    });
+    return true;
+  }
 
   function open(m) {
     if (shown) return false;
+    var portrait = m.closest('.hero__portrait');
+    if (portrait) return openPolaroid(portrait, m);
     var rect = m.getBoundingClientRect();
     if (rect.width < 120 || rect.height < 80) return false;   // hidden or too small to need it
     // Where it rests, without the hover's lift and tilt: where it returns to on close. The
@@ -189,6 +240,55 @@
     return true;
   }
 
+  // Carry the actual paper print, keeping its border and handwritten caption together.
+  // Scale the print as a unit so the paper and lettering retain their proportions.
+  function openPolaroid(photo, img) {
+    var rect = photo.getBoundingClientRect();
+    if (rect.width < 120 || rect.height < 80) return false;
+    var width = photo.offsetWidth, height = photo.offsetHeight;
+    var angle = getComputedStyle(photo).rotate;
+    var scale = Math.min((innerWidth - margin() * 2) / width,
+      (innerHeight - margin() * 2) / height, img.naturalWidth / img.offsetWidth);
+    var left = (innerWidth - width) / 2, top = (innerHeight - height) / 2;
+    var placeholder = photo.cloneNode(false);
+    placeholder.removeAttribute('tabindex');
+    placeholder.removeAttribute('role');
+    placeholder.removeAttribute('aria-label');
+    placeholder.setAttribute('aria-hidden', 'true');
+    placeholder.setAttribute('data-lightbox-placeholder', '');
+    placeholder.style.cssText = 'width:' + width + 'px;height:' + height + 'px;visibility:hidden;pointer-events:none';
+    var scrim = document.createElement('div');
+    scrim.className = 'lightbox';
+    scrim.setAttribute('role', 'dialog');
+    scrim.setAttribute('aria-modal', 'true');
+    scrim.setAttribute('aria-label', img.getAttribute('alt'));
+    scrim.tabIndex = -1;
+    var shade = document.createElement('div');
+    shade.className = 'lightbox__shade';
+    scrim.appendChild(shade);
+    var style = photo.getAttribute('style');
+    var focus = document.activeElement;
+    photo.replaceWith(placeholder);
+    scrim.appendChild(photo);
+    document.body.appendChild(scrim);
+    photo.classList.add('lightbox__media');
+    photo.style.cssText = 'position:fixed!important;left:' + left + 'px!important;top:' + top + 'px!important;' +
+      'right:auto!important;width:' + width + 'px!important;height:' + height + 'px!important;' +
+      'max-width:none!important;margin:0!important;rotate:0deg!important;scale:none!important;' +
+      'transform-origin:center;transform:scale(' + scale + ');transition:none!important';
+    // A focused print is now the dialog content rather than another open button.
+    photo.removeAttribute('tabindex');
+    shown = {
+      media: photo, placeholder: placeholder, scrim: scrim, shade: shade, style: style, focus: focus,
+      offset: { x: 0, y: 0 }, size: { w: width, h: height }, at: { x: left, y: top },
+      polaroid: true, angle: angle, restTransform: 'scale(' + scale + ')'
+    };
+    photo.animate([{ transform: from(rect) }, { transform: shown.restTransform }], { duration: OPEN_MS, easing: EASE });
+    shade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FADE_MS, easing: EASE, fill: 'forwards' });
+    scrim.focus({ preventScroll: true });
+    return true;
+  }
+
   function text(tag, cls, value) {
     var node = document.createElement(tag);
     node.className = cls;
@@ -199,27 +299,37 @@
   // The transform that puts the enlarged element back over a rect on the page.
   function from(rect) {
     var s = shown.size, a = shown.at;
+    if (shown.polaroid) return 'translate(' + (rect.left + rect.width / 2 - a.x - s.w / 2) + 'px, ' +
+      (rect.top + rect.height / 2 - a.y - s.h / 2) + 'px) rotate(' + shown.angle + ')';
     return 'translate(' + (rect.left - a.x) + 'px, ' + (rect.top - a.y) + 'px) scale(' + (rect.width / s.w) + ', ' + (rect.height / s.h) + ')';
   }
 
   function close() {
+    if (opening) {
+      var pending = opening;
+      opening = null;
+      restoreClip(pending);
+      return;
+    }
     if (!shown || shown.closing) return;
     var s = shown;
     s.closing = true;
     var pr = s.placeholder.getBoundingClientRect();
     var home = { left: pr.left + s.offset.x, top: pr.top + s.offset.y, width: pr.width, height: pr.height };
-    var back = s.media.animate([{ transform: 'none' }, { transform: from(home) }], { duration: CLOSE_MS, easing: EASE, fill: 'forwards' });
+    var back = s.media.animate([{ transform: s.restTransform || 'none' }, { transform: from(home) }], { duration: CLOSE_MS, easing: EASE, fill: 'forwards' });
     if (s.caption) s.caption.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.5, easing: 'ease-in', fill: 'forwards' });
     s.shade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FADE_MS, easing: EASE, fill: 'forwards' });
-    s.mount.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.4, easing: 'ease-in', fill: 'forwards' });
+    if (s.mount) s.mount.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.4, easing: 'ease-in', fill: 'forwards' });
     back.finished.then(function () {
       s.placeholder.replaceWith(s.media);
       s.media.classList.remove('lightbox__media');
       back.cancel();
       if (s.style == null) s.media.removeAttribute('style'); else s.media.setAttribute('style', s.style);
+      if (s.polaroid) s.media.tabIndex = 0;
       s.scrim.remove();
       if (s.focus && s.focus.focus) s.focus.focus({ preventScroll: true });
       shown = null;
+      if (s.clipState) restoreClip(s.clipState);
     });
   }
 
@@ -227,13 +337,13 @@
     // The click that opened it bubbles here too, now from inside the lightbox: not a close.
     if (shown && e !== shown.openedBy && shown.scrim.contains(e.target)) { e.preventDefault(); close(); }
   });
-  document.addEventListener('keydown', function (e) { if (shown && e.key === 'Escape') close(); });
+  document.addEventListener('keydown', function (e) { if ((shown || opening) && e.key === 'Escape') close(); });
   // Scrolling closes it rather than moving the page underneath.
   window.addEventListener('wheel', function (e) {
-    if (!shown) return;
+    if (!shown && !opening) return;
     e.preventDefault();
     e.stopImmediatePropagation();
     close();
   }, { capture: true, passive: false });
-  window.addEventListener('touchmove', function () { if (shown) close(); }, { passive: true });
+  window.addEventListener('touchmove', function () { if (shown || opening) close(); }, { passive: true });
 })();
