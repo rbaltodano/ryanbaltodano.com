@@ -309,7 +309,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .contact__inner { position: relative; }
 .contact__statement { font-size: var(--text-statement); line-height: 0.98; letter-spacing: -0.035em; max-width: none; }
 .contact__statement em { font-style: italic; color: var(--accent); }
-.contact__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--ink); }
+.contact__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; margin-top: 32px; }
 .contact__lead { max-width: 48ch; }
 .contact__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .contact__actions .button { gap: 10px; }
@@ -319,7 +319,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .contact__stamp { top: 12px; right: var(--gutter); }
 @media (max-width: 60rem) {
   .contact { padding-block: var(--section-gap-s); }
-  .contact__body { grid-template-columns: 1fr; gap: 40px; margin-top: 40px; padding-top: 32px; }
+  .contact__body { grid-template-columns: 1fr; gap: 40px; margin-top: 24px; }
   .contact__lead { max-width: 65ch; }
   .contact__stamp { position: relative; top: 0; right: 0; margin-top: 40px; display: inline-flex; }
 }

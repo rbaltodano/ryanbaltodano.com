@@ -269,7 +269,7 @@ the resting layout. Resizing during placement settles it immediately.
 
 The closing contact section has no incoming dotted trail or Eye trail label.
 Use equal top and bottom padding: 144px on desktop, 80px on tablet, and 56px
-on phone. Below the heading’s rule, one paragraph includes availability, Tampa,
+on phone. Directly below the heading, one paragraph includes availability, Tampa,
 and openness to relocation, followed by Email me, GitHub, and Résumé PDF buttons.
 The original black-and-white rooftop photo (`assets/img/hero-skyline.jpg`) sits
 to the right on desktop and below the actions on smaller screens. The separate
@@ -297,3 +297,7 @@ the 180px Apple touch icon are generated from that same source.
 The rooftop Polaroid has a square, centered black-and-white crop, an ivory-white
 16px frame, and an 80px blank border at the bottom, without a caption. Its
 paper remains light in both themes, with a more visible cast shadow.
+
+Contact has no divider below its heading. The paragraph starts 32px below the
+heading on desktop and 24px below on smaller screens, aligned to the top of the
+photo column rather than vertically centered beside it.
