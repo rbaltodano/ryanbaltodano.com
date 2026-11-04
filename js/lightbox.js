@@ -317,11 +317,13 @@
     shown = {
       media: photo, placeholder: placeholder, scrim: scrim, shade: shade, style: style, focus: focus,
       offset: { x: 0, y: 0 }, size: { w: width, h: height }, at: { x: left, y: top },
-      polaroid: true, angle: angle, restTransform: 'scale(' + scale + ')', inspector: polaroidScenes.get(photo)
+      polaroid: true, angle: angle, restTransform: 'scale(' + scale + ')', inspector: polaroidScenes.get(photo),
+      // Phones skip the flight: the print slides straight up from below the screen.
+      sheet: innerWidth < 600 ? 'translate(0, ' + Math.ceil(innerHeight - top - height * (1 - scale) / 2 + 24) + 'px) scale(' + scale + ')' : null
     };
     var state = shown;
     if (state.inspector) state.inspector.setViewport((innerWidth - 48) / scale, (innerHeight - 150) / scale);
-    var entrance = photo.animate([{ transform: from(rect) }, { transform: shown.restTransform }], { duration: OPEN_MS, easing: EASE });
+    var entrance = photo.animate([{ transform: shown.sheet || from(rect) }, { transform: shown.restTransform }], { duration: OPEN_MS, easing: EASE });
     entrance.finished.then(function () { state.rotationReady = true; });
     enableRotation(state, scale);
     shade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FADE_MS, easing: EASE, fill: 'forwards' });
@@ -437,7 +439,7 @@
     s.media.classList.remove('is-rotating');
     var pr = s.placeholder.getBoundingClientRect();
     var home = { left: pr.left + s.offset.x, top: pr.top + s.offset.y, width: pr.width, height: pr.height };
-    var back = s.media.animate([{ transform: s.restTransform || 'none' }, { transform: from(home) }], { duration: CLOSE_MS, easing: EASE, fill: 'forwards' });
+    var back = s.media.animate([{ transform: s.restTransform || 'none' }, { transform: s.sheet || from(home) }], { duration: CLOSE_MS, easing: EASE, fill: 'forwards' });
     if (s.caption) s.caption.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.5, easing: 'ease-in', fill: 'forwards' });
     s.shade.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FADE_MS, easing: EASE, fill: 'forwards' });
     if (s.mount) s.mount.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.4, easing: 'ease-in', fill: 'forwards' });
@@ -452,6 +454,7 @@
         s.media.setAttribute('role', 'button');
       }
       s.scrim.remove();
+      if (s.sheet) s.media.animate([{ opacity: 0 }, { opacity: 1 }], { duration: reduce ? 0 : 250, easing: 'ease-out' });
       if (s.focus && s.focus.focus) s.focus.focus({ preventScroll: true });
       shown = null;
       if (s.clipState) restoreClip(s.clipState);
