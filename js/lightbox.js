@@ -15,6 +15,27 @@
   var GAP = 20;        // between it and its caption
   var OPEN_MS = reduce ? 0 : 600, CLOSE_MS = reduce ? 0 : 600, FADE_MS = reduce ? 0 : 450;
   var TILT = 1.5; // degrees at the edges: a gentle response
+  var POLAROID = '.hero__portrait, .contact__photo';
+  var polaroidScenes = new WeakMap(), polaroidLoading = new WeakMap();
+  var polaroidModule = null;
+
+  function preparePolaroid(photo, image) {
+    if (polaroidLoading.has(photo)) return polaroidLoading.get(photo);
+    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261104-inline-1');
+    var ready = polaroidModule.then(function (module) {
+      return module.createInspector(photo, image, photo, reduce);
+    }).then(function (inspector) {
+      polaroidScenes.set(photo, inspector);
+      photo.classList.add('has-polaroid-mesh');
+      inspector.canvas.classList.add('is-ready');
+      return inspector;
+    }).catch(function () {
+      // Keep the original paper print usable when WebGL is unavailable.
+      return null;
+    });
+    polaroidLoading.set(photo, ready);
+    return ready;
+  }
 
   var IMAGE_FILE = /\.(jpe?g|png|webp|gif|avif)([?#]|$)/i;
   var media = Array.prototype.filter.call(document.querySelectorAll('img, video'), function (m) {
@@ -25,7 +46,7 @@
   if (!media.length) return;
 
   media.forEach(function (m) {
-    var target = m.closest('.hero__portrait') || m;
+    var target = m.closest(POLAROID) || m;
     target.classList.add('lightbox-target');
     var link = m.closest('a');
     if (link) {
@@ -43,10 +64,25 @@
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); requestOpen(m, e); }
       });
     }
-    if (!reduce && !m.closest('.hero__portrait')) {
+    if (!reduce && !m.closest(POLAROID)) {
       m.addEventListener('pointermove', function (e) { tilt(m, e); });
       m.addEventListener('pointerleave', function () { untilt(m); });
     }
+  });
+
+  // Render each print as it approaches the page viewport. The renderer and mesh
+  // stay inside that print throughout opening, inspection, and its return home.
+  var printObserver = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      preparePolaroid(entry.target, entry.target.querySelector('img'));
+      printObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: '240px' }) : null;
+  media.forEach(function (m) {
+    var photo = m.closest(POLAROID);
+    if (!photo) return;
+    if (printObserver) printObserver.observe(photo); else preparePolaroid(photo, m);
   });
 
   // The face turns toward the cursor: cursor right turns it right, cursor low turns it down.
@@ -93,20 +129,20 @@
 
   function requestOpen(m, event) {
     if (shown || opening) return false;
-    var holder = m.closest('.hero__portrait');
-    var clip = holder && holder.querySelector('.hero__clip');
+    var holder = m.closest(POLAROID);
+    var clip = holder && holder.querySelector('.hero__clip, .contact__clip');
     if (!clip) {
       if (!open(m)) return false;
       shown.openedBy = event;
       return true;
     }
-    if (holder.dataset.busy || !document.documentElement.classList.contains('is-placed')) return false;
+    if (holder.dataset.busy || (holder.matches('.hero__portrait') && !document.documentElement.classList.contains('is-placed'))) return false;
     holder.dataset.busy = 'lightbox';
     // Let the photo leave from its resting place, after the clip has slid clear.
     holder.getAnimations().forEach(function (motion) { motion.cancel(); });
     var state = { holder: holder, clip: clip, motion: slideClip(clip, true) };
     opening = state;
-    state.motion.finished.then(function () {
+    Promise.all([state.motion.finished, preparePolaroid(holder, m)]).then(function () {
       if (opening !== state) return;
       opening = null;
       if (open(m)) {
@@ -119,7 +155,7 @@
 
   function open(m) {
     if (shown) return false;
-    var portrait = m.closest('.hero__portrait');
+    var portrait = m.closest(POLAROID);
     if (portrait) return openPolaroid(portrait, m);
     var rect = m.getBoundingClientRect();
     if (rect.width < 120 || rect.height < 80) return false;   // hidden or too small to need it
@@ -247,8 +283,7 @@
     if (rect.width < 120 || rect.height < 80) return false;
     var width = photo.offsetWidth, height = photo.offsetHeight;
     var angle = getComputedStyle(photo).rotate;
-    var scale = Math.min((innerWidth - margin() * 2) / width,
-      (innerHeight - margin() * 2) / height, img.naturalWidth / img.offsetWidth);
+    var scale = Math.min((innerWidth - 64) / width, (innerHeight - 180) / height, 560 / height) * 0.9;
     var left = (innerWidth - width) / 2, top = (innerHeight - height) / 2;
     var placeholder = photo.cloneNode(false);
     placeholder.removeAttribute('tabindex');
@@ -258,7 +293,7 @@
     placeholder.setAttribute('data-lightbox-placeholder', '');
     placeholder.style.cssText = 'width:' + width + 'px;height:' + height + 'px;visibility:hidden;pointer-events:none';
     var scrim = document.createElement('div');
-    scrim.className = 'lightbox';
+    scrim.className = 'lightbox lightbox--polaroid';
     scrim.setAttribute('role', 'dialog');
     scrim.setAttribute('aria-modal', 'true');
     scrim.setAttribute('aria-label', img.getAttribute('alt'));
@@ -271,22 +306,102 @@
     photo.replaceWith(placeholder);
     scrim.appendChild(photo);
     document.body.appendChild(scrim);
-    photo.classList.add('lightbox__media');
+    photo.classList.add('lightbox__media', 'lightbox__polaroid');
     photo.style.cssText = 'position:fixed!important;left:' + left + 'px!important;top:' + top + 'px!important;' +
       'right:auto!important;width:' + width + 'px!important;height:' + height + 'px!important;' +
       'max-width:none!important;margin:0!important;rotate:0deg!important;scale:none!important;' +
       'transform-origin:center;transform:scale(' + scale + ');transition:none!important';
     // A focused print is now the dialog content rather than another open button.
     photo.removeAttribute('tabindex');
+    photo.removeAttribute('role');
     shown = {
       media: photo, placeholder: placeholder, scrim: scrim, shade: shade, style: style, focus: focus,
       offset: { x: 0, y: 0 }, size: { w: width, h: height }, at: { x: left, y: top },
-      polaroid: true, angle: angle, restTransform: 'scale(' + scale + ')'
+      polaroid: true, angle: angle, restTransform: 'scale(' + scale + ')', inspector: polaroidScenes.get(photo)
     };
-    photo.animate([{ transform: from(rect) }, { transform: shown.restTransform }], { duration: OPEN_MS, easing: EASE });
+    var state = shown;
+    if (state.inspector) state.inspector.setViewport((innerWidth - 48) / scale, (innerHeight - 150) / scale);
+    var entrance = photo.animate([{ transform: from(rect) }, { transform: shown.restTransform }], { duration: OPEN_MS, easing: EASE });
+    entrance.finished.then(function () { state.rotationReady = true; });
+    enableRotation(state, scale);
     shade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FADE_MS, easing: EASE, fill: 'forwards' });
     scrim.focus({ preventScroll: true });
     return true;
+  }
+
+  function enableRotation(state, scale) {
+    var photo = state.media, scrim = state.scrim;
+    var controller = new AbortController(), options = { signal: controller.signal };
+    state.rotationController = controller;
+    state.edges = (state.inspector ? [] : ['top', 'right', 'bottom', 'left']).map(function (side) {
+      var edge = document.createElement('span');
+      edge.className = 'lightbox__edge lightbox__edge--' + side;
+      edge.setAttribute('aria-hidden', 'true');
+      photo.appendChild(edge);
+      return edge;
+    });
+    var hint = text('p', 'lightbox__hint', 'Drag to rotate · Arrow keys to turn · Home to reset');
+    hint.id = 'polaroid-controls';
+    scrim.setAttribute('aria-describedby', hint.id);
+    scrim.appendChild(hint);
+    var dismiss = text('button', 'lightbox__close', 'Close');
+    dismiss.type = 'button';
+    dismiss.addEventListener('click', function (e) { e.stopPropagation(); close(); }, options);
+    scrim.appendChild(dismiss);
+    var x = 0, y = 0, drag = null;
+    function turn() {
+      state.rotation = { x: x, y: y };
+      state.restTransform = 'scale(' + scale + ')' + (state.inspector ? '' : ' rotateX(' + x + 'deg) rotateY(' + y + 'deg)');
+      photo.style.transform = state.restTransform;
+      if (state.inspector) state.inspector.setRotation(x, y);
+    }
+    photo.addEventListener('dragstart', function (e) { e.preventDefault(); }, options);
+    scrim.addEventListener('pointerdown', function (e) {
+      if (!photo.contains(e.target) && !(state.inspector && e.target === state.inspector.canvas)) return;
+      if (!state.rotationReady || state.closing || drag || !e.isPrimary || e.button !== 0) return;
+      e.preventDefault();
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY };
+      scrim.setPointerCapture(e.pointerId);
+      photo.classList.add('is-rotating');
+      scrim.classList.add('is-rotating');
+    }, options);
+    scrim.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      y += (e.clientX - drag.x) * 0.45;
+      x -= (e.clientY - drag.y) * 0.45;
+      drag.x = e.clientX;
+      drag.y = e.clientY;
+      turn();
+    }, options);
+    function release(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag = null;
+      photo.classList.remove('is-rotating');
+      scrim.classList.remove('is-rotating');
+      if (scrim.hasPointerCapture(e.pointerId)) scrim.releasePointerCapture(e.pointerId);
+    }
+    scrim.addEventListener('pointerup', release, options);
+    scrim.addEventListener('pointercancel', release, options);
+    scrim.addEventListener('lostpointercapture', release, options);
+    // Captured pointer events target the scrim; their synthetic click must not close it.
+    scrim.addEventListener('click', function (e) {
+      if (e.target === scrim || photo.contains(e.target) || (state.inspector && e.target === state.inspector.canvas)) e.stopPropagation();
+    }, options);
+    scrim.addEventListener('keydown', function (e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        (document.activeElement === dismiss ? scrim : dismiss).focus({ preventScroll: true });
+        return;
+      }
+      if (!state.rotationReady || state.closing || !/^(ArrowLeft|ArrowRight|ArrowUp|ArrowDown|Home)$/.test(e.key)) return;
+      e.preventDefault();
+      if (e.key === 'Home') { x = 0; y = 0; }
+      if (e.key === 'ArrowLeft') y -= 15;
+      if (e.key === 'ArrowRight') y += 15;
+      if (e.key === 'ArrowUp') x += 15;
+      if (e.key === 'ArrowDown') x -= 15;
+      turn();
+    }, options);
   }
 
   function text(tag, cls, value) {
@@ -314,6 +429,12 @@
     if (!shown || shown.closing) return;
     var s = shown;
     s.closing = true;
+    if (s.rotationController) s.rotationController.abort();
+    if (s.inspector) {
+      s.inspector.setRotation(0, 0);
+      s.inspector.setViewport(null, null);
+    }
+    s.media.classList.remove('is-rotating');
     var pr = s.placeholder.getBoundingClientRect();
     var home = { left: pr.left + s.offset.x, top: pr.top + s.offset.y, width: pr.width, height: pr.height };
     var back = s.media.animate([{ transform: s.restTransform || 'none' }, { transform: from(home) }], { duration: CLOSE_MS, easing: EASE, fill: 'forwards' });
@@ -322,10 +443,14 @@
     if (s.mount) s.mount.animate([{ opacity: 1 }, { opacity: 0 }], { duration: CLOSE_MS * 0.4, easing: 'ease-in', fill: 'forwards' });
     back.finished.then(function () {
       s.placeholder.replaceWith(s.media);
-      s.media.classList.remove('lightbox__media');
+      s.media.classList.remove('lightbox__media', 'lightbox__polaroid');
+      if (s.edges) s.edges.forEach(function (edge) { edge.remove(); });
       back.cancel();
       if (s.style == null) s.media.removeAttribute('style'); else s.media.setAttribute('style', s.style);
-      if (s.polaroid) s.media.tabIndex = 0;
+      if (s.polaroid) {
+        s.media.tabIndex = 0;
+        s.media.setAttribute('role', 'button');
+      }
       s.scrim.remove();
       if (s.focus && s.focus.focus) s.focus.focus({ preventScroll: true });
       shown = null;
@@ -334,6 +459,7 @@
   }
 
   document.addEventListener('click', function (e) {
+    if (shown && shown.polaroid && shown.media.contains(e.target)) return;
     // The click that opened it bubbles here too, now from inside the lightbox: not a close.
     if (shown && e !== shown.openedBy && shown.scrim.contains(e.target)) { e.preventDefault(); close(); }
   });
@@ -345,5 +471,9 @@
     e.stopImmediatePropagation();
     close();
   }, { capture: true, passive: false });
-  window.addEventListener('touchmove', function () { if (shown || opening) close(); }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (shown && shown.inspector && e.target === shown.inspector.canvas) return;
+    if (shown && shown.polaroid && shown.media.contains(e.target)) return;
+    if (shown || opening) close();
+  }, { passive: true });
 })();

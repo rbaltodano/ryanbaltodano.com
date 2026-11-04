@@ -3,12 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild stageshow/main.tsx --bundle --minify --format=esm --outdir=assets/stageshow --jsx=automatic"
+    "build": "esbuild stageshow/main.tsx --bundle --minify --format=esm --outdir=assets/stageshow --jsx=automatic",
+    "build:polaroid": "esbuild js/polaroid-3d.js --bundle --minify --format=esm --outfile=assets/polaroid-3d.js --legal-comments=eof"
   },
   "dependencies": {
     "lucide-react": "0.468.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "three": "^0.187.0"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",

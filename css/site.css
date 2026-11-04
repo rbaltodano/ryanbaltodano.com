@@ -163,9 +163,10 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .statement__line { display: block; overflow: hidden; padding-bottom: 0.2em; margin-bottom: -0.2em; }
 .statement__line > span { display: inline-block; }
 .statement em { font-style: italic; color: var(--accent); }
-.hero__portrait { position: absolute; top: 120px; right: var(--gutter); width: var(--portrait); rotate: 4deg; }
+.hero__portrait { position: absolute; top: 120px; right: var(--gutter); width: var(--portrait); rotate: 4deg; background: #fffdf8; }
 .hero__portrait img { filter: none; }
 .snapshot figcaption { padding: 10px 4px 2px; text-align: center; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--ink-2); }
+.hero__portrait figcaption { color: rgba(46, 33, 23, 0.75); }
 .hero__foot { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); gap: 32px 48px; margin-top: 72px; padding-bottom: 40px; }
 .hero__foot > * { grid-column: 1; }
 .hero__intro p + p { margin-top: 14px; }
@@ -320,6 +321,29 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .lightbox { position: fixed; inset: 0; z-index: 2147483002; cursor: zoom-out; outline: none; }
 .lightbox__shade { position: absolute; inset: 0; background: rgba(18, 15, 12, 0.86); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .lightbox__media { transform: none; scale: none; transition: none; cursor: zoom-out; }
+.lightbox--polaroid { perspective: 1600px; }
+.lightbox__scene { position: absolute; z-index: 2; top: 50%; left: 50%; translate: -50% -50%; max-width: none; opacity: 0; pointer-events: none; touch-action: none; filter: drop-shadow(0 8px 10px rgba(35, 26, 18, 0.2)); }
+.lightbox__scene.is-ready { opacity: 1; }
+.lightbox .lightbox__scene { pointer-events: auto; cursor: grab; }
+.lightbox--polaroid.is-rotating .lightbox__scene { cursor: grabbing; }
+.snapshot.has-polaroid-mesh, .lightbox .has-polaroid-mesh { background: transparent; box-shadow: none; }
+.has-polaroid-mesh > img:first-child, .has-polaroid-mesh > figcaption { opacity: 0; pointer-events: none; }
+.has-polaroid-mesh::before, .lightbox .lightbox__polaroid.has-polaroid-mesh::before, .lightbox .lightbox__polaroid.has-polaroid-mesh::after { display: none; }
+.lightbox .lightbox__polaroid { transform-style: preserve-3d; background: transparent; box-shadow: none; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.lightbox .lightbox__polaroid.is-rotating { cursor: grabbing; }
+.lightbox__polaroid > img, .lightbox__polaroid > figcaption { backface-visibility: hidden; transform: translateZ(1px); }
+.lightbox .lightbox__polaroid::before, .lightbox .lightbox__polaroid::after { content: ""; display: block; position: absolute; inset: 0; width: auto; height: auto; translate: none; rotate: none; z-index: auto; backface-visibility: hidden; pointer-events: none; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25); }
+.lightbox .lightbox__polaroid::before { background: #fffdf8; transform: translateZ(0.7px); }
+.lightbox .lightbox__polaroid::after { background: linear-gradient(#302f2b, #242420) center 36% / calc(100% - 32px) 65% no-repeat, #e9e5db; transform: rotateY(180deg) translateZ(0.7px); }
+.lightbox__edge { position: absolute; display: block; background: #d1cbbf; pointer-events: none; }
+.lightbox__edge--top, .lightbox__edge--bottom { left: 0; width: 100%; height: 1.4px; transform: rotateX(90deg); }
+.lightbox__edge--top { top: -0.7px; }
+.lightbox__edge--bottom { bottom: -0.7px; }
+.lightbox__edge--left, .lightbox__edge--right { top: 0; height: 100%; width: 1.4px; transform: rotateY(90deg); }
+.lightbox__edge--left { left: -0.7px; }
+.lightbox__edge--right { right: -0.7px; }
+.lightbox__hint { position: absolute; z-index: 10; bottom: 12px; left: 50%; translate: -50% 0; width: max-content; max-width: calc(100% - 32px) !important; padding: 6px 12px; border: 1px solid var(--rule-2); border-radius: 4px; background: var(--page); text-align: center; font: 12px / 1.5 var(--font-mono); color: var(--ink-2); pointer-events: none; }
+.lightbox__close { position: absolute; z-index: 10; top: 16px; right: 16px; border: 1px solid var(--rule-2); border-radius: 4px; padding: 8px 14px; background: var(--page); color: var(--ink); cursor: pointer; }
 .lightbox__caption { position: fixed; translate: -50% 0; text-align: center; pointer-events: none; }
 .lightbox__title { margin: 0 0 6px; font: 400 var(--text-meta) / 1.4 var(--font-mono); letter-spacing: 0.09em; text-transform: uppercase; color: #d08a62; }
 .lightbox__text { margin: 0; font: 400 var(--text-body) / 1.55 var(--font-body); color: rgba(242, 236, 224, 0.82); }
