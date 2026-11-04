@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261104115148");
-@import url("./base.css?v=20261104115148");
+@import url("./tokens.css?v=20261104121925");
+@import url("./base.css?v=20261104121925");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -350,7 +350,6 @@ html { overflow-x: clip; }
    Shared scale: 30cm ruler ~600px; key 240px long, seal 64px across. */
 .desk { position: absolute; z-index: 4; max-width: none; height: auto; pointer-events: none; user-select: none; filter: none; }
 :root[data-theme="night"] .desk { filter: brightness(0.82); }
-.desk--paperclip { width: 70px; left: calc((100% - 100vw) / 2 - 18px); top: 66%; rotate: 34deg; }
 .hero__portrait::before { display: none; }
 .desk-rest { position: relative; width: 100%; max-width: none; height: 180px; padding: 0; margin-top: 48px; overflow: clip; }
 .desk-rest .desk { position: absolute; }
@@ -432,7 +431,7 @@ html { overflow-x: clip; }
    heading ink at 50%, then each piece fills in. The opening is held by the head script's class;
    later blocks by data-draft-part, which the script sets and clears. */
 [data-draft-part=""]:not(.is-drafted) { opacity: 0 !important; animation: none !important; }
-.is-drafting .hero :is(.hero__kicker, .hero__portrait, .hero__intro p, .hero__actions > *):not(.is-drafted) { opacity: 0 !important; animation: none !important; }
+.is-drafting .hero :is(.hero__kicker, .hero__intro p, .hero__actions > *):not(.is-drafted) { opacity: 0 !important; animation: none !important; }
 /* Headings wait as outlined letters, then fill with ink. */
 [data-draft-part="outline"], [data-draft-part="outline"] *, .is-drafting .hero .statement, .is-drafting .hero .statement * { transition: color 420ms var(--ease-menu), -webkit-text-stroke-color 420ms var(--ease-menu); }
 :is([data-draft-part="outline"], .is-drafting .hero .statement):not(.is-drafted) { opacity: 1 !important; animation: none !important; }
@@ -449,3 +448,20 @@ html { overflow-x: clip; }
 .draft__letter { stroke-width: 0.7; opacity: 0.7; }
 .draft__note { position: absolute; white-space: nowrap; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.1; color: var(--draft); }
 .draft__smudge { position: absolute; border-radius: 40%; background: radial-gradient(closest-side, var(--rule), transparent); filter: blur(4px); opacity: 0; }
+
+/* The portrait is slid in from the right, then placed, and a paperclip pins its top right. */
+.hero__portrait .hero__clip { position: absolute; z-index: 3; top: -14px; right: 18px; width: 46px; height: auto; rotate: 84deg; pointer-events: none; }
+:root[data-theme="night"] .hero__clip { filter: brightness(0.82); }
+@media (prefers-reduced-motion: no-preference) {
+  .js:not(.is-placed) .hero__portrait:not(.is-sliding) { visibility: hidden; }
+  .js:not(.is-placed) .hero__portrait:not(.is-clipped) .hero__clip { opacity: 0; }
+}
+
+/* The drafting compass rules the line over inVectus (js/journal.js); the trail's own wipe
+   gives way to a mask that follows the compass point. */
+.trail--rule { height: 10px; margin-bottom: 40px; }
+.trail--rule svg { left: max(var(--gutter), var(--safe-left)); right: max(var(--gutter), var(--safe-right)); width: auto; }
+.trail--rule path { stroke: var(--ink); stroke-width: 1; stroke-dasharray: none; opacity: 1; }
+.js .trail--compass.is-compass svg { clip-path: none !important; transition: none; }
+.desk--compass.is-away { visibility: hidden; }
+.hero__portrait.is-sliding { z-index: 400; }

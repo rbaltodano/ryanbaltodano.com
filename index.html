@@ -26,12 +26,14 @@
         root.classList.add("is-drafting");
         setTimeout(() => root.classList.remove("is-drafting"), 6000);
       }
+      // The portrait slides in once (js/journal.js); it is never held back longer than this.
+      setTimeout(() => root.classList.add("is-placed"), 8000);
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261104115148">
+  <link rel="stylesheet" href="css/site.css?v=20261104121925">
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -61,11 +63,11 @@
         <span class="statement__line" aria-hidden="true"><span>Software built</span></span>
         <span class="statement__line" aria-hidden="true"><span>for <em class="scrawl">people</em>.</span></span>
       </h1>
-      <figure data-draft-note="tilted 4°, taped down" data-draft-side="left" class="snapshot hero__portrait" data-settle>
+      <figure data-draft-note="tilted 4°, clipped on" data-draft-side="left" class="snapshot hero__portrait">
         <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125" fetchpriority="high">
         <figcaption>Ryan Baltodano</figcaption>
+        <img class="hero__clip" src="assets/desk/paperclip.png" alt="" aria-hidden="true" width="240" height="70">
       </figure>
-      <img class="desk desk--paperclip" src="assets/desk/paperclip.png" alt="" aria-hidden="true" width="240" height="70" loading="lazy">
       <div class="hero__foot">
         <div data-draft-note="two short paragraphs" class="hero__intro">
           <p>I take projects from early flows and visual design into working software: client websites, an AI study harness, and tools for exploring research.</p>
@@ -157,7 +159,7 @@
         </section>
       </article>
 
-      <div class="trail trail--across trail--ltr" aria-hidden="true"><svg viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M90 0 C80 90 260 120 520 140 S920 190 930 300" vector-effect="non-scaling-stroke"/></svg></div>
+      <div class="container trail trail--rule trail--compass" aria-hidden="true"><svg viewBox="0 0 1000 10" preserveAspectRatio="none"><path d="M0 5 L1000 5" vector-effect="non-scaling-stroke"/></svg></div>
 
       <!-- Exhibit II: inVectus -->
       <article id="invectus" class="project" aria-labelledby="title-invectus">
@@ -171,7 +173,7 @@
         <div class="container project__lede"><p class="project__dek">A local-first research tool for Mac. Map a collection of papers, find gaps in its coverage, and inspect the evidence behind each one.</p></div>
 
         <div class="container project__intro">
-          <img class="desk desk--compass" src="assets/desk/compass.png" alt="" aria-hidden="true" width="320" height="492" loading="lazy">
+          <img class="desk desk--compass" src="assets/desk/compass.png" alt="" aria-hidden="true" width="320" height="492">
           <figure data-draft-note="evidence beside the claim" class="film film--lead" data-settle>
           <span class="scribble scribble--left" aria-hidden="true">it shows its work<svg viewBox="0 0 80 60"><path d="M8 6 C30 4 58 14 64 50"/><path d="M54 42 L64 52 L72 40"/></svg></span>
           <img class="film__video" data-caption-title="Fig. 3" data-caption="A flagged gap in a 5,000-paper ophthalmology collection, with its evidence and score breakdown beside the collection map." src="assets/img/invectus/gap.jpg" alt="inVectus showing a ranked coverage gap, its evidence and score breakdown, beside an interactive collection map." width="2000" height="1247" loading="lazy">
@@ -304,9 +306,9 @@
     <a href="#top">Back to top <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-up"/></svg></a>
   </footer>
 
-  <script src="js/site.js?v=20261104115148" defer></script>
-  <script src="js/draft.js?v=20261104115148" defer></script>
-  <script src="js/journal.js?v=20261104115148" defer></script>
-  <script src="js/lightbox.js?v=20261104115148" defer></script>
+  <script src="js/site.js?v=20261104121925" defer></script>
+  <script src="js/draft.js?v=20261104121925" defer></script>
+  <script src="js/journal.js?v=20261104121925" defer></script>
+  <script src="js/lightbox.js?v=20261104121925" defer></script>
 </body>
 </html>

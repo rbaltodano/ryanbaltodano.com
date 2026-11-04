@@ -13,7 +13,7 @@
   const SVG = "http://www.w3.org/2000/svg";
   const EASE = "cubic-bezier(0.55, 0, 0.17, 1)";
   const PARTS = "h1, h2, h3, h4, p, dt, dd, figcaption, img, video, .contact__email, blockquote footer";
-  const SKIP = ".desk, .margin-note, .scribble, .visually-hidden, [hidden], .draft";
+  const SKIP = ".desk, .hero__clip, .hero__portrait img, .hero__portrait figcaption, .margin-note, .scribble, .visually-hidden, [hidden], .draft";
   // Large type waits as outlined letters; small type (mono kickers, labels) as guidelines.
   const OUTLINED = "h1, h2, h3, h4, .project__pull p, .contact__email";
   const outlined = (el) => el.matches(OUTLINED) && parseFloat(getComputedStyle(el).fontSize) >= 24;

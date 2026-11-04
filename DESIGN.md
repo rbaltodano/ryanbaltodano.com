@@ -97,7 +97,7 @@ ink; all skipped under reduced motion.
 
 ### Trails, revised
 
-Each dotted trail draws in once, right to left (the trail into inVectus runs left to right), the first time it enters the viewport (a 1.6s clip-path wipe), then stays static. No idle marching. Reduced motion shows them fully drawn.
+Each dotted trail draws in once, right to left (between Angrove and inVectus the compass rules a straight line instead; see below), the first time it enters the viewport (a 1.6s clip-path wipe), then stays static. No idle marching. Reduced motion shows them fully drawn.
 
 ### Experience on ruled paper
 
@@ -111,13 +111,13 @@ On desktop the left column (heading + plate) is sticky at 112px while the right 
 ### Desk objects
 
 Objects peek in from alternating page edges at irregular, fixed positions; do not
-randomize on reload. Paperclip at the left hero edge, postage stamp on the right
+randomize on reload. Postage stamp on the right
 of the opening trail, ruler on the right between Angrove’s feature and notes,
 fern rotated −45° beneath Angrove’s title at the right edge, compass rotated −45° in the matching space beneath inVectus’s title at the right edge,
 key on the left after inVectus, tape on the right of Experience, wax seal at the
 left footer edge. The photo and shells illustration no longer hold these objects.
 
-Use a consistent physical scale: ruler 600px, paperclip 70px, fern 200px wide,
+Use a consistent physical scale: ruler 600px, paperclip 46px (on the portrait), fern 200px wide,
 compass 280px, key 240px long, postage stamp and seal 64px, tape 140px. Keep at
 least 200px of the key visible so it reads larger than the seal. No CSS shadows.
 Desk objects stay static and do not use the reveal/settle observer. Phones retain the ruler and tape at
@@ -209,3 +209,28 @@ stay a second after the block is fully drawn, then are rubbed out with a faint
 smudge. A click or key finishes it at once. Blocks already on screen at load
 (other than the opening), reduced motion, a URL hash, or no JavaScript skip it; a
 block that fails to draft shows normally.
+
+### Portrait arrival
+
+On load, without waiting for the drafted opening, the portrait slides in above
+everything (z-index 400, over the nav) on a diagonal from below the bottom right
+corner of the screen, turning from its 4 degrees to 8, and comes to rest centred on
+the page 40px below its line (1.1s, `cubic-bezier(0.16, 1, 0.3, 1)`). It is then
+dragged into place by hand in two moves on the menu curve: most of the way, to 16%
+of the distance short and 2.4 degrees overall (620ms), then after a 140ms beat a
+final nudge to its place at 4 degrees (420ms). A paperclip (46px, rotated 84
+degrees) then slides down over the top right corner to pin it, and the photo dips
+under it. The drafted opening draws no outline for the portrait. Once per page
+load. Reduced motion, or the portrait off screen at load, shows it in place with
+the clip. A head-script timeout reveals it after 8s.
+
+### Compass rules the line over inVectus
+
+Between Angrove and inVectus there is no dotted trail: a straight 1px ink rule spans
+the content width just above inVectus's label. When it is 60% in view, the drafting compass enters from the
+right edge to the rule's right end, then rides it to the left with its point on
+the line, leaning about -18 degrees with a slight rock, while a mask reveals the
+dashes behind it (1.7s). It then runs off the left of the page and, once its resting
+place beside the inVectus title is on screen, slides in from the right with
+friction to rest. Skipped with reduced motion, on screens where the compass is
+hidden, or when the trail is already on screen at load.
