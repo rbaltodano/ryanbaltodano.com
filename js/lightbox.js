@@ -362,16 +362,16 @@
       if (!photo.contains(e.target) && !(state.inspector && e.target === state.inspector.canvas)) return;
       if (!state.rotationReady || state.closing || drag || !e.isPrimary || e.button !== 0) return;
       e.preventDefault();
-      // A finger pushes the print the way it moves; a mouse turns it the inverse way.
-      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, sign: e.pointerType === 'mouse' ? -1 : 1 };
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY };
       scrim.setPointerCapture(e.pointerId);
       photo.classList.add('is-rotating');
       scrim.classList.add('is-rotating');
     }, options);
     scrim.addEventListener('pointermove', function (e) {
       if (!drag || e.pointerId !== drag.id) return;
-      y += (e.clientX - drag.x) * 0.45 * drag.sign;
-      x -= (e.clientY - drag.y) * 0.45 * drag.sign;
+      // The near face follows the finger or cursor.
+      y -= (e.clientX - drag.x) * 0.45;
+      x += (e.clientY - drag.y) * 0.45;
       drag.x = e.clientX;
       drag.y = e.clientY;
       turn();
