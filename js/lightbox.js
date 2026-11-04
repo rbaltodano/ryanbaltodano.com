@@ -21,7 +21,7 @@
 
   function preparePolaroid(photo, image) {
     if (polaroidLoading.has(photo)) return polaroidLoading.get(photo);
-    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261104-inline-1');
+    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261104162640');
     var ready = polaroidModule.then(function (module) {
       return module.createInspector(photo, image, photo, reduce);
     }).then(function (inspector) {
@@ -367,8 +367,8 @@
     }, options);
     scrim.addEventListener('pointermove', function (e) {
       if (!drag || e.pointerId !== drag.id) return;
-      y += (e.clientX - drag.x) * 0.45;
-      x -= (e.clientY - drag.y) * 0.45;
+      y -= (e.clientX - drag.x) * 0.45;
+      x += (e.clientY - drag.y) * 0.45;
       drag.x = e.clientX;
       drag.y = e.clientY;
       turn();
