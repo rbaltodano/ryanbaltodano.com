@@ -21,7 +21,7 @@
 
   function preparePolaroid(photo, image) {
     if (polaroidLoading.has(photo)) return polaroidLoading.get(photo);
-    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261104183151');
+    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261105-selected-glare');
     var ready = polaroidModule.then(function (module) {
       return module.createInspector(photo, image, photo, reduce);
     }).then(function (inspector) {
@@ -61,6 +61,7 @@
       if (target !== m) target.setAttribute('aria-label', m.getAttribute('alt'));
       target.addEventListener('click', function (e) { requestOpen(m, e); });
       target.addEventListener('keydown', function (e) {
+        if (shown && shown.media === m) return;
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); requestOpen(m, e); }
       });
     }
@@ -157,6 +158,7 @@
     if (shown) return false;
     var portrait = m.closest(POLAROID);
     if (portrait) return openPolaroid(portrait, m);
+    var returnFocus = document.activeElement;
     var rect = m.getBoundingClientRect();
     if (rect.width < 120 || rect.height < 80) return false;   // hidden or too small to need it
     // Where it rests, without the hover's lift and tilt: where it returns to on close. The
@@ -255,7 +257,8 @@
     m.classList.add('lightbox__media');
 
     shown = {
-      media: m, placeholder: placeholder, scrim: scrim, shade: shade, mount: mount, caption: caption, style: style, focus: document.activeElement,
+      media: m, placeholder: placeholder, scrim: scrim, shade: shade, mount: mount, caption: caption, style: style, focus: returnFocus,
+      videoControls: m.tagName === 'VIDEO' ? m.controls : null,
       offset: { x: rest.left - pr.left, y: rest.top - pr.top }, size: { w: w, h: h }, at: { x: left, y: top }
     };
 
@@ -266,7 +269,22 @@
       { opacity: 0, filter: 'blur(8px)', transform: 'translateY(6px)' },
       { opacity: 1, filter: 'blur(0)', transform: 'none' }
     ], { duration: reduce ? 0 : 400, delay: reduce ? 0 : 150, easing: 'ease-out', fill: 'backwards' });
-    scrim.focus({ preventScroll: true });
+    var dismiss = text('button', 'lightbox__close', 'Close');
+    dismiss.type = 'button';
+    dismiss.addEventListener('click', function (e) { e.stopPropagation(); close(); });
+    scrim.appendChild(dismiss);
+    if (m.tagName === 'VIDEO') m.controls = true;
+    scrim.addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      // Native video controls are reachable; prevent focus leaving the modal.
+      if (m.tagName !== 'VIDEO') { e.preventDefault(); dismiss.focus(); return; }
+      if (document.activeElement === dismiss && !e.shiftKey) {
+        e.preventDefault(); m.focus({ preventScroll: true });
+      } else if (document.activeElement === m && e.shiftKey) {
+        e.preventDefault(); dismiss.focus({ preventScroll: true });
+      }
+    });
+    dismiss.focus({ preventScroll: true });
 
     if (m.tagName === 'VIDEO' && !reduce && (m.paused || m.ended)) {
       if (m.ended) m.currentTime = 0;
@@ -437,6 +455,7 @@
       s.inspector.setRotation(0, 0);
       s.inspector.setViewport(null, null);
     }
+    if (s.videoControls != null) s.media.controls = s.videoControls;
     s.media.classList.remove('is-rotating');
     var pr = s.placeholder.getBoundingClientRect();
     var home = { left: pr.left + s.offset.x, top: pr.top + s.offset.y, width: pr.width, height: pr.height };
@@ -463,7 +482,7 @@
   }
 
   document.addEventListener('click', function (e) {
-    if (shown && shown.polaroid && shown.media.contains(e.target)) return;
+    if (shown && (shown.polaroid || shown.media.tagName === 'VIDEO') && shown.media.contains(e.target)) return;
     // The click that opened it bubbles here too, now from inside the lightbox: not a close.
     if (shown && e !== shown.openedBy && shown.scrim.contains(e.target)) { e.preventDefault(); close(); }
   });
@@ -477,7 +496,7 @@
   }, { capture: true, passive: false });
   window.addEventListener('touchmove', function (e) {
     if (shown && shown.inspector && e.target === shown.inspector.canvas) return;
-    if (shown && shown.polaroid && shown.media.contains(e.target)) return;
+    if (shown && (shown.polaroid || shown.media.tagName === 'VIDEO') && shown.media.contains(e.target)) return;
     if (shown || opening) close();
   }, { passive: true });
 })();

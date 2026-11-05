@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261104132230");
-@import url("./base.css?v=20261104132230");
+@import url("./tokens.css?v=20261105");
+@import url("./base.css?v=20261105");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -115,8 +115,8 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .section-head, .correspondence__body, .correspondence { position: relative; }
 
 
-.stamp { position: absolute; top: -28px; right: -16px; z-index: 2; display: inline-flex; flex-direction: column; align-items: center; padding: 6px 12px 5px; border: 2px solid var(--accent); border-radius: 3px; outline: 1px solid var(--accent); outline-offset: 2px; color: var(--accent); font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.3; rotate: -7deg; opacity: 0.82; mix-blend-mode: multiply; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-.stamp small { font-size: inherit; letter-spacing: 0.12em; opacity: 0.85; }
+.stamp { position: absolute; top: -28px; right: -16px; z-index: 2; display: inline-flex; flex-direction: column; align-items: center; padding: 6px 12px 5px; border: 2px solid var(--accent); border-radius: 3px; outline: 1px solid var(--accent); outline-offset: 2px; color: var(--accent); font-family: var(--font-mono); font-size: var(--text-meta); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.3; rotate: -7deg; opacity: 1; mix-blend-mode: multiply; -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.2 1.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.stamp small { font-size: inherit; letter-spacing: 0.12em; opacity: 1; }
 :root[data-theme="night"] .stamp { mix-blend-mode: normal; }
 .mount { position: relative; }
 .mount::before, .mount::after { content: ""; position: absolute; top: -12px; z-index: 3; width: 92px; height: 26px; background: var(--tape); border-inline: 1px dashed rgba(0, 0, 0, 0.06); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); pointer-events: none; }
@@ -274,7 +274,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .js .steps li:nth-child(3)[data-settle] { transition-delay: 160ms; }
   .js .steps li:nth-child(4)[data-settle] { transition-delay: 240ms; }
   .js [data-stamp] { opacity: 0; scale: 1.6; transition: opacity 240ms ease-out, scale 320ms cubic-bezier(0.3, 1.6, 0.5, 1); }
-  .js [data-stamp].is-in { opacity: 0.82; scale: 1; transition-delay: 700ms; }
+  .js [data-stamp].is-in { opacity: 1; scale: 1; transition-delay: 700ms; }
   .js .scribble { opacity: 0; transition: opacity 500ms var(--ease-out) 600ms; }
   .js .is-in > .scribble { opacity: 1; }
 }
@@ -490,6 +490,20 @@ html { overflow-x: clip; }
 .draft__letter { stroke-width: 0.7; opacity: 0.7; }
 .draft__note { position: absolute; white-space: nowrap; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.1; color: var(--draft); }
 .draft__smudge { position: absolute; border-radius: 40%; background: radial-gradient(closest-side, var(--rule), transparent); filter: blur(4px); opacity: 0; }
+.draft__tool { position: absolute; inset: 0 auto auto 0; width: 0; height: 0; z-index: 2; opacity: 0; pointer-events: none; will-change: transform, opacity; }
+.draft__tool img { position: absolute; max-width: none; object-fit: fill; user-select: none; pointer-events: none; }
+.draft__tool--pencil img { width: 6px; height: 66px; transform: translate(-50%, 0); }
+.draft__tool--pen img { width: 13px; height: 144px; transform: translate(-50%, -100%); }
+.draft__tool--eraser img { width: 44px; height: 27px; transform: translate(-50%, -50%); }
+@media (max-width: 48rem), (pointer: coarse) {
+  .draft__tool--pencil img { width: 4.5px; height: 48px; }
+  .draft__tool--pen img { width: 10px; height: 110px; }
+  .draft__tool--eraser img { width: 36px; height: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draft { display: none; }
+  [data-draft-part=""]:not(.is-drafted) { opacity: 1 !important; }
+}
 
 /* Keep the pencil/ink sequence on touch screens without repainting blurred text
    and animated gradient masks across an entire section. */
@@ -530,3 +544,7 @@ html { overflow-x: clip; }
 /* "eye trail": a pencil label on each dotted trail while it draws (js/journal.js). */
 .trail__note { position: absolute; display: none; white-space: nowrap; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1; color: var(--draft); rotate: -5deg; filter: url(#graphite); }
 .trail__note.is-shown { display: block; }
+
+/* Film playback remains explicit and keyboard-accessible beside the figure label. */
+.film figcaption { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-md); }
+.film__playback { padding: var(--space-xs) var(--space-sm); border: 1px solid var(--rule-2); background: var(--paper); color: var(--ink); font: inherit; font-size: var(--text-meta); cursor: pointer; }

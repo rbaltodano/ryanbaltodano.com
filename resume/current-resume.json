@@ -1,0 +1,93 @@
+{
+  "name": "Ryan Baltodano",
+  "headline": "Design Engineer | Product Design, Frontend & Applied AI",
+  "contact": "Tampa, FL | Open to NYC / San Francisco relocation | rbaltodano337@gmail.com | (407) 724-5063",
+  "links": [
+    {
+      "label": "ryanbaltodano.com",
+      "url": "https://ryanbaltodano.com"
+    },
+    {
+      "label": "github.com/rbaltodano",
+      "url": "https://github.com/rbaltodano"
+    },
+    {
+      "label": "angrove.app",
+      "url": "https://angrove.app"
+    }
+  ],
+  "summary": "Web designer with two years of professional experience and independent ownership of AI-powered software. Combines product and interaction design with React/TypeScript frontend development, native SwiftUI interfaces, and local model integration.",
+  "projects": [
+    {
+      "name": "inVectus",
+      "role": "Independent Creator, Designer & Developer",
+      "dates": "Oct 2026 - Present",
+      "url": "https://github.com/rbaltodano/inVectus",
+      "context": "Local-first research desktop app. Working prototype tested on macOS; Windows/Linux unverified.",
+      "stack": "React, TypeScript, Tauri, Rust, DuckDB, LanceDB",
+      "bullets": [
+        "Architected a local research workspace with typed React/TypeScript screens, a Tauri command boundary, and Rust engine crates shared by the desktop and CLI; designed import, map, and evidence-review flows.",
+        "Applied semantic retrieval and embedding-space coverage analysis to document collections; kept scores and source evidence inspectable, with experimental assessments scoped to the indexed collection.",
+        "Implemented keyboard-resizable panes with narrow-window stacking, persistent bookmarks and decisions, and resumable indexing; added navigation, map-focus, search-presentation, and layout regression coverage."
+      ]
+    },
+    {
+      "name": "Angrove",
+      "role": "Independent Creator, Designer & Developer",
+      "dates": "Apr 2026 - Present",
+      "url": "https://github.com/rbaltodano/Angrove-iOS",
+      "context": "Private AI study app. iPhone public beta on TestFlight; native Mac app in development.",
+      "stack": "Swift, SwiftUI, Core ML, MiniLM, LiteRT-LM",
+      "bullets": [
+        "Created the Figma visual and interaction system and SwiftUI flows for branching conversations, contextual definitions, and a semantic map of saved Insights; built spatial study Boards on Mac.",
+        "Architected shared feature logic and design tokens for iPhone and Mac; integrated local generation, Core ML embeddings, cosine-similarity retrieval, and AES-256-GCM storage with Keychain-managed keys.",
+        "Coordinated model work through one cancellable queue; used stable conversation and branch IDs to preserve late answers after navigation, with persistence and retrieval regression coverage.",
+        "Compared thinking on/off across 80 development cases on simulator CPU: both totaled 74/80 objective passes; roughly doubled median answer time supported leaving thinking off by default."
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "title": "Web Designer",
+      "company": "PostcardMania",
+      "dates": "2024 - Present",
+      "description": "Design and deliver custom, responsive client websites, translating business requirements into individualized layouts and managing client-facing delivery deadlines."
+    },
+    {
+      "title": "Front-End Web Development Intern",
+      "company": "Cloud Carpenter",
+      "dates": "2024",
+      "description": "Designed and built responsive client websites and interactive features with HTML, CSS, JavaScript, and PHP in collaboration with a development team."
+    },
+    {
+      "title": "Customer Service Staff",
+      "company": "Publix",
+      "dates": "2021 - Present",
+      "description": "Handle cash operations, reconciliation, and daily bookkeeping alongside a professional design role."
+    }
+  ],
+  "skills": [
+    [
+      "Design",
+      "Product design, UI/UX, interaction design, Figma, prototyping, design systems, responsive interfaces"
+    ],
+    [
+      "Frontend & apps",
+      "React, TypeScript, JavaScript, HTML, CSS, Swift, SwiftUI, Tauri"
+    ],
+    [
+      "Engineering",
+      "Rust, Python, PHP, Git, SQLite, DuckDB, LanceDB, application architecture, regression testing"
+    ],
+    [
+      "Applied AI",
+      "Model integration, embeddings, vector similarity, semantic search, retrieval-augmented generation, evaluation"
+    ]
+  ],
+  "education": {
+    "degree": "B.S. in Information Science",
+    "school": "University of South Florida",
+    "year": "2023",
+    "detail": "Concentration in Information Security"
+  }
+}

@@ -325,3 +325,51 @@ stacks on phones. Keep the wax seal at the outside edge.
 The navbar ends with GitHub (new tab) and a filled Contact button that opens
 email to `rbaltodano337@gmail.com`. Both remain visible on phones. The theme
 switch is removed, and the site starts in its day palette on every load.
+
+## Design engineering positioning, 2026-11-04
+
+Keep the existing field-guide art direction, masthead, portrait, illustrations, real captures,
+and drafting interactions. The opening now identifies design engineering and applied AI,
+separates paid web design from independent engineering, and gives a direct route to inVectus
+and the résumé. Exhibit notes expose architectural decisions and links to implementation evidence.
+Use conservative availability labels: iPhone public beta, Mac in development, inVectus a working
+macOS prototype with experimental assessments.
+
+`invectus.html` is a focused reading page using the same tokens, typography, navigation, and
+media inspector. Its opening connects the owner's brother's research problem to lessons from
+Angrove; architecture, interface, implementation, evaluation, and limits follow. Native details
+hold deeper source/test links. The origin is owner-supplied context, not a measured outcome.
+Do not describe sparse map areas as scientific discoveries or proof of novelty.
+
+Status stamp text is fully opaque for contrast. Product films expose play/pause controls;
+reduced motion starts paused and no-JavaScript visits retain native video controls. Regular
+media dialogs have a Close button, contain keyboard focus, and restore focus to the opener.
+
+## Drafting tools, 2026-11-05
+
+The existing block-by-block drafting sequence now uses Ryan's supplied transparent
+tool illustrations in `assets/desk/drafting/`. Up to three pencils trace construction
+strokes, two fountain pens reveal headings, opening copy and temporary annotations,
+and two erasers follow completed construction strokes and annotations while the
+other tools continue drawing. Each stroke becomes available for cleanup after a
+short pause; notes linger briefly after writing. Cleanup tasks run in readiness
+order, without waiting for the entire block to finish.
+Each tool follows the same measured path and timeline as its mark. Text keeps its
+real HTML, links, and layout; the tool layer is decorative and ignores pointer input.
+The opening's separate letter-by-letter animation yields to the pen choreography.
+
+On phones/coarse pointers, use one tool of each kind, smaller tools, at most twelve
+construction strokes, and one annotation if there is clear space. Desktop caps
+construction strokes at thirty-six and annotations at three per block. Annotations
+are omitted when no clear placement exists. Click, key press, or resize finishes
+the active sequence. Reduced motion skips drafting; switching to it during a
+sequence immediately reveals the content and removes all tools. Tools and their
+animations are removed after cleanup; no idle animation loop remains.
+
+The tool sequence plays at 1.6× its initial speed, with a shared multiplier for
+movement, stroke reveals, writing, pauses, and cleanup. Pencils are half their
+initial display size: 6 × 66px on desktop, 4.5 × 48px on phones.
+
+The masthead and Contact Polaroids have matte fronts on the page. Specular
+reflections and the gloss coat are enabled only while a photo is selected in
+the lightbox, and disabled as soon as it closes.

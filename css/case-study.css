@@ -1,0 +1,30 @@
+/* A focused reading page within the portfolio's existing field-guide system. */
+.case__opening { padding-block: var(--space-2xl) var(--space-xl); }
+.case__opening h1 { margin-block: var(--space-lg); }
+.case__opening p:not(.label), .case__section > p { max-width: 70ch; }
+.case__opening p + p, .case__section > p + p { margin-top: var(--space-lg); }
+.case__lede { color: var(--ink); font-style: italic; }
+.case__facts { max-width: 80ch; margin-top: var(--space-xl); }
+.case__figure { margin-inline: auto; margin-block: var(--space-xl) var(--space-2xl); }
+.case__figure img { width: 100%; }
+.case__figure figcaption, .case__screens figcaption { margin-top: var(--space-md); font-size: var(--text-meta); font-family: var(--font-mono); color: var(--muted); }
+.case__section { padding-block: var(--space-xl); }
+.case__section h2 { margin-bottom: var(--space-lg); }
+.case__table-wrap { margin-block: var(--space-xl); overflow-x: auto; }
+.case table { width: 100%; border-collapse: collapse; text-align: left; }
+.case caption { text-align: left; font-family: var(--font-mono); font-size: var(--text-meta); margin-bottom: var(--space-md); }
+.case th, .case td { padding: var(--space-md); vertical-align: top; border-block: 1px solid var(--rule-2); }
+.case th { color: var(--ink); font-weight: 400; }
+.case thead th { font-family: var(--font-mono); font-size: var(--text-meta); }
+.case tbody th { width: 25%; }
+.case__screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
+.case__screens figure { margin: 0; }
+.case details { max-width: 80ch; margin-top: var(--space-lg); border-block: 1px solid var(--rule-2); padding-block: var(--space-lg); }
+.case summary { cursor: pointer; color: var(--ink); }
+.case details ul { padding-left: var(--space-lg); }
+.case details li + li { margin-top: var(--space-md); }
+.case details a, .case__section > p a { text-decoration: underline; }
+@media (max-width: 40rem) { .case__screens { grid-template-columns: 1fr; } .case th, .case td { padding: var(--space-sm); } }
+@media (max-width: 40rem) {
+  .case__facts > div { grid-template-columns: 1fr; gap: var(--space-xs); }
+}

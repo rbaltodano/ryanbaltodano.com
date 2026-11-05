@@ -2,7 +2,8 @@
 // construction guides run along the block's edges and top; headings, stamps, and buttons get
 // boxes, images crossed boxes, and running text lettering guidelines, all in graphite; pencil
 // notes on the design choices are written beside them (from data-draft-note). Then each piece fills in reading
-// order as its marks lift away and the notes are rubbed out. The opening drafts on load, every later block the first time it
+// order, with illustrated pencils and pens following the marks; erasers clear the temporary
+// graphite as each mark is finished. The opening drafts on load, every later block the first time it
 // scrolls into view. It runs on each page load. A click or key finishes it at once.
 // Without JavaScript or with reduced motion, nothing is held back.
 (() => {
@@ -11,8 +12,72 @@
 
   const SVG = "http://www.w3.org/2000/svg";
   const EASE = "cubic-bezier(0.55, 0, 0.17, 1)";
+  // One speed multiplier keeps tools, marks, writing and cleanup on the same clock.
+  const PACE = 1.6;
+  const animate = (element, frames, options) => element.animate(frames, {
+    ...options, duration: options.duration / PACE, delay: (options.delay || 0) / PACE
+  });
+  const schedule = (callback, delay) => setTimeout(callback, delay / PACE);
   const lightDraft = matchMedia("(max-width: 48rem), (pointer: coarse)").matches;
-  const PARTS = "h1, h2, h3, h4, p, dt, dd, figcaption, img, video, .contact__email, blockquote footer";
+  const motion = matchMedia("(prefers-reduced-motion: reduce)");
+  // These are the owner's transparent tool illustrations, not the extension's code.
+  const toolAssets = { pencil: "pencil.png", pen: "fountain-pen.png", eraser: "eraser.png" };
+  const readyTools = Promise.all(Object.values(toolAssets).map((file) => {
+    const image = new Image();
+    image.src = "assets/desk/drafting/" + file;
+    return image.decode().catch(() => {});
+  }));
+
+  // A small crew shares a timeline. Each tool travels between measured tasks;
+  // drawing and wiping use the same points and clock as the working tip.
+  const crewFor = (layer) => {
+    const workers = {};
+    const motions = [];
+    const reserve = (kind, points, earliest, duration) => {
+      const pool = workers[kind] ||= Array.from({ length: lightDraft ? 1 : kind === "pencil" ? 3 : 2 }, () => ({ free: 0, jobs: [] }));
+      const worker = pool.reduce((a, b) => a.free <= b.free ? a : b);
+      const approach = lightDraft ? 110 : 160;
+      const start = Math.max(earliest, worker.free) + approach;
+      const end = start + duration;
+      worker.jobs.push({ points, start, end, approach });
+      worker.free = end + 55;
+      return { start, end, duration };
+    };
+    const play = () => Object.entries(workers).forEach(([kind, pool]) => pool.forEach((worker) => {
+      if (!worker.jobs.length) return;
+      const tool = document.createElement("span");
+      tool.className = `draft__tool draft__tool--${kind}`;
+      const image = document.createElement("img");
+      image.src = "assets/desk/drafting/" + toolAssets[kind];
+      image.alt = "";
+      tool.append(image);
+      layer.append(tool);
+      const total = worker.free + 240;
+      const frames = [];
+      let previous = null;
+      const frame = (time, point, opacity, angle) => frames.push({
+        offset: Math.max(0, time / total), opacity,
+        transform: `translate3d(${point.x}px, ${point.y}px, 0) rotate(${angle}deg)`
+      });
+      worker.jobs.forEach((job) => {
+        const first = job.points[0], last = job.points.at(-1);
+        // The pencil asset points up; the pen's nib points down.
+        const direction = last.x >= first.x ? -32 : 28;
+        const angle = kind === "pencil" ? 180 + direction : kind === "pen" ? direction : -12;
+        const entry = previous || { x: first.x - 42, y: first.y + 45 };
+        if (!previous) frame(0, entry, 0, angle - 8);
+        frame(job.start - job.approach, entry, previous ? 1 : 0, angle - 8);
+        frame(job.start, first, 1, angle);
+        job.points.slice(1).forEach((point, i) => frame(job.start + (job.end - job.start) * (i + 1) / (job.points.length - 1), point, 1, angle + (kind === "eraser" ? Math.sin(i * 2.4) * 7 : Math.sin(i) * 2)));
+        previous = last;
+      });
+      frame(worker.free, previous, 1, kind === "pencil" ? 155 : -25);
+      frame(total, { x: previous.x + 45, y: previous.y - 55 }, 0, kind === "pencil" ? 145 : -35);
+      motions.push(animate(tool, frames, { duration: total, fill: "forwards" }));
+    }));
+    return { reserve, play, cancel: () => motions.forEach((animation) => animation.cancel()) };
+  };
+  const PARTS = "h1, h2, h3, h4, p, dt, dd, figcaption, img, video, .button, .hero__actions > a, .contact__email, blockquote footer";
   const SKIP = ".desk, .hero__clip, .contact__clip, .hero__portrait img, .hero__portrait figcaption, .margin-note, .scribble, .visually-hidden, [hidden], .draft";
   // Large type waits as outlined letters; small type (mono kickers, labels) as guidelines.
   const OUTLINED = "h1, h2, h3, h4, .project__pull p, .contact__email";
@@ -51,6 +116,10 @@
   const running = new Set();
   // A block that fails to draft simply shows; nothing stays held back.
   const draft = (block) => {
+    if (motion.matches) {
+      block.parts.forEach((el) => el.removeAttribute("data-draft-part"));
+      return;
+    }
     // Finish the previous sketch when scrolling into the next one instead of
     // repainting several section-sized drawing surfaces at once on a phone.
     if (lightDraft) running.forEach((job) => job.finish(true));
@@ -78,13 +147,15 @@
     svg.append(ink);
     layer.append(svg);
     document.body.append(layer);
+    const crew = crewFor(layer);
+    const drawnPaths = [];
     const at = (r) => ({ x: r.left - left, y: r.top - top, w: r.width, h: r.height });
     const jitter = (n) => (Math.random() - 0.5) * 2 * n;
 
     // A hand-ruled line: slightly bowed, running a little past both ends like construction lines.
     let strokes = 0;
     const rule = (x1, y1, x2, y2, delay, cls = "draft__box", over = 7, ms = 380, parent = ink) => {
-      if (lightDraft && strokes >= 24) return null;
+      if (strokes >= (lightDraft ? 12 : 36)) return null;
       strokes++;
       const len = Math.hypot(x2 - x1, y2 - y1) || 1;
       const ux = (x2 - x1) / len, uy = (y2 - y1) / len;
@@ -97,7 +168,15 @@
       path.setAttribute("class", cls);
       path.setAttribute("pathLength", "1");
       parent.append(path);
-      path.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: lightDraft ? Math.min(ms, 300) : ms, delay: lightDraft ? Math.min(delay, 180) : delay, easing: EASE, fill: "backwards" });
+      const length = path.getTotalLength();
+      const matrix = path.getCTM();
+      const points = Array.from({ length: 17 }, (_, i) => {
+        const p = path.getPointAtLength(length * i / 16);
+        return new DOMPoint(p.x, p.y).matrixTransform(matrix);
+      });
+      const task = crew.reserve("pencil", points, delay, Math.min(lightDraft ? 220 : 300, 110 + len * 0.18));
+      animate(path, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: task.duration, delay: task.start, easing: "linear", fill: "backwards" });
+      drawnPaths.push({ path, points, end: task.end });
       return path;
     };
     const box = (x, y, bw, bh, delay, angle = 0, cross = false) => {
@@ -148,6 +227,7 @@
     // text gets lettering guidelines.
     let delay = 120;
     const step = Math.max(24, Math.min(55, 520 / Math.max(1, block.parts.length)));
+    const reveals = [];
     const parts = block.parts.map((el) => {
       const marks = [];
       if (el.getAttribute("data-draft-part") === "outline") {
@@ -181,8 +261,8 @@
     const clear = (c) => c.x + left >= 8 && c.x + left + c.w <= pageW - 8 &&
       obstacles.every((o) => c.x + c.w + 8 < o.x || c.x - 8 > o.x + o.w || c.y + c.h + 6 < o.y || c.y - 6 > o.y + o.h);
     const notes = block.els.flatMap((el) => [...(el.matches("[data-draft-note]") ? [el] : []), ...el.querySelectorAll("[data-draft-note]")])
-      .filter((el) => el.getClientRects().length && !el.closest(SKIP))
-      .slice(0, lightDraft ? 1 : Infinity)
+      .filter((el) => el.getClientRects().length && !el.closest(SKIP) && !el.matches(".hero__portrait"))
+      .slice(0, lightDraft ? 1 : 3)
       .map((el, i) => {
         const r = at(el.getBoundingClientRect());
         const note = document.createElement("span");
@@ -199,42 +279,61 @@
         const prefer = el.getAttribute("data-draft-side") || "above";
         const order = [prefer, ...["right", "left", "above", "below"].filter((s) => s !== prefer)];
         const tries = order.flatMap((s) => sides[s]).map((p) => ({ ...p, w: nw, h: nh }));
-        const spot = tries.find(clear) || (lightDraft ? null : tries[0]);
+        const spot = tries.find(clear);
         if (!spot) { note.remove(); return null; }
         obstacles.push(spot);
         note.style.left = spot.x + "px";
         note.style.top = spot.y + "px";
         note.style.rotate = jitter(2.4).toFixed(1) + "deg";
-        const start = 260 + i * 220;
-        note.animate(lightDraft ? [{ opacity: 0 }, { opacity: 1 }] : [{ clipPath: "inset(-20% 100% -30% -4%)" }, { clipPath: "inset(-20% -4% -30% -4%)" }], { duration: lightDraft ? 220 : 650, delay: start, easing: "cubic-bezier(0.45, 0.05, 0.4, 1)", fill: "backwards" });
-        return { el, note, end: start + 650 };
+        const task = crew.reserve("pen", [{ x: spot.x, y: spot.y + nh * 0.7 }, { x: spot.x + nw, y: spot.y + nh * 0.7 }], 300 + i * 180, Math.min(700, 240 + nw * 1.4));
+        animate(note, [{ clipPath: "inset(-20% 100% -30% -4%)" }, { clipPath: "inset(-20% -4% -30% -4%)" }], { duration: task.duration, delay: task.start, easing: "linear", fill: "backwards" });
+        return { el, note, end: task.end };
       }).filter(Boolean);
 
-    // Fill: once outlined, each piece inks in quickly as its marks lift away. The notes stay a
-    // second after the block is finished, then are rubbed out.
-    const FILL = lightDraft ? 380 : delay + 150, GAP = Math.max(30, Math.min(70, (lightDraft ? 240 : 500) / Math.max(1, parts.length)));
-    const DRAWN = FILL + parts.length * GAP + 450;
-    const ERASE = Math.max(DRAWN, ...notes.map((n) => n.end)) + (lightDraft ? 180 : 1000);
+    // Ink each passage after its construction marks. Erasers trail individual
+    // finished marks while pencils and pens continue elsewhere in the block.
+    const pencilEnd = Math.max(0, ...drawnPaths.map((p) => p.end));
+    parts.forEach((part, i) => {
+      const r = at(part.el.getBoundingClientRect());
+      const dependencies = drawnPaths.filter(({ path }) => part.marks.some((mark) => mark === path || mark.contains(path)));
+      const earliest = Math.max(320 + i * 45, ...dependencies.map((p) => p.end));
+      const text = !part.el.matches("img, video");
+      if (text && (part.el.matches(OUTLINED) || part.el.closest(".hero"))) {
+        const lines = rows(part.el);
+        const points = lines.length ? lines.flatMap((row) => [
+          { x: row.left - left, y: row.top - top + row.height * 0.75 },
+          { x: row.right - left, y: row.top - top + row.height * 0.75 }
+        ]) : [{ x: r.x, y: r.y + r.h * 0.7 }, { x: r.x + r.w, y: r.y + r.h * 0.7 }];
+        part.task = crew.reserve("pen", points, earliest, Math.min(lightDraft ? 420 : 700, 220 + r.w * 0.45));
+        if (lines.length) {
+          // A stepped polygon retains finished lines while the nib writes the
+          // next one. The return journey never rewinds already revealed text.
+          part.inkFrames = lines.flatMap((row, rowIndex) => {
+            const lineTop = rowIndex ? (row.top - top - r.y) / r.h * 100 : -12;
+            const lineBottom = rowIndex === lines.length - 1 ? 112 : (lines[rowIndex + 1].top - top - r.y) / r.h * 100;
+            return [0, 1].map((edge) => ({
+              offset: (rowIndex * 2 + edge) / (lines.length * 2 - 1),
+              clipPath: (() => {
+                const x = (row[edge ? "right" : "left"] - left - r.x) / r.w * 100 + (edge ? 1 : -1);
+                return `polygon(-2% -12%, 102% -12%, 102% ${lineTop}%, ${x}% ${lineTop}%, ${x}% ${lineBottom}%, -2% ${lineBottom}%)`;
+              })()
+            }));
+          });
+        }
+      } else part.task = { start: earliest, end: earliest + 300, duration: 300 };
+    });
+    const DRAWN = Math.max(pencilEnd, ...parts.map((p) => p.task.end), ...notes.map((n) => n.end)) + 100;
     const erase = (n, now) => {
       if (n.gone) return;
       n.gone = true;
       if (now) return n.note.remove();
-      if (lightDraft) {
-        n.note.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" });
-        return;
-      }
+      animate(n.note, [{ clipPath: "inset(-20% -4% -30% -4%)" }, { clipPath: "inset(-20% -4% -30% 104%)" }], { duration: 500, easing: "linear", fill: "forwards" });
+      if (lightDraft) return;
       const smudge = document.createElement("span");
       smudge.className = "draft__smudge";
       smudge.style.cssText = `left:${n.note.offsetLeft - 8}px;top:${n.note.offsetTop - 4}px;width:${n.note.offsetWidth + 16}px;height:${n.note.offsetHeight + 8}px`;
       layer.append(smudge);
-      smudge.animate([{ opacity: 0 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { duration: 1100, fill: "forwards" });
-      n.note.animate([
-        { opacity: 1, translate: "0 0", filter: "blur(0)" },
-        { opacity: 0.6, translate: "4px 0", filter: "blur(0.4px)", offset: 0.25 },
-        { opacity: 0.35, translate: "-4px 1px", filter: "blur(0.8px)", offset: 0.5 },
-        { opacity: 0.14, translate: "3px 0", filter: "blur(1.2px)", offset: 0.75 },
-        { opacity: 0, translate: "0 0", filter: "blur(1.6px)" }
-      ], { duration: 620, easing: "linear", fill: "forwards" });
+      animate(smudge, [{ opacity: 0 }, { opacity: 1, offset: 0.4 }, { opacity: 0 }], { duration: 1100, fill: "forwards" });
     };
     const fill = (part, now) => {
       if (part.done) return;
@@ -242,12 +341,38 @@
       // Outlined headings fill with ink instead of replaying their ink reveal.
       if (part.el.matches("[data-ink]")) part.el.classList.add("is-inked");
       part.el.classList.add("is-drafted");
-      if (!now && part.el.getAttribute("data-draft-part") !== "outline" && !part.el.matches("[data-settle], [data-stamp], [data-rise]")) {
-        part.el.animate(lightDraft ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, filter: "blur(2px)" }, { opacity: 1, filter: "blur(0)" }], { duration: lightDraft ? 240 : 420, easing: EASE });
+      if (!now && !part.inkFrames && part.el.getAttribute("data-draft-part") !== "outline" && !part.el.matches("[data-settle], [data-stamp], [data-rise]")) {
+        reveals.push(animate(part.el, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: EASE }));
       }
-      part.marks.forEach((m) => m.animate([{ opacity: 1 }, { opacity: 0 }], { duration: now ? 1 : 360, delay: now ? 0 : 80, fill: "forwards" }));
+      if (now) part.marks.forEach((mark) => { mark.style.opacity = "0"; });
     };
-    const timers = parts.map((part, i) => setTimeout(() => fill(part), FILL + i * GAP));
+    const timers = parts.map((part) => schedule(() => {
+      fill(part);
+      // A pen reveals each line in its measured reading order.
+      if (part.inkFrames) reveals.push(animate(part.el, part.inkFrames, { duration: part.task.duration, easing: "linear" }));
+    }, part.task.start));
+    // Queue cleanup by readiness, so a late construction line cannot hold up
+    // an already finished annotation. Only temporary graphite is erased.
+    const cleanup = drawnPaths.map(({ path, points, end }) => {
+      const distance = Math.hypot(points.at(-1).x - points[0].x, points.at(-1).y - points[0].y);
+      return {
+        points, ready: end + 180,
+        duration: Math.min(lightDraft ? 250 : 350, 120 + distance * 0.2),
+        wipe: (duration) => animate(path, [{ strokeDashoffset: 0 }, { strokeDashoffset: -1 }], { duration, fill: "forwards" })
+      };
+    });
+    notes.forEach((n) => {
+      const x = n.note.offsetLeft, y = n.note.offsetTop, width = n.note.offsetWidth, height = n.note.offsetHeight;
+      const points = Array.from({ length: 17 }, (_, i) => ({ x: x + width * i / 16, y: y + height / 2 + Math.sin(i * 2.4) * 5 }));
+      cleanup.push({ points, ready: n.end + 500, duration: 500, wipe: () => erase(n, false) });
+    });
+    cleanup.sort((a, b) => a.ready - b.ready).forEach((mark) => {
+      const task = crew.reserve("eraser", mark.points, mark.ready, mark.duration);
+      timers.push(schedule(() => mark.wipe(task.duration), task.start));
+      mark.end = task.end;
+    });
+    const END = Math.max(DRAWN, ...cleanup.map((mark) => mark.end)) + 420;
+    crew.play();
     const job = { finish: null };
     let done = false;
     let closed = false;
@@ -255,6 +380,9 @@
       if (closed) return;
       closed = true;
       timers.forEach(clearTimeout);
+      crew.cancel();
+      reveals.forEach((animation) => animation.cancel());
+      layer.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());
       layer.remove();
       parts.forEach((part) => { part.el.removeAttribute("data-draft-part"); part.el.classList.remove("is-drafted"); });
       running.delete(job);
@@ -262,17 +390,14 @@
     job.finish = (now) => {
       if (closed || (done && !now)) return;
       done = true;
-      timers.forEach(clearTimeout);
+      if (now) timers.forEach(clearTimeout);
       parts.forEach((part) => fill(part, now));
       if (block.els[0] === hero) root.classList.remove("is-drafting");
       if (now) return close();
-      // Every piece is inked; the notes linger, then are rubbed out and the guides lift away.
-      timers.push(setTimeout(() => {
-        notes.forEach((n) => erase(n, false));
-        layer.animate([{ opacity: 1 }, { opacity: 0 }], { duration: lightDraft ? 240 : 560, delay: lightDraft ? 0 : 500, fill: "forwards" }).finished.then(close);
-      }, Math.max(0, ERASE - DRAWN)));
+      // Keep the remaining cleanup crew alive until its final task is complete.
+      timers.push(schedule(close, Math.max(0, END - DRAWN)));
     };
-    timers.push(setTimeout(() => job.finish(false), DRAWN));
+    timers.push(schedule(() => job.finish(false), DRAWN));
     running.add(job);
   };
 
@@ -280,10 +405,17 @@
   const skip = () => running.forEach((job) => job.finish(true));
   addEventListener("pointerdown", skip);
   addEventListener("keydown", skip);
+  addEventListener("resize", skip);
+  motion.addEventListener("change", () => {
+    if (!motion.matches) return;
+    skip();
+    pending.forEach((block) => block.parts.forEach((el) => el.removeAttribute("data-draft-part")));
+    root.classList.remove("is-drafting");
+  });
 
   // Measure once the type has loaded, or the outlines won't match the lines.
   const fonts = document.fonts ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))]) : Promise.resolve();
-  fonts.then(async () => {
+  Promise.all([fonts, Promise.race([readyTools, new Promise((resolve) => setTimeout(resolve, 1500))])]).then(async () => {
     const later = pending.filter((block) => block.els[0] !== hero);
     const opening = pending.find((block) => block.els[0] === hero);
     // All construction lines wait until the portrait finishes its first repositioning.

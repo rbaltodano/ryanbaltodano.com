@@ -3,7 +3,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 // One persistent scene per print, on the page and while inspecting it. Both
 // faces and the cut edge share a bend; the photo's gloss coat only shows
-// once the open print is turned in 3D.
+// while the print is selected in the lightbox. Page prints stay matte.
 export async function createInspector(photo, image, host, reduce) {
   await image.decode();
   await document.fonts.ready;
@@ -102,8 +102,8 @@ export async function createInspector(photo, image, host, reduce) {
   }
   const frontMaterial = new THREE.MeshPhysicalMaterial({
     map: texture(front, true), roughnessMap: texture(rough), roughness: 0.8,
-    clearcoat: 0.001, clearcoatMap: texture(gloss), clearcoatRoughness: 0.24,
-    metalness: 0, ior: 1.46, envMapIntensity: 0.35
+    clearcoat: 0, specularIntensity: 0, clearcoatMap: texture(gloss), clearcoatRoughness: 0.24,
+    metalness: 0, ior: 1.46, envMapIntensity: 0
   });
   const backMaterial = new THREE.MeshStandardMaterial({
     map: texture(rear, true), roughness: 0.95, side: THREE.BackSide
@@ -145,7 +145,7 @@ export async function createInspector(photo, image, host, reduce) {
   edgeGeometry.computeVertexNormals();
   group.add(new THREE.Mesh(edgeGeometry, edgeMaterial));
   scene.add(group);
-  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false, compiled = false, shine = 0, turned = false;
+  let targetX = -0.09, targetY = -0.16, frame = 0, disposed = false, compiled = false, shine = 0;
   let baseDistance = 10, side = 1, view = null;
   const corner = new THREE.Vector3();
   group.rotation.set(targetX, targetY, -0.025, 'YXZ');
@@ -170,10 +170,13 @@ export async function createInspector(photo, image, host, reduce) {
       }
     }
     camera.position.z += (distance - camera.position.z) * (distance > camera.position.z ? 1 : smoothing);
-    const gloss = view && turned ? 0.75 : 0;
+    const gloss = view ? 0.75 : 0;
     shine += (gloss - shine) * (reduce ? 1 : 0.12);
     if (Math.abs(gloss - shine) < 0.001) shine = gloss;
-    frontMaterial.clearcoat = Math.max(0.001, shine);
+    // Disable both the gloss coat and the base material's reflections on the page.
+    frontMaterial.clearcoat = view ? shine : 0;
+    frontMaterial.specularIntensity = view ? 1 : 0;
+    frontMaterial.envMapIntensity = view ? 0.35 : 0;
     renderer.render(scene, camera);
     if (Math.abs(targetX - group.rotation.x) + Math.abs(targetY - group.rotation.y) + Math.abs(distance - camera.position.z) + Math.abs(gloss - shine) > 0.0001) frame = requestAnimationFrame(draw);
   }
@@ -208,7 +211,6 @@ export async function createInspector(photo, image, host, reduce) {
       requestDraw();
     },
     setRotation(x, y) {
-      turned = x !== 0 || y !== 0;
       targetX = THREE.MathUtils.degToRad(x) - 0.09;
       targetY = THREE.MathUtils.degToRad(y) - 0.16;
       requestDraw();
