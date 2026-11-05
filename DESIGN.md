@@ -143,6 +143,8 @@ The fixed header is flush to the viewport with an opaque paper background.
 `viewport-fit=cover` lets that background cover the status-bar area. Padding from
 `env(safe-area-inset-top)` keeps controls below the notch. Shared nav-height and
 safe-area tokens reserve the same space above the page and for anchor scrolling.
+The header paper also extends a full viewport height above itself, so iOS Safari
+never shows scrolled content above the header.
 Container gutters respect left/right safe areas in landscape; the page also
 reserves bottom safe-area space. No scroll-position JavaScript is involved.
 
