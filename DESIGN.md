@@ -371,6 +371,10 @@ active sequence; resize removes prepared layers. Reduced motion skips the tools
 and switching to it mid-sequence restores all real borders, underlines, and text.
 All tools and temporary marks are removed after their tasks; no idle loop remains.
 
+Phones get the same section pencils as desktop: three pencils per section, the same
+messages, rules, and photo marks, and a section's pencils finish their work even
+when the next section starts. Phones still skip the ink texture filter and smudges.
+
 Client Work has three dedicated pencils, including on phones: one finishes the
 rule below its heading, one writes the PostcardMania description in reading order,
 and one writes “Front-End Web Development Intern.” These two passages use explicit

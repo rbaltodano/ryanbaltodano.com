@@ -35,7 +35,7 @@
 
   // A small crew shares a timeline. Each tool travels between measured tasks;
   // drawing and wiping use the same points and clock as the working tip.
-  const crewFor = (layer, inProgress = false, pencilCount = lightDraft ? 1 : 3) => {
+  const crewFor = (layer, inProgress = false, pencilCount = 3) => {
     const workers = {};
     const motions = [];
     let built = false;
@@ -136,9 +136,6 @@
       block.parts.forEach((el) => el.removeAttribute("data-draft-part"));
       return;
     }
-    // Finish the previous sketch when scrolling into the next one instead of
-    // repainting several section-sized drawing surfaces at once on a phone.
-    if (lightDraft) running.forEach((job) => job.finish(true));
     try { if (block.job) block.job.start(); else drawBlock(block); }
     catch (e) { block.parts.forEach((el) => el.removeAttribute("data-draft-part")); if (block.els[0] === hero) root.classList.remove("is-drafting"); }
   };
@@ -329,7 +326,7 @@
       });
       // Existing handwritten messages stay as real text; the pencil completes
       // their last words, instead of drawing lettering guides across paragraphs.
-      select(".margin-note").filter((el) => el.getClientRects().length).slice(0, lightDraft ? 1 : 2).forEach((note) => {
+      select(".margin-note").filter((el) => el.getClientRects().length).slice(0, 2).forEach((note) => {
         note.classList.add("is-written");
         const text = note.querySelector(":scope > span");
         if (!text) return;
@@ -383,7 +380,7 @@
       });
       // Short registration corners around captures/photos, without crossing
       // through the picture or drawing a full box around every element.
-      select("figure.film, figure.snapshot").filter((el) => !el.closest(".hero") && el.getClientRects().length).slice(0, lightDraft ? 1 : 2).forEach((figure) => {
+      select("figure.film, figure.snapshot").filter((el) => !el.closest(".hero") && el.getClientRects().length).slice(0, 2).forEach((figure) => {
         const media = figure.querySelector("img, video"), r = at((media || figure).getBoundingClientRect());
         const color = getComputedStyle(root).getPropertyValue("--draft").trim();
         detail(r.x - 8, r.y + 18, r.x - 8, r.y - 8, color, true);
@@ -393,8 +390,8 @@
       const remainingPaths = drawnPaths;
       const groups = [drawnPaths.filter((mark) => mark.message || mark.write || mark.scribble), drawnPaths.filter((mark) => !mark.message && !mark.write && !mark.scribble && !mark.temporary), drawnPaths.filter((mark) => mark.temporary)];
       const finishingPaths = [];
-      while (groups.some((group) => group.length) && finishingPaths.length < (lightDraft ? 4 : 8)) {
-        groups.forEach((group) => { if (group.length && finishingPaths.length < (lightDraft ? 4 : 8)) finishingPaths.push(group.shift()); });
+      while (groups.some((group) => group.length) && finishingPaths.length < 8) {
+        groups.forEach((group) => { if (group.length && finishingPaths.length < 8) finishingPaths.push(group.shift()); });
       }
       const jobs = [];
       const animations = [];
