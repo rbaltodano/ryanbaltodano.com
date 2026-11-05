@@ -325,3 +325,22 @@ stacks on phones. Keep the wax seal at the outside edge.
 The navbar ends with GitHub (new tab) and a filled Contact button that opens
 email to `rbaltodano337@gmail.com`. Both remain visible on phones. The theme
 switch is removed, and the site starts in its day palette on every load.
+
+## Design engineering positioning, 2026-11-04
+
+Keep the existing field-guide art direction, masthead, portrait, illustrations, real captures,
+and drafting interactions. The opening now identifies design engineering and applied AI,
+separates paid web design from independent engineering, and gives a direct route to inVectus
+and the résumé. Exhibit notes expose architectural decisions and links to implementation evidence.
+Use conservative availability labels: iPhone public beta, Mac in development, inVectus a working
+macOS prototype with experimental assessments.
+
+`invectus.html` is a focused reading page using the same tokens, typography, navigation, and
+media inspector. Its opening connects the owner's brother's research problem to lessons from
+Angrove; architecture, interface, implementation, evaluation, and limits follow. Native details
+hold deeper source/test links. The origin is owner-supplied context, not a measured outcome.
+Do not describe sparse map areas as scientific discoveries or proof of novelty.
+
+Status stamp text is fully opaque for contrast. Product films expose play/pause controls;
+reduced motion starts paused and no-JavaScript visits retain native video controls. Regular
+media dialogs have a Close button, contain keyboard focus, and restore focus to the opener.

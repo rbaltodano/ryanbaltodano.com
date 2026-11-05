@@ -1,13 +1,34 @@
 // Footer and title-page year
 document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
 
-// Product films loop while on screen and pause off it. With reduced motion they rest on their poster.
+// Films have an explicit pause control. Reduced motion starts paused, with manual play.
 (() => {
   const films = document.querySelectorAll("video[data-play-in-view]");
-  if (!films.length || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  films.forEach((film) => {
+    film.controls = false; // Native controls remain available when JavaScript is disabled.
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "film__playback";
+    button.setAttribute("aria-label", "Play or pause: " + film.getAttribute("aria-label"));
+    const sync = () => { button.textContent = film.paused ? "Play video" : "Pause video"; };
+    sync();
+    film.addEventListener("play", sync);
+    film.addEventListener("pause", sync);
+    button.addEventListener("click", () => {
+      film.dataset.pausedByUser = film.paused ? "false" : "true";
+      if (film.paused) film.play().catch(sync);
+      else film.pause();
+    });
+    film.closest("figure").querySelector("figcaption").append(button);
+  });
+  const pauseAll = () => films.forEach((film) => film.pause());
+  reduce.addEventListener("change", () => { if (reduce.matches) pauseAll(); });
+  if (!("IntersectionObserver" in window)) return;
   const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
-    if (entry.isIntersecting) entry.target.play().catch(() => {});
-    else entry.target.pause();
+    const film = entry.target;
+    if (entry.isIntersecting && !reduce.matches && film.dataset.pausedByUser !== "true") film.play().catch(() => {});
+    else if (!entry.isIntersecting) film.pause();
   }), { threshold: 0.5 });
   films.forEach((film) => io.observe(film));
 })();

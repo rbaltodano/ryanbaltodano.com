@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "esbuild stageshow/main.tsx --bundle --minify --format=esm --outdir=assets/stageshow --jsx=automatic",
-    "build:polaroid": "esbuild js/polaroid-3d.js --bundle --minify --format=esm --outfile=assets/polaroid-3d.js --legal-comments=eof"
+    "build:polaroid": "esbuild js/polaroid-3d.js --bundle --minify --format=esm --outfile=assets/polaroid-3d.js --legal-comments=eof",
+    "check": "node scripts/check_site.mjs"
   },
   "dependencies": {
     "lucide-react": "0.468.0",

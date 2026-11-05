@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png?v=20261104134602">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/brand/favicon-512.png?v=20261104134602">
+  <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png?v=20261104134602">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>inVectus Case Study | Ryan Baltodano</title>
+  <meta name="description" content="From helping my brother explore medical literature to building a local-first research workspace. Product design, React, TypeScript, Rust, Tauri, and semantic retrieval.">
+  <link rel="canonical" href="https://ryanbaltodano.com/invectus.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ryanbaltodano.com/invectus.html">
+  <meta property="og:title" content="inVectus Case Study | Ryan Baltodano">
+  <meta property="og:description" content="How a real research question became an inspectable, local-first research application. Architecture, interaction design, implementation, and limits.">
+  <meta property="og:image" content="https://ryanbaltodano.com/assets/img/social-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ryan Baltodano. Product design, frontend engineering, and applied AI.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="inVectus Case Study | Ryan Baltodano">
+  <meta name="twitter:description" content="A research question became a React/TypeScript and Rust product. Read the origin, architecture, interface decisions, and evaluation boundaries.">
+  <meta name="twitter:image" content="https://ryanbaltodano.com/assets/img/social-preview.jpg">
+  <meta name="twitter:image:alt" content="Ryan Baltodano. Product design, frontend engineering, and applied AI.">
+  <meta name="theme-color" content="#ece5d6">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
+  <link rel="stylesheet" href="css/site.css?v=20261104-positioning">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "inVectus: from a research question to a local-first workspace", "author": {"@type": "Person", "name": "Ryan Baltodano", "url": "https://ryanbaltodano.com/"}, "url": "https://ryanbaltodano.com/invectus.html", "description": "How a family research problem led to a React, TypeScript, Rust, and Tauri application for exploring collection coverage."}</script>
+  <link rel="stylesheet" href="css/case-study.css?v=20261104-positioning">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <filter id="graphite" x="-10%" y="-30%" width="120%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" result="d"/><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="9" result="g"/><feColorMatrix in="g" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.4 0 0 0 1.25" result="tooth"/><feComposite in="d" in2="tooth" operator="in"/></filter>
+    <symbol id="i-ne" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></symbol>
+  </svg>
+  <a class="skip" href="#case-overview">Skip to the case study</a>
+  <header class="nav"><div class="container nav__inner">
+    <a class="wordmark" href="index.html" aria-label="Ryan Baltodano, portfolio"><span class="wordmark__mark" aria-hidden="true"></span><span class="wordmark__name">Ryan Baltodano</span></a>
+    <nav class="nav__links" aria-label="Main navigation"><a href="index.html#exhibits">Portfolio</a><a href="#implementation">Implementation</a><a class="nav__keep" href="https://github.com/rbaltodano/inVectus" target="_blank" rel="noopener">Source</a><a class="button button--primary nav__keep nav__contact" href="mailto:rbaltodano337@gmail.com">Contact</a></nav>
+  </div></header>
+<main id="top" class="case">
+  <header id="case-overview" class="container case__opening">
+    <p class="label">Independent product <span>·</span> Design and engineering</p>
+    <h1 class="record__title">inVectus</h1>
+    <p class="case__lede">From a medical research question to an explorable collection.</p>
+    <p>My older brother was looking for a worthwhile research topic for medical school. I wanted to help him examine the existing literature and find areas worth a closer look. Keyword search could find papers, but it was harder to see how ideas related across a collection.</p>
+    <p>In Angrove, I had used embeddings to connect concepts and retrieve sources. I recognized another use for that knowledge: compare papers in semantic space and surface patterns of limited coverage for human investigation. That question became inVectus, a standalone research workspace intended to work across disciplines.</p>
+    <dl class="specimen case__facts">
+      <div><dt>My role</dt><dd>Independent creator: product framing, interaction design, React/TypeScript interface, Rust engine integration, and evaluation.</dd></div>
+      <div><dt>Stack</dt><dd>React, TypeScript, Tauri 2, Rust, ONNX embeddings, DuckDB, LanceDB.</dd></div>
+      <div><dt>Today</dt><dd>Working prototype tested locally on macOS. Import, semantic search, maps, gap inspection, and saved decisions work; calibration remains experimental. Windows/Linux and signed distribution remain unverified.</dd></div>
+    </dl>
+    <p class="project__links"><a class="text-link" href="https://github.com/rbaltodano/inVectus" target="_blank" rel="noopener">Source</a><a class="text-link" href="https://github.com/rbaltodano/inVectus/blob/main/docs/demo.md" target="_blank" rel="noopener">Reproduce the demo</a><a class="text-link" href="#architecture">Architecture and decisions</a></p>
+  </header>
+  <figure class="container case__figure film">
+    <img src="assets/img/invectus/gap.jpg" alt="inVectus: a ranked coverage gap, score components, and supporting evidence beside the collection map." width="2000" height="1247" loading="lazy">
+    <figcaption>A native macOS capture of a 5,000-paper ophthalmology collection. The flagged gap is a candidate for review, not a validated research discovery.</figcaption>
+  </figure>
+  <section id="architecture" class="container case__section" aria-labelledby="architecture-title">
+    <h2 id="architecture-title">The architecture behind the question</h2>
+    <p>The useful question became: where does this collection show demand, limited coverage, older coverage, or possible connections between regions? A blank patch on a 2D map cannot answer that. Regions and gap scores use the embedding-space graph; the map helps a person browse the results.</p>
+    <div class="case__table-wrap"><table>
+      <caption>One local engine, two interfaces</caption>
+      <thead><tr><th scope="col">Boundary</th><th scope="col">Responsibility and choice</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">React + TypeScript</th><td>Search, import mapping, collection state, evidence review, and saved decisions. Typed commands cross the Tauri boundary.</td></tr>
+        <tr><th scope="row">Shared Rust crates</th><td>Import, embeddings, retrieval, region graph, scoring, and job execution serve both the desktop and CLI.</td></tr>
+        <tr><th scope="row">DuckDB + LanceDB</th><td>Project metadata and review records live in DuckDB; vectors live in LanceDB. No account or server is required for the core workflow.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Matching dimensions do not guarantee compatible embeddings. Each vector table records its model revision, checksums, prefixes, pooling, normalization, and runtime. Queries must use a compatible space. Exact search remains available; approximate nearest-neighbor search can re-score returned candidates exactly, but cannot recover a neighbor it omitted.</p>
+    <p><a href="https://github.com/rbaltodano/inVectus/blob/main/docs/architecture.md" target="_blank" rel="noopener">Read the architecture and tradeoffs</a> or inspect <a href="https://github.com/rbaltodano/inVectus/blob/main/crates/index/src/search.rs" target="_blank" rel="noopener">the search implementation</a>.</p>
+  </section>
+  <section class="container case__section" aria-labelledby="interface-title">
+    <h2 id="interface-title">Make the evidence usable</h2>
+    <p>I designed the workspace around moving between a candidate, its papers, and the collection map. Resizable panes keep evidence in context and stack when the window cannot fit both. The divider supports pointer dragging and keyboard resizing. Collection readiness, job progress, and errors remain part of the workflow.</p>
+    <p>Saving a candidate and deciding to pursue it are separate actions. Bookmarks retain a snapshot; decisions and notes have their own records, so rescanning does not erase the person's work.</p>
+    <div class="case__screens">
+      <figure class="film"><img src="assets/img/invectus/search.jpg" alt="Semantic search with supporting medical-paper matches beside the collection map." width="2000" height="1247" loading="lazy"><figcaption>Move from a query to its nearest source papers.</figcaption></figure>
+      <figure class="film"><img src="assets/img/invectus/saved.jpg" alt="Saved candidates and a separately recorded human review decision." width="2000" height="1255" loading="lazy"><figcaption>Saved work and decisions, using the fictional Urban Futures demo.</figcaption></figure>
+    </div>
+  </section>
+  <section id="implementation" class="container case__section" aria-labelledby="implementation-title">
+    <h2 id="implementation-title">Implementation you can inspect</h2>
+    <p>Project navigation preserves each tab's return path. A shared React jobs provider follows Rust job events so changing screens does not lose progress. Indexing checkpoints completed work, reuses unchanged inputs, and supports cancellation. This makes a potentially long-running local process understandable in the interface.</p>
+    <details><summary>Inspect the frontend and engine boundaries</summary>
+      <ul>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/src/api.ts" target="_blank" rel="noopener">Typed commands and result shapes</a>: collections, vector spaces, search results, jobs, and review records.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/src/WorkspaceSplit.tsx" target="_blank" rel="noopener">WorkspaceSplit</a>: measured layout, pointer capture, an ARIA separator, and Arrow/Home/End key handling.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/src/jobs.tsx" target="_blank" rel="noopener">JobsProvider</a>: shared progress state follows backend events.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/crates/index/src/embed_job.rs" target="_blank" rel="noopener">Embedding jobs</a>: checkpointing, input reuse, and cancellation.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/crates/gaps/src/saved.rs" target="_blank" rel="noopener">Saved records</a>: bookmarks and human decisions remain separate.</li>
+      </ul>
+      <p>I use AI coding assistants extensively. My ownership includes framing the problem, choosing system boundaries, reviewing implementation, and checking behavior against the intended interaction. The architecture and tests make those decisions inspectable.</p>
+    </details>
+  </section>
+  <section class="container case__section" aria-labelledby="evaluation-title">
+    <h2 id="evaluation-title">Evaluate mechanics and usefulness separately</h2>
+    <p>Frontend regression tests cover navigation, map focus, search wording, loading, and pane sizing. Engine fixtures exercise import, search, gap scoring, and saved review behavior. These checks establish software behavior; they do not establish that a suggested topic is scientifically valuable.</p>
+    <p>Early technical spikes compared embedding speed, nearest-neighbor recall, clustering, and map quality on a documented 2,000-paper sample from an Apple M4 Pro. The first records in scan order were a biased sample. A fast retrieval result or a visually convincing cluster was not enough to validate research usefulness.</p>
+    <details><summary>Tests, measured experiments, and a reproducible demo</summary>
+      <ul>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/tests/workspace-split.test.ts" target="_blank" rel="noopener">Pane-sizing regression tests</a> protect minimum widths and stacking.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/tests/search-presentation.test.ts" target="_blank" rel="noopener">Search-presentation tests</a> keep empty scopes, stale calibration, and filtered assessments explicit.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/crates/gaps/tests/gaps_flow.rs" target="_blank" rel="noopener">Engine gap fixtures</a> exercise planted coverage/stale/bridge cases and review behavior using synthetic embeddings.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/docs/spikes/README.md" target="_blank" rel="noopener">Technical spike reports</a> record hardware, sample selection, outcomes, and failed approaches. <a href="https://github.com/rbaltodano/inVectus/blob/main/PROGRESS.md" target="_blank" rel="noopener">The progress ledger</a> records later measurements and backtests.</li>
+        <li><a href="https://github.com/rbaltodano/inVectus/blob/main/docs/demo.md" target="_blank" rel="noopener">The 540-record fictional demo</a> exercises the workflow without private data. It validates mechanics, not discoveries.</li>
+      </ul>
+    </details>
+  </section>
+  <section class="container case__section" aria-labelledby="limits-title">
+    <h2 id="limits-title">What a gap can mean</h2>
+    <p>Limited coverage in an indexed collection is not proof of novelty, scientific value, or absence from the wider literature. Incomplete datasets, specialist vocabulary, embedding limitations, and clustering artifacts can all create apparent gaps. Calibration remains approximate, and the default title/text split is a proxy rather than adjudicated relevance labels.</p>
+    <p>The product is a research exploration and decision-support tool. It surfaces candidates, shows supporting evidence and score components, and leaves the research judgment with a person. The next validation is domain-expert review of candidate usefulness; no research discovery or user-outcome result is claimed here.</p>
+    <p class="project__links"><a class="button" href="index.html#invectus">Back to the portfolio</a><a class="text-link" href="https://angrove.app/case-study.html" target="_blank" rel="noopener">Where the embedding work began: Angrove</a></p>
+  </section>
+</main>
+<footer class="container footer"><div class="footer__bottom"><p>© <span data-year>2026</span> Ryan Baltodano</p><a href="#top">Back to top</a></div></footer>
+<script src="js/site.js?v=20261104-positioning" defer></script>
+<script src="js/lightbox.js?v=20261104-positioning" defer></script>
+</body>
+</html>
