@@ -57,6 +57,9 @@ document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new D
   const root = document.documentElement;
   const statement = document.querySelector(".hero .statement");
   if (!statement || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  // The drafting crew owns the reveal on animated visits. Avoid a second,
+  // independently timed letter animation racing the pen across the heading.
+  if (root.classList.contains("is-drafting")) return;
   // Phones ink the heading as one piece instead of tracking a layer per letter.
   if (matchMedia("(max-width: 48rem), (pointer: coarse)").matches) return;
   let i = 0;

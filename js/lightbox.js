@@ -21,7 +21,7 @@
 
   function preparePolaroid(photo, image) {
     if (polaroidLoading.has(photo)) return polaroidLoading.get(photo);
-    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261104183151');
+    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261105-selected-glare');
     var ready = polaroidModule.then(function (module) {
       return module.createInspector(photo, image, photo, reduce);
     }).then(function (inspector) {

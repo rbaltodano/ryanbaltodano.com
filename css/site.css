@@ -1,6 +1,6 @@
 /* Personal field guide. Layout and theme use tokens.css; interactions use native HTML. */
-@import url("./tokens.css?v=20261104132230");
-@import url("./base.css?v=20261104132230");
+@import url("./tokens.css?v=20261105");
+@import url("./base.css?v=20261105");
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-offset) + 24px); }
 body { padding-top: var(--nav-offset); padding-bottom: var(--safe-bottom); color: var(--ink-2); font-size: var(--text-body); line-height: 1.6; font-optical-sizing: auto; transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
@@ -490,6 +490,20 @@ html { overflow-x: clip; }
 .draft__letter { stroke-width: 0.7; opacity: 0.7; }
 .draft__note { position: absolute; white-space: nowrap; font-family: "Caveat", cursive; font-size: 1.5rem; line-height: 1.1; color: var(--draft); }
 .draft__smudge { position: absolute; border-radius: 40%; background: radial-gradient(closest-side, var(--rule), transparent); filter: blur(4px); opacity: 0; }
+.draft__tool { position: absolute; inset: 0 auto auto 0; width: 0; height: 0; z-index: 2; opacity: 0; pointer-events: none; will-change: transform, opacity; }
+.draft__tool img { position: absolute; max-width: none; object-fit: fill; user-select: none; pointer-events: none; }
+.draft__tool--pencil img { width: 6px; height: 66px; transform: translate(-50%, 0); }
+.draft__tool--pen img { width: 13px; height: 144px; transform: translate(-50%, -100%); }
+.draft__tool--eraser img { width: 44px; height: 27px; transform: translate(-50%, -50%); }
+@media (max-width: 48rem), (pointer: coarse) {
+  .draft__tool--pencil img { width: 4.5px; height: 48px; }
+  .draft__tool--pen img { width: 10px; height: 110px; }
+  .draft__tool--eraser img { width: 36px; height: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .draft { display: none; }
+  [data-draft-part=""]:not(.is-drafted) { opacity: 1 !important; }
+}
 
 /* Keep the pencil/ink sequence on touch screens without repainting blurred text
    and animated gradient masks across an entire section. */
