@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-intro-speed="0.65">
 <head>
   <meta charset="utf-8">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png?v=20261104134602">
@@ -26,25 +26,26 @@
   <script>
     (() => {
       const root = document.documentElement;
+      const introSpeed = Number(root.dataset.introSpeed) || 1;
       root.dataset.theme = "day";
       root.classList.add("js");
       // Draft on every page load (js/draft.js). Content is held back only while this
-      // class is set, and never for longer than six seconds.
+      // class is set, with a fallback scaled to the opening's playback speed.
       if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
         root.classList.add("is-drafting");
-        setTimeout(() => root.classList.remove("is-drafting"), 6000);
+        setTimeout(() => root.classList.remove("is-drafting"), 6000 / introSpeed);
       }
       // The portrait slides in once (js/journal.js), and the rest of the opening waits for its
       // first repositioning; neither is ever held back longer than this.
       if (!matchMedia("(prefers-reduced-motion: reduce)").matches) root.classList.add("is-awaiting-photo");
-      setTimeout(() => root.classList.remove("is-awaiting-photo"), 4000);
-      setTimeout(() => root.classList.add("is-placed"), 8000);
+      setTimeout(() => root.classList.remove("is-awaiting-photo"), 4000 / introSpeed);
+      setTimeout(() => root.classList.add("is-placed"), 15000 / introSpeed);
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261105112450">
+  <link rel="stylesheet" href="css/site.css?v=20261105-angrove-pencils">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -102,10 +103,12 @@
         <span class="statement__line" aria-hidden="true"><span>Software built</span></span>
         <span class="statement__line" aria-hidden="true"><span>for <em class="scrawl">people</em>.</span></span>
       </h1>
-      <figure data-draft-note="tilted 4°, clipped on" data-draft-side="left" class="snapshot hero__portrait">
+      <figure data-draft-note="tilted 4°, clipped on" data-draft-side="left" class="snapshot hero__portrait" aria-describedby="hero-photo-memory">
         <img src="assets/img/headshot-portrait.jpg" alt="Ryan Baltodano, smiling, in a dark suit and white shirt." width="900" height="1125" fetchpriority="high">
         <figcaption>Ryan Baltodano</figcaption>
         <img class="hero__clip" src="assets/desk/paperclip.png" alt="" aria-hidden="true" width="240" height="70">
+        <p id="hero-photo-memory" class="visually-hidden" data-polaroid-note>“This was a good day...
+Stepping into an unknown chapter, I always do my best to take the next right step.”</p>
       </figure>
       <div class="hero__foot">
         <div data-draft-note="two short paragraphs" class="hero__intro">
@@ -129,7 +132,7 @@
           <p class="label">Exhibit I <span>·</span> Independent product</p>
         </header>
         <div class="container project__title project__title--action">
-          <h2 data-draft-note="the name is the poster" id="title-angrove" class="poster" data-ink>Angrove</h2>
+          <h2 data-draft-note="the name is the poster" id="title-angrove" class="poster" data-ink data-pencil-scribble>Angrove</h2>
           <p data-draft-note="status as a stamp, not a badge" data-draft-side="below" class="stamp" data-stamp>Public beta<small>on iPhone</small></p>
         </div>
         <div class="container project__lede"><p class="project__dek">A private AI study app that turns a conversation into sources to inspect and ideas to revisit. I own product design, SwiftUI implementation, on-device model integration, and local retrieval.</p>
@@ -139,7 +142,7 @@
         <div class="container project__intro">
           <img class="desk desk--fern" src="assets/desk/fern.png" alt="" aria-hidden="true" width="340" height="815" loading="lazy">
           <figure data-draft-note="the real app, not a mockup" class="film film--lead" data-settle>
-          <span class="scribble scribble--right" aria-hidden="true">more than a chat log<svg viewBox="0 0 80 60"><path d="M8 6 C30 4 58 14 64 50"/><path d="M54 42 L64 52 L72 40"/></svg></span>
+          <span class="scribble scribble--right" data-pencil-note aria-hidden="true"><span data-pencil-write>more than a chat log</span><svg viewBox="0 0 80 60"><path d="M8 6 C30 4 58 14 64 50"/><path d="M54 42 L64 52 L72 40"/></svg></span>
           <video class="film__video" data-caption-title="Fig. 1" data-caption="Development build. On Mac, a conversation dragged from Recents onto a Board, then a saved Insight found with search and set beside it." src="assets/video/learn-easier.mp4" poster="assets/video/learn-easier-poster.jpg" width="2400" height="1496" muted loop playsinline controls preload="metadata" data-play-in-view aria-label="Silent demo. Angrove for Mac: a Right to Self Defense conversation dragged from Recents onto a Board, then the Insight Infralapsarianism found with search and placed beside it."></video>
           <figcaption><span class="label">Fig. 1</span></figcaption>
         </figure>
@@ -157,11 +160,6 @@
             </dl>
             <p class="project__links"><a class="text-link" href="https://testflight.apple.com/join/qHDFeAUa" target="_blank" rel="noopener">Try the iPhone beta</a><a class="text-link" href="https://angrove.app" target="_blank" rel="noopener">Product site <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a><a class="text-link" href="https://angrove.app/case-study.html" target="_blank" rel="noopener">Case study <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a><a class="text-link" href="https://github.com/rbaltodano/Angrove-iOS" target="_blank" rel="noopener">Source <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a></p>
           </div>
-          <blockquote class="project__pull">
-            <p>Notes want a place, not a scroll.</p>
-            <span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>a Board is a room; a chat is a hallway</span></span>
-            <footer>A named Board gives conversations, writing, and visual references a shared place. Ideas stay beside each other instead of disappearing into a chat history.</footer>
-          </blockquote>
           </div>
         </div>
 
@@ -295,11 +293,11 @@
           <li class="role">
             <p class="role__years">2024 to now</p>
             <div class="role__name"><h4>PostcardMania</h4><p class="label">Web designer</p></div>
-            <p class="role__about">Design and deliver custom, responsive websites, translating business requirements into individual layouts and managing client-facing delivery deadlines.</p>
+            <p class="role__about" data-pencil-write>Design and deliver custom, responsive websites, translating business requirements into individual layouts and managing client-facing delivery deadlines.</p>
           </li>
           <li class="role">
             <p class="role__years">2024</p>
-            <div class="role__name"><h4>Cloud Carpenter</h4><p class="label">Front-End Web Development Intern</p></div>
+            <div class="role__name"><h4>Cloud Carpenter</h4><p class="label" data-pencil-write>Front-End Web Development Intern</p></div>
             <p class="role__about">Designed and built responsive client websites and interactive features with HTML, CSS, JavaScript, and PHP, working with a development team.</p>
           </li>
         </ol>
@@ -330,9 +328,10 @@
               <a class="button" href="assets/Ryan-Baltodano-Resume.pdf?v=20261104-positioning" target="_blank" rel="noopener">Résumé PDF <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a>
             </div>
           </div>
-          <figure class="snapshot contact__photo">
+          <figure class="snapshot contact__photo" aria-describedby="contact-photo-memory">
             <img src="assets/img/hero-skyline.jpg" alt="Ryan and his brother talking on a rooftop overlooking the Tampa skyline at night." width="2400" height="1350" loading="lazy">
             <img class="contact__clip" src="assets/desk/paperclip.png" alt="" aria-hidden="true" width="240" height="70" loading="lazy">
+            <p id="contact-photo-memory" class="visually-hidden" data-polaroid-note>“There's something special about this photo that means a lot to me. This particular conversation with my twin brother is one I think of often, we were in one of my favorite places ever and the memory is burned into me. A friend happened to capture the moment without us realizing.”</p>
           </figure>
         </div>
         <p class="stamp contact__stamp" data-stamp aria-hidden="true">Available<small>for work</small></p>
@@ -368,8 +367,8 @@
   </footer>
 
   <script src="js/site.js?v=20261105112450" defer></script>
-  <script src="js/draft.js?v=20261105112450" defer></script>
-  <script src="js/journal.js?v=20261104-positioning" defer></script>
-  <script src="js/lightbox.js?v=20261105-selected-glare" defer></script>
+  <script src="js/draft.js?v=20261105-stationary-pencils" defer></script>
+  <script src="js/journal.js?v=20261105-quicker-pencil" defer></script>
+  <script src="js/lightbox.js?v=20261105-portrait-writing" defer></script>
 </body>
 </html>

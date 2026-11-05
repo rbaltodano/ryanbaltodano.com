@@ -21,7 +21,7 @@
 
   function preparePolaroid(photo, image) {
     if (polaroidLoading.has(photo)) return polaroidLoading.get(photo);
-    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261105-selected-glare');
+    if (!polaroidModule) polaroidModule = import('../assets/polaroid-3d.js?v=20261105-portrait-writing');
     var ready = polaroidModule.then(function (module) {
       return module.createInspector(photo, image, photo, reduce);
     }).then(function (inspector) {
@@ -34,6 +34,7 @@
       return null;
     });
     polaroidLoading.set(photo, ready);
+    photo.polaroidReady = ready;
     return ready;
   }
 
@@ -83,7 +84,8 @@
   media.forEach(function (m) {
     var photo = m.closest(POLAROID);
     if (!photo) return;
-    if (printObserver) printObserver.observe(photo); else preparePolaroid(photo, m);
+    if (photo.matches('.hero__portrait') || !printObserver) preparePolaroid(photo, m);
+    else printObserver.observe(photo);
   });
 
   // The face turns toward the cursor: cursor right turns it right, cursor low turns it down.
@@ -362,7 +364,8 @@
     });
     var hint = text('p', 'lightbox__hint', 'Drag to rotate · Arrow keys to turn · Home to reset');
     hint.id = 'polaroid-controls';
-    scrim.setAttribute('aria-describedby', hint.id);
+    var note = photo.querySelector('[data-polaroid-note]');
+    scrim.setAttribute('aria-describedby', hint.id + (note ? ' ' + note.id : ''));
     scrim.appendChild(hint);
     var dismiss = text('button', 'lightbox__close', 'Close');
     dismiss.type = 'button';

@@ -6,6 +6,8 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 // while the print is selected in the lightbox. Page prints stay matte.
 export async function createInspector(photo, image, host, reduce) {
   await image.decode();
+  const note = photo.querySelector('[data-polaroid-note]')?.textContent.trim();
+  if (note) await document.fonts.load('500 24px "Caveat"');
   await document.fonts.ready;
   const mobile = matchMedia('(max-width: 48rem), (pointer: coarse)').matches;
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -79,19 +81,82 @@ export async function createInspector(photo, image, host, reduce) {
   const rough = sheet(), rc = rough.getContext('2d');
   rc.scale(factor, factor);
   rc.fillStyle = '#ededed'; rc.fillRect(0, 0, w, h);
-  rc.fillStyle = '#707070'; rc.fillRect(ix, iy, iw, ih);
+  rc.fillStyle = '#404040'; rc.fillRect(ix, iy, iw, ih);
   const rear = sheet(), bc = rear.getContext('2d');
   bc.scale(factor, factor);
   bc.fillStyle = '#e4dfd2'; bc.fillRect(0, 0, w, h);
-  bc.fillStyle = '#34352f'; bc.fillRect(ix, iy, iw, ih);
+  if (!note) {
+    bc.fillStyle = '#34352f'; bc.fillRect(ix, iy, iw, ih);
+  }
   for (let i = 0; i < (mobile ? 4500 : 18000); i++) {
     bc.fillStyle = `rgba(20, 20, 14, ${random() * 0.055})`;
     bc.fillRect(random() * w, random() * h, 0.4, 0.4);
   }
-  bc.fillStyle = '#948e7f';
-  bc.font = `${Math.max(7, w * 0.025)}px monospace`;
-  bc.textAlign = 'center';
-  bc.fillText('INSTANT FILM  /  KEEP THIS MOMENT', w / 2, h - Math.max(12, (h - iy - ih) / 2));
+  const blankRear = sheet();
+  blankRear.getContext('2d').drawImage(rear, 0, 0);
+  let noteLayout;
+  function paintNote(progress) {
+    if (!noteLayout) return null;
+    const { lines, fontSize, textWidth } = noteLayout;
+    bc.clearRect(0, 0, w, h);
+    bc.drawImage(blankRear, 0, 0, w, h);
+    bc.save();
+    bc.translate(w / 2, h / 2);
+    bc.rotate(-0.018);
+    bc.font = `500 ${fontSize}px "Caveat", cursive`;
+    bc.fillStyle = '#514b42';
+    bc.textAlign = 'left';
+    bc.textBaseline = 'middle';
+    const widths = lines.map(line => bc.measureText(line).width);
+    let remaining = widths.reduce((sum, width) => sum + width, 0) * progress;
+    let tip = { x: -textWidth / 2, y: -(lines.length - 1) / 2 * fontSize * 1.3 };
+    lines.forEach((line, i) => {
+      const y = (i - (lines.length - 1) / 2) * fontSize * 1.3;
+      const revealed = Math.max(0, Math.min(widths[i], remaining));
+      if (remaining > 0) {
+        bc.save();
+        bc.beginPath();
+        bc.rect(-textWidth / 2 - 2, y - fontSize, revealed + 2, fontSize * 2);
+        bc.clip();
+        bc.fillText(line, -textWidth / 2, y);
+        bc.restore();
+        tip = { x: -textWidth / 2 + revealed, y };
+      }
+      remaining -= widths[i];
+    });
+    bc.restore();
+    return {
+      x: w / 2 + tip.x * Math.cos(-0.018) - tip.y * Math.sin(-0.018),
+      y: h / 2 + tip.x * Math.sin(-0.018) + tip.y * Math.cos(-0.018) + fontSize * 0.2
+    };
+  }
+  if (note) {
+    // Fit the personal note to the print, keeping generous margins on every size.
+    const textWidth = w * 0.8, textHeight = h * 0.76;
+    let fontSize = w * 0.056, lines;
+    do {
+      bc.font = `500 ${fontSize}px "Caveat", cursive`;
+      lines = [];
+      for (const paragraph of note.split(/\n/)) {
+        lines.push('');
+        for (const word of paragraph.trim().split(/\s+/)) {
+          const last = lines.length - 1;
+          const candidate = lines[last] ? `${lines[last]} ${word}` : word;
+          if (lines[last] && bc.measureText(candidate).width > textWidth) lines.push(word);
+          else lines[last] = candidate;
+        }
+      }
+      if (lines.length * fontSize * 1.3 <= textHeight) break;
+      fontSize *= 0.95;
+    } while (fontSize > w * 0.032);
+    noteLayout = { lines, fontSize, textWidth };
+    paintNote(1);
+  } else {
+    bc.fillStyle = '#948e7f';
+    bc.font = `${Math.max(7, w * 0.025)}px monospace`;
+    bc.textAlign = 'center';
+    bc.fillText('INSTANT FILM  /  KEEP THIS MOMENT', w / 2, h - Math.max(12, (h - iy - ih) / 2));
+  }
   const textures = [];
   function texture(source, color = false) {
     const t = new THREE.CanvasTexture(source);
@@ -102,7 +167,7 @@ export async function createInspector(photo, image, host, reduce) {
   }
   const frontMaterial = new THREE.MeshPhysicalMaterial({
     map: texture(front, true), roughnessMap: texture(rough), roughness: 0.8,
-    clearcoat: 0, specularIntensity: 0, clearcoatMap: texture(gloss), clearcoatRoughness: 0.24,
+    clearcoat: 0, specularIntensity: 0, clearcoatMap: texture(gloss), clearcoatRoughness: 0.12,
     metalness: 0, ior: 1.46, envMapIntensity: 0
   });
   const backMaterial = new THREE.MeshStandardMaterial({
@@ -170,13 +235,13 @@ export async function createInspector(photo, image, host, reduce) {
       }
     }
     camera.position.z += (distance - camera.position.z) * (distance > camera.position.z ? 1 : smoothing);
-    const gloss = view ? 0.75 : 0;
+    const gloss = view ? 1 : 0;
     shine += (gloss - shine) * (reduce ? 1 : 0.12);
     if (Math.abs(gloss - shine) < 0.001) shine = gloss;
-    // Disable both the gloss coat and the base material's reflections on the page.
-    frontMaterial.clearcoat = view ? shine : 0;
-    frontMaterial.specularIntensity = view ? 1 : 0;
-    frontMaterial.envMapIntensity = view ? 0.35 : 0;
+    // Fade every reflection layer together when selecting or returning a print.
+    frontMaterial.clearcoat = shine * 0.75;
+    frontMaterial.specularIntensity = shine;
+    frontMaterial.envMapIntensity = shine * 0.35;
     renderer.render(scene, camera);
     if (Math.abs(targetX - group.rotation.x) + Math.abs(targetY - group.rotation.y) + Math.abs(distance - camera.position.z) + Math.abs(gloss - shine) > 0.0001) frame = requestAnimationFrame(draw);
   }
@@ -206,6 +271,24 @@ export async function createInspector(photo, image, host, reduce) {
   renderer.render(scene, camera);
   return {
     canvas,
+    setIntroRotation(y) {
+      targetY = THREE.MathUtils.degToRad(y) - 0.16;
+      group.rotation.y = targetY;
+      requestDraw();
+    },
+    setNoteProgress(progress) {
+      const tip = paintNote(Math.max(0, Math.min(1, progress)));
+      backMaterial.map.needsUpdate = true;
+      requestDraw();
+      if (!tip) return null;
+      const x = (0.5 - tip.x / w) * mw, y = (0.5 - tip.y / h) * mh;
+      group.updateMatrixWorld(true);
+      camera.updateMatrixWorld(true);
+      const point = new THREE.Vector3(x, y, bend(x, y) - thickness / 2)
+        .applyMatrix4(group.matrixWorld).project(camera);
+      return { x: photo.offsetWidth / 2 + point.x * side / 2,
+        y: photo.offsetHeight / 2 - point.y * side / 2 };
+    },
     setViewport(width, height) {
       view = width && height ? { width, height } : null;
       requestDraw();

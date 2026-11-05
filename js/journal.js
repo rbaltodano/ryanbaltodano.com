@@ -103,49 +103,154 @@
 
   // On load the portrait is slid up from below the bottom centre of the screen, above everything,
   // turning from its 4 degrees to 8 as it comes to rest in the middle. The rest of the opening waits
-  // for it: after the portrait's first repositioning, the opening is released and drafts.
-  // The portrait is moved by hand: diagonally down to the right, up into its
-  // place, and finally turned to its 4 degrees; a paperclip then slides over its top right corner.
+  // for it: after the slide, the opening is released and drafts.
+  // The outline clock drives the flip and writing independently of the moves.
+  // It then flips forward and turns to its resting angle before the paperclip lands.
   (() => {
     const root = document.documentElement;
+    const introSpeed = Number(root.dataset.introSpeed) || 1;
     const portrait = document.querySelector(".hero__portrait");
     const clip = portrait && portrait.querySelector(".hero__clip");
     const release = () => root.classList.remove("is-awaiting-photo");
     if (!portrait || reduce) { release(); return root.classList.add("is-placed"); }
     const place = async () => {
+      const inspector = await portrait.polaroidReady;
       const box = portrait.getBoundingClientRect();
       if (box.bottom < 0 || box.top > innerHeight) { release(); return root.classList.add("is-placed"); }
       const EASE = "cubic-bezier(0.55, 0, 0.17, 1)";
       const cx = document.documentElement.clientWidth / 2 - (box.left + box.width / 2);
       const cy = innerHeight / 2 - (box.top + box.height / 2);
       const below = innerHeight - box.top + 60;
+      const compact = matchMedia("(max-width: 48rem)").matches;
       const middle = `translate(${cx.toFixed(0)}px, ${cy.toFixed(0)}px) rotate(4deg)`;
-      const lower = `translate(${(cx * 0.42).toFixed(0)}px, ${(Math.max(cy, 0) + 90).toFixed(0)}px) rotate(3deg)`;
-      const placed = "rotate(3.5deg)";
+      const lower = compact
+        ? `translate(${cx.toFixed(0)}px, ${(cy + 32).toFixed(0)}px) rotate(3deg)`
+        : `translate(${(cx * 0.42).toFixed(0)}px, ${(Math.max(cy, 0) + 90).toFixed(0)}px) rotate(3deg)`;
+      // On phones its final home is below the fold. Keep the note in view
+      // through writing and the return flip, then settle into the page.
+      const placed = compact ? `translate(${cx.toFixed(0)}px, ${cy.toFixed(0)}px) rotate(3.5deg)` : "rotate(3.5deg)";
+      portrait.dataset.busy = "intro";
       const move = (from, to, ms, delay = 0, easing = EASE) =>
-        portrait.animate([{ transform: from }, { transform: to }], { duration: ms, delay, easing, fill: "forwards" }).finished;
+        portrait.animate([{ transform: from }, { transform: to }], { duration: ms / introSpeed, delay: delay / introSpeed, easing, fill: "forwards" }).finished;
+      let pencil = null, stopped = false, tick = 0, outlineFallback;
+      const hero = portrait.closest(".hero");
+      let receiveOutlines;
+      const outlines = new Promise(resolve => {
+        receiveOutlines = event => {
+          clearTimeout(outlineFallback);
+          hero.removeEventListener("hero-outline-timeline", receiveOutlines);
+          resolve(event?.detail || null);
+        };
+        hero.addEventListener("hero-outline-timeline", receiveOutlines);
+      });
+      const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+      const finish = () => {
+        stopped = true;
+        receiveOutlines();
+        cancelAnimationFrame(tick);
+        pencil?.remove();
+        inspector?.setNoteProgress(1);
+        inspector?.setIntroRotation(0);
+        portrait.getAnimations().forEach(motion => motion.cancel());
+        portrait.classList.add("is-landed", "is-clipped");
+        delete portrait.dataset.busy;
+        release();
+        root.classList.add("is-placed");
+        motionPreference.removeEventListener("change", finish);
+        window.removeEventListener("resize", finish);
+      };
+      motionPreference.addEventListener("change", finish);
+      window.addEventListener("resize", finish, { once: true });
+      if (motionPreference.matches) return finish();
+      const animateSurface = (duration, update, start = document.timeline.currentTime) => new Promise(resolve => {
+        const step = now => {
+          if (stopped) return resolve();
+          if (now < start) { tick = requestAnimationFrame(step); return; }
+          const progress = Math.min(1, (now - start) / duration);
+          update(progress);
+          if (progress < 1) tick = requestAnimationFrame(step);
+          else resolve();
+        };
+        tick = requestAnimationFrame(step);
+      });
+      const flip = (from, to, duration, start) => animateSurface(duration, progress => {
+        const eased = progress * progress * (3 - 2 * progress);
+        inspector.setIntroRotation(from + (to - from) * eased);
+      }, start);
       portrait.classList.add("is-sliding");
+      inspector?.setNoteProgress(0);
       // Slid up from the bottom centre, turning from 4 degrees to 8 overall.
       await move(`translate(${cx.toFixed(0)}px, ${below.toFixed(0)}px) rotate(0deg)`, middle, 1100, 0, "cubic-bezier(0.16, 1, 0.3, 1)");
-      // Finish the first repositioning before the construction lines start drawing.
-      await move(middle, lower, 620, 60);
+      if (stopped) return;
+      // Release the sketch now. Its measured outline timeline drives the flip
+      // and handwriting, independently of both repositioning animations.
+      outlineFallback = setTimeout(() => receiveOutlines(), 1800);
       release();
-      // Up into its place, still at its loose angle.
-      await move(lower, placed, 560, 90);
+      const reposition = async () => {
+        await move(middle, lower, 620, 60);
+        if (!stopped) await move(lower, placed, 560, 90);
+      };
+      const write = async () => {
+        if (!inspector) return;
+        const timing = await outlines || { start: document.timeline.currentTime, end: document.timeline.currentTime + 1100 / introSpeed };
+        if (stopped) return;
+        const flipMs = Math.min(260 / introSpeed, (timing.end - timing.start) * 0.3);
+        await flip(0, 180, flipMs, timing.start);
+        if (stopped) return;
+        pencil = document.createElement("img");
+        pencil.className = "portrait__writing-pencil";
+        pencil.src = "assets/desk/drafting/pencil.png";
+        pencil.alt = "";
+        pencil.setAttribute("aria-hidden", "true");
+        portrait.append(pencil);
+        // The tip follows the ink in the mesh's projected coordinates, so it
+        // stays on the back while the entire print travels to its resting place.
+        await animateSurface(Math.max(1, (timing.end - timing.start - flipMs) / 1.2), progress => {
+          const tip = inspector.setNoteProgress(progress);
+          if (!tip) return;
+          pencil.style.left = tip.x + "px";
+          pencil.style.top = tip.y + Math.sin(progress * 180) * 0.8 + "px";
+          pencil.style.opacity = Math.min(1, progress * 20, (1 - progress) * 20);
+        }, timing.start + flipMs);
+        pencil.remove();
+        if (stopped) return;
+        // Let the finished note rest briefly without advancing the return flip.
+        await animateSurface(Math.max(1, timing.end - document.timeline.currentTime), () => {});
+        if (stopped) return;
+        await flip(180, 0, 380 / introSpeed);
+      };
+      await Promise.all([reposition(), write()]);
+      clearTimeout(outlineFallback);
+      hero.removeEventListener("hero-outline-timeline", receiveOutlines);
+      if (stopped) return;
       // And turned to its final 4 degrees.
-      await move(placed, "none", 380, 140);
+      await move(placed, "none", compact ? 560 : 380, 140);
       portrait.getAnimations().forEach((motion) => motion.cancel());
       portrait.classList.add("is-landed");
+      delete portrait.dataset.busy;
+      motionPreference.removeEventListener("change", finish);
+      window.removeEventListener("resize", finish);
       if (!clip) return root.classList.add("is-placed");
       portrait.classList.add("is-clipped");
       clip.animate([
         { transform: "translate(0, -26px)", opacity: 0, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
         { transform: "translate(0, 2px)", opacity: 1, offset: 0.7, easing: "ease-in-out" },
         { transform: "none", opacity: 1 }
-      ], { duration: 460, delay: 120 }).finished.then(() => root.classList.add("is-placed"));
-      portrait.animate([{ transform: "none" }, { transform: "translate(0, 1.5px)" }, { transform: "none" }], { duration: 240, delay: 420 });
+      ], { duration: 460 / introSpeed, delay: 120 / introSpeed }).finished.then(() => root.classList.add("is-placed"));
+      portrait.animate([{ transform: "none" }, { transform: "translate(0, 1.5px)" }, { transform: "none" }], { duration: 240 / introSpeed, delay: 420 / introSpeed });
     };
-    requestAnimationFrame(() => requestAnimationFrame(place));
+    requestAnimationFrame(() => requestAnimationFrame(() => place().catch(() => {
+      portrait.polaroidReady?.then(inspector => {
+        inspector?.setNoteProgress(1);
+        inspector?.setIntroRotation(0);
+      });
+      portrait.querySelector(".portrait__writing-pencil")?.remove();
+      portrait.getAnimations().forEach(motion => motion.cancel());
+      portrait.classList.add("is-landed", "is-clipped");
+      delete portrait.dataset.busy;
+      release();
+      root.classList.add("is-placed");
+    })));
   })();
 
   // The fern waits over Angrove's heading, then is moved by hand to its edge position.

@@ -206,6 +206,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .scribble--left { right: auto; left: 22%; }
 .scribble--right { top: 10%; right: auto; left: calc(100% + 20px); flex-direction: row-reverse; align-items: flex-end; white-space: nowrap; }
 .scribble--right svg { scale: -1 1; margin: 0 0 -26px; }
+.js .scribble[data-pencil-note] { opacity: 1; transition: none; }
 .scribble svg { width: 64px; height: 48px; margin-top: 10px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
 
 .project__kicker { font-family: var(--font-mono); font-size: var(--text-meta); font-weight: 400; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
@@ -300,6 +301,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
   .notes-grid { grid-template-columns: 1fr; gap: 0; }
   .project { padding-bottom: var(--section-gap); }
   .scribble { display: none; }
+  .scribble[data-pencil-note] { display: flex; position: relative; inset: auto; width: fit-content; max-width: 100%; margin-bottom: 16px; white-space: normal; }
   .trail { height: 200px; }
 }
 @media (max-width: 40rem) {
@@ -327,7 +329,9 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .lightbox .lightbox__scene { pointer-events: auto; cursor: grab; }
 .lightbox--polaroid.is-rotating .lightbox__scene { cursor: grabbing; }
 .snapshot.has-polaroid-mesh, .lightbox .has-polaroid-mesh { background: transparent; box-shadow: none; }
-.has-polaroid-mesh > img:first-child, .has-polaroid-mesh > figcaption { opacity: 0; pointer-events: none; }
+/* Drafting can force opacity to 1; visibility keeps the source print hidden
+   while preserving its dimensions for the persistent 3D scene. */
+.has-polaroid-mesh > img:first-child, .has-polaroid-mesh > figcaption { visibility: hidden; opacity: 0; pointer-events: none; }
 .has-polaroid-mesh::before, .lightbox .lightbox__polaroid.has-polaroid-mesh::before, .lightbox .lightbox__polaroid.has-polaroid-mesh::after { display: none; }
 .lightbox .lightbox__polaroid { transform-style: preserve-3d; background: transparent; box-shadow: none; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
 .lightbox .lightbox__polaroid.is-rotating { cursor: grabbing; }
@@ -481,10 +485,16 @@ html { overflow-x: clip; }
 :is([data-draft-part="outline"], .is-drafting .hero .statement):not(.is-drafted) .scrawl::after { opacity: 0; }
 [data-draft-part="outline"].is-drafted, [data-draft-part="outline"].is-drafted * { -webkit-text-stroke-color: transparent; }
 .is-inked { animation: none !important; opacity: 1 !important; }
+/* Static sketches never transition into their outline state. Only the later
+   fill animates; below the masthead, content is already composed on arrival. */
+[data-draft-part]:not(.is-drafted), [data-draft-part]:not(.is-drafted) * { transition: none !important; }
+.is-draft-ready { opacity: 1 !important; translate: none !important; scale: none !important; transition: none !important; animation: none !important; }
 .draft { position: absolute; z-index: 5; pointer-events: none; }
 .draft svg { position: absolute; inset: 0; overflow: visible; }
 .draft svg path { fill: none; stroke: var(--draft); stroke-dasharray: 1; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .draft__guide { stroke-width: 0.8; opacity: 0.55; }
+.draft__accent { stroke-width: 1; }
+.is-pencil-underline::after { visibility: hidden !important; }
 .draft__box { stroke-width: 1.1; }
 .draft__hatch { stroke-width: 0.8; opacity: 0.5; }
 .draft__letter { stroke-width: 0.7; opacity: 0.7; }
@@ -518,6 +528,7 @@ html { overflow-x: clip; }
 
 /* The portrait is slid in from the right, then placed, and a paperclip pins its top right. */
 .hero__portrait .hero__clip, .contact__photo .contact__clip { position: absolute; z-index: 3; top: 6px; right: 6px; width: 54px; height: auto; rotate: 98deg; pointer-events: none; }
+.hero__portrait > .portrait__writing-pencil { position: absolute; z-index: 4; width: 6px; height: 66px; opacity: 0; pointer-events: none; transform-origin: 50% 0; transform: translateX(-50%) rotate(150deg); }
 :root[data-theme="night"] .hero__clip { filter: brightness(0.82); }
 @media (prefers-reduced-motion: no-preference) {
   .js:not(.is-placed) .hero__portrait:not(.is-sliding):not(.is-landed) { visibility: hidden; }

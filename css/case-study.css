@@ -9,7 +9,8 @@
 .case__figure img { width: 100%; }
 .case__figure figcaption, .case__screens figcaption { margin-top: var(--space-md); font-size: var(--text-meta); font-family: var(--font-mono); color: var(--muted); }
 .case__section { padding-block: var(--space-xl); }
-.case__section h2 { margin-bottom: var(--space-lg); }
+.case__section h2 { position: relative; margin-bottom: var(--space-lg); }
+.case__section > h2::after { content: ""; position: absolute; left: 0; bottom: -8px; width: 72px; border-bottom: 1px solid var(--accent); }
 .case__table-wrap { margin-block: var(--space-xl); overflow-x: auto; }
 .case table { width: 100%; border-collapse: collapse; text-align: left; }
 .case caption { text-align: left; font-family: var(--font-mono); font-size: var(--text-meta); margin-bottom: var(--space-md); }

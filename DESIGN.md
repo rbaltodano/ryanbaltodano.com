@@ -222,15 +222,15 @@ previous sketch immediately. Desktop keeps the full treatment.
 On load the portrait is slid up above everything (z-index 400, over the nav) from
 below the bottom centre of the screen, turning from its 4 degrees to 8, to rest in
 the middle of the viewport (1.1s, `cubic-bezier(0.16, 1, 0.3, 1)`). The rest of the
-opening is hidden (`html.is-awaiting-photo`) until the portrait's first move after
-that; then it appears and drafts. The portrait is then moved by
+opening is hidden (`html.is-awaiting-photo`) until that slide completes;
+then it appears and drafts as the first flip starts. The portrait is then moved by
 hand on the menu curve: diagonally down and to the right (620ms), up into its place
 still at 7.5 degrees (560ms), and finally turned to its 4 degrees (380ms), with
 short beats between. A paperclip (54px, rotated 98 degrees, 6px from the corner and set deep
 over the edge) then slides down over the top right corner to pin it, and the photo dips under it. The drafted opening
 draws no outline for the portrait. Once per page load. Reduced motion, a URL hash,
 or the portrait off screen at load shows everything in place. Head-script timeouts
-release the opening after 4s and the portrait after 8s regardless.
+release the opening after 4s and the portrait after 15s regardless.
 
 ### Compass rules the line over inVectus
 
@@ -347,29 +347,71 @@ media dialogs have a Close button, contain keyboard focus, and restore focus to 
 
 ## Drafting tools, 2026-11-05
 
-The existing block-by-block drafting sequence now uses Ryan's supplied transparent
-tool illustrations in `assets/desk/drafting/`. Up to three pencils trace construction
-strokes, two fountain pens reveal headings, opening copy and temporary annotations,
-and two erasers follow completed construction strokes and annotations while the
-other tools continue drawing. Each stroke becomes available for cleanup after a
-short pause; notes linger briefly after writing. Cleanup tasks run in readiness
-order, without waiting for the entire block to finish.
-Each tool follows the same measured path and timeline as its mark. Text keeps its
-real HTML, links, and layout; the tool layer is decorative and ignores pointer input.
-The opening's separate letter-by-letter animation yields to the pen choreography.
+The hero keeps the full pencil-trace, pen-fill, and cleanup choreography using
+Ryan's transparent illustrations in `assets/desk/drafting/`. It runs at 1.6× pace;
+pencils display at 6 × 66px on desktop and 4.5 × 48px on phones. The opening's
+separate letter animation yields to the tool sequence. Hero cleanup is limited
+to two eraser passes on desktop or one on phones; other guides lift quietly.
 
-On phones/coarse pointers, use one tool of each kind, smaller tools, at most twelve
-construction strokes, and one annotation if there is clear space. Desktop caps
-construction strokes at thirty-six and annotations at three per block. Annotations
-are omitted when no clear placement exists. Click, key press, or resize finishes
-the active sequence. Reduced motion skips drafting; switching to it during a
-sequence immediately reveals the content and removes all tools. Tools and their
-animations are removed after cleanup; no idle animation loop remains.
+Below the hero, pencils draw only decorative details: existing horizontal rules,
+accent/link underlines, handwritten marginalia, and short registration corners
+around photos or captures. Paragraph guides, vertical section rails, full image
+boxes, and body-text tracing are absent. Content is readable immediately. Lines
+are prepared mostly complete before entry; pencils finish the remaining portion
+when the section reaches the viewport. Messages use their existing real text.
+Pencils take turns across messages, rules, and photo marks so each kind gets a
+visible gesture. Permanent lines and messages stay after the tools leave; only
+photo registration marks receive occasional eraser passes.
 
-The tool sequence plays at 1.6× its initial speed, with a shared multiplier for
-movement, stroke reveals, writing, pauses, and cleanup. Pencils are half their
-initial display size: 6 × 66px on desktop, 4.5 × 48px on phones.
+The inVectus reading page loads the same detail sequence, with short accent rules
+under section headings and existing portfolio marginalia reused as handwritten
+messages. Both pages keep the same fonts, palette, and static/no-JavaScript
+fallback. Decorative layers ignore pointer input. Click or key press finishes an
+active sequence; resize removes prepared layers. Reduced motion skips the tools
+and switching to it mid-sequence restores all real borders, underlines, and text.
+All tools and temporary marks are removed after their tasks; no idle loop remains.
+
+Client Work has three dedicated pencils, including on phones: one finishes the
+rule below its heading, one writes the PostcardMania description in reading order,
+and one writes “Front-End Web Development Intern.” These two passages use explicit
+`data-pencil-write` targets; other body copy keeps its existing presentation.
+The pencil and text reveal share measured line positions and timing. Clicking,
+resizing, or reduced motion restores both passages immediately.
+
+Angrove has two authored pencil moments: a pencil follows a loose scribbling motion across the letters
+of the Angrove wordmark without leaving visible marks, and another pencil writes “more than
+a chat log” beside the lead video. On phones that note sits above the video.
+The “Notes want a place, not a scroll” pull-quote block and its supporting copy
+have been removed. These cues retain real text and static reduced-motion fallbacks.
+
+Section tools are created and fully visible at their initial working positions
+while the section is prepared offscreen. Their animations are paused at frame
+zero until the section reaches the viewport trigger. Entry starts movement only:
+there is no tool fade-in, pop-in, or travel into the section. The hero retains its
+separate opening sequence.
 
 The masthead and Contact Polaroids have matte fronts on the page. Specular
-reflections and the gloss coat are enabled only while a photo is selected in
-the lightbox, and disabled as soon as it closes.
+reflections and the gloss coat fade in together when a photo is selected in
+the lightbox, and fade out as it returns. The photo has a smoother surface and
+a low-roughness gloss coat for a tighter glare; the paper border stays matte.
+
+Both photos carry personal memories on their backs, set in Caveat on warm
+paper with generous margins. Their wording lives in accessible
+`data-polaroid-note` paragraphs inside the figures in `index.html`; explicit
+line breaks are preserved in the handwritten rendering.
+
+The headshot entrance slides in and releases the background sketch. The first
+flip starts on the actual construction-outline animation clock; the pencil writes
+the personal note at 1.2× the shared pace, finishing shortly before the last
+construction stroke. The finished note rests until that stroke ends. The
+620ms first move and 560ms second move run independently of this writing. The
+pencil tracks the ink on the projected 3D surface. The print flips forward before
+its final settling rotation and paperclip. Reduced motion skips this sequence;
+resizing or enabling reduced motion completes it and removes the pencil.
+On phones the note stays in the viewport through writing and the return flip;
+the final rotation also settles the photo into its position in the page.
+
+The full hero opening plays at 65% speed, controlled by `data-intro-speed` on
+the root element. The slide, both moves, flips, handwriting, background drawing,
+cleanup, paperclip, and settling beat share this slowdown; the outline clock
+still controls handwriting synchronization. Later sections retain their pace.
