@@ -45,7 +45,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Caveat:wght@500&display=swap">
-  <link rel="stylesheet" href="css/site.css?v=20261105-nav-cover">
+  <link rel="stylesheet" href="css/site.css?v=20261109-invectus-notes">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -201,11 +201,13 @@ Stepping into an unknown chapter, I always do my best to take the next right ste
         <header class="container project__head">
           <p class="label">Exhibit II <span>·</span> Independent product</p>
         </header>
-        <div class="container project__title">
+        <div class="container project__title project__title--action">
           <h2 data-draft-note="same rhythm, second exhibit" id="title-invectus" class="poster" data-ink>inVectus</h2>
           <p class="stamp" data-stamp>In development</p>
         </div>
-        <div class="container project__lede"><p class="project__dek">A local-first research workspace built with React, TypeScript, Rust, and Tauri. Explore where a document collection may be missing coverage, then inspect the supporting evidence before deciding what to investigate.</p></div>
+        <div class="container project__lede"><p class="project__dek">A local-first research workspace built with React, TypeScript, Rust, and Tauri. Explore where a document collection may be missing coverage, then inspect the supporting evidence before deciding what to investigate.</p>
+          <a class="button button--primary project__visit" href="https://invectus.app" target="_blank" rel="noopener">Visit inVectus <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ne"/></svg></a>
+        </div>
 
         <div class="container project__intro">
           <img class="desk desk--compass" src="assets/desk/compass.png" alt="" aria-hidden="true" width="320" height="492">
@@ -250,26 +252,20 @@ Stepping into an unknown chapter, I always do my best to take the next right ste
           </ol>
         </section>
 
-        <section id="invectus-website" class="container project__feature" aria-labelledby="website-invectus">
+        <section id="invectus-website" class="container project__feature project__feature--notes" aria-labelledby="website-invectus">
           <figure class="film">
             <img class="film__video" src="assets/img/invectus/website.png" alt="The inVectus website’s Run It on Your Own Computer section, with a star field, Earth’s illuminated horizon, and a rounded footer." width="821" height="786" loading="lazy">
             <figcaption>inVectus website · Build-from-source section and footer.</figcaption>
           </figure>
-          <div class="project__aside">
-            <h3 id="website-invectus" class="project__kicker" data-ink>Product website</h3>
-            <p>I also designed and built the inVectus website. A quiet star field, Earth’s illuminated horizon, and a rounded footer give the closing section a sense of scale. Restrained type keeps the build instructions and local-first message clear.</p>
-            <p class="project__links"><a class="text-link" href="https://invectus.app" target="_blank" rel="noopener">Visit inVectus</a><a class="text-link" href="https://github.com/rbaltodano/invectus-website" target="_blank" rel="noopener">Website source</a></p>
-          </div>
-        </section>
-
-        <section class="container project__notes" aria-labelledby="notes-invectus">
-          <h3 id="notes-invectus" class="project__kicker" data-ink>Design &amp; engineering</h3>
-          <div class="notes-grid">
+          <div id="notes-invectus" class="project__aside">
+            <h3 id="website-invectus" class="project__kicker" data-ink>Design &amp; engineering</h3>
             <div class="project-note"><h4 data-ink>A responsive research workspace</h4><p>Typed React screens connect search, imports, evidence, and saved decisions through a Tauri command boundary. A draggable, keyboard-operable split keeps the map beside the evidence and stacks when panes become too narrow. Navigation, map focus, search presentation, and pane sizing have regression tests.</p></div>
             <div class="project-note"><h4 data-ink>Keep a decision, not just a bookmark</h4><p>Bookmarks and review decisions have separate records, so saved evidence and notes survive rescans. DuckDB holds metadata; LanceDB holds vectors. The desktop and CLI share Rust crates for local search and resumable, cancellable indexing. Embedding identities prevent comparisons across incompatible vector spaces.</p></div>
             <div class="project-note"><h4 data-ink>A claim should name its scope</h4><p>Gap scoring uses the embedding-space graph; the 2D map is for browsing. Incomplete collections, specialist vocabulary, and embedding or clustering artifacts can suggest gaps that do not hold up. Calibration stays visible, evidence stays inspectable, and a person decides what merits investigation. These are collection-scoped candidates, not proof of novelty or scientific value.</p><span class="margin-note" aria-hidden="true"><svg viewBox="0 0 40 30"><path pathLength="1" d="M36 26 C22 25 10 19 9 5"/><path pathLength="1" d="M4 11 L9 4 L14 10"/></svg><span>this collection, not the world</span></span></div>
+            <p class="project__links"><a class="text-link" href="https://github.com/rbaltodano/invectus-website" target="_blank" rel="noopener">Website source</a></p>
           </div>
         </section>
+
         <div class="container desk-rest desk-rest--key" aria-hidden="true">
           <img class="desk desk--key" src="assets/desk/key.png" alt="" aria-hidden="true" width="480" height="137" loading="lazy">
         </div>

@@ -233,6 +233,7 @@ body::after { content: ""; top: 0; bottom: 0; left: calc(max(0px, (100vw - var(-
 .steps--desktop img { border-radius: 10px; box-shadow: 0 26px 50px -30px rgba(18, 15, 12, 0.6); }
 
 .project__feature { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 64px; align-items: end; margin-top: 140px; }
+.project__feature--notes { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
 .project__aside p { color: var(--ink-2); }
 
 .project__notes { margin-top: 140px; }
