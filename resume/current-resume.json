@@ -1,6 +1,6 @@
 {
   "name": "Ryan Baltodano",
-  "headline": "Design Engineer | Product Design, Frontend & Applied AI",
+  "headline": "Design Engineer, AI Products",
   "contact": "Tampa, FL | Open to NYC / San Francisco relocation | rbaltodano337@gmail.com | (407) 724-5063",
   "links": [
     {
@@ -14,21 +14,26 @@
     {
       "label": "angrove.app",
       "url": "https://angrove.app"
+    },
+    {
+      "label": "invectus.app",
+      "url": "https://invectus.app"
     }
   ],
-  "summary": "Web designer with two years of professional experience and independent ownership of AI-powered software. Combines product and interaction design with React/TypeScript frontend development, native SwiftUI interfaces, and local model integration.",
+  "summary": "Design engineer who takes AI products from Figma systems to shipped SwiftUI, React/TypeScript, and Rust code. Independently designed and released two local-first AI products: an on-device AI study harness in public iPhone beta and a desktop research tool released for macOS. Two years of professional web design at PostcardMania.",
   "projects": [
     {
       "name": "inVectus",
       "role": "Independent Creator, Designer & Developer",
       "dates": "Oct 2026 - Present",
       "url": "https://github.com/rbaltodano/inVectus",
-      "context": "Local-first research desktop app. Working prototype tested on macOS; Windows/Linux unverified.",
+      "context": "Local-first desktop tool that finds coverage gaps in research collections. v0.1.0 released for macOS with a one-line installer; Windows/Linux beta in testing. MIT licensed.",
       "stack": "React, TypeScript, Tauri, Rust, DuckDB, LanceDB",
       "bullets": [
         "Architected a local research workspace with typed React/TypeScript screens, a Tauri command boundary, and Rust engine crates shared by the desktop and CLI; designed import, map, and evidence-review flows.",
         "Applied semantic retrieval and embedding-space coverage analysis to document collections; kept scores and source evidence inspectable, with experimental assessments scoped to the indexed collection.",
-        "Implemented keyboard-resizable panes with narrow-window stacking, persistent bookmarks and decisions, and resumable indexing; added navigation, map-focus, search-presentation, and layout regression coverage."
+        "Implemented keyboard-resizable panes with narrow-window stacking, persistent bookmarks and decisions, and resumable indexing; added navigation, map-focus, search-presentation, and layout regression coverage.",
+        "Set up release tooling: cross-platform GitHub Actions CI, installers with install smoke tests, and a macOS signing pipeline; designed and built the invectus.app product website."
       ]
     },
     {
@@ -36,7 +41,7 @@
       "role": "Independent Creator, Designer & Developer",
       "dates": "Apr 2026 - Present",
       "url": "https://github.com/rbaltodano/Angrove-iOS",
-      "context": "Private AI study app. iPhone public beta on TestFlight; native Mac app in development.",
+      "context": "Private, on-device AI study harness. iPhone public beta on TestFlight; native Mac app in development.",
       "stack": "Swift, SwiftUI, Core ML, MiniLM, LiteRT-LM",
       "bullets": [
         "Created the Figma visual and interaction system and SwiftUI flows for branching conversations, contextual definitions, and a semantic map of saved Insights; built spatial study Boards on Mac.",
@@ -63,7 +68,7 @@
       "title": "Customer Service Staff",
       "company": "Publix",
       "dates": "2021 - Present",
-      "description": "Handle cash operations, reconciliation, and daily bookkeeping alongside a professional design role."
+      "description": ""
     }
   ],
   "skills": [

@@ -46,7 +46,9 @@ for project in source['projects']:
     story += [p('- '+e(bullet), 'bullet') for bullet in project['bullets']]
 story.append(p('Professional Experience', 'heading'))
 for job in source['experience']:
-    story += [p(' | '.join(e(job[k]) for k in ['title','company','dates']), 'role'), p(e(job['description']))]
+    story.append(p(' | '.join(e(job[k]) for k in ['title','company','dates']), 'role'))
+    if job['description']:
+        story.append(p(e(job['description'])))
 story.append(p('Technical & Design Skills', 'heading'))
 for label, content in source['skills']:
     story.append(p(f'<b>{e(label)}:</b> {e(content)}', 'meta'))
