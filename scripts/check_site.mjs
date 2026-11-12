@@ -20,7 +20,7 @@ try {
       assert.equal(await page.locator('h1').count(), 1);
       assert.equal(await page.locator('link[rel="canonical"]').count(), 1);
       await page.locator('script[type="application/ld+json"]').evaluateAll(nodes => nodes.forEach(node => JSON.parse(node.textContent)));
-      const image = page.locator(route === '/' ? '#invectus .film--lead img' : '.case__figure img');
+      const image = page.locator(route === '/' ? '#invectus .film img' : '.case__figure img').first();
       await image.scrollIntoViewIfNeeded(); await image.focus(); await page.keyboard.press('Enter');
       await page.locator('[role="dialog"]').waitFor();
       assert.equal(await page.locator('[role="dialog"] .lightbox__close').count(), 1);
