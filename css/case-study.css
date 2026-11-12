@@ -25,6 +25,7 @@
 .case details ul { padding-left: var(--space-lg); }
 .case details li + li { margin-top: var(--space-md); }
 .case details a, .case__section > p a { text-decoration: underline; }
+.case code { font-family: var(--font-mono); font-size: 0.9em; }
 @media (max-width: 40rem) { .case__screens { grid-template-columns: 1fr; } .case th, .case td { padding: var(--space-sm); } }
 @media (max-width: 40rem) {
   .case__facts > div { grid-template-columns: 1fr; gap: var(--space-xs); }
